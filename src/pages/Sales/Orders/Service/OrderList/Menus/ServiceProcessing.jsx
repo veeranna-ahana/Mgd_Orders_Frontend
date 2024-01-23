@@ -1,10 +1,10 @@
 import React from "react";
-import MainPage from "../Components/MainPage";
+import OrderList from "../../../OrderList/OrderList";
 
 export default function ServiceProcessing() {
   return (
     <>
-      <MainPage />
+      <OrderList type={"Service"} orderType={"Processing"} />
     </>
   );
 }

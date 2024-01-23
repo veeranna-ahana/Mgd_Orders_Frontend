@@ -1,10 +1,10 @@
 import React from "react";
-import MainPage from "../Components/MainPage";
+import OrderList from "../../../OrderList/OrderList";
 
 export default function ServicePacked() {
   return (
     <>
-      <MainPage />
+      <OrderList type={"Service"} orderType={"Packed"} />
     </>
   );
 }
