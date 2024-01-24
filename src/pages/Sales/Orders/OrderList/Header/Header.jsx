@@ -30,12 +30,12 @@ export default function Header(props) {
               {/* select customer */}
               <div className="col-md-9">
                 <div>
-                  <b>Select Customer</b>
+                  <b>Customer</b>
                   <Typeahead
-                    id="basic-example"
+                    id="customerTypeahead"
                     placeholder="Select a customer..."
-                    // options={AllCust}
-                    // onChange={handleCustomerChange}
+                    options={props.CustData}
+                    onChange={props.handleCustomerChange}
                     // defaultSelected={[{ label: "All" }]}
                   />
                 </div>
