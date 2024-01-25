@@ -9,10 +9,13 @@ import { Typeahead } from "react-bootstrap-typeahead";
 export default function Header(props) {
   const style = {
     boxHeight: {
-      height: "auto",
+      height: "111px",
     },
   };
 
+  const checkRadioON = (e) => {
+    console.log("radio", e.target);
+  };
   return (
     <>
       <div className="row">
@@ -32,10 +35,14 @@ export default function Header(props) {
                 <div>
                   <b>Customer</b>
                   <Typeahead
-                    id="customerTypeahead"
-                    placeholder="Select a customer..."
+                    id="CustomerDropdown"
+                    placeholder="Select the Customer..."
                     options={props.CustData}
-                    onChange={props.handleCustomerChange}
+                    // onChange={props.handleCustomerChange}
+                    onChange={(e) => {
+                      props.setSelectedCust(e[0]);
+                      props.filterData();
+                    }}
                     // defaultSelected={[{ label: "All" }]}
                   />
                 </div>
@@ -44,7 +51,17 @@ export default function Header(props) {
               <div className="col-md-3">
                 <div>
                   <b>Order Status</b>
-                  <input value="Order status" className="" />
+                  <Typeahead
+                    id="OrderStatusDropdown"
+                    placeholder="Select Order Status..."
+                    options={props.OrderStatus}
+                    // onChange={props.handleOrderStatusChange}
+                    onChange={(e) => {
+                      props.setSelectedOrderStatus(e[0]);
+                      props.filterData();
+                    }}
+                    // defaultSelected={[{ label: "All" }]}
+                  />
                 </div>
               </div>
               {/* order type */}
@@ -52,39 +69,34 @@ export default function Header(props) {
                 <b>Order Type</b>
                 <div>
                   <div className="row">
-                    <div className="col-md-3">
-                      <button
-                        className="border rounded p-0 m-0"
-                        style={{ background: "none", width: "100%" }}
-                      >
-                        <div className="d-flex flex-row justify-content-evenly">
-                          <input type="radio" style={{ width: "auto" }} />
-                          <b>Completed</b>
-                        </div>
-                      </button>
-                    </div>{" "}
-                    <div className="col-md-3">
-                      <button
-                        className="border rounded p-0 m-0"
-                        style={{ background: "none", width: "100%" }}
-                      >
-                        <div className="d-flex flex-row justify-content-evenly">
-                          <input type="radio" style={{ width: "auto" }} />
-                          <b>Scheduled</b>
-                        </div>
-                      </button>
-                    </div>{" "}
-                    <div className="col-md-3">
-                      <button
-                        className="border rounded p-0 m-0"
-                        style={{ background: "none", width: "100%" }}
-                      >
-                        <div className="d-flex flex-row justify-content-evenly">
-                          <input type="radio" style={{ width: "auto" }} />
-                          <b>Open</b>
-                        </div>
-                      </button>
-                    </div>
+                    {props.orderTypeButtons.map((val) => (
+                      <div className="col-md-3">
+                        <button
+                          // className="border rounded p-0 m-0"
+                          className="button-style m-0 p-0 border rounded"
+                          // height: "auto", width: "100%" ,
+                          style={
+                            !(props.selectedOrderType === val)
+                              ? {
+                                  height: "auto",
+                                  width: "100%",
+                                  background: "none",
+                                  color: "black",
+                                }
+                              : { height: "auto", width: "100%" }
+                          }
+                          id="OrderType"
+                          name={val}
+                          onClick={(e) => {
+                            checkRadioON(e);
+                            props.setSelectedOrderType(e.target.name);
+                            props.filterData();
+                          }}
+                        >
+                          {val}
+                        </button>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
