@@ -4,6 +4,9 @@ import WithNav from "./Layout/WithNav";
 import Parentroute from "./Layout/Parentroute";
 import Login from "./pages/Auth/Login";
 import Home from "./pages/Home";
+
+import { QuotationProvider } from "./context/QuotationContext";
+import { OrderProvider } from "./context/OrderContext";
 import NewOrder from "./pages/Sales Module/Orders/Profile/NewOrder";
 //import Create from "./pages/Sales Module/Orders/Combined Schedules/Job Work/Create/Create";
 //import OrderInfoTab from "./pages/Sales Module/Orders/Profile/Find Order/Header Tabs/OrderInfoTab";
@@ -42,57 +45,114 @@ import InternalHandedOver from "./pages/Sales Module/Orders/Profile/InternalOrde
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Login />} path="/" />
-        <Route path="/home" element={<Home/>} />
+      <QuotationProvider>
+        <OrderProvider>
+          <Routes>
+            <Route element={<Login />} path="/" />
+            <Route path="/home" element={<Home />} />
 
-        <Route element={<WithNav />}>
-          <Route path="/Orders" element={<Parentroute />}> 
-           <Route path="/Orders/NewOrder" element={<NewOrder/>}/>
-         
+            <Route element={<WithNav />}>
+              <Route path="/Orders" element={<Parentroute />}>
+                <Route path="/Orders/NewOrder" element={<NewOrder />} />
 
+                <Route path="/Orders/FindOrder" element={<FindOrder />} />
+                <Route
+                  path="/Orders/FindOrder/ScheduleCreationForm"
+                  element={<ScheduleCreationForm />}
+                />
+                <Route
+                  path="/Orders/ImportExcelForm"
+                  element={<ImportExcelForm />}
+                />
+                <Route path="/Orders/ImportQtn" element={<ImportQtn />} />
+                <Route path="/Orders/EditDXF" element={<EditDXF />} />
+                <Route
+                  path="/Orders/NewOrderSerial"
+                  element={<NewOrderSerial />}
+                />
 
-           <Route path="/Orders/FindOrder" element={<FindOrder/>} />
-           <Route path="/Orders/FindOrder/ScheduleCreationForm" element={<ScheduleCreationForm/>} />
-           <Route path="/Orders/ImportExcelForm" element={<ImportExcelForm/>} />
-           <Route path="/Orders/ImportQtn" element={<ImportQtn/>}/>
-           <Route path="/Orders/EditDXF" element={<EditDXF/>}/>
-           <Route path="/Orders/NewOrderSerial" element={<NewOrderSerial/>}/>
+                <Route
+                  path="/Orders/FindScheduleForm"
+                  element={<FindScheduleForm />}
+                />
+                <Route path="/Orders/FindSchedule" element={<FindSchedule />} />
+                <Route
+                  path="/Orders/FindSchedule/NCProgram"
+                  element={<NCProgram />}
+                />
 
+                <Route path="/Orders/OrderList/Created" element={<Created />} />
+                <Route
+                  path="/Orders/OrderList/Recorded"
+                  element={<Recorded />}
+                />
+                <Route
+                  path="/Orders/OrderList/Processing"
+                  element={<Processing />}
+                />
+                <Route
+                  path="/Orders/OrderList/Completed"
+                  element={<Completed />}
+                />
+                <Route
+                  path="/Orders/OrderList/Produced"
+                  element={<Produced />}
+                />
+                <Route path="/Orders/OrderList/Packed" element={<Packed />} />
+                <Route
+                  path="/Orders/OrderList/Dispatched"
+                  element={<Dispatched />}
+                />
+                <Route path="/Orders/OrderList/All" element={<All />} />
 
-           <Route path="/Orders/FindScheduleForm" element={<FindScheduleForm/>}/>
-           <Route path="/Orders/FindSchedule" element={<FindSchedule/>}/>
-           <Route path="/Orders/FindSchedule/NCProgram" element={<NCProgram/>}/>
+                <Route
+                  path="/Orders/ProfamaInvoiceForm"
+                  element={<ProfamaInvoiceForm />}
+                />
 
+                <Route
+                  path="/Orders/OrderList/FixturesRecorded"
+                  element={<FixturesRecorded />}
+                />
+                <Route
+                  path="/Orders/OrderList/FixturesProcessing"
+                  element={<FixturesProcessing />}
+                />
+                <Route
+                  path="/Orders/OrderList/FixturesCompleted"
+                  element={<FixturesCompleted />}
+                />
+                <Route path="/Orders/OrderList/Ready" element={<Ready />} />
+                <Route
+                  path="/Orders/OrderList/HandedOver"
+                  element={<HandedOver />}
+                />
 
-           <Route path="/Orders/OrderList/Created" element={<Created/>}/>
-           <Route path="/Orders/OrderList/Recorded" element={<Recorded/>}/>
-           <Route path="/Orders/OrderList/Processing" element={<Processing/>}/>
-           <Route path="/Orders/OrderList/Completed" element={<Completed/>}/>
-           <Route path="/Orders/OrderList/Produced" element={<Produced/>}/>
-           <Route path="/Orders/OrderList/Packed" element={<Packed/>}/>
-           <Route path="/Orders/OrderList/Dispatched" element={<Dispatched/>}/>
-           <Route path="/Orders/OrderList/All" element={<All/>}/>
-
-           <Route path="/Orders/ProfamaInvoiceForm" element={<ProfamaInvoiceForm/>}/>
-
-           <Route path="/Orders/OrderList/FixturesRecorded" element={<FixturesRecorded/>}/>
-           <Route path="/Orders/OrderList/FixturesProcessing" element={<FixturesProcessing/>}/>
-           <Route path="/Orders/OrderList/FixturesCompleted" element={<FixturesCompleted/>}/>
-           <Route path="/Orders/OrderList/Ready" element={<Ready/>}/>
-           <Route path="/Orders/OrderList/HandedOver" element={<HandedOver/>}/>
-
-           <Route path="/Orders/OrderList/InternalRecorded" element={<InternalRecorded/>}/>
-           <Route path="/Orders/OrderList/InternalProcessing" element={<InternalProcessing/>}/>
-           <Route path="/Orders/OrderList/InternalCompleted" element={<InternalCompleted/>}/>
-           <Route path="/Orders/OrderList/InternalReady" element={<InternalReady/>}/>
-           <Route path="/Orders/OrderList/InternalHandedOver" element={<InternalHandedOver/>}/>
-
-
-
-          </Route>
-        </Route>
-      </Routes>
+                <Route
+                  path="/Orders/OrderList/InternalRecorded"
+                  element={<InternalRecorded />}
+                />
+                <Route
+                  path="/Orders/OrderList/InternalProcessing"
+                  element={<InternalProcessing />}
+                />
+                <Route
+                  path="/Orders/OrderList/InternalCompleted"
+                  element={<InternalCompleted />}
+                />
+                <Route
+                  path="/Orders/OrderList/InternalReady"
+                  element={<InternalReady />}
+                />
+                <Route
+                  path="/Orders/OrderList/InternalHandedOver"
+                  element={<InternalHandedOver />}
+                />
+              </Route>
+            </Route>
+          </Routes>
+        </OrderProvider>
+      </QuotationProvider>
     </BrowserRouter>
   );
 }

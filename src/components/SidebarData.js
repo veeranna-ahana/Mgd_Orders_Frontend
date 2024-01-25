@@ -153,147 +153,84 @@ export const ordersSidebar = [
     ],
   },
 
-  {
-    title: "Combined Schedules",
-    icon: <AiFillCreditCard />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
+  // {
+  //   title: "Combined Schedules",
+  //   icon: <AiFillCreditCard />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill />,
 
-    subNav: [
-      {
-        title: "Job Work",
-        icon: <VscTypeHierarchySub />,
-        subNav: [
-          {
-            title: "Create",
-            path: "/Orders/CombinedSchedules/JobWork/Create",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
+  //   subNav: [
+  //     {
+  //       title: "Job Work",
+  //       icon: <VscTypeHierarchySub />,
+  //       subNav: [
+  //         {
+  //           title: "Create",
+  //           path: "/Orders/CombinedSchedules/JobWork/Create",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
 
-          {
-            title: "Open",
-            path: "/Orders/CombinedSchedules/JobWork/Open",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
+  //         {
+  //           title: "Open",
+  //           path: "/Orders/CombinedSchedules/JobWork/Open",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
 
-          {
-            title: "SheduleList",
-            icon: <AiIcons.AiOutlineArrowRight />,
-            subNav: [
-              {
-                title: "Order",
-                path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Order",
-                icon: <AiIcons.AiOutlineArrowRight />,
-              },
+  //         {
+  //           title: "SheduleList",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //           subNav: [
+  //             {
+  //               title: "Order",
+  //               path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Order",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
 
-              {
-                title: "Closed",
-                path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Closed",
-                icon: <AiIcons.AiOutlineArrowRight />,
-              },
-            ],
-          },
-        ],
-      },
+  //             {
+  //               title: "Closed",
+  //               path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Closed",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
 
-      {
-        title: "Sales",
-        icon: <VscTypeHierarchySub />,
-        subNav: [
-          {
-            title: "Create",
-            path: "/Orders/CombinedSchedules/Sales/Create",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
+  //     {
+  //       title: "Sales",
+  //       icon: <VscTypeHierarchySub />,
+  //       subNav: [
+  //         {
+  //           title: "Create",
+  //           path: "/Orders/CombinedSchedules/Sales/Create",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
 
-          {
-            title: "Open",
-            path: "/Orders/CombinedSchedules/Sales/Open",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
-          {
-            title: "SheduleList",
-            icon: <AiIcons.AiOutlineArrowRight />,
-            subNav: [
-              {
-                title: "Order",
-                path: "/Orders/CombinedSchedules/Sales/ScheduleList/Order",
-                icon: <AiIcons.AiOutlineArrowRight />,
-              },
-              {
-                title: "Closed",
-                path: "/Orders/CombinedSchedules/Sales/ScheduleList/Closed",
-                icon: <AiIcons.AiOutlineArrowRight />,
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-
-  {
-    title: "Service",
-    icon: <MdHomeRepairService />,
-    iconClosed: <RiIcons.RiArrowDownSFill />,
-    iconOpened: <RiIcons.RiArrowUpSFill />,
-    subNav: [
-      {
-        title: "New Order",
-        path: "/Orders/Service/NewOrder",
-        icon: <BsServer />,
-      },
-
-      {
-        title: "Find Order",
-        path: "/Orders/Service/FindOrder",
-        icon: <BsServer />,
-      },
-
-      {
-        title: "Order List",
-        icon: <FiCpu />,
-        iconClosed: <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
-        subNav: [
-          {
-            title: "Created",
-            path: "/Orders/Service/OrderList/Created",
-          },
-
-          {
-            title: "Recorded",
-            path: "/Orders/Service/OrderList/Recorded",
-          },
-          {
-            title: "Completed",
-            path: "/Orders/Service/OrderList/Completed",
-          },
-          {
-            title: "Processing",
-            path: "/Orders/Service/OrderList/Processing",
-          },
-          {
-            title: "Produced",
-            path: "/Orders/Service/OrderList/Produced",
-          },
-          {
-            title: "Packed",
-            path: "/Orders/Service/OrderList/Packed",
-          },
-          {
-            title: "Dispatched",
-            path: "/Orders/Service/OrderList/Dispatched",
-          },
-
-          {
-            title: "All",
-            path: "/Orders/Service/OrderList/All",
-          },
-        ],
-      },
-    ],
-  },
+  //         {
+  //           title: "Open",
+  //           path: "/Orders/CombinedSchedules/Sales/Open",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
+  //         {
+  //           title: "SheduleList",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //           subNav: [
+  //             {
+  //               title: "Order",
+  //               path: "/Orders/CombinedSchedules/Sales/ScheduleList/Order",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+  //             {
+  //               title: "Closed",
+  //               path: "/Orders/CombinedSchedules/Sales/ScheduleList/Closed",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
 
   {
     title: "Fabrication",
@@ -352,6 +289,68 @@ export const ordersSidebar = [
           {
             title: "All",
             path: "/Orders/Fabrication/OrderList/All",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Service",
+    icon: <MdHomeRepairService />,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+    subNav: [
+      {
+        title: "New Order",
+        path: "/Orders/Service/NewOrder",
+        icon: <BsServer />,
+      },
+
+      {
+        title: "Find Order",
+        path: "/Orders/Service/FindOrder",
+        icon: <BsServer />,
+      },
+
+      {
+        title: "Order List",
+        icon: <FiCpu />,
+        iconClosed: <RiIcons.RiArrowDownSFill />,
+        iconOpened: <RiIcons.RiArrowUpSFill />,
+        subNav: [
+          {
+            title: "Created",
+            path: "/Orders/Service/OrderList/Created",
+          },
+
+          {
+            title: "Recorded",
+            path: "/Orders/Service/OrderList/Recorded",
+          },
+          {
+            title: "Completed",
+            path: "/Orders/Service/OrderList/Completed",
+          },
+          {
+            title: "Processing",
+            path: "/Orders/Service/OrderList/Processing",
+          },
+          {
+            title: "Produced",
+            path: "/Orders/Service/OrderList/Produced",
+          },
+          {
+            title: "Packed",
+            path: "/Orders/Service/OrderList/Packed",
+          },
+          {
+            title: "Dispatched",
+            path: "/Orders/Service/OrderList/Dispatched",
+          },
+
+          {
+            title: "All",
+            path: "/Orders/Service/OrderList/All",
           },
         ],
       },

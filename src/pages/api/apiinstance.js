@@ -11,6 +11,11 @@ export const getRequest = async (url, callback) => {
 };
 
 export const postRequest = async (url, body, callback) => {
+  let urls = url.split("/");
+  if (urls.includes("undefined")) {
+    alert("route not defined");
+    return;
+  }
   let response = await fetch(url, {
     method: "POST",
     headers: {
