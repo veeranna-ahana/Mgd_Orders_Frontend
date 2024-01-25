@@ -7,13 +7,15 @@ export function useOrderContext() {
 }
 
 export function OrderProvider({children}) {
-    const [order, setOrder] = useState();
+    const [orders, setOrder] = useState();
 
-    function setOrderState(order) {
-        setOrder(order);
+    function setOrderState(orders) {
+        console.log("setOrderState - Context");
+        console.log(orders);
+        setOrder(orders);
     }
     return (
-        <OrderContext.Provider value={{order, setOrderState}}>
+        <OrderContext.Provider value={{orders, setOrderState}}>
             {children}
         </OrderContext.Provider>
     );
