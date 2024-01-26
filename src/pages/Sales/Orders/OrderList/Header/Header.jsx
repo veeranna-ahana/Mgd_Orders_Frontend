@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import { Form, Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// import { apipoints } from "../../../api/OrderList/OrderList";
+
 import { Typeahead } from "react-bootstrap-typeahead";
 
 export default function Header(props) {
@@ -13,9 +13,6 @@ export default function Header(props) {
     },
   };
 
-  const checkRadioON = (e) => {
-    console.log("radio", e.target);
-  };
   return (
     <>
       <div className="row">
@@ -38,12 +35,7 @@ export default function Header(props) {
                     id="CustomerDropdown"
                     placeholder="Select the Customer..."
                     options={props.CustData}
-                    // onChange={props.handleCustomerChange}
-                    onChange={(e) => {
-                      props.setSelectedCust(e[0]);
-                      props.filterData();
-                    }}
-                    // defaultSelected={[{ label: "All" }]}
+                    onChange={props.handleCustomerChange}
                   />
                 </div>
               </div>
@@ -55,12 +47,7 @@ export default function Header(props) {
                     id="OrderStatusDropdown"
                     placeholder="Select Order Status..."
                     options={props.OrderStatus}
-                    // onChange={props.handleOrderStatusChange}
-                    onChange={(e) => {
-                      props.setSelectedOrderStatus(e[0]);
-                      props.filterData();
-                    }}
-                    // defaultSelected={[{ label: "All" }]}
+                    onChange={props.handleOrderStatusChange}
                   />
                 </div>
               </div>
@@ -72,9 +59,7 @@ export default function Header(props) {
                     {props.orderTypeButtons.map((val) => (
                       <div className="col-md-3">
                         <button
-                          // className="border rounded p-0 m-0"
                           className="button-style m-0 p-0 border rounded"
-                          // height: "auto", width: "100%" ,
                           style={
                             !(props.selectedOrderType === val)
                               ? {
@@ -87,11 +72,7 @@ export default function Header(props) {
                           }
                           id="OrderType"
                           name={val}
-                          onClick={(e) => {
-                            checkRadioON(e);
-                            props.setSelectedOrderType(e.target.name);
-                            props.filterData();
-                          }}
+                          onClick={props.handleOrderTypeChange}
                         >
                           {val}
                         </button>

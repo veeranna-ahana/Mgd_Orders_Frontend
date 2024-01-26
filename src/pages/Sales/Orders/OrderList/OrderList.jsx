@@ -10,8 +10,6 @@ import Header from "./Header/Header";
 import OLTable from "./OLTable/OLTable";
 
 export default function OrderList(props) {
-  // const [OrderListData, setOrderListData] = useState([]);
-
   const [OriginalOrderListData, setOriginalOrderListData] = useState([]);
   const [FilteredOrderListData, setFilteredOrderListData] = useState([]);
   const [CustData, setCustData] = useState([]);
@@ -27,9 +25,9 @@ export default function OrderList(props) {
     { label: "Ready" },
     { label: "Dispatched" },
     { label: "Closed" },
-    { label: "Canceled" },
+    { label: "Cancelled" },
   ]);
-  const orderTypeButtons = ["Completed", "Scheduled", "Open"];
+  const orderTypeButtons = ["Complete", "Scheduled", "Open"];
 
   const [selectedCust, setSelectedCust] = useState({});
   const [selectedOrderStatus, setSelectedOrderStatus] = useState({});
@@ -59,40 +57,120 @@ export default function OrderList(props) {
     fetchData();
   }, []);
 
-  // const handleCustomerChange = (e) => {
-  //   // console.log("eeeeeeeee", e[0]);
-  //   setSelectedCust(e[0]);
-  //   if (
-  //     e.length > 0 &&
-  //     (e[0].Cust_Code != undefined ||
-  //       e[0].Cust_Code != null ||
-  //       // e[0].Cust_Code != "All" ||
-  //       e[0].Cust_Code != "")
-  //   ) {
-  //     const arr = OriginalOrderListData?.filter(
-  //       (obj) => obj.Cust_Code === e[0]?.Cust_Code
-  //     );
-
-  //     setFilteredOrderListData(arr);
-  //   } else {
-  //     setFilteredOrderListData(OriginalOrderListData);
-  //   }
-  // };
-
-  // const handleOrderStatusChange = (e) => {
-  //   console.log("order status", e[0]);
-  //   setSelectedOrderStatus(e[0]);
-  // };
-
-  const filterData = () => {
-    console.log("filter data function");
+  const handleCustomerChange = (e) => {
+    setSelectedCust(e);
   };
-  // console.log("propssss", props);
-  // console.log("OriginalOrderListData", OriginalOrderListData);
 
-  console.log("selected cust", selectedCust);
-  console.log("selected status", selectedOrderStatus);
-  console.log("selected type", selectedOrderType);
+  const handleOrderStatusChange = (e) => {
+    setSelectedOrderStatus(e);
+  };
+  const handleOrderTypeChange = (e) => {
+    if (selectedOrderType === e.target.name) {
+      setSelectedOrderType("");
+    } else {
+      setSelectedOrderType(e.target.name);
+    }
+  };
+  useEffect(() => {
+    let filteredArr = OriginalOrderListData;
+
+    if (
+      selectedCust.length > 0 &&
+      (selectedCust[0].Cust_Code != undefined ||
+        selectedCust[0].Cust_Code != null ||
+        selectedCust[0].Cust_Code != "") &&
+      selectedOrderStatus.length > 0 &&
+      (selectedOrderStatus[0].label != undefined ||
+        selectedOrderStatus[0].label != null ||
+        selectedOrderStatus[0].label != "") &&
+      selectedOrderType.length > 0 &&
+      (selectedOrderType != undefined ||
+        selectedOrderType != null ||
+        selectedOrderType != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) =>
+          obj.Cust_Code === selectedCust[0].Cust_Code &&
+          obj.Order_Status === selectedOrderStatus[0].label &&
+          obj.Order_Type === selectedOrderType
+      );
+    } else if (
+      selectedCust.length > 0 &&
+      (selectedCust[0].Cust_Code != undefined ||
+        selectedCust[0].Cust_Code != null ||
+        selectedCust[0].Cust_Code != "") &&
+      selectedOrderStatus.length > 0 &&
+      (selectedOrderStatus[0].label != undefined ||
+        selectedOrderStatus[0].label != null ||
+        selectedOrderStatus[0].label != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) =>
+          obj.Cust_Code === selectedCust[0].Cust_Code &&
+          obj.Order_Status === selectedOrderStatus[0].label
+      );
+    } else if (
+      selectedOrderStatus.length > 0 &&
+      (selectedOrderStatus[0].label != undefined ||
+        selectedOrderStatus[0].label != null ||
+        selectedOrderStatus[0].label != "") &&
+      selectedOrderType.length > 0 &&
+      (selectedOrderType != undefined ||
+        selectedOrderType != null ||
+        selectedOrderType != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) =>
+          obj.Order_Status === selectedOrderStatus[0].label &&
+          obj.Order_Type === selectedOrderType
+      );
+    } else if (
+      selectedCust.length > 0 &&
+      (selectedCust[0].Cust_Code != undefined ||
+        selectedCust[0].Cust_Code != null ||
+        selectedCust[0].Cust_Code != "") &&
+      selectedOrderType.length > 0 &&
+      (selectedOrderType != undefined ||
+        selectedOrderType != null ||
+        selectedOrderType != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) =>
+          obj.Cust_Code === selectedCust[0].Cust_Code &&
+          obj.Order_Type === selectedOrderType
+      );
+    } else if (
+      selectedCust.length > 0 &&
+      (selectedCust[0].Cust_Code != undefined ||
+        selectedCust[0].Cust_Code != null ||
+        selectedCust[0].Cust_Code != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) => obj.Cust_Code === selectedCust[0].Cust_Code
+      );
+    } else if (
+      selectedOrderStatus.length > 0 &&
+      (selectedOrderStatus[0].label != undefined ||
+        selectedOrderStatus[0].label != null ||
+        selectedOrderStatus[0].label != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) => obj.Order_Status === selectedOrderStatus[0].label
+      );
+    } else if (
+      selectedOrderType.length > 0 &&
+      (selectedOrderType != undefined ||
+        selectedOrderType != null ||
+        selectedOrderType != "")
+    ) {
+      filteredArr = OriginalOrderListData.filter(
+        (obj) => obj.Order_Type === selectedOrderType
+      );
+    } else {
+    }
+    setFilteredOrderListData(filteredArr);
+  }, [selectedCust, selectedOrderStatus, selectedOrderType]);
+
   return (
     <>
       <div>
@@ -103,15 +181,12 @@ export default function OrderList(props) {
           <Header
             CustData={CustData}
             OrderStatus={OrderStatus}
-            setSelectedCust={setSelectedCust}
-            setSelectedOrderStatus={setSelectedOrderStatus}
-            setSelectedOrderType={setSelectedOrderType}
             selectedOrderType={selectedOrderType}
             orderTypeButtons={orderTypeButtons}
-            // func
-            // handleCustomerChange={handleCustomerChange}
-            // handleOrderStatusChange={handleOrderStatusChange}
-            filterData={filterData}
+            // funcs
+            handleCustomerChange={handleCustomerChange}
+            handleOrderStatusChange={handleOrderStatusChange}
+            handleOrderTypeChange={handleOrderTypeChange}
           />
           <div className="p-1"></div>
           <OLTable FilteredOrderListData={FilteredOrderListData} />
