@@ -32,8 +32,10 @@ export default function Header(props) {
                 <div>
                   <b>Customer</b>
                   <Typeahead
-                    id="CustomerDropdown"
                     placeholder="Select the Customer..."
+                    selected={
+                      props.selectedCust.length === 0 ? [] : props.selectedCust
+                    }
                     options={props.CustData}
                     onChange={props.handleCustomerChange}
                   />
@@ -44,8 +46,12 @@ export default function Header(props) {
                 <div>
                   <b>Order Status</b>
                   <Typeahead
-                    id="OrderStatusDropdown"
                     placeholder="Select Order Status..."
+                    selected={
+                      props.selectedOrderStatus.length === 0
+                        ? []
+                        : props.selectedOrderStatus
+                    }
                     options={props.OrderStatus}
                     onChange={props.handleOrderStatusChange}
                   />
@@ -83,7 +89,11 @@ export default function Header(props) {
               </div>
               {/* clear filter */}
               <div className="col-md-2">
-                <button className="button-style m-0" style={{ width: "100%" }}>
+                <button
+                  className="button-style m-0"
+                  style={{ width: "100%" }}
+                  onClick={props.handleClearFilter}
+                >
                   Clear Filter
                 </button>
               </div>

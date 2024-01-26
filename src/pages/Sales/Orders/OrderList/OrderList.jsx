@@ -29,8 +29,8 @@ export default function OrderList(props) {
   ]);
   const orderTypeButtons = ["Complete", "Scheduled", "Open"];
 
-  const [selectedCust, setSelectedCust] = useState({});
-  const [selectedOrderStatus, setSelectedOrderStatus] = useState({});
+  const [selectedCust, setSelectedCust] = useState([]);
+  const [selectedOrderStatus, setSelectedOrderStatus] = useState([]);
   const [selectedOrderType, setSelectedOrderType] = useState("");
 
   const fetchData = () => {
@@ -42,6 +42,7 @@ export default function OrderList(props) {
           type: props.type,
         }).then((res) => {
           // let arr = [{ label: "All", Cust_Code: "All" }];
+
           let arr = [];
           for (let i = 0; i < res.data.length; i++) {
             res.data[i].label = res.data[i].Cust_name;
@@ -64,6 +65,7 @@ export default function OrderList(props) {
   const handleOrderStatusChange = (e) => {
     setSelectedOrderStatus(e);
   };
+
   const handleOrderTypeChange = (e) => {
     if (selectedOrderType === e.target.name) {
       setSelectedOrderType("");
@@ -71,6 +73,13 @@ export default function OrderList(props) {
       setSelectedOrderType(e.target.name);
     }
   };
+
+  const handleClearFilter = () => {
+    setSelectedCust([]);
+    setSelectedOrderStatus([]);
+    setSelectedOrderType("");
+  };
+
   useEffect(() => {
     let filteredArr = OriginalOrderListData;
 
@@ -181,12 +190,14 @@ export default function OrderList(props) {
           <Header
             CustData={CustData}
             OrderStatus={OrderStatus}
-            selectedOrderType={selectedOrderType}
             orderTypeButtons={orderTypeButtons}
-            // funcs
+            selectedCust={selectedCust}
+            selectedOrderStatus={selectedOrderStatus}
+            selectedOrderType={selectedOrderType}
             handleCustomerChange={handleCustomerChange}
             handleOrderStatusChange={handleOrderStatusChange}
             handleOrderTypeChange={handleOrderTypeChange}
+            handleClearFilter={handleClearFilter}
           />
           <div className="p-1"></div>
           <OLTable FilteredOrderListData={FilteredOrderListData} />
