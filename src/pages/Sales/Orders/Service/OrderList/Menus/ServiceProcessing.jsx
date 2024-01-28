@@ -4,7 +4,7 @@ import OrderList from "../../../OrderList/OrderList";
 export default function ServiceProcessing() {
   return (
     <>
-      <OrderList type={"Service"} orderType={"Processing"} />
+      <OrderList type={"Service"} orderStatus={"Processing"} />
     </>
   );
 }

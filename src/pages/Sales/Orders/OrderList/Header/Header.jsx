@@ -52,6 +52,10 @@ export default function Header(props) {
                         ? []
                         : props.selectedOrderStatus
                     }
+                    disabled={props.orderStatus !== "All"}
+                    className={
+                      props.orderStatus !== "All" ? "input-disabled" : ""
+                    }
                     options={props.OrderStatus}
                     onChange={props.handleOrderStatusChange}
                   />

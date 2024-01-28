@@ -34,24 +34,30 @@ export default function OrderList(props) {
   const [selectedOrderType, setSelectedOrderType] = useState("");
 
   const fetchData = () => {
-    Axios.post(apipoints.getOrderListByType, { type: props.type }).then(
-      (res) => {
-        setOriginalOrderListData(res.data);
-        setFilteredOrderListData(res.data);
-        Axios.post(apipoints.getOrderListByTypeGroupedCustomer, {
-          type: props.type,
-        }).then((res) => {
-          // let arr = [{ label: "All", Cust_Code: "All" }];
+    Axios.post(apipoints.getOrderListByType, {
+      type: props.type,
+      Order_Status: props.orderStatus,
+    }).then((res) => {
+      setOriginalOrderListData(res.data);
+      setFilteredOrderListData(res.data);
+      Axios.post(apipoints.getOrderListByTypeGroupedCustomer, {
+        type: props.type,
+        Order_Status: props.orderStatus,
+      }).then((res) => {
+        // let arr = [{ label: "All", Cust_Code: "All" }];
 
-          let arr = [];
-          for (let i = 0; i < res.data.length; i++) {
-            res.data[i].label = res.data[i].Cust_name;
-            arr.push(res.data[i]);
-          }
-          setCustData(arr);
-        });
-      }
-    );
+        let arr = [];
+        for (let i = 0; i < res.data.length; i++) {
+          res.data[i].label = res.data[i].Cust_name;
+          arr.push(res.data[i]);
+        }
+        setCustData(arr);
+      });
+    });
+    if (props.orderStatus !== "All") {
+      const arr = OrderStatus.filter((obj) => obj.label === props.orderStatus);
+      setSelectedOrderStatus(arr);
+    }
   };
 
   useEffect(() => {
@@ -184,10 +190,13 @@ export default function OrderList(props) {
     <>
       <div>
         <div className="row">
-          <h4 className="title">Order List : Service - All</h4>
+          <h4 className="title">
+            Order List : {props.type} - {props.orderStatus}
+          </h4>
         </div>
         <div>
           <Header
+            orderStatus={props.orderStatus}
             CustData={CustData}
             OrderStatus={OrderStatus}
             orderTypeButtons={orderTypeButtons}
