@@ -23,14 +23,16 @@ import ScheduleCreationForm from "./pages/Sales/Orders/Profile/Find Order/Schedu
 import NewOrderSerial from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/NewOrderSerial";
 import FindScheduleForm from "./pages/Sales/Orders/Profile/FindSchedule/FindScheduleForm";
 import FindSchedule from "./pages/Sales/Orders/Profile/FindSchedule/FindSchedule";
-import Created from "./pages/Sales/Orders/Profile/OrderList/Created";
-import Recorded from "./pages/Sales/Orders/Profile/OrderList/Recorded";
-import Processing from "./pages/Sales/Orders/Profile/OrderList/Processing";
-import Completed from "./pages/Sales/Orders/Profile/OrderList/Completed";
-import Packed from "./pages/Sales/Orders/Profile/OrderList/Packed";
-import Dispatched from "./pages/Sales/Orders/Profile/OrderList/Dispatched";
-import All from "./pages/Sales/Orders/Profile/OrderList/All";
-import Produced from "./pages/Sales/Orders/Profile/OrderList/Produced";
+
+import ProfileCreated from "./pages/Sales/Orders/Profile/OrderList/ProfileCreated";
+import ProfileRecorded from "./pages/Sales/Orders/Profile/OrderList/ProfileRecorded";
+import ProfileProcessing from "./pages/Sales/Orders/Profile/OrderList/ProfileProcessing";
+import ProfileCompleted from "./pages/Sales/Orders/Profile/OrderList/ProfileCompleted";
+import ProfileProduced from "./pages/Sales/Orders/Profile/OrderList/ProfileProduced";
+import ProfilePacked from "./pages/Sales/Orders/Profile/OrderList/ProfilePacked";
+import ProfileDispatched from "./pages/Sales/Orders/Profile/OrderList/ProfileDispatched";
+import ProfileAll from "./pages/Sales/Orders/Profile/OrderList/ProfileAll";
+
 import ProfamaInvoiceForm from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
 import NCProgram from "./pages/Sales/Orders/Profile/FindSchedule/NCProgram";
 import EditDXF from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
@@ -136,14 +138,14 @@ function App() {
 
               <Route path="OrderList">
                 <Route index={true} />
-                <Route path="Created" element={<Created />} />
-                <Route path="Recorded" element={<Recorded />} />
-                <Route path="Processing" element={<Processing />} />
-                <Route path="Completed" element={<Completed />} />
-                <Route path="Produced" element={<Produced />} />
-                <Route path="Packed" element={<Packed />} />
-                <Route path="Dispatched" element={<Dispatched />} />
-                <Route path="All" element={<All />} />
+                <Route path="Created" element={<ProfileCreated />} />
+                <Route path="Recorded" element={<ProfileRecorded />} />
+                <Route path="Processing" element={<ProfileProcessing />} />
+                <Route path="Completed" element={<ProfileCompleted />} />
+                <Route path="Produced" element={<ProfileProduced />} />
+                <Route path="Packed" element={<ProfilePacked />} />
+                <Route path="Dispatched" element={<ProfileDispatched />} />
+                <Route path="All" element={<ProfileAll />} />
               </Route>
 
               <Route path="FixturesOrderList">
