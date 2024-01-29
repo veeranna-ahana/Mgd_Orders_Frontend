@@ -14,90 +14,90 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-toastify/dist/ReactToastify.css";
 
 // Profile
-import ProfileNewOrder from "./pages/Sales/Orders/Profile/NewOrder/ProfileNewOrder";
-import FindOrder from "./pages/Sales/Orders/Profile/Find Order/FindOrder";
-import ImportExcelForm from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/ImportExcelForm";
-import ImportQtn from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/ImportQtn";
-import ScheduleCreationForm from "./pages/Sales/Orders/ZComponents/ScheduleCreationForm";
-import NewOrderSerial from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/NewOrderSerial";
-import FindScheduleForm from "./pages/Sales/Orders/Profile/FindSchedule/FindScheduleForm";
-import FindSchedule from "./pages/Sales/Orders/Profile/FindSchedule/FindSchedule";
+import ProfileNewOrder from "./pages/Sales/Orders/Menus/Profile/NewOrder/ProfileNewOrder";
+import FindOrder from "./pages/Sales/Orders/Menus/Profile/Find Order/FindOrder";
+import ImportExcelForm from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/ImportExcelForm";
+import ImportQtn from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/ImportQtn";
+// import ScheduleCreationForm from "./pages/Sales/Orders/ZComponents/ScheduleCreationForm";
+import NewOrderSerial from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/NewOrderSerial";
+import FindScheduleForm from "./pages/Sales/Orders/Menus/Profile/FindSchedule/FindScheduleForm";
+import FindSchedule from "./pages/Sales/Orders/Menus/Profile/FindSchedule/FindSchedule";
 
-import ProfileCreated from "./pages/Sales/Orders/Profile/OrderList/ProfileCreated";
-import ProfileRecorded from "./pages/Sales/Orders/Profile/OrderList/ProfileRecorded";
-import ProfileProcessing from "./pages/Sales/Orders/Profile/OrderList/ProfileProcessing";
-import ProfileCompleted from "./pages/Sales/Orders/Profile/OrderList/ProfileCompleted";
-import ProfileProduced from "./pages/Sales/Orders/Profile/OrderList/ProfileProduced";
-import ProfilePacked from "./pages/Sales/Orders/Profile/OrderList/ProfilePacked";
-import ProfileDispatched from "./pages/Sales/Orders/Profile/OrderList/ProfileDispatched";
-import ProfileAll from "./pages/Sales/Orders/Profile/OrderList/ProfileAll";
+import ProfileCreated from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileCreated";
+import ProfileRecorded from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileRecorded";
+import ProfileProcessing from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileProcessing";
+import ProfileCompleted from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileCompleted";
+import ProfileProduced from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileProduced";
+import ProfilePacked from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfilePacked";
+import ProfileDispatched from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileDispatched";
+import ProfileAll from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileAll";
 
-import ProfamaInvoiceForm from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
-import NCProgram from "./pages/Sales/Orders/Profile/FindSchedule/NCProgram";
-import EditDXF from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
-import Ready from "./pages/Sales/Orders/Profile/FixturesOrderList/Ready";
-import HandedOver from "./pages/Sales/Orders/Profile/FixturesOrderList/HandedOver";
-import FixturesRecorded from "./pages/Sales/Orders/Profile/FixturesOrderList/FixturesRecorded";
-import FixturesProcessing from "./pages/Sales/Orders/Profile/FixturesOrderList/FixturesProcessing";
-import FixturesCompleted from "./pages/Sales/Orders/Profile/FixturesOrderList/FixturesCompleted";
-import InternalRecorded from "./pages/Sales/Orders/Profile/InternalOrderList/InternalRecorded";
-import InternalProcessing from "./pages/Sales/Orders/Profile/InternalOrderList/InternalProcessing";
-import InternalCompleted from "./pages/Sales/Orders/Profile/InternalOrderList/IntCompleted";
-import InternalReady from "./pages/Sales/Orders/Profile/InternalOrderList/InternalReady";
-import InternalHandedOver from "./pages/Sales/Orders/Profile/InternalOrderList/InternalHandedOver";
+import ProfamaInvoiceForm from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
+import NCProgram from "./pages/Sales/Orders/Menus/Profile/FindSchedule/NCProgram";
+import EditDXF from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
+import Ready from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/Ready";
+import HandedOver from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/HandedOver";
+import FixturesRecorded from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesRecorded";
+import FixturesProcessing from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesProcessing";
+import FixturesCompleted from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesCompleted";
+import InternalRecorded from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/InternalRecorded";
+import InternalProcessing from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/InternalProcessing";
+import InternalCompleted from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/IntCompleted";
+import InternalReady from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/InternalReady";
+import InternalHandedOver from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/InternalHandedOver";
 
 // Combined Schedule
-import Create from "./pages/Sales/Orders/Combined Schedules/Job Work/Create/Create";
-import CombinedScheduleList from "./pages/Sales/Orders/Combined Schedules/Job Work/ScheduleList/CombinedScheduleList";
-import CombinedScheduleDetailsForm from "./pages/Sales/Orders/Combined Schedules/Job Work/ScheduleList/CombinedScheduleDetailsForm";
-import Open from "./pages/Sales/Orders/Combined Schedules/Job Work/Open/Open";
+import Create from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/Create/Create";
+import CombinedScheduleList from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/ScheduleList/CombinedScheduleList";
+import CombinedScheduleDetailsForm from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/ScheduleList/CombinedScheduleDetailsForm";
+import Open from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/Open/Open";
 
-import SalesCreate from "./pages/Sales/Orders/Combined Schedules/Sales/Create/SalesCreate";
-import SalesOpen from "./pages/Sales/Orders/Combined Schedules/Sales/Open/SalesOpen";
-import SalesCombinedScheduleList from "./pages/Sales/Orders/Combined Schedules/Sales/ScheduleList/SalesCombinedScheduleList";
-import SalesCombinedScheduleDetailsForm from "./pages/Sales/Orders/Combined Schedules/Sales/ScheduleList/SalesCombinedScheduleDetailsForm";
+import SalesCreate from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/Create/SalesCreate";
+import SalesOpen from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/Open/SalesOpen";
+import SalesCombinedScheduleList from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/ScheduleList/SalesCombinedScheduleList";
+import SalesCombinedScheduleDetailsForm from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/ScheduleList/SalesCombinedScheduleDetailsForm";
 
 // Service
-import ServiceNewOrder from "./pages/Sales/Orders/Service/NewOrder/ServiceNewOrder";
-import ServiceFindOrder from "./pages/Sales/Orders/Service/FindOrder/ServiceFindOrder";
+import ServiceNewOrder from "./pages/Sales/Orders/Menus/Service/NewOrder/ServiceNewOrder";
+import ServiceFindOrder from "./pages/Sales/Orders/Menus/Service/FindOrder/ServiceFindOrder";
 
-import ServiceAll from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceAll";
-import ServiceCompleted from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceCompleted";
-import ServiceCreated from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceCreated";
-import ServiceDispatched from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceDispatched";
-import ServicePacked from "./pages/Sales/Orders/Service/OrderList/Menus/ServicePacked";
-import ServiceProcessing from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceProcessing";
-import ServiceProduced from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceProduced";
-import ServiceRecorded from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceRecorded";
+import ServiceAll from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceAll";
+import ServiceCompleted from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceCompleted";
+import ServiceCreated from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceCreated";
+import ServiceDispatched from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceDispatched";
+import ServicePacked from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServicePacked";
+import ServiceProcessing from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceProcessing";
+import ServiceProduced from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceProduced";
+import ServiceRecorded from "./pages/Sales/Orders/Menus/Service/OrderList/Menus/ServiceRecorded";
 
-import ServiceScheduleCreationForm from "./pages/Sales/Orders/Service/ScheduleCreationForm/ServiceScheduleCreationForm";
-import ServiceNewOrderSerial from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/DrawingOrderDetailsTabs/ServiceNewOrderSerial";
-import ServiceNCProgram from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceNCProgram";
-import ServiceOrderSchedule from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
-import ServiceImportQtn from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/Buttons/ServiceImportQtn";
-import ServiceEditDxf from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/Buttons/ServiceEditDxf";
+import ServiceScheduleCreationForm from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/ServiceScheduleCreationForm";
+import ServiceNewOrderSerial from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/DrawingOrderDetailsTabs/ServiceNewOrderSerial";
+import ServiceNCProgram from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceNCProgram";
+import ServiceOrderSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
+import ServiceImportQtn from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/Buttons/ServiceImportQtn";
+import ServiceEditDxf from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/Buttons/ServiceEditDxf";
 
 // Fabrication
-import FabNewOrder from "./pages/Sales/Orders/Fabrication/NewOrder/FabNewOrder";
-import FabFindOrder from "./pages/Sales/Orders/Fabrication/FindOrder/FabFindOrder";
-import FabCreated from "./pages/Sales/Orders/Fabrication/OrderList/FabCreated";
-import FabProcessing from "./pages/Sales/Orders/Fabrication/OrderList/FabProcessing";
-import FabCompleted from "./pages/Sales/Orders/Fabrication/OrderList/FabCompleted";
-import FabProduced from "./pages/Sales/Orders/Fabrication/OrderList/FabProduced";
-import FabPacked from "./pages/Sales/Orders/Fabrication/OrderList/FabPacked";
-import FabDispatched from "./pages/Sales/Orders/Fabrication/OrderList/FabDispatched";
-import FabAll from "./pages/Sales/Orders/Fabrication/OrderList/FabAll";
-import FabRecorded from "./pages/Sales/Orders/Fabrication/OrderList/FabRecorded";
-import FabScheduleCreationForm from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/FabScheduleCreationForm";
-import FabNewOrderSerial from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/DrawingOrderDetailsTabs/FabNewOrderSerial";
-import FabNCProgram from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/ScheduleList/FabNCProgram";
-import FabOrderSchedule from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/ScheduleList/FabOpenSchedule";
-import FabImportQtn from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/Buttons/FabImportQtn";
-import FabEditDxf from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/Buttons/FabEditDxf";
-import ProfileScheduleCreationForm from "./pages/Sales/Orders/Profile/ScheduleCreationForm/ProfileScheduleCreationForm";
+import FabNewOrder from "./pages/Sales/Orders/Menus/Fabrication/NewOrder/FabNewOrder";
+import FabFindOrder from "./pages/Sales/Orders/Menus/Fabrication/FindOrder/FabFindOrder";
+import FabCreated from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabCreated";
+import FabProcessing from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabProcessing";
+import FabCompleted from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabCompleted";
+import FabProduced from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabProduced";
+import FabPacked from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabPacked";
+import FabDispatched from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabDispatched";
+import FabAll from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabAll";
+import FabRecorded from "./pages/Sales/Orders/Menus/Fabrication/OrderList/FabRecorded";
+import FabScheduleCreationForm from "./pages/Sales/Orders/Menus/Fabrication/ScheduleCreationForm/FabScheduleCreationForm";
+import FabNewOrderSerial from "./pages/Sales/Orders/Menus/Fabrication/ScheduleCreationForm/BodyTabs/DrawingOrderDetailsTabs/FabNewOrderSerial";
+import FabNCProgram from "./pages/Sales/Orders/Menus/Fabrication/ScheduleCreationForm/BodyTabs/ScheduleList/FabNCProgram";
+import FabOrderSchedule from "./pages/Sales/Orders/Menus/Fabrication/ScheduleCreationForm/BodyTabs/ScheduleList/FabOpenSchedule";
+import FabImportQtn from "./pages/Sales/Orders/Menus/Fabrication/ScheduleCreationForm/BodyTabs/Buttons/FabImportQtn";
+import FabEditDxf from "./pages/Sales/Orders/Menus/Fabrication/ScheduleCreationForm/BodyTabs/Buttons/FabEditDxf";
+import ProfileScheduleCreationForm from "./pages/Sales/Orders/Menus/Profile/ScheduleCreationForm/ProfileScheduleCreationForm";
 import { QuotationProvider } from "./context/QuotationContext";
 import { OrderProvider } from "./context/OrderContext";
-import ServiceOpenSchedule from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
+import ServiceOpenSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
 function App() {
   return (
     <BrowserRouter>
