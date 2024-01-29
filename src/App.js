@@ -11,7 +11,6 @@ import MenuRoleMapping from "./pages/admin/menurolemapping";
 import SendMail from "./pages/sendmail/sendmails";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import InvoiceForm from "./pages/Sales/Packing&Invoicing/Menu/Inspection/InspectionPages/InvoiceForm";
 import "react-toastify/dist/ReactToastify.css";
 
 // Profile
@@ -19,7 +18,7 @@ import ProfileNewOrder from "./pages/Sales/Orders/Profile/NewOrder/ProfileNewOrd
 import FindOrder from "./pages/Sales/Orders/Profile/Find Order/FindOrder";
 import ImportExcelForm from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/ImportExcelForm";
 import ImportQtn from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/ImportQtn";
-import ScheduleCreationForm from "./pages/Sales/Orders/Profile/Find Order/ScheduleCreationForm";
+import ScheduleCreationForm from "./pages/Sales/Orders/ZComponents/ScheduleCreationForm";
 import NewOrderSerial from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/NewOrderSerial";
 import FindScheduleForm from "./pages/Sales/Orders/Profile/FindSchedule/FindScheduleForm";
 import FindSchedule from "./pages/Sales/Orders/Profile/FindSchedule/FindSchedule";
@@ -43,7 +42,7 @@ import FixturesProcessing from "./pages/Sales/Orders/Profile/FixturesOrderList/F
 import FixturesCompleted from "./pages/Sales/Orders/Profile/FixturesOrderList/FixturesCompleted";
 import InternalRecorded from "./pages/Sales/Orders/Profile/InternalOrderList/InternalRecorded";
 import InternalProcessing from "./pages/Sales/Orders/Profile/InternalOrderList/InternalProcessing";
-import InternalCompleted from "./pages/Sales/Orders/Profile/InternalOrderList/InternalCompleted";
+import InternalCompleted from "./pages/Sales/Orders/Profile/InternalOrderList/IntCompleted";
 import InternalReady from "./pages/Sales/Orders/Profile/InternalOrderList/InternalReady";
 import InternalHandedOver from "./pages/Sales/Orders/Profile/InternalOrderList/InternalHandedOver";
 
@@ -95,183 +94,220 @@ import FabNCProgram from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/
 import FabOrderSchedule from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/ScheduleList/FabOpenSchedule";
 import FabImportQtn from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/Buttons/FabImportQtn";
 import FabEditDxf from "./pages/Sales/Orders/Fabrication/ScheduleCreationForm/BodyTabs/Buttons/FabEditDxf";
-
+import ProfileScheduleCreationForm from "./pages/Sales/Orders/Profile/ScheduleCreationForm/ProfileScheduleCreationForm";
+import { QuotationProvider } from "./context/QuotationContext";
+import { OrderProvider } from "./context/OrderContext";
+import ServiceOpenSchedule from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
 function App() {
   return (
     <BrowserRouter>
-      <ToastContainer position="top-center" />
-      <Routes>
-        <Route element={<Login />} path="/" />
+      <QuotationProvider>
+        <OrderProvider>
+          <ToastContainer position="top-center" />
+          <Routes>
+            <Route element={<Login />} path="/" />
 
-        <Route path="/home" element={<Home />} />
-        <Route path="/salesHome" element={<HomeOne />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/salesHome" element={<HomeOne />} />
 
-        <Route element={<WithNav />}>
-          <Route path="/Orders" element={<Parentroute />}>
-            <Route index={true} />
-            <Route path="Profile">
-              <Route index={true} />
-              <Route path="NewOrder" element={<ProfileNewOrder />} />
-              <Route path="FindOrder" element={<FindOrder />} />
-              <Route
-                path="FindOrder/ScheduleCreationForm"
-                element={<ScheduleCreationForm />}
-              />
-              <Route
-                path="FindOrder/ImportExcelForm"
-                element={<ImportExcelForm />}
-              />
-              <Route path="FindOrder/ImportQtn" element={<ImportQtn />} />
-              <Route path="FindOrder/EditDXF" element={<EditDXF />} />
-              <Route
-                path="FindOrder/NewOrderSerial"
-                element={<NewOrderSerial />}
-              />
-              <Route
-                path="FindOrder/ProfamaInvoiceForm"
-                element={<ProfamaInvoiceForm />}
-              />
-
-              <Route path="FindScheduleForm" element={<FindScheduleForm />} />
-              <Route path="FindSchedule" element={<FindSchedule />} />
-              <Route path="FindSchedule/NCProgram" element={<NCProgram />} />
-
-              <Route path="OrderList">
+            <Route element={<WithNav />}>
+              <Route path="/Orders" element={<Parentroute />}>
                 <Route index={true} />
-                <Route path="Created" element={<ProfileCreated />} />
-                <Route path="Recorded" element={<ProfileRecorded />} />
-                <Route path="Processing" element={<ProfileProcessing />} />
-                <Route path="Completed" element={<ProfileCompleted />} />
-                <Route path="Produced" element={<ProfileProduced />} />
-                <Route path="Packed" element={<ProfilePacked />} />
-                <Route path="Dispatched" element={<ProfileDispatched />} />
-                <Route path="All" element={<ProfileAll />} />
-              </Route>
-
-              <Route path="FixturesOrderList">
-                <Route index={true} />
-                <Route path="Recorded" element={<FixturesRecorded />} />
-                <Route path="Processing" element={<FixturesProcessing />} />
-                <Route path="Completed" element={<FixturesCompleted />} />
-                <Route path="Ready" element={<Ready />} />
-                <Route path="HandedOver" element={<HandedOver />} />
-              </Route>
-
-              <Route path="InternalOrderList">
-                <Route index={true} />
-                <Route path="Recorded" element={<InternalRecorded />} />
-                <Route path="Processing" element={<InternalProcessing />} />
-                <Route path="Completed" element={<InternalCompleted />} />
-                <Route path="Ready" element={<InternalReady />} />
-                <Route path="HandedOver" element={<InternalHandedOver />} />
-              </Route>
-            </Route>
-
-            <Route path="Service">
-              <Route path="NewOrder" element={<ServiceNewOrder />} />
-              <Route
-                path="ScheduleCreationForm"
-                element={<ServiceScheduleCreationForm />}
-              />
-
-              <Route path="FindOrder" element={<ServiceFindOrder />} />
-              <Route path="OrderList">
-                <Route path="All" element={<ServiceAll />} />
-                <Route path="Completed" element={<ServiceCompleted />} />
-                <Route path="Created" element={<ServiceCreated />} />
-                <Route path="Dispatched" element={<ServiceDispatched />} />
-                <Route path="Packed" element={<ServicePacked />} />
-                <Route path="Processing" element={<ServiceProcessing />} />
-                <Route path="Produced" element={<ServiceProduced />} />
-                <Route path="Recorded" element={<ServiceRecorded />} />
-              </Route>
-              <Route
-                path="NewOrderSerial"
-                element={<ServiceNewOrderSerial />}
-              />
-              <Route path="NCProgram" element={<ServiceNCProgram />} />
-              <Route path="OrderSchedule" element={<ServiceOrderSchedule />} />
-              <Route path="ImportQtn" element={<ServiceImportQtn />} />
-              <Route path="EditDxf" element={<ServiceEditDxf />} />
-            </Route>
-
-            <Route path="Fabrication">
-              <Route path="NewOrder" element={<FabNewOrder />} />
-              <Route
-                path="ScheduleCreationForm"
-                element={<FabScheduleCreationForm />}
-              />
-
-              <Route path="FindOrder" element={<FabFindOrder />} />
-
-              <Route path="OrderList/Created" element={<FabCreated />} />
-              <Route path="OrderList/Processing" element={<FabProcessing />} />
-              <Route path="OrderList/Completed" element={<FabCompleted />} />
-              <Route path="OrderList/Produced" element={<FabProduced />} />
-              <Route path="OrderList/Packed" element={<FabPacked />} />
-              <Route path="OrderList/Dispatched" element={<FabDispatched />} />
-              <Route path="OrderList/All" element={<FabAll />} />
-              <Route path="OrderList/Recorded" element={<FabRecorded />} />
-              <Route path="NewOrderSerial" element={<FabNewOrderSerial />} />
-              <Route path="NCProgram" element={<FabNCProgram />} />
-              <Route path="OrderSchedule" element={<FabOrderSchedule />} />
-              <Route path="ImportQtn" element={<FabImportQtn />} />
-              <Route path="EditDxf" element={<FabEditDxf />} />
-            </Route>
-
-            <Route path="CombinedSchedules">
-              {/* Jobwork route */}
-              <Route path="JobWork">
-                <Route path="Create" element={<Create />} />
-                <Route path="Open" element={<Open />} />
-                <Route path="ScheduleList">
+                <Route path="Profile">
+                  <Route index={true} />
+                  <Route path="NewOrder" element={<ProfileNewOrder />} />
+                  <Route path="FindOrder" element={<FindOrder />} />
                   <Route
-                    path="Order"
-                    element={<CombinedScheduleList />}
-                  ></Route>
-                  <Route
-                    path="ScheduleDetails"
-                    element={<CombinedScheduleDetailsForm />}
+                    path="ScheduleCreationForm"
+                    element={<ProfileScheduleCreationForm />}
                   />
                   <Route
-                    path="Closed"
-                    element={<CombinedScheduleList />}
-                  ></Route>
-                  <Route
-                    path="ScheduleDetails"
-                    element={<CombinedScheduleDetailsForm />}
+                    path="FindOrder/ImportExcelForm"
+                    element={<ImportExcelForm />}
                   />
+                  <Route path="FindOrder/ImportQtn" element={<ImportQtn />} />
+                  <Route path="FindOrder/EditDXF" element={<EditDXF />} />
+                  <Route
+                    path="FindOrder/NewOrderSerial"
+                    element={<NewOrderSerial />}
+                  />
+                  <Route
+                    path="FindOrder/ProfamaInvoiceForm"
+                    element={<ProfamaInvoiceForm />}
+                  />
+
+                  <Route
+                    path="FindScheduleForm"
+                    element={<FindScheduleForm />}
+                  />
+                  <Route path="FindSchedule" element={<FindSchedule />} />
+                  <Route
+                    path="FindSchedule/NCProgram"
+                    element={<NCProgram />}
+                  />
+
+                  <Route path="OrderList">
+                    <Route index={true} />
+                    <Route path="Created" element={<ProfileCreated />} />
+                    <Route path="Recorded" element={<ProfileRecorded />} />
+                    <Route path="Processing" element={<ProfileProcessing />} />
+                    <Route path="Completed" element={<ProfileCompleted />} />
+                    <Route path="Produced" element={<ProfileProduced />} />
+                    <Route path="Packed" element={<ProfilePacked />} />
+                    <Route path="Dispatched" element={<ProfileDispatched />} />
+                    <Route path="All" element={<ProfileAll />} />
+                  </Route>
+
+                  <Route path="FixturesOrderList">
+                    <Route index={true} />
+                    <Route path="Recorded" element={<FixturesRecorded />} />
+                    <Route path="Processing" element={<FixturesProcessing />} />
+                    <Route path="Completed" element={<FixturesCompleted />} />
+                    <Route path="Ready" element={<Ready />} />
+                    <Route path="HandedOver" element={<HandedOver />} />
+                  </Route>
+
+                  <Route path="InternalOrderList">
+                    <Route index={true} />
+                    <Route path="Recorded" element={<InternalRecorded />} />
+                    <Route path="Processing" element={<InternalProcessing />} />
+                    <Route path="Completed" element={<InternalCompleted />} />
+                    <Route path="Ready" element={<InternalReady />} />
+                    <Route path="HandedOver" element={<InternalHandedOver />} />
+                  </Route>
+                </Route>
+
+                <Route path="Service">
+                  <Route path="NewOrder" element={<ServiceNewOrder />} />
+                  <Route
+                    path="ScheduleCreationForm"
+                    element={<ServiceScheduleCreationForm />}
+                  />
+
+                  <Route path="FindOrder" element={<ServiceFindOrder />} />
+                  <Route
+                    path="ProfamaInvoiceForm"
+                    element={<ProfamaInvoiceForm />}
+                  />
+                  <Route
+                    path="ServiceOpenSchedule"
+                    element={<ServiceOpenSchedule />}
+                  />
+
+                  <Route path="OrderList">
+                    <Route path="All" element={<ServiceAll />} />
+                    <Route path="Completed" element={<ServiceCompleted />} />
+                    <Route path="Created" element={<ServiceCreated />} />
+                    <Route path="Dispatched" element={<ServiceDispatched />} />
+                    <Route path="Packed" element={<ServicePacked />} />
+                    <Route path="Processing" element={<ServiceProcessing />} />
+                    <Route path="Produced" element={<ServiceProduced />} />
+                    <Route path="Recorded" element={<ServiceRecorded />} />
+                  </Route>
+                  <Route
+                    path="NewOrderSerial"
+                    element={<ServiceNewOrderSerial />}
+                  />
+                  <Route path="NCProgram" element={<ServiceNCProgram />} />
+                  <Route
+                    path="OrderSchedule"
+                    element={<ServiceOrderSchedule />}
+                  />
+                  <Route path="ImportQtn" element={<ServiceImportQtn />} />
+                  <Route path="EditDxf" element={<ServiceEditDxf />} />
+                </Route>
+
+                <Route path="Fabrication">
+                  <Route path="NewOrder" element={<FabNewOrder />} />
+                  <Route
+                    path="ScheduleCreationForm"
+                    element={<FabScheduleCreationForm />}
+                  />
+
+                  <Route path="FindOrder" element={<FabFindOrder />} />
+
+                  <Route path="OrderList/Created" element={<FabCreated />} />
+                  <Route
+                    path="OrderList/Processing"
+                    element={<FabProcessing />}
+                  />
+                  <Route
+                    path="OrderList/Completed"
+                    element={<FabCompleted />}
+                  />
+                  <Route path="OrderList/Produced" element={<FabProduced />} />
+                  <Route path="OrderList/Packed" element={<FabPacked />} />
+                  <Route
+                    path="OrderList/Dispatched"
+                    element={<FabDispatched />}
+                  />
+                  <Route path="OrderList/All" element={<FabAll />} />
+                  <Route path="OrderList/Recorded" element={<FabRecorded />} />
+                  <Route
+                    path="NewOrderSerial"
+                    element={<FabNewOrderSerial />}
+                  />
+                  <Route path="NCProgram" element={<FabNCProgram />} />
+                  <Route path="OrderSchedule" element={<FabOrderSchedule />} />
+                  <Route path="ImportQtn" element={<FabImportQtn />} />
+                  <Route path="EditDxf" element={<FabEditDxf />} />
+                </Route>
+
+                <Route path="CombinedSchedules">
+                  {/* Jobwork route */}
+                  <Route path="JobWork">
+                    <Route path="Create" element={<Create />} />
+                    <Route path="Open" element={<Open />} />
+                    <Route path="ScheduleList">
+                      <Route
+                        path="Order"
+                        element={<CombinedScheduleList />}
+                      ></Route>
+                      <Route
+                        path="ScheduleDetails"
+                        element={<CombinedScheduleDetailsForm />}
+                      />
+                      <Route
+                        path="Closed"
+                        element={<CombinedScheduleList />}
+                      ></Route>
+                      <Route
+                        path="ScheduleDetails"
+                        element={<CombinedScheduleDetailsForm />}
+                      />
+                    </Route>
+                  </Route>
+
+                  {/* Sales route */}
+                  <Route path="Sales">
+                    <Route path="Create" element={<SalesCreate />} />
+                    <Route path="Open" element={<SalesOpen />} />
+                    <Route path="ScheduleList">
+                      <Route
+                        path="Order"
+                        element={<SalesCombinedScheduleList />}
+                      ></Route>
+                      <Route
+                        path="ScheduleDetails"
+                        element={<SalesCombinedScheduleDetailsForm />}
+                      />
+
+                      <Route
+                        path="Closed"
+                        element={<SalesCombinedScheduleList />}
+                      ></Route>
+                      <Route
+                        path="ScheduleDetails"
+                        element={<SalesCombinedScheduleDetailsForm />}
+                      />
+                    </Route>
+                  </Route>
                 </Route>
               </Route>
-
-              {/* Sales route */}
-              <Route path="Sales">
-                <Route path="Create" element={<SalesCreate />} />
-                <Route path="Open" element={<SalesOpen />} />
-                <Route path="ScheduleList">
-                  <Route
-                    path="Order"
-                    element={<SalesCombinedScheduleList />}
-                  ></Route>
-                  <Route
-                    path="ScheduleDetails"
-                    element={<SalesCombinedScheduleDetailsForm />}
-                  />
-
-                  <Route
-                    path="Closed"
-                    element={<SalesCombinedScheduleList />}
-                  ></Route>
-                  <Route
-                    path="ScheduleDetails"
-                    element={<SalesCombinedScheduleDetailsForm />}
-                  />
-                </Route>
-              </Route>
             </Route>
-          </Route>
-        </Route>
-      </Routes>
+          </Routes>
+        </OrderProvider>
+      </QuotationProvider>
     </BrowserRouter>
   );
 }

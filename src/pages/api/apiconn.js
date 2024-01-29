@@ -4,7 +4,7 @@
 // let API = "http://172.16.20.39:3001";
 //let API = "http://20.204.144.125:3001";
 
-// let API = process.env.REACT_APP_API_KEY;
+let API = process.env.REACT_APP_API_KEY;
 
 export default {
   loginAPI: async (username, password, response) => {

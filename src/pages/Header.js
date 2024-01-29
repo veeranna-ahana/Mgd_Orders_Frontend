@@ -39,7 +39,7 @@ function Header({ user }) {
         <div style={{ marginRight: "30px" }}>
           {getUser() !== undefined ? (
             <>
-              <>{console.log(getUser())}</>
+              {/* <>{console.log(getUser())}</> */}
               <>
                 {getUser()[0]["Name"]} - {getUser()[0]["UnitName"]} |{" "}
               </>

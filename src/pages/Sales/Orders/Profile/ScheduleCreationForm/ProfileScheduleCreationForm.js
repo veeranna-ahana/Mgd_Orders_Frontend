@@ -123,13 +123,13 @@
 import React, { useState } from "react";
 import ScheduleCreationForm from "../../ZComponents/ScheduleCreationForm";
 
-function ServiceScheduleCreationForm(props) {
-  const [ServiceType, setServiceType] = useState("Service");
+function ProfileScheduleCreationForm() {
+  const [ProfileType, setProfileType] = useState("Profile");
   return (
     <div>
-      <ScheduleCreationForm Type={ServiceType} />
+      <ScheduleCreationForm Type={ProfileType} />
     </div>
   );
 }
 
-export default ServiceScheduleCreationForm;
+export default ProfileScheduleCreationForm;
