@@ -151,7 +151,7 @@
 // }
 
 import React, { useState } from "react";
-import InternalCompleted from "../../../ZComponents/InternalCompleted";
+import InternalCompleted from "../../../Components/InternalCompleted";
 function IntCompleted(props) {
   const [ProfileType, setProfileType] = useState("Profile");
   return (

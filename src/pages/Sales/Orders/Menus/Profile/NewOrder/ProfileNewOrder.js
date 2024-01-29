@@ -359,7 +359,7 @@
 // export default ProfileNewOrder;
 
 import React, { useState } from "react";
-import NewOrder from "../../../ZComponents/NewOrder";
+import NewOrder from "../../../Components/NewOrder";
 
 function ProfileNewOrder() {
   const [ProfileType, setProfileType] = useState("Profile");

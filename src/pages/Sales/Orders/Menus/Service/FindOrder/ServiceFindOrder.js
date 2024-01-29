@@ -36,8 +36,8 @@
 // export default ServiceFindOrder;
 
 import React, { useState } from "react";
-import NewOrder from "../../../ZComponents/NewOrder";
-import FindOrder from "../../../ZComponents/Find Order/FindOrder";
+import NewOrder from "../../../Components/NewOrder";
+import FindOrder from "../../../Components/Find Order/FindOrder";
 
 function ServiceFindOrder() {
   const [ServiceType, setServiceType] = useState("Service");

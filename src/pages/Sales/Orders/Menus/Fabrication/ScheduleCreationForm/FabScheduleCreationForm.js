@@ -122,7 +122,7 @@
 // export default FabScheduleCreationForm;
 
 import React, { useState } from "react";
-import ScheduleCreationForm from "../../../ZComponents/ScheduleCreationForm/ScheduleCreationForm";
+import ScheduleCreationForm from "../../../Components/ScheduleCreationForm/ScheduleCreationForm";
 function FabScheduleCreationForm() {
   const [FabType, setFabType] = useState("Fabrication");
   return (

@@ -355,7 +355,7 @@
 // export default FabNewOrder;
 
 import React, { useState } from "react";
-import NewOrder from "../../../ZComponents/NewOrder";
+import NewOrder from "../../../Components/NewOrder";
 
 function FabNewOrder() {
   const [FabType, setFabType] = useState("Fabrication");

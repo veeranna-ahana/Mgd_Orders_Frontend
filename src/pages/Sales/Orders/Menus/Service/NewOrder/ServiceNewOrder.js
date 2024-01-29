@@ -350,7 +350,7 @@
 // export default ServiceNewOrder;
 
 import React, { useState } from "react";
-import NewOrder from "../../../ZComponents/NewOrder";
+import NewOrder from "../../../Components/NewOrder";
 
 function FabNewOrder() {
   const [ServiceType, setServiceType] = useState("Service");

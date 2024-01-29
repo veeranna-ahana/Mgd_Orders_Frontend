@@ -121,7 +121,7 @@
 // export default ServiceScheduleCreationForm;
 
 import React, { useState } from "react";
-import ScheduleCreationForm from "../../../ZComponents/ScheduleCreationForm/ScheduleCreationForm";
+import ScheduleCreationForm from "../../../Components/ScheduleCreationForm/ScheduleCreationForm";
 
 function ProfileScheduleCreationForm() {
   const [ProfileType, setProfileType] = useState("Profile");
