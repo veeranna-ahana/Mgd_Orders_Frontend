@@ -22,14 +22,16 @@ import ScheduleCreationForm from "./pages/Sales/Orders/ZComponents/ScheduleCreat
 import NewOrderSerial from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/NewOrderSerial";
 import FindScheduleForm from "./pages/Sales/Orders/Profile/FindSchedule/FindScheduleForm";
 import FindSchedule from "./pages/Sales/Orders/Profile/FindSchedule/FindSchedule";
-import Created from "./pages/Sales/Orders/Profile/OrderList/Created";
-import Recorded from "./pages/Sales/Orders/Profile/OrderList/Recorded";
-import Processing from "./pages/Sales/Orders/Profile/OrderList/Processing";
-import Completed from "./pages/Sales/Orders/Profile/OrderList/Completed";
-import Packed from "./pages/Sales/Orders/Profile/OrderList/Packed";
-import Dispatched from "./pages/Sales/Orders/Profile/OrderList/Dispatched";
-import All from "./pages/Sales/Orders/Profile/OrderList/All";
-import Produced from "./pages/Sales/Orders/Profile/OrderList/Produced";
+
+import ProfileCreated from "./pages/Sales/Orders/Profile/OrderList/ProfileCreated";
+import ProfileRecorded from "./pages/Sales/Orders/Profile/OrderList/ProfileRecorded";
+import ProfileProcessing from "./pages/Sales/Orders/Profile/OrderList/ProfileProcessing";
+import ProfileCompleted from "./pages/Sales/Orders/Profile/OrderList/ProfileCompleted";
+import ProfileProduced from "./pages/Sales/Orders/Profile/OrderList/ProfileProduced";
+import ProfilePacked from "./pages/Sales/Orders/Profile/OrderList/ProfilePacked";
+import ProfileDispatched from "./pages/Sales/Orders/Profile/OrderList/ProfileDispatched";
+import ProfileAll from "./pages/Sales/Orders/Profile/OrderList/ProfileAll";
+
 import ProfamaInvoiceForm from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
 import NCProgram from "./pages/Sales/Orders/Profile/FindSchedule/NCProgram";
 import EditDXF from "./pages/Sales/Orders/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
@@ -58,15 +60,16 @@ import SalesCombinedScheduleDetailsForm from "./pages/Sales/Orders/Combined Sche
 // Service
 import ServiceNewOrder from "./pages/Sales/Orders/Service/NewOrder/ServiceNewOrder";
 import ServiceFindOrder from "./pages/Sales/Orders/Service/FindOrder/ServiceFindOrder";
-import SeviceCreated from "./pages/Sales/Orders/Service/OrderList/ServiceCreated";
-import ServiceProcessing from "./pages/Sales/Orders/Service/OrderList/ServiceProcessing";
-import ServiceCompleted from "./pages/Sales/Orders/Service/OrderList/ServiceCompleted";
-import ServiceProduced from "./pages/Sales/Orders/Service/OrderList/ServiceProduced";
-import ServicePacked from "./pages/Sales/Orders/Service/OrderList/ServicePacked";
-import ServiceDispatched from "./pages/Sales/Orders/Service/OrderList/ServiceDispatched";
-import ServiceAll from "./pages/Sales/Orders/Service/OrderList/ServiceAll";
-import ServiceRecorded from "./pages/Sales/Orders/Service/OrderList/ServiceRecorded";
-import ServiceCreated from "./pages/Sales/Orders/Service/OrderList/ServiceCreated";
+
+import ServiceAll from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceAll";
+import ServiceCompleted from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceCompleted";
+import ServiceCreated from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceCreated";
+import ServiceDispatched from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceDispatched";
+import ServicePacked from "./pages/Sales/Orders/Service/OrderList/Menus/ServicePacked";
+import ServiceProcessing from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceProcessing";
+import ServiceProduced from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceProduced";
+import ServiceRecorded from "./pages/Sales/Orders/Service/OrderList/Menus/ServiceRecorded";
+
 import ServiceScheduleCreationForm from "./pages/Sales/Orders/Service/ScheduleCreationForm/ServiceScheduleCreationForm";
 import ServiceNewOrderSerial from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/DrawingOrderDetailsTabs/ServiceNewOrderSerial";
 import ServiceNCProgram from "./pages/Sales/Orders/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceNCProgram";
@@ -145,14 +148,14 @@ function App() {
 
                   <Route path="OrderList">
                     <Route index={true} />
-                    <Route path="Created" element={<Created />} />
-                    <Route path="Recorded" element={<Recorded />} />
-                    <Route path="Processing" element={<Processing />} />
-                    <Route path="Completed" element={<Completed />} />
-                    <Route path="Produced" element={<Produced />} />
-                    <Route path="Packed" element={<Packed />} />
-                    <Route path="Dispatched" element={<Dispatched />} />
-                    <Route path="All" element={<All />} />
+                    <Route path="Created" element={<ProfileCreated />} />
+                    <Route path="Recorded" element={<ProfileRecorded />} />
+                    <Route path="Processing" element={<ProfileProcessing />} />
+                    <Route path="Completed" element={<ProfileCompleted />} />
+                    <Route path="Produced" element={<ProfileProduced />} />
+                    <Route path="Packed" element={<ProfilePacked />} />
+                    <Route path="Dispatched" element={<ProfileDispatched />} />
+                    <Route path="All" element={<ProfileAll />} />
                   </Route>
 
                   <Route path="FixturesOrderList">
@@ -191,32 +194,16 @@ function App() {
                     element={<ServiceOpenSchedule />}
                   />
 
-                  <Route
-                    path="OrderList/Created"
-                    element={<ServiceCreated />}
-                  />
-                  <Route
-                    path="OrderList/Processing"
-                    element={<ServiceProcessing />}
-                  />
-                  <Route
-                    path="OrderList/Completed"
-                    element={<ServiceCompleted />}
-                  />
-                  <Route
-                    path="OrderList/Produced"
-                    element={<ServiceProduced />}
-                  />
-                  <Route path="OrderList/Packed" element={<ServicePacked />} />
-                  <Route
-                    path="OrderList/Dispatched"
-                    element={<ServiceDispatched />}
-                  />
-                  <Route path="OrderList/All" element={<ServiceAll />} />
-                  <Route
-                    path="OrderList/Recorded"
-                    element={<ServiceRecorded />}
-                  />
+                  <Route path="OrderList">
+                    <Route path="All" element={<ServiceAll />} />
+                    <Route path="Completed" element={<ServiceCompleted />} />
+                    <Route path="Created" element={<ServiceCreated />} />
+                    <Route path="Dispatched" element={<ServiceDispatched />} />
+                    <Route path="Packed" element={<ServicePacked />} />
+                    <Route path="Processing" element={<ServiceProcessing />} />
+                    <Route path="Produced" element={<ServiceProduced />} />
+                    <Route path="Recorded" element={<ServiceRecorded />} />
+                  </Route>
                   <Route
                     path="NewOrderSerial"
                     element={<ServiceNewOrderSerial />}

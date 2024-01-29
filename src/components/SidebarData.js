@@ -57,34 +57,42 @@ export const ordersSidebar = [
         subNav: [
           {
             title: "Created",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Created",
           },
           {
             title: "Recorded",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Recorded",
           },
           {
             title: "Processing",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Processing",
           },
           {
             title: "Completed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Completed",
           },
           {
             title: "Produced",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Produced",
           },
           {
             title: "Packed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Packed",
           },
           {
             title: "Dispatched",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/Dispatched",
           },
           {
             title: "All",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/OrderList/All",
           },
         ],
@@ -97,22 +105,27 @@ export const ordersSidebar = [
         subNav: [
           {
             title: "Recorded",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/FixturesOrderList/Recorded",
           },
           {
             title: "Processing",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/FixturesOrderList/Processing",
           },
           {
             title: "Completed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/FixturesOrderList/Completed",
           },
           {
             title: "Ready",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/FixturesOrderList/Ready",
           },
           {
             title: "Handed Over",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Profile/FixturesOrderList/HandedOver",
           },
         ],
@@ -258,36 +271,44 @@ export const ordersSidebar = [
         subNav: [
           {
             title: "Created",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Created",
           },
 
           {
             title: "Recorded",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Recorded",
           },
           {
             title: "Processing",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Processing",
           },
           {
             title: "Completed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Completed",
           },
           {
             title: "Produced",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Produced",
           },
           {
             title: "Packed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Packed",
           },
           {
             title: "Dispatched",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/Dispatched",
           },
 
           {
             title: "All",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Fabrication/OrderList/All",
           },
         ],
@@ -320,36 +341,44 @@ export const ordersSidebar = [
         subNav: [
           {
             title: "Created",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Created",
           },
 
           {
             title: "Recorded",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Recorded",
           },
           {
             title: "Completed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Completed",
           },
           {
             title: "Processing",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Processing",
           },
           {
             title: "Produced",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Produced",
           },
           {
             title: "Packed",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Packed",
           },
           {
             title: "Dispatched",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/Dispatched",
           },
 
           {
             title: "All",
+            icon: <AiIcons.AiOutlineArrowRight />,
             path: "/Orders/Service/OrderList/All",
           },
         ],

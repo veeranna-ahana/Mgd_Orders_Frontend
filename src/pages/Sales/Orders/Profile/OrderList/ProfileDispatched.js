@@ -1,10 +1,10 @@
 import React from "react";
 import OrderList from "../../OrderList/OrderList";
 
-export default function FabPacked() {
+export default function ProfileDispatched() {
   return (
     <>
-      <OrderList type={"Fabrication"} orderStatus={"Packed"} />
+      <OrderList type={"Profile"} orderStatus={"Dispatched"} />
     </>
   );
 }
