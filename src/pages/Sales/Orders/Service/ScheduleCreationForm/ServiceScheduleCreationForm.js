@@ -121,7 +121,7 @@
 // export default ServiceScheduleCreationForm;
 
 import React, { useState } from "react";
-import ScheduleCreationForm from "../../ZComponents/ScheduleCreationForm";
+import ScheduleCreationForm from "../../ZComponents/ScheduleCreationForm/ScheduleCreationForm";
 
 function ServiceScheduleCreationForm(props) {
   const [ServiceType, setServiceType] = useState("Service");
