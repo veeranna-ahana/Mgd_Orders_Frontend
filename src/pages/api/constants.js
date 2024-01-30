@@ -23,6 +23,8 @@ export const endpoints = {
   saveCreateOrder: `${API}/order/savecreateorder`,
   getOrderStatusList: `${API}/order/getorderstatuslist`,
   getOrderListData: `${API}/order/getorderlistdata`,
+  getOrderDetailsByOrdrNoAndType: `${API}/order/getOrderDetailsByOrdrNoAndType`,
+
   //-----------------------------------------
   getOrderDataforFindOrder: `${API}/order/getOrderDataforFindOrder`,
 

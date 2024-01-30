@@ -10,7 +10,7 @@ const { getRequest, postRequest } = require("../../../api/apiinstance");
 const { endpoints } = require("../../../api/constants");
 
 function NewOrder(props) {
-  console.log("props", props.Type);
+  //console.log("props", props.Type);
   // const [searchParams] = useSearchParams();
 
   let navigate = useNavigate();
@@ -79,8 +79,8 @@ function NewOrder(props) {
   }, []);
 
   let selectQtns = (selectedqtnno) => {
-    console.log(selectedqtnno);
-    console.log(selectedqtnno[0].QtnNo);
+    //console.log(selectedqtnno);
+    //console.log(selectedqtnno[0].QtnNo);
     setQuotationNo(selectedqtnno[0].QtnNo);
     setFormQuotationNo(selectedqtnno[0].QtnNo);
     if (selectedqtnno.length == 0 || selectedqtnno[0].QtnID == undefined)
@@ -135,13 +135,13 @@ function NewOrder(props) {
 
   async function SaveOrder(e) {
     e.preventDefault();
-    console.log("entering into save order");
-    let ordertype = e.target.elements.formOrderType.value;
-    //Console.log(ordertype);
+    //console.log("entering into save order");
+    let ordertype = props.Type;
+    //console.log("ordertype", ordertype);
     let purchaseorder = e.target.elements.formPurchaseOrderNo.value;
 
     let qtnno = formquotationNo;
-    console.log("qtnno", qtnno);
+    //console.log("qtnno", qtnno);
     let deldate = e.target.elements.formDeliveryDate.value;
     //Console.log(deldate);
     let deliverydate = deldate;
@@ -172,12 +172,12 @@ function NewOrder(props) {
     let BillingState = e.target.elements.formBillingState.value;
     // let MagodDelivery = e.target.elements.formMagodDelivery.value;
     let MagodDelivery = formMagodDelivery;
-    console.log("MagodDelivery", MagodDelivery);
+    //console.log("MagodDelivery", MagodDelivery);
     let shippingAddress = e.target.elements.formShippingAddress.value;
     let GSTTaxState = e.target.elements.formGSTTaxState.value;
     let Transportcharges = e.target.elements.formTransportCharges.value;
 
-    console.log("qtnno", qtnno);
+    //console.log("qtnno", qtnno);
     //Console.log("Entering API Call");
     await postRequest(
       endpoints.saveCreateOrder,
@@ -244,11 +244,17 @@ function NewOrder(props) {
 
         if (Ordno != null) {
           if (props.Type === "Profile") {
-            navigate("/Orders/Profile/ScheduleCreationForm");
+            navigate("/Orders/Profile/ScheduleCreationForm", {
+              state: Ordno,
+            });
           } else if (props.Type === "Fabrication") {
-            navigate("/Orders/Fabrication/ScheduleCreationForm");
+            navigate("/Orders/Fabrication/ScheduleCreationForm", {
+              state: Ordno,
+            });
           } else if (props.Type === "Service") {
-            navigate("/Orders/Service/ScheduleCreationForm");
+            navigate("/Orders/Service/ScheduleCreationForm", {
+              state: Ordno,
+            });
           }
         } else {
           toast.error(
@@ -263,7 +269,7 @@ function NewOrder(props) {
 
   const POInputChange = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    //console.log(e.target.value);
     setPurchaseorder(e.target.value);
   };
   const handleCheckboxChange = () => {
@@ -273,11 +279,11 @@ function NewOrder(props) {
     setFormMagodDelivery(newCheckedValue);
 
     // Log the updated value to the console
-    console.log("Checkbox is now:", newCheckedValue);
+    //console.log("Checkbox is now:", newCheckedValue);
   };
   // const TransportChargesInpChnage = (e) => {
   //   e.preventDefault();
-  //   console.log(e.target.value);
+  ////console.log(e.target.value);
   //   setFormTransportCharges(true);
   // };
 
