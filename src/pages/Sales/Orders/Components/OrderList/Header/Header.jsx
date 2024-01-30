@@ -123,11 +123,16 @@ export default function Header(props) {
               <div className="col-md-12">
                 <Link
                   to={`/Orders/${props.type}/ScheduleCreationForm`}
-                  // state={selectedorderNo}
+                  state={props.selectedOrderRow.Order_No}
                 >
                   <button
-                    className="button-style m-0"
                     style={{ width: "100%" }}
+                    disabled={!props.selectedOrderRow.Order_No}
+                    className={
+                      !props.selectedOrderRow.Order_No
+                        ? "button-disabled button-style m-0"
+                        : "button-style m-0"
+                    }
                   >
                     Open Order
                   </button>
