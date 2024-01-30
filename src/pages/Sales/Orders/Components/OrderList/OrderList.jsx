@@ -82,8 +82,11 @@ export default function OrderList(props) {
 
   const handleClearFilter = () => {
     setSelectedCust([]);
-    setSelectedOrderStatus([]);
     setSelectedOrderType("");
+
+    if (props.orderStatus === "All") {
+      setSelectedOrderStatus([]);
+    }
   };
 
   useEffect(() => {
@@ -196,6 +199,7 @@ export default function OrderList(props) {
         </div>
         <div>
           <Header
+            type={props.type}
             orderStatus={props.orderStatus}
             CustData={CustData}
             OrderStatus={OrderStatus}
