@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
-export default function FormHeader() {
+export default function FormHeader(props) {
   return (
     <>
       <div className="col-md-12">
@@ -10,13 +10,11 @@ export default function FormHeader() {
       </div>
       <h5 className="mt-1">
         <b>
-          Order No: type - no
-          {/* Order No: {props.Type} - {orders?.orderno} */}
+          Order No: {props.OrderData.Type} - {props.OrderData.Order_No}
         </b>
         <> </>
         <b>
-          cust name - code
-          {/* {customername} - ({custCode}) */}
+          {props.OrderCustData.Cust_name} - ({props.OrderCustData.Cust_Code})
         </b>
       </h5>
       <div className="row">
