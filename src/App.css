@@ -529,3 +529,7 @@ input::-webkit-inner-spin-button {
   background-color: transparent;
   border: none;
 }
+
+.rowSelectedClass {
+  background-color: #98a8f8 !important;
+}

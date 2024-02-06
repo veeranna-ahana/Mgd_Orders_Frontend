@@ -35,8 +35,8 @@ import ProfileAll from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileAll"
 import ProfamaInvoiceForm from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
 import NCProgram from "./pages/Sales/Orders/Menus/Profile/FindSchedule/NCProgram";
 import EditDXF from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
-import Ready from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/Ready";
-import HandedOver from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/HandedOver";
+import FixturesReady from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesReady";
+import FixturesHandedOver from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesHandedOver";
 import FixturesRecorded from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesRecorded";
 import FixturesProcessing from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesProcessing";
 import FixturesCompleted from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesCompleted";
@@ -163,8 +163,8 @@ function App() {
                     <Route path="Recorded" element={<FixturesRecorded />} />
                     <Route path="Processing" element={<FixturesProcessing />} />
                     <Route path="Completed" element={<FixturesCompleted />} />
-                    <Route path="Ready" element={<Ready />} />
-                    <Route path="HandedOver" element={<HandedOver />} />
+                    <Route path="Ready" element={<FixturesReady />} />
+                    <Route path="HandedOver" element={<FixturesHandedOver />} />
                   </Route>
 
                   <Route path="InternalOrderList">
