@@ -7,7 +7,7 @@ export default function InternalRecorded() {
       <OrderList
         type={"Profile"}
         orderStatus={"Recorded"}
-        orderRef={"Profile"}
+        Order_Ref={"Profile"}
       />
     </>
   );

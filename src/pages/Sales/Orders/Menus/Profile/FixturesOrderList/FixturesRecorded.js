@@ -7,7 +7,7 @@ export default function FixturesRecorded() {
       <OrderList
         type={"Profile"}
         orderStatus={"Recorded"}
-        orderRef={"Fixture"}
+        Order_Ref={"Fixture"}
       />
     </>
   );

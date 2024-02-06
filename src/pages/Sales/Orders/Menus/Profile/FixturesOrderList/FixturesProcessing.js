@@ -7,7 +7,7 @@ export default function FixturesProcessing() {
       <OrderList
         type={"Profile"}
         orderStatus={"Processing"}
-        orderRef={"Fixture"}
+        Order_Ref={"Fixture"}
       />
     </>
   );

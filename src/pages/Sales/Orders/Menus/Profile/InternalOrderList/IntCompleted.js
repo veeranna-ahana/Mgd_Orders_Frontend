@@ -7,7 +7,7 @@ export default function IntCompleted() {
       <OrderList
         type={"Profile"}
         orderStatus={"Completed"}
-        orderRef={"Profile"}
+        Order_Ref={"Profile"}
       />
     </>
   );

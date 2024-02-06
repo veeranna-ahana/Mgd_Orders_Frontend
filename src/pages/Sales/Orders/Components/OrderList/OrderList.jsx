@@ -39,14 +39,14 @@ export default function OrderList(props) {
     Axios.post(apipoints.getOrderListByType, {
       type: props.type,
       Order_Status: props.orderStatus,
-      orderRef: props.orderRef,
+      Order_Ref: props.Order_Ref,
     }).then((res) => {
       setOriginalOrderListData(res.data);
       setFilteredOrderListData(res.data);
       Axios.post(apipoints.getOrderListByTypeGroupedCustomer, {
         type: props.type,
         Order_Status: props.orderStatus,
-        orderRef: props.orderRef,
+        Order_Ref: props.Order_Ref,
       }).then((res) => {
         // let arr = [{ label: "All", Cust_Code: "All" }];
 
@@ -208,7 +208,7 @@ export default function OrderList(props) {
       <div>
         <div className="row">
           <h4 className="title m-0">
-            {props.orderRef} Order List : {props.type} - {props.orderStatus}
+            {props.Order_Ref} Order List : {props.type} - {props.orderStatus}
           </h4>
         </div>
         <div>

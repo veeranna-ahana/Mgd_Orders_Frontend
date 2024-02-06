@@ -7,7 +7,7 @@ export default function InternalProcessing() {
       <OrderList
         type={"Profile"}
         orderStatus={"Processing"}
-        orderRef={"Profile"}
+        Order_Ref={"Profile"}
       />
     </>
   );

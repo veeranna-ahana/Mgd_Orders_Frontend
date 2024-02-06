@@ -7,7 +7,7 @@ export default function FixturesHandedOver() {
       <OrderList
         type={"Profile"}
         orderStatus={"HandedOver"}
-        orderRef={"Fixture"}
+        Order_Ref={"Fixture"}
       />
     </>
   );
