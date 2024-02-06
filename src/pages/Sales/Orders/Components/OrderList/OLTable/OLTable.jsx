@@ -24,7 +24,16 @@ export default function OLTable(props) {
           <tbody className="tablebody">
             {props.FilteredOrderListData.map((val, key) => (
               <>
-                <tr>
+                <tr
+                  onClick={() => {
+                    props.handleOrderRowSelection(val);
+                  }}
+                  className={
+                    val.Order_No === props.selectedOrderRow?.Order_No
+                      ? "rowSelectedClass"
+                      : ""
+                  }
+                >
                   <td>{key + 1}</td>
                   <td>{val.Order_Status}</td>
                   <td>{val.Order_No}</td>
