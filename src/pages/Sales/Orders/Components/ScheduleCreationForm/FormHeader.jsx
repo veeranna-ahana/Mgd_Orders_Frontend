@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function FormHeader(props) {
+  //console.log("props.OrderData.Type", props.OrderData?.Type);
   return (
     <>
       <div className="col-md-12">
@@ -10,11 +11,11 @@ export default function FormHeader(props) {
       </div>
       <h5 className="mt-1">
         <b>
-          Order No: {props.OrderData.Type} - {props.OrderData.Order_No}
+          Order No: {props.OrderData?.Type} - {props.OrderData?.Order_No}
         </b>
         <> </>
         <b>
-          {props.OrderCustData.Cust_name} - ({props.OrderCustData.Cust_Code})
+          {props.OrderCustData?.Cust_name} - ({props.OrderCustData?.Cust_Code})
         </b>
       </h5>
       <div className="row">

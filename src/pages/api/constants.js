@@ -27,6 +27,8 @@ export const endpoints = {
 
   //-----------------------------------------
   getOrderDataforFindOrder: `${API}/order/getOrderDataforFindOrder`,
+  PostNewSrlData: `${API}/order/postnewsrldata`,
+  InsertNewSrlData: `${API}/order/insertnewsrldata`,
 
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,
