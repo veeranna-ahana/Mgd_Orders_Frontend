@@ -33,6 +33,7 @@ export const endpoints = {
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
   getProfarmaDetails: `${API}/profarmaInvList/getProfarmaDetails`,
+  postCreateInvoice: `${API}/profarmaInvList/postCreateInvoice`,
 
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,

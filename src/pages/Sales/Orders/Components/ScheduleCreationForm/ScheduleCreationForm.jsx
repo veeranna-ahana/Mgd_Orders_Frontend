@@ -142,9 +142,11 @@ export default function ScheduleCreationForm(props) {
             <Tab eventKey="profarmaInvoiceList" title="Profarma Invoice List">
               <ProfarmaInvoiceList
                 OrderData={OrderData}
+                OrderCustData={OrderCustData}
                 selectedItems={selectedItems}
                 profarmaInvMain={profarmaInvMain}
                 profarmaInvDetails={profarmaInvDetails}
+                fetchData={fetchData}
               />
             </Tab>
             {props.Type === "Profile" ? (
