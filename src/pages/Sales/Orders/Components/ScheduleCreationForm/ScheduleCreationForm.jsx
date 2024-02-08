@@ -139,7 +139,7 @@ export default function ScheduleCreationForm(props) {
             <Tab eventKey="scheduleList" title="Schedule List">
               <ScheduleList OrderData={OrderData} />
             </Tab>
-            <Tab eventKey="profarmaInvoiceList" title="Profarma Invoice List">
+            <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">
               <ProfarmaInvoiceList
                 OrderData={OrderData}
                 OrderCustData={OrderCustData}
