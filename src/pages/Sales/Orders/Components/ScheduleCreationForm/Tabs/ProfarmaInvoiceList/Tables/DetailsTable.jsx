@@ -12,9 +12,9 @@ export default function DetailsTable(props) {
             <th>Material Code</th>
             <th>Quantity</th>
             <th>Unit Rate</th>
-            <th>Profarma Detail Id</th>
-            <th>Profarma Id</th>
-            <th>Profarma Srl</th>
+            <th>Proforma Detail Id</th>
+            <th>Proforma Id</th>
+            <th>Proforma Srl</th>
             <th>Dwg_No</th>
             <th>Mtrl</th>
             <th>Qty</th>
