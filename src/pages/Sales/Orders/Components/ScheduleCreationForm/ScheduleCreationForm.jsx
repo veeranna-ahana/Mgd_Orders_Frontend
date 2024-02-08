@@ -29,6 +29,9 @@ export default function ScheduleCreationForm(props) {
   const [OrderCustData, setOrderCustData] = useState({});
   const [OrdrDetailsData, setOrdrDetailsData] = useState([]);
 
+  const [profarmaInvMain, setProfarmaInvMain] = useState([]);
+  const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
+
   // console.log("order no", orderNo);
   // console.log("OrderCustData.Cust_Code", OrderCustData.Cust_Code);
 
@@ -52,9 +55,31 @@ export default function ScheduleCreationForm(props) {
         setOrdrDetailsData(ordrdtlsdata);
       }
     );
+    postRequest(
+      endpoints.getProfarmaMain,
+      { OrderNo: orderNo },
+      (profarmaMainData) => {
+        // console.log("profarmaMainData", profarmaMainData);
+
+        setProfarmaInvMain(profarmaMainData);
+        // console.log("ordrdtlsdata", ordrdtlsdata);
+        // setOrdrDetailsData(ordrdtlsdata);
+      }
+    );
+    postRequest(
+      endpoints.getProfarmaDetails,
+      { OrderNo: orderNo },
+      (profarmaDetailsData) => {
+        // console.log("profarmaDetailsData", profarmaDetailsData);
+
+        setProfarmaInvDetails(profarmaDetailsData);
+        // console.log("ordrdtlsdata", ordrdtlsdata);
+        // setOrdrDetailsData(ordrdtlsdata);
+      }
+    );
   };
 
-  console.log("OrdrDetailsData", OrdrDetailsData);
+  // console.log("OrdrDetailsData", OrdrDetailsData);
 
   useEffect(() => {
     fetchData();
@@ -115,7 +140,12 @@ export default function ScheduleCreationForm(props) {
               <ScheduleList OrderData={OrderData} />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Profarma Invoice List">
-              <ProfarmaInvoiceList OrderData={OrderData} />
+              <ProfarmaInvoiceList
+                OrderData={OrderData}
+                selectedItems={selectedItems}
+                profarmaInvMain={profarmaInvMain}
+                profarmaInvDetails={profarmaInvDetails}
+              />
             </Tab>
             {props.Type === "Profile" ? (
               <Tab eventKey="materialPlanner" title="Material Planner">
