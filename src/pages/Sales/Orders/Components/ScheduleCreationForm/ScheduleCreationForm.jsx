@@ -32,6 +32,8 @@ export default function ScheduleCreationForm(props) {
   const [profarmaInvMain, setProfarmaInvMain] = useState([]);
   const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
 
+  const [selectedItems, setSelectedItems] = useState([]);
+
   // console.log("order no", orderNo);
   // console.log("OrderCustData.Cust_Code", OrderCustData.Cust_Code);
 
@@ -77,6 +79,8 @@ export default function ScheduleCreationForm(props) {
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
+
+    setSelectedItems([]);
   };
 
   // console.log("OrdrDetailsData", OrdrDetailsData);
@@ -84,8 +88,6 @@ export default function ScheduleCreationForm(props) {
   useEffect(() => {
     fetchData();
   }, []);
-
-  const [selectedItems, setSelectedItems] = useState([]);
 
   const selectItem = (OrdrDetailsItem) => {
     const isSelected = selectedItems.includes(OrdrDetailsItem);
