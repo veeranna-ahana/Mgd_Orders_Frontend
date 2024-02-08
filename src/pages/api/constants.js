@@ -30,6 +30,12 @@ export const endpoints = {
   PostNewSrlData: `${API}/order/postnewsrldata`,
   InsertNewSrlData: `${API}/order/insertnewsrldata`,
 
+  // profarma inv list...............
+  getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
+  getProfarmaDetails: `${API}/profarmaInvList/getProfarmaDetails`,
+  postCreateInvoice: `${API}/profarmaInvList/postCreateInvoice`,
+  postDeleteInvoice: `${API}/profarmaInvList/postDeleteInvoice`,
+
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,
   getCustomerDets: `${API}/customers/getcustomer`,
