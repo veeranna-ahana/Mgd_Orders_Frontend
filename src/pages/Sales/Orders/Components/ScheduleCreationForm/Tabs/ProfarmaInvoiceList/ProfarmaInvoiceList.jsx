@@ -121,6 +121,7 @@ export default function ProfarmaInvoiceList(props) {
     }
   }
 
+  // console.log("selectedProfarmaMainRow", selectedProfarmaMainRow.ProfarmaID);
   return (
     <>
       <div>
@@ -150,7 +151,10 @@ export default function ProfarmaInvoiceList(props) {
             </button>
           </div>
           <div className="col-md-2">
-            <Link to={"/Orders/Service/ProfamaInvoiceForm"}>
+            <Link
+              to={`/Orders/${props.OrderData.Type}/ProfarmaInvoiceForm`}
+              state={selectedProfarmaMainRow.ProfarmaID}
+            >
               <button className="button-style m-0">Open Invoice</button>
             </Link>
           </div>
