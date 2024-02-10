@@ -16,6 +16,7 @@ export default function ProfarmaInvoiceForm(props) {
   const [profarmaMainData, setProfarmaMainData] = useState({});
   const [profarmaDetailsData, setProfarmaDetailsData] = useState([]);
   const [profarmaTaxData, setProfarmaTaxData] = useState([]);
+
   const [taxDropdownData, setTaxDropdownData] = useState([]);
 
   const fetchData = () => {
@@ -31,6 +32,7 @@ export default function ProfarmaInvoiceForm(props) {
         // console.log("qwqwqwqw", profarmaMainData);
       }
     );
+
     postRequest(
       endpoints.getProfarmaFormDetails,
       { ProfarmaID: ProfarmaID },
@@ -39,6 +41,7 @@ export default function ProfarmaInvoiceForm(props) {
         // console.log("qwqwqwqw", profarmaMainData);
       }
     );
+
     postRequest(
       endpoints.getProfarmaFormTaxes,
       { ProfarmaID: ProfarmaID },
@@ -53,9 +56,9 @@ export default function ProfarmaInvoiceForm(props) {
     fetchData();
   }, []);
 
-  console.log("profarmaMainData", profarmaMainData);
-  console.log("profarmaDetailsData", profarmaDetailsData);
-  console.log("profarmaTaxData", profarmaTaxData);
+  // console.log("profarmaMainData", profarmaMainData);
+  // console.log("profarmaDetailsData", profarmaDetailsData);
+  // console.log("profarmaTaxData", profarmaTaxData);
 
   return (
     <>
@@ -239,6 +242,67 @@ export default function ProfarmaInvoiceForm(props) {
               id="taxDropdown"
               style={{ fontSize: "inherit", width: "100%" }}
               className="ip-select mt-1"
+              onChange={(e) => {
+                const taxOn = taxDropdownData[e.target.value].TaxOn?.split(
+                  "("
+                )[0]
+                  .split(")")[0]
+                  .split("+");
+
+                let applicableTaxes = [];
+                let arr = [];
+
+                // console.log("taxOn", taxOn);
+                for (let i = 0; i < taxOn.length; i++) {
+                  const element = parseInt(taxOn[i]);
+                  if (element === 1) {
+                    // console.log("111", taxDropdownData[e.target.value]);
+                    applicableTaxes.push(taxDropdownData[e.target.value]);
+                  } else {
+                    // console.log("else", taxDropdownData);
+
+                    taxDropdownData
+                      .filter((obj) => parseInt(obj.TaxID) === element)
+                      .map((val, key) => applicableTaxes.push(val));
+                  }
+                }
+
+                // console.log("applicableTaxes", applicableTaxes);
+
+                for (let i = 0; i < applicableTaxes.length; i++) {
+                  const element = applicableTaxes[i];
+
+                  let taxableAmount = parseFloat(
+                    profarmaMainData?.AssessableValue || 0
+                  ).toFixed(2);
+
+                  let taxAmount = parseFloat(
+                    taxableAmount * parseFloat(element.Tax_Percent)
+                  ).toFixed(2);
+
+                  const taxTableRow = {
+                    ProfarmaID: profarmaMainData.ProfarmaID,
+                    TaxID: element.TaxID,
+                    Tax_Name: element.TaxName,
+                    TaxOn: element.TaxOn,
+                    TaxableAmount: taxableAmount,
+                    TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
+                    TaxAmt: taxAmount,
+                  };
+
+                  arr.push(taxTableRow);
+
+                  // console.log("taxTableRow", taxTableRow);
+                  // console.log("taxprofarma", profarmaTaxData);
+                  // if (profarmaTaxData.length > 0) {
+                  //   setProfarmaTaxData([...profarmaTaxData, taxTableRow]);
+                  // } else {
+                  //   setProfarmaTaxData([taxTableRow]);
+                  // }
+                }
+
+                setProfarmaTaxData(arr);
+              }}
             >
               <option value="none" selected disabled hidden>
                 Select an Option

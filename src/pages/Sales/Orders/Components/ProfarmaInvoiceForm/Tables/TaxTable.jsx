@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Table } from "react-bootstrap";
 
 export default function TaxTable(props) {
+  // console.log("props in tax table", props);
   return (
     <>
       <Table striped className="table-data border" style={{ border: "1px" }}>
@@ -17,10 +18,10 @@ export default function TaxTable(props) {
           {props.profarmaTaxData?.map((val, key) => (
             <>
               <tr>
-                <th>{val.Tax_Name}</th>
-                <th>{val.TaxableAmount}</th>
-                <th>{val.TaxPercent}</th>
-                <th>{val.TaxAmt}</th>
+                <td>{val.Tax_Name}</td>
+                <td>{val.TaxableAmount}</td>
+                <td>{val.TaxPercent}</td>
+                <td>{val.TaxAmt}</td>
               </tr>
             </>
           ))}
