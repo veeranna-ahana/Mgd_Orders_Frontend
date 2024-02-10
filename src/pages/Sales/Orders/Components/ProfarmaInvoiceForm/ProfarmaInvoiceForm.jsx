@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { Button, Table } from "react-bootstrap";
 import { endpoints } from "../../../../api/constants";
-import { postRequest } from "../../../../api/apiinstance";
+import { getRequest, postRequest } from "../../../../api/apiinstance";
 import ProductTable from "./Tables/ProductTable";
 import TaxTable from "./Tables/TaxTable";
 
@@ -16,8 +16,13 @@ export default function ProfarmaInvoiceForm(props) {
   const [profarmaMainData, setProfarmaMainData] = useState({});
   const [profarmaDetailsData, setProfarmaDetailsData] = useState([]);
   const [profarmaTaxData, setProfarmaTaxData] = useState([]);
+  const [taxDropdownData, setTaxDropdownData] = useState([]);
 
   const fetchData = () => {
+    getRequest(endpoints.getTaxData, (taxData) => {
+      setTaxDropdownData(taxData);
+    });
+
     postRequest(
       endpoints.getProfarmaFormMain,
       { ProfarmaID: ProfarmaID },
@@ -230,10 +235,17 @@ export default function ProfarmaInvoiceForm(props) {
           </div>
           <div>
             <label className="form-label m-0">Select Taxes</label>
-            <select name="" id="" style={{ width: "100%" }}>
-              <option value="">option</option>
-              <option value="">option</option>
-              <option value="">option</option>
+            <select
+              id="taxDropdown"
+              style={{ fontSize: "inherit", width: "100%" }}
+              className="ip-select mt-1"
+            >
+              <option value="none" selected disabled hidden>
+                Select an Option
+              </option>
+              {taxDropdownData?.map((taxVal, key) => (
+                <option value={key}>{taxVal.TaxName}</option>
+              ))}
             </select>
           </div>
           <div>
