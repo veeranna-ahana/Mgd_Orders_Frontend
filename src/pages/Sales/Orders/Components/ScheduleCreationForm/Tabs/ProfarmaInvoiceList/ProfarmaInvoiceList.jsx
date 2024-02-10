@@ -29,13 +29,14 @@ export default function ProfarmaInvoiceList(props) {
     }
   };
 
-  // console.log("invtype", props.selectedItems);
+  // console.log("selectedItems", props.selectedItems);
 
   const createInvoice = () => {
     // console.log("createInvoice");
 
     if (props.selectedItems.length > 0) {
       let InvType = "Sales";
+      let netTotal = 0;
 
       // const arr = props.selectedItems?.filter((obj)=>(
       //   obj.Mtrl_Source === 'Magod'
@@ -48,8 +49,15 @@ export default function ProfarmaInvoiceList(props) {
         } else {
           InvType = "Job Work";
         }
+
+        netTotal = (
+          parseFloat(netTotal) +
+          parseFloat(element.Qty_Ordered) *
+            (parseFloat(element.JWCost) + parseFloat(element.MtrlCost || 0))
+        ).toFixed(2);
       }
 
+      // console.log("netTotal", netTotal);
       // console.log("InvType", InvType);
 
       const profarmaMainData = {
@@ -67,6 +75,10 @@ export default function ProfarmaInvoiceList(props) {
         GSTNo: props.OrderCustData.GSTNo || "Unregistered",
         PO_No: props.OrderData.Purchase_Order || "",
         PO_Date: props.OrderData.Order_Date || "",
+        Net_Total: netTotal || 0,
+        AssessableValue: netTotal || 0,
+        InvTotal: netTotal || 0,
+        GrandTotal: netTotal || 0,
         Status: "Draft",
       };
 
