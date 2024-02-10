@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { Button, Table } from "react-bootstrap";
+import { toast } from "react-toastify";
+
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import ProductTable from "./Tables/ProductTable";
@@ -59,6 +61,32 @@ export default function ProfarmaInvoiceForm(props) {
   // console.log("profarmaMainData", profarmaMainData);
   // console.log("profarmaDetailsData", profarmaDetailsData);
   // console.log("profarmaTaxData", profarmaTaxData);
+
+  function saveInvoiceFunc() {
+    // console.log("saveInvoiceFunc clicked");
+
+    postRequest(
+      endpoints.postSaveInvoice,
+      {
+        profarmaMainData: profarmaMainData,
+        profarmaDetailsData: profarmaDetailsData,
+        profarmaTaxData: profarmaTaxData,
+      },
+      (saveInvoiceResp) => {
+        // console.log("saveInvoiceResp", saveInvoiceResp);
+
+        if (saveInvoiceResp) {
+          if (saveInvoiceResp.flag) {
+            toast.success(saveInvoiceResp.message);
+          } else {
+            toast.error("uncaught backend error");
+          }
+        } else {
+          toast.warning("uncaught frontend error");
+        }
+      }
+    );
+  }
 
   return (
     <>
@@ -222,7 +250,9 @@ export default function ProfarmaInvoiceForm(props) {
       </div>
       <div className="row">
         <div className="col-md-6 d-flex justify-content-between align-items-center">
-          <button className="button-style m-0">Save Invoice</button>
+          <button className="button-style m-0" onClick={saveInvoiceFunc}>
+            Save Invoice
+          </button>
           <button className="button-style m-0">Create Invoice</button>
           <button className="button-style m-0">Print Copy</button>
         </div>
