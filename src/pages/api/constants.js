@@ -35,6 +35,10 @@ export const endpoints = {
   getProfarmaDetails: `${API}/profarmaInvList/getProfarmaDetails`,
   postCreateInvoice: `${API}/profarmaInvList/postCreateInvoice`,
   postDeleteInvoice: `${API}/profarmaInvList/postDeleteInvoice`,
+  // profarma inv form
+  getProfarmaFormMain: `${API}/profarmaInvForm/getProfarmaFormMain`,
+  getProfarmaFormDetails: `${API}/profarmaInvForm/getProfarmaFormDetails`,
+  getProfarmaFormTaxes: `${API}/profarmaInvForm/getProfarmaFormTaxes`,
 
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,
