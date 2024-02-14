@@ -88,6 +88,54 @@ export default function ProfarmaInvoiceForm(props) {
     );
   }
 
+  function modifyInputs(e) {
+    // console.log("eeee", e.target.name, e.target.value);
+
+    let discount = profarmaMainData.Discount || 0;
+    let deliveryCharge = profarmaMainData.Del_Chg || 0;
+
+    let taxAmount = 0;
+    let invoiceTotal = 0;
+    let roundOff = 0;
+    let grandTotal = 0;
+    let assessableValue = 0;
+
+    if (e.target.name === "Discount") {
+      discount = e.target.value || 0;
+    } else if ((e.target.name = "Del_Chg")) {
+      deliveryCharge = e.target.value || 0;
+    }
+
+    invoiceTotal =
+      parseFloat(profarmaMainData?.Net_Total) -
+      parseFloat(discount) +
+      parseFloat(deliveryCharge);
+
+    grandTotal = Math.round(invoiceTotal);
+    roundOff = grandTotal - invoiceTotal;
+    assessableValue = invoiceTotal;
+
+    setProfarmaMainData({
+      ...profarmaMainData,
+      Discount: discount,
+      Del_Chg: deliveryCharge,
+      TaxAmount: taxAmount,
+      InvTotal: invoiceTotal,
+      Round_Off: roundOff,
+      GrandTotal: grandTotal,
+      AssessableValue: assessableValue,
+    });
+
+    setProfarmaTaxData([]);
+    document.getElementById("taxDropdown").value = "none";
+
+    // setProfarmaMainData({
+    //   ...profarmaMainData,
+    //   [e.target.name]: e.target.value || 0,
+    // });
+  }
+
+  console.log("profarmaMainData", profarmaMainData);
   return (
     <>
       <div>
@@ -196,7 +244,11 @@ export default function ProfarmaInvoiceForm(props) {
           <label className="form-label m-0">Discount</label>
           <input
             type="number"
-            value={parseFloat(profarmaMainData?.Discount).toFixed(2)}
+            value={parseFloat(profarmaMainData?.Discount)}
+            min={0}
+            // max={parseFloat(profarmaMainData?.Net_Total)}
+            name="Discount"
+            onChange={modifyInputs}
             // disabled
             // className="input-disabled"
           />
@@ -205,7 +257,10 @@ export default function ProfarmaInvoiceForm(props) {
           <label className="form-label m-0">Delivery Charges</label>
           <input
             type="number"
-            value={parseFloat(profarmaMainData?.Del_Chg).toFixed(2)}
+            value={parseFloat(profarmaMainData?.Del_Chg)}
+            min={0}
+            name="Del_Chg"
+            onChange={modifyInputs}
             // disabled
             // className="input-disabled"
           />
