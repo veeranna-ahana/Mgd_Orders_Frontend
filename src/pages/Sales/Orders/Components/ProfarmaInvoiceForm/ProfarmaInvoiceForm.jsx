@@ -337,6 +337,8 @@ export default function ProfarmaInvoiceForm(props) {
                 let applicableTaxes = [];
                 let arr = [];
 
+                let totalTaxAmount = 0;
+
                 // console.log("taxOn", taxOn);
                 for (let i = 0; i < taxOn.length; i++) {
                   const element = parseInt(taxOn[i]);
@@ -362,7 +364,7 @@ export default function ProfarmaInvoiceForm(props) {
                   ).toFixed(2);
 
                   let taxAmount = parseFloat(
-                    taxableAmount * parseFloat(element.Tax_Percent)
+                    (taxableAmount * parseFloat(element.Tax_Percent)) / 100
                   ).toFixed(2);
 
                   const taxTableRow = {
@@ -376,6 +378,8 @@ export default function ProfarmaInvoiceForm(props) {
                   };
 
                   arr.push(taxTableRow);
+                  totalTaxAmount =
+                    parseFloat(totalTaxAmount) + parseFloat(taxAmount);
 
                   // console.log("taxTableRow", taxTableRow);
                   // console.log("taxprofarma", profarmaTaxData);
@@ -387,6 +391,10 @@ export default function ProfarmaInvoiceForm(props) {
                 }
 
                 setProfarmaTaxData(arr);
+                setProfarmaMainData({
+                  ...profarmaMainData,
+                  TaxAmount: totalTaxAmount,
+                });
               }}
             >
               <option value="none" selected disabled hidden>
