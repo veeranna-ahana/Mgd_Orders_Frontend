@@ -135,6 +135,33 @@ export default function ProfarmaInvoiceForm(props) {
     // });
   }
 
+  function deleteTaxes() {
+    setProfarmaTaxData([]);
+    document.getElementById("taxDropdown").value = "none";
+
+    setProfarmaMainData({
+      ...profarmaMainData,
+      TaxAmount: "0.00",
+      InvTotal:
+        parseFloat(profarmaMainData?.Net_Total) -
+        parseFloat(profarmaMainData?.Discount) +
+        parseFloat(profarmaMainData?.Del_Chg),
+      GrandTotal: Math.round(
+        parseFloat(profarmaMainData?.Net_Total) -
+          parseFloat(profarmaMainData?.Discount) +
+          parseFloat(profarmaMainData?.Del_Chg)
+      ),
+      Round_Off:
+        Math.round(
+          parseFloat(profarmaMainData?.Net_Total) -
+            parseFloat(profarmaMainData?.Discount) +
+            parseFloat(profarmaMainData?.Del_Chg)
+        ) -
+        (parseFloat(profarmaMainData?.Net_Total) -
+          parseFloat(profarmaMainData?.Discount) +
+          parseFloat(profarmaMainData?.Del_Chg)),
+    });
+  }
   console.log("profarmaMainData", profarmaMainData);
   return (
     <>
@@ -390,10 +417,20 @@ export default function ProfarmaInvoiceForm(props) {
                   // }
                 }
 
+                let invTotal =
+                  parseFloat(profarmaMainData.Net_Total) -
+                  parseFloat(profarmaMainData.Discount) +
+                  parseFloat(profarmaMainData.Del_Chg) +
+                  parseFloat(totalTaxAmount);
+
+                let grandTotal = Math.round(invTotal);
                 setProfarmaTaxData(arr);
                 setProfarmaMainData({
                   ...profarmaMainData,
                   TaxAmount: totalTaxAmount,
+                  InvTotal: invTotal,
+                  Round_Off: grandTotal - invTotal,
+                  GrandTotal: grandTotal,
                 });
               }}
             >
@@ -406,7 +443,9 @@ export default function ProfarmaInvoiceForm(props) {
             </select>
           </div>
           <div>
-            <button className="button-style m-0">Delete Taxes</button>
+            <button className="button-style m-0" onClick={deleteTaxes}>
+              Delete Taxes
+            </button>
           </div>
         </div>
       </div>
