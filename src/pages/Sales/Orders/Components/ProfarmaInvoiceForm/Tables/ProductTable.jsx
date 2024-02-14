@@ -8,7 +8,7 @@ export default function ProductTable(props) {
           <tr>
             <th>Srl No</th>
             <th>Drawing No</th>
-            <th> Material</th>
+            <th>Material</th>
             <th>Quantity</th>
             <th>Unit Rate</th>
             <th>Total</th>
@@ -21,7 +21,22 @@ export default function ProductTable(props) {
                 <td>{key + 1}</td>
                 <td>{val.Dwg_No}</td>
                 <td>{val.Mtrl}</td>
-                <td>{val.Qty}</td>
+                <td>
+                  <input
+                    type="number"
+                    value={val.Qty}
+                    min="1"
+                    style={{
+                      width: "100%",
+                      background: "transparent",
+                      border: "none",
+                    }}
+                    onChange={(e) => {
+                      props.changeQTY(key, e.target.value || 0);
+                    }}
+                  />
+                  {/* {val.Qty} */}
+                </td>
                 <td>{parseFloat(val.Unit_Rate).toFixed(2)}</td>
                 <td>
                   {(

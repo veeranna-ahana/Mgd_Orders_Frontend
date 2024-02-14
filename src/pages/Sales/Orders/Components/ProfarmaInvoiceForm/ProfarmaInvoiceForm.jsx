@@ -162,7 +162,56 @@ export default function ProfarmaInvoiceForm(props) {
           parseFloat(profarmaMainData?.Del_Chg)),
     });
   }
-  console.log("profarmaMainData", profarmaMainData);
+  // console.log("profarmaMainData", profarmaMainData);
+
+  function changeQTY(key, qty) {
+    // console.log("key", key, "qty", qty);
+    let arr = [];
+    let netTotal = 0;
+
+    for (let i = 0; i < profarmaDetailsData.length; i++) {
+      const element = profarmaDetailsData[i];
+      if (i === key) {
+        element.Qty = qty;
+        element.DC_Srl_Amt = (
+          parseFloat(qty) * parseFloat(element.Unit_Rate)
+        ).toFixed(2);
+
+        // netTotal =
+        //   parseFloat(netTotal) +
+        //   parseFloat(qty) * parseFloat(element.Unit_Rate);
+      }
+      // netTotal =
+      //   parseFloat(netTotal) +
+      //   parseFloat(element.Qty) * parseFloat(element.Unit_Rate);
+      arr.push(element);
+
+      netTotal = parseFloat(netTotal) + parseFloat(element.DC_Srl_Amt);
+      // console.log("netTotal", netTotal);
+    }
+
+    // console.log("arr", arr);
+
+    setProfarmaDetailsData(arr);
+
+    setProfarmaMainData({
+      ...profarmaMainData,
+      Net_Total: parseFloat(netTotal).toFixed(2),
+      Discount: "0.00",
+      Del_Chg: "0.00",
+      TaxAmount: "0.00",
+      InvTotal: parseFloat(netTotal).toFixed(2),
+      GrandTotal: Math.round(parseFloat(netTotal).toFixed(2)),
+      Round_Off: (
+        Math.round(parseFloat(netTotal).toFixed(2)) -
+        parseFloat(netTotal).toFixed(2)
+      ).toFixed(2),
+      AssessableValue: parseFloat(netTotal).toFixed(2),
+    });
+
+    setProfarmaTaxData([]);
+    document.getElementById("taxDropdown").value = "none";
+  }
   return (
     <>
       <div>
@@ -452,7 +501,10 @@ export default function ProfarmaInvoiceForm(props) {
       <div className="p-1"></div>
       <div className="row">
         <div className="col-md-6">
-          <ProductTable profarmaDetailsData={profarmaDetailsData} />
+          <ProductTable
+            profarmaDetailsData={profarmaDetailsData}
+            changeQTY={changeQTY}
+          />
         </div>
         <div className="col-md-6">
           <TaxTable profarmaTaxData={profarmaTaxData} />
