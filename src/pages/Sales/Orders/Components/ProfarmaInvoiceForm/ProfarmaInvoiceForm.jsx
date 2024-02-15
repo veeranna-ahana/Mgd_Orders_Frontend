@@ -8,19 +8,24 @@ import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import ProductTable from "./Tables/ProductTable";
 import TaxTable from "./Tables/TaxTable";
+import Confirmation from "../Modals/Confirmation";
 
 export default function ProfarmaInvoiceForm(props) {
   const location = useLocation();
+  const todayDate = new Date();
 
   // console.log("location", location);
   const [ProfarmaID, setProfarmaID] = useState(location?.state);
   // console.log("profarmaID", ProfarmaID);
 
+  const [runningNo, setRunningNo] = useState({});
   const [profarmaMainData, setProfarmaMainData] = useState({});
   const [profarmaDetailsData, setProfarmaDetailsData] = useState([]);
   const [profarmaTaxData, setProfarmaTaxData] = useState([]);
 
   const [taxDropdownData, setTaxDropdownData] = useState([]);
+
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const fetchData = () => {
     getRequest(endpoints.getTaxData, (taxData) => {
@@ -213,6 +218,98 @@ export default function ProfarmaInvoiceForm(props) {
     setProfarmaTaxData([]);
     document.getElementById("taxDropdown").value = "none";
   }
+
+  function getRunningNo() {
+    let SrlType = "ProformaInvoice";
+    let yyyy = todayDate.getFullYear();
+    let UnitName = "Jigani";
+    const insertRunningNoVal = {
+      UnitName: UnitName,
+      SrlType: SrlType,
+      ResetPeriod: "FinanceYear",
+      ResetValue: "0",
+      EffectiveFrom_date:
+        todayDate.getMonth() + 1 <= 3 ? `${yyyy - 1}-04-01` : `${yyyy}-04-01`,
+      Reset_date:
+        todayDate.getMonth() + 1 <= 3 ? `${yyyy}-04-01` : `${yyyy + 1}-04-01`,
+      Running_No: "0",
+      UnitIntial: "0",
+      Prefix: UnitName.slice(0, 1),
+      Suffix: "",
+      Length: "3",
+      Period:
+        todayDate.getMonth() + 1 <= 3
+          ? `${(yyyy - 1).toString().slice(-2)}/${yyyy.toString().slice(-2)}`
+          : `${yyyy.toString().slice(-2)}${(yyyy + 1).toString().slice(-2)}`,
+    };
+
+    // console.log("insertRunningNoVal", insertRunningNoVal);
+    postRequest(
+      endpoints.getAndInsertRunningNo,
+      insertRunningNoVal,
+      (runningNo) => {
+        setRunningNo(runningNo[0]);
+      }
+    );
+  }
+
+  // console.log("runningNo", runningNo);
+  // getRunningNo();
+
+  function createInvoiceFirst() {
+    getRunningNo();
+    setConfirmModalOpen(true);
+  }
+  function createInvoiceSecond() {
+    // console.log("create invoice");
+
+    let newRunningNo = parseInt(runningNo.Running_No) + 1;
+
+    let series = newRunningNo.toString();
+    for (let i = 0; i < parseInt(runningNo["Length"]); i++) {
+      if (series.length < parseInt(runningNo["Length"])) {
+        series = "0" + series;
+      }
+    }
+
+    series = runningNo.Period + "/" + runningNo.Prefix + series;
+
+    // console.log("seriesssss", series);
+
+    postRequest(
+      endpoints.postInvFormCreateInvoice,
+      { series: series, ProfarmaID: profarmaMainData.ProfarmaID },
+      (resp) => {
+        // console.log("resp", resp);
+
+        if (resp.affectedRows > 0 || resp.changedRows > 0) {
+          toast.success("Proforma Invoice Created");
+          fetchData();
+
+          postRequest(
+            endpoints.updateRunningNoBySrlType,
+            {
+              SrlType: runningNo.SrlType,
+              Period: runningNo.Period,
+              RunningNo: newRunningNo,
+            },
+            (updateRunningNo) => {
+              if (resp.affectedRows > 0 || resp.changedRows > 0) {
+              } else {
+                toast.error("unable to update running no");
+              }
+
+              // console.log("update running no", updateRunningNo);
+            }
+          );
+        } else {
+          toast.error("uncaught error in backend");
+        }
+        // setRunningNo(runningNo[0]);
+      }
+    );
+  }
+
   return (
     <>
       <div>
@@ -385,7 +482,9 @@ export default function ProfarmaInvoiceForm(props) {
           <button className="button-style m-0" onClick={saveInvoiceFunc}>
             Save Invoice
           </button>
-          <button className="button-style m-0">Create Invoice</button>
+          <button className="button-style m-0" onClick={createInvoiceFirst}>
+            Create Invoice
+          </button>
           <button className="button-style m-0">Print Copy</button>
         </div>
         <div className="col-md-6 d-flex justify-content-between align-items-center">
@@ -512,6 +611,13 @@ export default function ProfarmaInvoiceForm(props) {
         </div>
       </div>
       <div className="p-2"></div>
+
+      <Confirmation
+        setConfirmModalOpen={setConfirmModalOpen}
+        confirmModalOpen={confirmModalOpen}
+        message={"Are you sure to create the Profarma Invoice"}
+        yesClickedFunc={createInvoiceSecond}
+      />
     </>
   );
 }
