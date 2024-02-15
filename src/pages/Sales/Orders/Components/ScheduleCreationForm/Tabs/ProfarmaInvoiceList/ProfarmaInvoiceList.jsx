@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 export default function ProfarmaInvoiceList(props) {
   // console.log("propsss in proforma inv list", props);
+  const nav = useNavigate();
 
   const [selectedProfarmaMainRow, setSelectedProfarmaMainRow] = useState({});
   const [filteredDetailsData, setFilteredDetailsData] = useState([]);
@@ -133,6 +134,16 @@ export default function ProfarmaInvoiceList(props) {
     }
   }
 
+  function openInvoice() {
+    if (selectedProfarmaMainRow.ProfarmaID) {
+      nav(`/Orders/${props.OrderData.Type}/ProfarmaInvoiceForm`, {
+        state: selectedProfarmaMainRow.ProfarmaID,
+      });
+    } else {
+      toast.warning("Please select the profarma invoice");
+    }
+  }
+
   // console.log("selectedProfarmaMainRow", selectedProfarmaMainRow.ProfarmaID);
   return (
     <>
@@ -163,12 +174,22 @@ export default function ProfarmaInvoiceList(props) {
             </button>
           </div>
           <div className="col-md-2">
-            <Link
+            <button
+              className={
+                selectedProfarmaMainRow.ProfarmaID
+                  ? "button-style m-0"
+                  : "button-style button-disabled m-0"
+              }
+              onClick={openInvoice}
+            >
+              Open Invoice
+            </button>
+            {/* <Link
               to={`/Orders/${props.OrderData.Type}/ProfarmaInvoiceForm`}
               state={selectedProfarmaMainRow.ProfarmaID}
             >
               <button className="button-style m-0">Open Invoice</button>
-            </Link>
+            </Link> */}
           </div>
         </div>
 

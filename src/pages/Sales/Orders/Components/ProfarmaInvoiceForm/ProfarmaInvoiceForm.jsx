@@ -12,6 +12,7 @@ import TaxTable from "./Tables/TaxTable";
 export default function ProfarmaInvoiceForm(props) {
   const location = useLocation();
 
+  // console.log("location", location);
   const [ProfarmaID, setProfarmaID] = useState(location?.state);
   // console.log("profarmaID", ProfarmaID);
 
