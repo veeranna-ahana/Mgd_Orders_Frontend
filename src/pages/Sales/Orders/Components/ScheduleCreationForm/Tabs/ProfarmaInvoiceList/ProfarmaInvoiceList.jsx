@@ -12,6 +12,7 @@ import { toast } from "react-toastify";
 
 export default function ProfarmaInvoiceList(props) {
   // console.log("propsss in proforma inv list", props);
+  const nav = useNavigate();
 
   const [selectedProfarmaMainRow, setSelectedProfarmaMainRow] = useState({});
   const [filteredDetailsData, setFilteredDetailsData] = useState([]);
@@ -29,13 +30,14 @@ export default function ProfarmaInvoiceList(props) {
     }
   };
 
-  // console.log("invtype", props.selectedItems);
+  // console.log("selectedItems", props.selectedItems);
 
   const createInvoice = () => {
     // console.log("createInvoice");
 
     if (props.selectedItems.length > 0) {
       let InvType = "Sales";
+      let netTotal = 0;
 
       // const arr = props.selectedItems?.filter((obj)=>(
       //   obj.Mtrl_Source === 'Magod'
@@ -48,8 +50,15 @@ export default function ProfarmaInvoiceList(props) {
         } else {
           InvType = "Job Work";
         }
+
+        netTotal = (
+          parseFloat(netTotal) +
+          parseFloat(element.Qty_Ordered) *
+            (parseFloat(element.JWCost) + parseFloat(element.MtrlCost || 0))
+        ).toFixed(2);
       }
 
+      // console.log("netTotal", netTotal);
       // console.log("InvType", InvType);
 
       const profarmaMainData = {
@@ -67,6 +76,10 @@ export default function ProfarmaInvoiceList(props) {
         GSTNo: props.OrderCustData.GSTNo || "Unregistered",
         PO_No: props.OrderData.Purchase_Order || "",
         PO_Date: props.OrderData.Order_Date || "",
+        Net_Total: netTotal || 0,
+        AssessableValue: netTotal || 0,
+        InvTotal: netTotal || 0,
+        GrandTotal: netTotal || 0,
         Status: "Draft",
       };
 
@@ -121,6 +134,17 @@ export default function ProfarmaInvoiceList(props) {
     }
   }
 
+  function openInvoice() {
+    if (selectedProfarmaMainRow.ProfarmaID) {
+      nav(`/Orders/${props.OrderData.Type}/ProfarmaInvoiceForm`, {
+        state: selectedProfarmaMainRow.ProfarmaID,
+      });
+    } else {
+      toast.warning("Please select the profarma invoice");
+    }
+  }
+
+  // console.log("selectedProfarmaMainRow", selectedProfarmaMainRow.ProfarmaID);
   return (
     <>
       <div>
@@ -150,9 +174,22 @@ export default function ProfarmaInvoiceList(props) {
             </button>
           </div>
           <div className="col-md-2">
-            <Link to={"/Orders/Service/ProfamaInvoiceForm"}>
+            <button
+              className={
+                selectedProfarmaMainRow.ProfarmaID
+                  ? "button-style m-0"
+                  : "button-style button-disabled m-0"
+              }
+              onClick={openInvoice}
+            >
+              Open Invoice
+            </button>
+            {/* <Link
+              to={`/Orders/${props.OrderData.Type}/ProfarmaInvoiceForm`}
+              state={selectedProfarmaMainRow.ProfarmaID}
+            >
               <button className="button-style m-0">Open Invoice</button>
-            </Link>
+            </Link> */}
           </div>
         </div>
 

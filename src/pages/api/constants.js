@@ -35,6 +35,13 @@ export const endpoints = {
   getProfarmaDetails: `${API}/profarmaInvList/getProfarmaDetails`,
   postCreateInvoice: `${API}/profarmaInvList/postCreateInvoice`,
   postDeleteInvoice: `${API}/profarmaInvList/postDeleteInvoice`,
+  // profarma inv form
+  getTaxData: `${API}/profarmaInvForm/getTaxData`,
+  getProfarmaFormMain: `${API}/profarmaInvForm/getProfarmaFormMain`,
+  getProfarmaFormDetails: `${API}/profarmaInvForm/getProfarmaFormDetails`,
+  getProfarmaFormTaxes: `${API}/profarmaInvForm/getProfarmaFormTaxes`,
+  postSaveInvoice: `${API}/profarmaInvForm/postSaveInvoice`,
+  postInvFormCreateInvoice: `${API}/profarmaInvForm/postInvFormCreateInvoice`,
 
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,
@@ -264,4 +271,8 @@ export const endpoints = {
   //Paking And Invoice
   getData: `${API}/gettest/getdata`,
   getCustomerData: `${API}/schedulelist/getallcustomers`,
+
+  // running no
+  getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
+  updateRunningNoBySrlType: `${API}/runningNo/updateRunningNoBySrlType`,
 };

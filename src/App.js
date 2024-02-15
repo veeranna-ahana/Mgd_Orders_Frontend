@@ -98,6 +98,8 @@ import ProfileScheduleCreationForm from "./pages/Sales/Orders/Menus/Profile/Sche
 import { QuotationProvider } from "./context/QuotationContext";
 import { OrderProvider } from "./context/OrderContext";
 import ServiceOpenSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
+import ProfarmaInvoiceForm from "./pages/Sales/Orders/Components/ProfarmaInvoiceForm/ProfarmaInvoiceForm";
+
 function App() {
   return (
     <BrowserRouter>
@@ -175,6 +177,11 @@ function App() {
                     <Route path="Ready" element={<InternalReady />} />
                     <Route path="HandedOver" element={<InternalHandedOver />} />
                   </Route>
+
+                  <Route
+                    path="ProfarmaInvoiceForm"
+                    element={<ProfarmaInvoiceForm />}
+                  />
                 </Route>
 
                 <Route path="Service">
@@ -215,6 +222,11 @@ function App() {
                   />
                   <Route path="ImportQtn" element={<ServiceImportQtn />} />
                   <Route path="EditDxf" element={<ServiceEditDxf />} />
+
+                  <Route
+                    path="ProfarmaInvoiceForm"
+                    element={<ProfarmaInvoiceForm />}
+                  />
                 </Route>
 
                 <Route path="Fabrication">
@@ -251,6 +263,11 @@ function App() {
                   <Route path="OrderSchedule" element={<FabOrderSchedule />} />
                   <Route path="ImportQtn" element={<FabImportQtn />} />
                   <Route path="EditDxf" element={<FabEditDxf />} />
+
+                  <Route
+                    path="ProfarmaInvoiceForm"
+                    element={<ProfarmaInvoiceForm />}
+                  />
                 </Route>
 
                 <Route path="CombinedSchedules">
