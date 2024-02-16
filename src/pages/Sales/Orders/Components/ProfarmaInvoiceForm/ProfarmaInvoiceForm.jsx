@@ -336,7 +336,7 @@ export default function ProfarmaInvoiceForm(props) {
         <div className="col-md-3">
           <label className="form-label m-0">Invoice Date</label>
           <input
-            value={profarmaMainData?.ProformaDate || ""}
+            value={profarmaMainData?.Printable_ProformaDate || ""}
             disabled
             className="input-disabled"
           />
