@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function FormHeader(props) {
+  // console.log(props.OrderData)
+
   return (
     <>
       <div className="col-md-12">

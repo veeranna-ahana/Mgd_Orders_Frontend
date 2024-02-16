@@ -256,4 +256,17 @@ export const endpoints = {
   //Paking And Invoice
   getData: `${API}/gettest/getdata`,
   getCustomerData: `${API}/schedulelist/getallcustomers`,
+
+  //ScheduleList Service
+  getScheduleListData:`${API}/ScheduleList/getScheduleListData`,
+  getScheduleListDwgData:`${API}/ScheduleList/getDwgTableData`,
+  getScheduleListTaskandMaterial:`${API}/ScheduleList/getTaskandMterial`,
+
+  //OpenSchedule Srvice
+  getScheduleListgetFormDetails:`${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose:`${API}/ScheduleList/shortClose`,
+  onClickSave:`${API}/ScheduleList/save`,
+  onClickSuspend:`${API}/ScheduleList/suspendButton`,
+  onClickCancel:`${API}/ScheduleList/onClickCancel`,
+  onClickScheduled:`${API}/ScheduleList/ScheduleButton`,
 };

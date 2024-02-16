@@ -27,9 +27,9 @@ export default function ScheduleCreationForm(props) {
   const [OrderData, setOrderData] = useState({});
   const [OrderCustData, setOrderCustData] = useState({});
 
-  console.log("order no", orderNo);
+  // console.log("order no", orderNo);
 
-  console.log("props", props.Type);
+  // console.log("props", props.Type);
 
   const fetchData = () => {
     postRequest(
@@ -520,7 +520,7 @@ export default function ScheduleCreationForm(props) {
               <OrderDetails OrderData={OrderData} />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
-              <ScheduleList OrderData={OrderData} />
+              <ScheduleList OrderData={OrderData} OrderCustData={OrderCustData} />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Profarma Invoice List">
               <ProfarmaInvoiceList OrderData={OrderData} />
