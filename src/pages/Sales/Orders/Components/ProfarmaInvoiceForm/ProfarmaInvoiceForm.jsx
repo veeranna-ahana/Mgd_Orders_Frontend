@@ -256,11 +256,13 @@ export default function ProfarmaInvoiceForm(props) {
   // console.log("runningNo", runningNo);
   // getRunningNo();
 
-  function createInvoiceFirst() {
+  function createInvoiceConfirmation() {
     getRunningNo();
     setConfirmModalOpen(true);
   }
-  function createInvoiceSecond() {
+
+  function createInvoice() {
+    saveInvoiceFunc();
     // console.log("create invoice");
 
     let newRunningNo = parseInt(runningNo.Running_No) + 1;
@@ -497,7 +499,7 @@ export default function ProfarmaInvoiceForm(props) {
                 ? "button-style m-0 button-disabled"
                 : "button-style m-0"
             }
-            onClick={createInvoiceFirst}
+            onClick={createInvoiceConfirmation}
           >
             Create Invoice
           </button>
@@ -655,7 +657,7 @@ export default function ProfarmaInvoiceForm(props) {
         setConfirmModalOpen={setConfirmModalOpen}
         confirmModalOpen={confirmModalOpen}
         message={"Are you sure to create the Profarma Invoice"}
-        yesClickedFunc={createInvoiceSecond}
+        yesClickedFunc={createInvoice}
       />
     </>
   );
