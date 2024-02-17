@@ -1,14 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Table, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import AlertModal from "../../../Components/Alert";
+import { postRequest } from "../../../../../../../api/apiinstance";
+import { endpoints } from "../../../../../../../api/constants";
+import { ToastContainer, toast } from 'react-toastify';
 
 function ServiceOpenSchedule() {
+  const location = useLocation(); // Access location object using useLocation hook
+  const DwgNameList = location?.state || []; // Get DwgNameList from location state
+
+  console.log("DwgNameList is", DwgNameList[0]);
+
+  // Set initial state of newState to DwgNameList
+  const [newState, setNewState] = useState(DwgNameList);
+
+  useEffect(() => {
+    // Update newState whenever DwgNameList changes
+    setNewState(DwgNameList);
+  }, [DwgNameList]); // Dependency array containing DwgNameList
+
+
   let [schedule, setSchedule] = useState(false);
   let [profileOrder1, setProfileOrder1] = useState(false);
   let [profileOrder2, setProfileOrder2] = useState(false);
   let [fixtureOrder1, setFixtureOrder1] = useState(false);
   let [fixtureOrder2, setFixtureOrder2] = useState(false);
+
+  const[openTask,setOpenTask]=useState(false);
 
   const openSchedule = (e) => {
     e.preventDefault();
@@ -54,6 +73,158 @@ function ServiceOpenSchedule() {
     setFixtureOrder2(false);
   };
 
+  //date format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const day = date.getDate().toString().padStart(2, "0");
+    // Use template literals to format the date
+    return `${day}-${month}-${year}`;
+  };
+
+  const [formdata, setFormdata] = useState({});
+  useEffect(() => {
+    postRequest(
+      endpoints.getScheduleListgetFormDetails,
+      {
+        Cust_Code: DwgNameList[0]?.Cust_Code,
+        ScheduleId: DwgNameList[0]?.ScheduleId,
+      },
+      (response) => {
+        // console.log("response is", response);
+        setFormdata(response);
+      }
+    );
+  }, [DwgNameList[0]?.ScheduleId]);
+
+  console.log(formdata);
+
+  //get Task and Material Tab Data
+  const [TaskMaterialData, setTaskMaterialData] = useState([]);
+  useEffect(() => {
+    postRequest(
+      endpoints.getScheduleListTaskandMaterial,
+      { TaskNo: DwgNameList[0]?.TaskNo },
+      (response) => {
+        console.log("response is",response);
+        setTaskMaterialData(response);
+      }
+    );
+  }, [DwgNameList?.TaskNo]); // Watch for changes in OrderData
+
+  //row onClick of Task Material First Table
+  const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
+  const onRowSelectTaskMaterialTable = (item, index) => {
+    let list = { ...item, index: index };
+    setRowSelectTaskMaterial(list);
+  };
+
+  //Default first row select
+  useEffect(() => {
+    if (TaskMaterialData.length > 0 && !rowselectTaskMaterial.TaskNo) {
+      onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
+    }
+  }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
+
+  //Onclick of Table
+  const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
+  const onClickofScheduleDtails = (item, index) => {
+    let list = { ...item, index: index };
+    setScheduleDetailsRow(list);
+  };
+
+    //Default first row select
+    useEffect(() => {
+      if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+        onClickofScheduleDtails(newState[0], 0); // Select the first row
+      }
+    }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+
+  console.log(scheduleDetailsRow);
+
+  //Onclick of ShortClose
+  const onClickShortClose=()=>{
+    postRequest(
+      endpoints.onClickShortClose,
+      {scheduleDetailsRow},
+      (response) => {
+        console.log("response is",response);
+      }
+    );
+  }
+
+  //Onclick save Button
+  const onClickSave=()=>{
+    postRequest(
+      endpoints.onClickSave,
+      { scheduleDetailsRow},
+      (response) => {
+        toast.success('Saved', {
+          position: toast.POSITION.TOP_CENTER
+        });
+      }
+    );
+  }
+
+  //Onclick Suspend
+  const OnClickSuspend=()=>{
+    postRequest(
+      endpoints.onClickSuspend,
+      { scheduleDetailsRow},
+      (response) => {
+        // console.log("response",response.message)
+        if(response.message==='Clear Order Suspension of the order before trying to clear it for schedule')
+        {
+          toast.success('Clear Order Suspension of the order before trying to clear it for schedule', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+        else{
+          toast.success('Suspended', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+      }
+    );
+  }
+
+  //Onclick of Cancel
+  const onClickCancel=()=>{
+    postRequest(
+      endpoints.onClickCancel,
+      { scheduleDetailsRow},
+      (response) => {
+        // console.log("response cancel is",response.message)
+        if(response.message==='Cannot Cancel Schedules Once Programmed'){
+          toast.error('Cannot Cancel Schedules Once Programmed', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+        else{
+          toast.error('Schedules cancelled successfully', {
+            position: toast.POSITION.TOP_CENTER
+          });
+        }
+      }
+    );
+  }
+
+  const onClickScheduled=()=>{
+    postRequest(
+      endpoints.onClickScheduled,
+      { scheduleDetailsRow,formdata},
+      (response) => {
+        // console.log("response of Scheduled is",response);
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_CENTER
+        })
+      }
+    );
+  }
+
+  console.log(scheduleDetailsRow)
+
   return (
     <div>
       <div className="row">
@@ -65,45 +236,51 @@ function ServiceOpenSchedule() {
         <h4>Service</h4>
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Customer</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.Cust_name} />
         </div>
+
         <div className="col-md-4 sm-12">
           <label className="form-label">Sales Contact</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.SalesContact} />
         </div>
+
         <div className="col-md-4 sm-12">
           <label className="form-label">Schedule No</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.ScheduleId} />
         </div>
       </div>
 
       <div className="row mt-2">
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Schedule Type</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.ScheduleType} />
         </div>
+
         <div className="col-md-4 sm-12">
           <label className="form-label">Schedule Status</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.Schedule_Status} />
         </div>
+
         <div className="col-md-4 sm-12">
           <label className="form-label">PO</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.PO} />
         </div>
       </div>
 
       <div className="row mt-2">
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Program Engineer</label>
-          <input type="text" />
+          <input type="text" value={formdata[0]?.Dealing_Engineer} />
         </div>
+
         <div className="col-md-4 sm-12">
           <label className="form-label">Target Date</label>
-          <input type="date" />
+          <input type="text" value={formatDate(formdata[0]?.schTgtDate)} />
         </div>
+
         <div className="col-md-4 sm-12">
           <label className="form-label">Delivery Date</label>
-          <input type="date" />
+          <input type="date" value={formatDate(formdata[0]?.Delivery_Date)} />
         </div>
       </div>
 
@@ -114,12 +291,17 @@ function ServiceOpenSchedule() {
             id="exampleFormControlTextarea1"
             rows="3"
             style={{ width: "360px" }}
+            value={formdata[0]?.Special_Instructions}
           ></textarea>
         </div>
+
         <div className="col-md-8 sm-12 mt-5">
-          <button className="button-style">Suspend</button>
-          <button className="button-style">ShortClose</button>
-          <button className="button-style">Cancel</button>
+          <button className="button-style" onClick={OnClickSuspend}>Suspend</button>
+
+          <button className="button-style" onClick={onClickShortClose}>ShortClose</button>
+
+          <button className="button-style" onClick={onClickCancel}>Cancel</button>
+
           <Link to="/Orders/Service/ScheduleCreationForm">
             <button className="button-style">Close</button>
           </Link>
@@ -128,7 +310,7 @@ function ServiceOpenSchedule() {
 
       <div className="row mt-2">
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={openSchedule}>
+          <button className="button-style" onClick={onClickScheduled}>
             Schedule
           </button>
         </div>
@@ -136,7 +318,7 @@ function ServiceOpenSchedule() {
           <button className="button-style">Task</button>
         </div>
         <div className="col-md-2 col-sm-3">
-          <button className="button-style">Save</button>
+          <button className="button-style" onClick={onClickSave}>Save</button>
         </div>
         <div className="col-md-2 col-sm-3">
           <button className="button-style">Check Status</button>
@@ -149,19 +331,19 @@ function ServiceOpenSchedule() {
             <button className="button-style ">NC Program</button>
           </Link>
         </div>
-        <div className="col-md-2 col-sm-3">
+        {/* <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={profileOrderOpen1}>
             Profile Order
           </button>
-        </div>
+        </div> */}
         <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={fixtureOrderOpen1}>
             Fixture Order
           </button>
         </div>
-        <div className="col-md-2 col-sm-3">
-          <button className="button-style ">Task Sheet</button>
-        </div>
+        {/* <div className="col-md-2 col-sm-3">
+          <button className="button-style ">Show DXF</button>
+        </div> */}
       </div>
 
       <div className="row">
@@ -173,29 +355,56 @@ function ServiceOpenSchedule() {
                 className="table-data border"
                 style={{ border: "1px", height: "350px" }}
               >
-                <thead className="tableHeaderBGColor">
+                <thead className="tableHeaderBGColor table-space">
                   <tr>
-                    <th style={{ whiteSpace: "nowrap" }}>Srl</th>
-                    <th style={{ whiteSpace: "nowrap" }}>DwgName</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Material</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Source</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Process</th>
-                    <th style={{ whiteSpace: "nowrap" }}>To Schedule</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Scheduled</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Programme</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Produced</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Cleared</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Packed</th>
-                    <th style={{ whiteSpace: "nowrap" }}>Delivered</th>
-                    <th style={{ whiteSpace: "nowrap" }}>JWCost</th>
-                    <th style={{ whiteSpace: "nowrap" }}>MtrlCost</th>
+                    <th>Srl</th>
+                    <th>DwgName</th>
+                    <th>Material</th>
+                    <th>Source</th>
+                    <th>Process</th>
+                    <th>Scheduled</th>
+                    <th>Programmed</th>
+                    <th>Produced</th>
+                    <th>Cleared</th>
+                    <th>Packed</th>
+                    <th>Delivered</th>
+                    <th>JWCost</th>
+                    <th>MtrlCost</th>
                   </tr>
                 </thead>
 
-                <tbody className="tablebody"></tbody>
+                <tbody className="tablebody table-space">
+                  {newState.map((item, key) => {
+                    return (
+                      <tr
+                        onClick={() => onClickofScheduleDtails(item, key)}
+                        className={
+                          key === scheduleDetailsRow?.index
+                            ? "selcted-row-clr"
+                            : ""
+                        }
+                      >
+                        <td>{key + 1}</td>
+                        <td>{item.DwgName}</td>
+                        <td>{item.Mtrl_Code}</td>
+                        <td>{item.Mtrl_Source}</td>
+                        <td>{item.Operation}</td>
+                        <td>{item.QtyScheduled}</td>
+                        <td>{item.QtyProgrammed}</td>
+                        <td>{item.QtyProduced}</td>
+                        <td>{item.QtyCleared}</td>
+                        <td>{item.QtyPacked}</td>
+                        <td>{item.QtyDelivered}</td>
+                        <td>{item.JWCost}</td>
+                        <td>{item.MtrlCost}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
               </Table>
             </div>
           </Tab>
+
           <Tab eventKey="Task and Material List" title="Task and Material List">
             <div className="row mt-3">
               <div style={{ display: "flex", gap: "170px" }}>
@@ -213,20 +422,47 @@ function ServiceOpenSchedule() {
                       overflowY: "scroll",
                     }}
                   >
-                    <thead className="tableHeaderBGColor">
+                    <thead className="tableHeaderBGColor table-space">
                       <tr>
-                        <th style={{ whiteSpace: "nowrap" }}>Task No</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Material</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Source</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Operation</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Dwgs</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Total Parts</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Priority</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Status</th>
-                        <th style={{ whiteSpace: "nowrap" }}>Machine</th>
+                        <th>Task No</th>
+                        <th>Material</th>
+                        <th>Source</th>
+                        <th>Operation</th>
+                        <th>Dwgs</th>
+                        <th>Total Parts</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Machine</th>
                       </tr>
                     </thead>
-                    <tbody className="tablebody"></tbody>
+                    <tbody className="tablebody">
+                      {TaskMaterialData.map((value, key) => {
+                        return (
+                          <>
+                            <tr
+                              onClick={() =>
+                                onRowSelectTaskMaterialTable(value, key)
+                              }
+                              className={
+                                key === rowselectTaskMaterial?.index
+                                  ? "selcted-row-clr"
+                                  : ""
+                              }
+                            >
+                              <td>{value.TaskNo}</td>
+                              <td>{value.Mtrl_Code}</td>
+                              <td>{value.CustMtrl}</td>
+                              <td>{value.Operation}</td>
+                              <td>{value.NoOfDwgs}</td>
+                              <td>{value.TotalParts}</td>
+                              <td>{value.Priority}</td>
+                              <td>{value.PStatus}</td>
+                              <td>{value.Machine}</td>
+                            </tr>
+                          </>
+                        );
+                      })}
+                    </tbody>
                   </Table>
                 </div>
               </div>
@@ -241,16 +477,28 @@ function ServiceOpenSchedule() {
                       overflowY: "scroll",
                     }}
                   >
-                    <thead className="tableHeaderBGColor">
+                    <thead className="tableHeaderBGColor table-space">
                       <tr>
-                        <th style={{ whiteSpace: "nowrap" }}>Dwg Part Name</th>
+                        <th>Dwg Part Name</th>
                         <th>Quantity</th>
                         <th>Nested</th>
                         <th>Produced</th>
                         <th>Cleared</th>
                       </tr>
                     </thead>
-                    <tbody className="tablebody"></tbody>
+                    <tbody className="tablebody">
+                      {newState.map((item, key) => {
+                        return (
+                          <tr>
+                            <td>{item.DwgName}</td>
+                            <td>{item.QtyScheduled}</td>
+                            <td>{item.QtyPacked}</td>
+                            <td>{item.QtyProduced}</td>
+                            <td>{item.QtyCleared}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
                   </Table>
                 </div>
               </div>
@@ -271,18 +519,11 @@ function ServiceOpenSchedule() {
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor">
+                  <thead className="tableHeaderBGColor table-space">
                     <tr>
-                      <th style={{ whiteSpace: "nowrap" }}>Length(mm)</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Width(mm)</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Quantity</th>
-                      {/* <th style={{ whiteSpace: "nowrap" }}>ID</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Nc TaskId</th>
-                      <th style={{ whiteSpace: "nowrap" }}>TaskNo</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Length</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Width</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Quantity</th>
-                      <th style={{ whiteSpace: "nowrap" }}>LimitToQty</th> */}
+                      <th>Length(mm)</th>
+                      <th>Width(mm)</th>
+                      <th>Quantity</th>
                     </tr>
                   </thead>
                   <tbody className="tablebody"></tbody>
@@ -298,7 +539,6 @@ function ServiceOpenSchedule() {
                   </h5>
 
                   <label className="form-label">Task No</label>
-
                   <input
                     style={{ width: "200px" }}
                     type="number"
@@ -306,15 +546,12 @@ function ServiceOpenSchedule() {
                   />
 
                   <label className="form-label">Length</label>
-
                   <input style={{ width: "200px" }} className="in-fields" />
 
                   <label className="form-label">Width</label>
-
                   <input style={{ width: "200px" }} className="in-fields" />
 
                   <label className="form-label">Quantity</label>
-
                   <input style={{ width: "200px" }} className="in-fields" />
 
                   <div className="row justify-content-center mt-3 mb-3">
@@ -327,7 +564,7 @@ function ServiceOpenSchedule() {
             </div>
           </Tab>
 
-          <Tab eventKey="Material Planner" title="Material Planner">
+          {/* <Tab eventKey="Material Planner" title="Material Planner">
             <div className="row mt-3">
               <div className="col-md-2 col-sm-12">
                 <button className="button-style ">Create DXF WS</button>
@@ -450,13 +687,9 @@ function ServiceOpenSchedule() {
                   <thead className="tableHeaderBGColor">
                     <tr>
                       <th>Dwg Part Name</th>
-
                       <th>Quantity</th>
-
                       <th>Nested</th>
-
                       <th>Produced</th>
-
                       <th>Cleared</th>
                     </tr>
                   </thead>
@@ -465,7 +698,7 @@ function ServiceOpenSchedule() {
                 </Table>
               </div>
             </div>
-          </Tab>
+          </Tab> */}
 
           <Tab eventKey="Packing Notes/Invoices" title="Packing Notes/Invoices">
             <button className="button-style mt-3">Show Invoice</button>

@@ -172,10 +172,9 @@ code {
   font-weight: 600;
 }
 
-.selcted-row-clr {
-  background-color: rgb(150, 147, 147) !important;
-
-  color: white;
+.selcted-row-clr{
+  background-color:#98A8F8!important;
+    color: white;
 }
 
 .form-label {
@@ -248,3 +247,7 @@ code {
   padding: 6px 1px 2px 15px;
   /* border-radius: 10px; */
 }
+.table-space{
+  white-space:nowrap;
+}
+

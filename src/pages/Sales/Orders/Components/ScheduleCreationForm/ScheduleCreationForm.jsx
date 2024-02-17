@@ -29,15 +29,13 @@ export default function ScheduleCreationForm(props) {
   const [OrderCustData, setOrderCustData] = useState({});
   const [OrdrDetailsData, setOrdrDetailsData] = useState([]);
 
+
+
   const [profarmaInvMain, setProfarmaInvMain] = useState([]);
   const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
 
   const [selectedItems, setSelectedItems] = useState([]);
 
-  // console.log("order no", orderNo);
-  // console.log("OrderCustData.Cust_Code", OrderCustData.Cust_Code);
-
-  //console.log("props", props.Type);
 
   const fetchData = () => {
     postRequest(
@@ -139,7 +137,7 @@ export default function ScheduleCreationForm(props) {
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
-              <ScheduleList OrderData={OrderData} />
+              <ScheduleList OrderData={OrderData} OrderCustData={OrderCustData} />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">
               <ProfarmaInvoiceList

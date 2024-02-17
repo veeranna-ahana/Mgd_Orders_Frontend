@@ -1,10 +1,67 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { postRequest } from "../../../../../../api/apiinstance";
+import { endpoints } from "../../../../../../api/constants";
 // import { Link, useNavigate } from "react-router-dom";
 // import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
-export default function ScheduleList() {
+export default function ScheduleList({ OrderData, OrderCustData }) {
+  console.log(OrderCustData);
+
+  console.log(OrderData);
+
+  //date format
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+    const year = date.getFullYear();
+    // Use template literals to format the date
+    return `${day}/${month}/${year}`;
+  };
+
+  //getScheduleList Table Data
+  const [scheduleListData, setScheduleListData] = useState([]);
+  // Fetch schedule list data when OrderData changes
+  useEffect(() => {
+    if (OrderData && OrderData.Order_No) {
+      postRequest(
+        endpoints.getScheduleListData,
+        { Order_No: OrderData.Order_No },
+        (response) => {
+          setScheduleListData(response);
+        }
+      );
+    }
+  }, [OrderData]); // Watch for changes in OrderData
+ 
+  // useEffect(() => {
+  //   ScheduleListData();
+  // }, []);
+
+  //onClick ScheduleList table
+  const [DwgNameList, setDwgNameList] = useState([]);
+  const [rowScheduleList, setRowScheduleList] = useState({});
+  const onRowClickScheduleList = (item, index) => {
+    let list = { ...item, index: index };
+    setRowScheduleList(list);
+    postRequest(
+      endpoints.getScheduleListDwgData,
+      { ScheduleId: list.ScheduleId },
+      (response) => {
+        // console.log("orderData.....", response);
+        setDwgNameList(response);
+      }
+    );
+  };
+
+  console.log("DwgNameList is",DwgNameList);
+
+  const onClickofScheduled=()=>{
+    console.log("response")
+  }
+
   return (
     <>
       <div>
@@ -18,8 +75,12 @@ export default function ScheduleList() {
             </button>
           </div>
           <div className="col-md-2 col-sm-12">
-            <Link to={"/Orders/Service/ServiceOpenSchedule"}>
-              <button className="button-style ">Open Schedule</button>
+            <Link
+              to={"/Orders/Service/ServiceOpenSchedule"}
+              state=
+              {DwgNameList}
+            >
+              <button className="button-style">Open Schedule</button>
             </Link>
           </div>
         </div>
@@ -37,31 +98,28 @@ export default function ScheduleList() {
                   <th>No</th>
                   <th>Status</th>
                   <th>Delivered</th>
-                  <th></th>
                 </tr>
               </thead>
               <tbody className="tablebody">
-                <tr>
-                  <th>Type</th>
-                  <th>No</th>
-                  <th>Status</th>
-                  <th>Delivered</th>
-                  <th></th>
-                </tr>{" "}
-                <tr>
-                  <th>Type</th>
-                  <th>No</th>
-                  <th>Status</th>
-                  <th>Delivered</th>
-                  <th></th>
-                </tr>{" "}
-                <tr>
-                  <th>Type</th>
-                  <th>No</th>
-                  <th>Status</th>
-                  <th>Delivered</th>
-                  <th></th>
-                </tr>
+                {scheduleListData.map((item, key) => {
+                  return (
+                    <>
+                      <tr
+                        onClick={() => onRowClickScheduleList(item, key)}
+                        className={
+                          key === rowScheduleList?.index
+                            ? "selcted-row-clr"
+                            : ""
+                        }
+                      >
+                        <td>{item.Type}</td>
+                        <td>{item.ScheduleNo}</td>
+                        <td>{item.Schedule_Status}</td>
+                        <td>{formatDate(item.Delivery_Date)}</td>
+                      </tr>
+                    </>
+                  );
+                })}
                 {/* {ordDetsData.length > 0 ? (
                         ordDetsData.map((orddets, index) => {
                           return (
@@ -109,39 +167,23 @@ export default function ScheduleList() {
                 </tr>
               </thead>
               <tbody className="tablebody">
-                <tr>
-                  <th>Dwg Name</th>
-                  <th>Mtrl Code</th>
-                  <th>Operation</th>
-                  <th>Scheduled</th>
-                  <th>Produced</th>
-                  <th>Packed</th>
-                  <th>Delivered</th>
-                  <th>JW Cost</th>
-                  <th>Mtrl Cost</th>
-                </tr>{" "}
-                <tr>
-                  <th>Dwg Name</th>
-                  <th>Mtrl Code</th>
-                  <th>Operation</th>
-                  <th>Scheduled</th>
-                  <th>Produced</th>
-                  <th>Packed</th>
-                  <th>Delivered</th>
-                  <th>JW Cost</th>
-                  <th>Mtrl Cost</th>
-                </tr>{" "}
-                <tr>
-                  <th>Dwg Name</th>
-                  <th>Mtrl Code</th>
-                  <th>Operation</th>
-                  <th>Scheduled</th>
-                  <th>Produced</th>
-                  <th>Packed</th>
-                  <th>Delivered</th>
-                  <th>JW Cost</th>
-                  <th>Mtrl Cost</th>
-                </tr>
+                {DwgNameList.map((item, key) => {
+                  return (
+                    <>
+                      <tr>
+                        <td>{item.DwgName}</td>
+                        <td>{item.Mtrl_Code}</td>
+                        <td>{item.Operation}</td>
+                        <td>{item.QtyScheduled}</td>
+                        <td>{item.QtyProduced}</td>
+                        <td>{item.QtyPacked}</td>
+                        <td>{item.QtyDelivered}</td>
+                        <td>{item.JWCost}</td>
+                        <td>{item.MtrlCost}</td>
+                      </tr>
+                    </>
+                  );
+                })}
                 {/* {ordDetsDwgData.length > 0 ? (
                         ordDetsDwgData.map((orddetsdwg, index) => {
                           return (
