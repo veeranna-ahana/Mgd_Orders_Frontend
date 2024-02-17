@@ -1,13 +1,13 @@
 import React from "react";
 import OrderList from "../../../Components/OrderList/OrderList";
 
-export default function IntCompleted() {
+export default function FixturesHandedOver() {
   return (
     <>
       <OrderList
         type={"Profile"}
-        orderStatus={"Completed"}
-        Order_Ref={"Profile"}
+        orderStatus={"HandedOver"}
+        Order_Ref={"Fixture"}
       />
     </>
   );

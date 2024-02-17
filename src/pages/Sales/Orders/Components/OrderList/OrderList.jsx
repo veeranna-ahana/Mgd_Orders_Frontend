@@ -33,16 +33,20 @@ export default function OrderList(props) {
   const [selectedOrderStatus, setSelectedOrderStatus] = useState([]);
   const [selectedOrderType, setSelectedOrderType] = useState("");
 
+  const [selectedOrderRow, setSelectedOrderRow] = useState({});
+
   const fetchData = () => {
     Axios.post(apipoints.getOrderListByType, {
       type: props.type,
       Order_Status: props.orderStatus,
+      Order_Ref: props.Order_Ref,
     }).then((res) => {
       setOriginalOrderListData(res.data);
       setFilteredOrderListData(res.data);
       Axios.post(apipoints.getOrderListByTypeGroupedCustomer, {
         type: props.type,
         Order_Status: props.orderStatus,
+        Order_Ref: props.Order_Ref,
       }).then((res) => {
         // let arr = [{ label: "All", Cust_Code: "All" }];
 
@@ -64,29 +68,8 @@ export default function OrderList(props) {
     fetchData();
   }, []);
 
-  const handleCustomerChange = (e) => {
-    setSelectedCust(e);
-  };
-
-  const handleOrderStatusChange = (e) => {
-    setSelectedOrderStatus(e);
-  };
-
-  const handleOrderTypeChange = (e) => {
-    if (selectedOrderType === e.target.name) {
-      setSelectedOrderType("");
-    } else {
-      setSelectedOrderType(e.target.name);
-    }
-  };
-
-  const handleClearFilter = () => {
-    setSelectedCust([]);
-    setSelectedOrderStatus([]);
-    setSelectedOrderType("");
-  };
-
   useEffect(() => {
+    setSelectedOrderRow({});
     let filteredArr = OriginalOrderListData;
 
     if (
@@ -186,16 +169,51 @@ export default function OrderList(props) {
     setFilteredOrderListData(filteredArr);
   }, [selectedCust, selectedOrderStatus, selectedOrderType]);
 
+  const handleCustomerChange = (e) => {
+    setSelectedCust(e);
+  };
+
+  const handleOrderStatusChange = (e) => {
+    setSelectedOrderStatus(e);
+  };
+
+  const handleOrderTypeChange = (e) => {
+    if (selectedOrderType === e.target.name) {
+      setSelectedOrderType("");
+    } else {
+      setSelectedOrderType(e.target.name);
+    }
+  };
+
+  const handleClearFilter = () => {
+    setSelectedCust([]);
+    setSelectedOrderType("");
+
+    if (props.orderStatus === "All") {
+      setSelectedOrderStatus([]);
+    }
+  };
+
+  const handleOrderRowSelection = (rowVal) => {
+    // console.log("rowvallllll", rowVal);
+    if (rowVal.Order_No === selectedOrderRow.Order_No) {
+      setSelectedOrderRow({});
+    } else {
+      setSelectedOrderRow(rowVal);
+    }
+  };
+
   return (
     <>
       <div>
         <div className="row">
-          <h4 className="title">
+          <h4 className="title m-0">
             Order List : {props.type} - {props.orderStatus}
           </h4>
         </div>
         <div>
           <Header
+            type={props.type}
             orderStatus={props.orderStatus}
             CustData={CustData}
             OrderStatus={OrderStatus}
@@ -207,9 +225,14 @@ export default function OrderList(props) {
             handleOrderStatusChange={handleOrderStatusChange}
             handleOrderTypeChange={handleOrderTypeChange}
             handleClearFilter={handleClearFilter}
+            selectedOrderRow={selectedOrderRow}
           />
           <div className="p-1"></div>
-          <OLTable FilteredOrderListData={FilteredOrderListData} />
+          <OLTable
+            FilteredOrderListData={FilteredOrderListData}
+            selectedOrderRow={selectedOrderRow}
+            handleOrderRowSelection={handleOrderRowSelection}
+          />
         </div>
       </div>
       <div className="p-3"></div>

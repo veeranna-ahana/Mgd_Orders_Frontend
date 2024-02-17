@@ -20,7 +20,7 @@ export default function Header(props) {
           <div>
             <b>Search Order List</b>
             <div
-              className="p-1 row d-flex align-items-center"
+              className="p-1 row d-flex align-items-center justify-content-between"
               style={{
                 ...style.boxHeight,
                 border: "1px solid lightgray",
@@ -101,11 +101,11 @@ export default function Header(props) {
                   Clear Filter
                 </button>
               </div>
-              <div className="col-md-2">
+              {/* <div className="col-md-2">
                 <button className="button-style m-0" style={{ width: "100%" }}>
                   Close
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -121,15 +121,33 @@ export default function Header(props) {
               }}
             >
               <div className="col-md-12">
-                <button className="button-style m-0" style={{ width: "100%" }}>
-                  Open Order
-                </button>
+                <Link
+                  to={`/Orders/${props.type}/ScheduleCreationForm`}
+                  state={props.selectedOrderRow.Order_No}
+                >
+                  <button
+                    style={{ width: "100%" }}
+                    disabled={!props.selectedOrderRow.Order_No}
+                    className={
+                      !props.selectedOrderRow.Order_No
+                        ? "button-disabled button-style m-0"
+                        : "button-style m-0"
+                    }
+                  >
+                    Open Order
+                  </button>
+                </Link>
               </div>
               <div className="p-1"></div>
               <div className="col-md-12">
-                <button className="button-style m-0" style={{ width: "100%" }}>
-                  Exit
-                </button>
+                <Link to="/Orders">
+                  <button
+                    className="button-style m-0"
+                    style={{ width: "100%" }}
+                  >
+                    Close
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
