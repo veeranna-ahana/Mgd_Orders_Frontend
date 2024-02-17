@@ -9,6 +9,7 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 import ProductTable from "./Tables/ProductTable";
 import TaxTable from "./Tables/TaxTable";
 import Confirmation from "../Modals/Confirmation";
+import ModalProfarmaInvoice from "../../PDFs/ProfarmaInvoice/ModalProfarmaInvoice";
 
 export default function ProfarmaInvoiceForm(props) {
   const location = useLocation();
@@ -27,6 +28,9 @@ export default function ProfarmaInvoiceForm(props) {
 
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
+  const [printInvoiceModal, setPrintInvoiceModal] = useState(false);
+
+  const rowLimit = 20;
   const fetchData = () => {
     getRequest(endpoints.getTaxData, (taxData) => {
       setTaxDropdownData(taxData);
@@ -315,315 +319,177 @@ export default function ProfarmaInvoiceForm(props) {
   return (
     <>
       <div>
-        <h4 className="title m-0">Proforma Invoice Form</h4>
-      </div>
-      <div className="p-1"></div>
-      <div className="row border rounded">
-        <div className="col-md-3">
-          <label className="form-label m-0">Invoice Type</label>
-          <input
-            value={profarmaMainData?.InvType || ""}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Invoice No</label>
-          <input
-            value={profarmaMainData?.ProformaInvNo || ""}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Invoice Date</label>
-          <input
-            value={profarmaMainData?.Printable_ProformaDate || ""}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">PO No</label>
-          <input
-            value={profarmaMainData?.PO_No || ""}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-6 row p-0">
-          <div className="col-md-12">
-            <label className="form-label m-0">Customer Name</label>
-            <input
-              value={profarmaMainData?.Cust_Name || ""}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-
-          <div className="col-md-6">
-            <label className="form-label m-0">City</label>
-            <input
-              value={profarmaMainData?.Cust_Place || ""}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label m-0">State</label>
-            <input
-              value={profarmaMainData?.Cust_State || ""}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label m-0">PIN</label>
-            <input
-              value={profarmaMainData?.PIN_Code || ""}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-          <div className="col-md-6">
-            <label className="form-label m-0">GST No</label>
-            <input
-              value={profarmaMainData?.GSTNo || "Unregistered"}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-        </div>
-        <div className="col-md-6">
-          <label className="form-label m-0">Address</label>
-          <textarea
-            rows="6"
-            style={{ width: "100%" }}
-            value={profarmaMainData?.Cust_Address || ""}
-            disabled
-            className="input-disabled"
-          ></textarea>
-        </div>
-      </div>
-      <div className="p-1"></div>
-      <div className="row border rounded">
-        <div className="col-md-3">
-          <label className="form-label m-0">Net Total</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.Net_Total).toFixed(2)}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Discount</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.Discount)}
-            min={0}
-            // max={parseFloat(profarmaMainData?.Net_Total)}
-            name="Discount"
-            onChange={modifyInputs}
-            disabled={profarmaMainData?.ProformaInvNo}
-            className={profarmaMainData?.ProformaInvNo ? "input-disabled" : ""}
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Delivery Charges</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.Del_Chg)}
-            min={0}
-            name="Del_Chg"
-            onChange={modifyInputs}
-            disabled={profarmaMainData?.ProformaInvNo}
-            className={profarmaMainData?.ProformaInvNo ? "input-disabled" : ""}
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Tax Amount</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.TaxAmount).toFixed(2)}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Invoice Total</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.InvTotal).toFixed(2)}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Round Off</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.Round_Off).toFixed(2)}
-            disabled
-            className="input-disabled"
-          />
-        </div>
-        <div className="col-md-3">
-          <label className="form-label m-0">Grand Total</label>
-          <input
-            type="number"
-            value={parseFloat(profarmaMainData?.GrandTotal).toFixed(2)}
-            disabled
-            className="input-disabled"
-          />
+        <div>
+          <h4 className="title m-0">Proforma Invoice Form</h4>
         </div>
         <div className="p-1"></div>
-      </div>
-      <div className="row">
-        <div className="col-md-6 d-flex justify-content-between align-items-center">
-          <button
-            disabled={profarmaMainData?.ProformaInvNo}
-            className={
-              profarmaMainData?.ProformaInvNo
-                ? "button-style m-0 button-disabled"
-                : "button-style m-0"
-            }
-            onClick={saveInvoiceFunc}
-          >
-            Save Invoice
-          </button>
-          <button
-            disabled={profarmaMainData?.ProformaInvNo}
-            className={
-              profarmaMainData?.ProformaInvNo
-                ? "button-style m-0 button-disabled"
-                : "button-style m-0"
-            }
-            onClick={createInvoiceConfirmation}
-          >
-            Create Invoice
-          </button>
-          <button
-            disabled={!profarmaMainData?.ProformaInvNo}
-            className={
-              !profarmaMainData?.ProformaInvNo
-                ? "button-style m-0 button-disabled"
-                : "button-style m-0"
-            }
-          >
-            Print Copy
-          </button>
-        </div>
-        <div className="col-md-6 d-flex justify-content-between align-items-center">
-          <div>
-            <label className="form-label m-0">Assessable Value</label>
+        <div className="row border rounded">
+          <div className="col-md-3">
+            <label className="form-label m-0">Invoice Type</label>
             <input
-              type="number"
-              value={parseFloat(profarmaMainData?.AssessableValue).toFixed(2)}
+              value={profarmaMainData?.InvType || ""}
               disabled
               className="input-disabled"
             />
           </div>
-          <div>
-            <label className="form-label m-0">Select Taxes</label>
-            <select
-              id="taxDropdown"
-              style={{ fontSize: "inherit", width: "100%" }}
+          <div className="col-md-3">
+            <label className="form-label m-0">Invoice No</label>
+            <input
+              value={profarmaMainData?.ProformaInvNo || ""}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Invoice Date</label>
+            <input
+              value={profarmaMainData?.Printable_ProformaDate || ""}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">PO No</label>
+            <input
+              value={profarmaMainData?.PO_No || ""}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-6 row p-0">
+            <div className="col-md-12">
+              <label className="form-label m-0">Customer Name</label>
+              <input
+                value={profarmaMainData?.Cust_Name || ""}
+                disabled
+                className="input-disabled"
+              />
+            </div>
+
+            <div className="col-md-6">
+              <label className="form-label m-0">City</label>
+              <input
+                value={profarmaMainData?.Cust_Place || ""}
+                disabled
+                className="input-disabled"
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label m-0">State</label>
+              <input
+                value={profarmaMainData?.Cust_State || ""}
+                disabled
+                className="input-disabled"
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label m-0">PIN</label>
+              <input
+                value={profarmaMainData?.PIN_Code || ""}
+                disabled
+                className="input-disabled"
+              />
+            </div>
+            <div className="col-md-6">
+              <label className="form-label m-0">GST No</label>
+              <input
+                value={profarmaMainData?.GSTNo || "Unregistered"}
+                disabled
+                className="input-disabled"
+              />
+            </div>
+          </div>
+          <div className="col-md-6">
+            <label className="form-label m-0">Address</label>
+            <textarea
+              rows="6"
+              style={{ width: "100%" }}
+              value={profarmaMainData?.Cust_Address || ""}
+              disabled
+              className="input-disabled"
+            ></textarea>
+          </div>
+        </div>
+        <div className="p-1"></div>
+        <div className="row border rounded">
+          <div className="col-md-3">
+            <label className="form-label m-0">Net Total</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.Net_Total).toFixed(2)}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Discount</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.Discount)}
+              min={0}
+              // max={parseFloat(profarmaMainData?.Net_Total)}
+              name="Discount"
+              onChange={modifyInputs}
               disabled={profarmaMainData?.ProformaInvNo}
               className={
-                profarmaMainData?.ProformaInvNo
-                  ? "input-disabled ip-select mt-1"
-                  : "ip-select mt-1"
+                profarmaMainData?.ProformaInvNo ? "input-disabled" : ""
               }
-              onChange={(e) => {
-                const taxOn = taxDropdownData[e.target.value].TaxOn?.split(
-                  "("
-                )[0]
-                  .split(")")[0]
-                  .split("+");
-
-                let applicableTaxes = [];
-                let arr = [];
-
-                let totalTaxAmount = 0;
-
-                // console.log("taxOn", taxOn);
-                for (let i = 0; i < taxOn.length; i++) {
-                  const element = parseInt(taxOn[i]);
-                  if (element === 1) {
-                    // console.log("111", taxDropdownData[e.target.value]);
-                    applicableTaxes.push(taxDropdownData[e.target.value]);
-                  } else {
-                    // console.log("else", taxDropdownData);
-
-                    taxDropdownData
-                      .filter((obj) => parseInt(obj.TaxID) === element)
-                      .map((val, key) => applicableTaxes.push(val));
-                  }
-                }
-
-                // console.log("applicableTaxes", applicableTaxes);
-
-                for (let i = 0; i < applicableTaxes.length; i++) {
-                  const element = applicableTaxes[i];
-
-                  let taxableAmount = parseFloat(
-                    profarmaMainData?.AssessableValue || 0
-                  ).toFixed(2);
-
-                  let taxAmount = parseFloat(
-                    (taxableAmount * parseFloat(element.Tax_Percent)) / 100
-                  ).toFixed(2);
-
-                  const taxTableRow = {
-                    ProfarmaID: profarmaMainData.ProfarmaID,
-                    TaxID: element.TaxID,
-                    Tax_Name: element.TaxName,
-                    TaxOn: element.TaxOn,
-                    TaxableAmount: taxableAmount,
-                    TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
-                    TaxAmt: taxAmount,
-                  };
-
-                  arr.push(taxTableRow);
-                  totalTaxAmount =
-                    parseFloat(totalTaxAmount) + parseFloat(taxAmount);
-
-                  // console.log("taxTableRow", taxTableRow);
-                  // console.log("taxprofarma", profarmaTaxData);
-                  // if (profarmaTaxData.length > 0) {
-                  //   setProfarmaTaxData([...profarmaTaxData, taxTableRow]);
-                  // } else {
-                  //   setProfarmaTaxData([taxTableRow]);
-                  // }
-                }
-
-                let invTotal =
-                  parseFloat(profarmaMainData.Net_Total) -
-                  parseFloat(profarmaMainData.Discount) +
-                  parseFloat(profarmaMainData.Del_Chg) +
-                  parseFloat(totalTaxAmount);
-
-                let grandTotal = Math.round(invTotal);
-                setProfarmaTaxData(arr);
-                setProfarmaMainData({
-                  ...profarmaMainData,
-                  TaxAmount: totalTaxAmount,
-                  InvTotal: invTotal,
-                  Round_Off: grandTotal - invTotal,
-                  GrandTotal: grandTotal,
-                });
-              }}
-            >
-              <option value="none" selected disabled hidden>
-                Select an Option
-              </option>
-              {taxDropdownData?.map((taxVal, key) => (
-                <option value={key}>{taxVal.TaxName}</option>
-              ))}
-            </select>
+            />
           </div>
-          <div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Delivery Charges</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.Del_Chg)}
+              min={0}
+              name="Del_Chg"
+              onChange={modifyInputs}
+              disabled={profarmaMainData?.ProformaInvNo}
+              className={
+                profarmaMainData?.ProformaInvNo ? "input-disabled" : ""
+              }
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Tax Amount</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.TaxAmount).toFixed(2)}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Invoice Total</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.InvTotal).toFixed(2)}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Round Off</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.Round_Off).toFixed(2)}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0">Grand Total</label>
+            <input
+              type="number"
+              value={parseFloat(profarmaMainData?.GrandTotal).toFixed(2)}
+              disabled
+              className="input-disabled"
+            />
+          </div>
+          <div className="p-1"></div>
+        </div>
+        <div className="row">
+          <div className="col-md-6 d-flex justify-content-between align-items-center">
             <button
               disabled={profarmaMainData?.ProformaInvNo}
               className={
@@ -631,33 +497,188 @@ export default function ProfarmaInvoiceForm(props) {
                   ? "button-style m-0 button-disabled"
                   : "button-style m-0"
               }
-              onClick={deleteTaxes}
+              onClick={saveInvoiceFunc}
             >
-              Delete Taxes
+              Save Invoice
+            </button>
+            <button
+              disabled={profarmaMainData?.ProformaInvNo}
+              className={
+                profarmaMainData?.ProformaInvNo
+                  ? "button-style m-0 button-disabled"
+                  : "button-style m-0"
+              }
+              onClick={createInvoiceConfirmation}
+            >
+              Create Invoice
+            </button>
+            <button
+              disabled={!profarmaMainData?.ProformaInvNo}
+              className={
+                !profarmaMainData?.ProformaInvNo
+                  ? "button-style m-0 button-disabled"
+                  : "button-style m-0"
+              }
+              onClick={(e) => {
+                setPrintInvoiceModal(true);
+              }}
+            >
+              Print Copy
             </button>
           </div>
-        </div>
-      </div>
-      <div className="p-1"></div>
-      <div className="row">
-        <div className="col-md-6">
-          <ProductTable
-            profarmaMainData={profarmaMainData}
-            profarmaDetailsData={profarmaDetailsData}
-            changeQTY={changeQTY}
-          />
-        </div>
-        <div className="col-md-6">
-          <TaxTable profarmaTaxData={profarmaTaxData} />
-        </div>
-      </div>
-      <div className="p-2"></div>
+          <div className="col-md-6 d-flex justify-content-between align-items-center">
+            <div>
+              <label className="form-label m-0">Assessable Value</label>
+              <input
+                type="number"
+                value={parseFloat(profarmaMainData?.AssessableValue).toFixed(2)}
+                disabled
+                className="input-disabled"
+              />
+            </div>
+            <div>
+              <label className="form-label m-0">Select Taxes</label>
+              <select
+                id="taxDropdown"
+                style={{ fontSize: "inherit", width: "100%" }}
+                disabled={profarmaMainData?.ProformaInvNo}
+                className={
+                  profarmaMainData?.ProformaInvNo
+                    ? "input-disabled ip-select mt-1"
+                    : "ip-select mt-1"
+                }
+                onChange={(e) => {
+                  const taxOn = taxDropdownData[e.target.value].TaxOn?.split(
+                    "("
+                  )[0]
+                    .split(")")[0]
+                    .split("+");
 
+                  let applicableTaxes = [];
+                  let arr = [];
+
+                  let totalTaxAmount = 0;
+
+                  // console.log("taxOn", taxOn);
+                  for (let i = 0; i < taxOn.length; i++) {
+                    const element = parseInt(taxOn[i]);
+                    if (element === 1) {
+                      // console.log("111", taxDropdownData[e.target.value]);
+                      applicableTaxes.push(taxDropdownData[e.target.value]);
+                    } else {
+                      // console.log("else", taxDropdownData);
+
+                      taxDropdownData
+                        .filter((obj) => parseInt(obj.TaxID) === element)
+                        .map((val, key) => applicableTaxes.push(val));
+                    }
+                  }
+
+                  // console.log("applicableTaxes", applicableTaxes);
+
+                  for (let i = 0; i < applicableTaxes.length; i++) {
+                    const element = applicableTaxes[i];
+
+                    let taxableAmount = parseFloat(
+                      profarmaMainData?.AssessableValue || 0
+                    ).toFixed(2);
+
+                    let taxAmount = parseFloat(
+                      (taxableAmount * parseFloat(element.Tax_Percent)) / 100
+                    ).toFixed(2);
+
+                    const taxTableRow = {
+                      ProfarmaID: profarmaMainData.ProfarmaID,
+                      TaxID: element.TaxID,
+                      Tax_Name: element.TaxName,
+                      TaxOn: element.TaxOn,
+                      TaxableAmount: taxableAmount,
+                      TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
+                      TaxAmt: taxAmount,
+                    };
+
+                    arr.push(taxTableRow);
+                    totalTaxAmount =
+                      parseFloat(totalTaxAmount) + parseFloat(taxAmount);
+
+                    // console.log("taxTableRow", taxTableRow);
+                    // console.log("taxprofarma", profarmaTaxData);
+                    // if (profarmaTaxData.length > 0) {
+                    //   setProfarmaTaxData([...profarmaTaxData, taxTableRow]);
+                    // } else {
+                    //   setProfarmaTaxData([taxTableRow]);
+                    // }
+                  }
+
+                  let invTotal =
+                    parseFloat(profarmaMainData.Net_Total) -
+                    parseFloat(profarmaMainData.Discount) +
+                    parseFloat(profarmaMainData.Del_Chg) +
+                    parseFloat(totalTaxAmount);
+
+                  let grandTotal = Math.round(invTotal);
+                  setProfarmaTaxData(arr);
+                  setProfarmaMainData({
+                    ...profarmaMainData,
+                    TaxAmount: totalTaxAmount,
+                    InvTotal: invTotal,
+                    Round_Off: grandTotal - invTotal,
+                    GrandTotal: grandTotal,
+                  });
+                }}
+              >
+                <option value="none" selected disabled hidden>
+                  Select an Option
+                </option>
+                {taxDropdownData?.map((taxVal, key) => (
+                  <option value={key}>{taxVal.TaxName}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <button
+                disabled={profarmaMainData?.ProformaInvNo}
+                className={
+                  profarmaMainData?.ProformaInvNo
+                    ? "button-style m-0 button-disabled"
+                    : "button-style m-0"
+                }
+                onClick={deleteTaxes}
+              >
+                Delete Taxes
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="p-1"></div>
+        <div className="row">
+          <div className="col-md-6">
+            <ProductTable
+              profarmaMainData={profarmaMainData}
+              profarmaDetailsData={profarmaDetailsData}
+              changeQTY={changeQTY}
+            />
+          </div>
+          <div className="col-md-6">
+            <TaxTable profarmaTaxData={profarmaTaxData} />
+          </div>
+        </div>
+        <div className="p-2"></div>
+      </div>
       <Confirmation
         setConfirmModalOpen={setConfirmModalOpen}
         confirmModalOpen={confirmModalOpen}
         message={"Are you sure to create the Profarma Invoice"}
         yesClickedFunc={createInvoice}
+      />
+
+      <ModalProfarmaInvoice
+        printInvoiceModal={printInvoiceModal}
+        setPrintInvoiceModal={setPrintInvoiceModal}
+        rowLimit={rowLimit}
+        profarmaMainData={profarmaMainData}
+        profarmaDetailsData={profarmaDetailsData}
+        profarmaTaxData={profarmaTaxData}
       />
     </>
   );
