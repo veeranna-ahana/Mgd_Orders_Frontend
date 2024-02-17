@@ -151,8 +151,7 @@ a {
 .button-disabled {
   color: white !important;
   background-color: rgb(173, 173, 173) !important;
-
-  cursor: no-drop;
+  cursor: no-drop !important;
 }
 
 .input-disabled {

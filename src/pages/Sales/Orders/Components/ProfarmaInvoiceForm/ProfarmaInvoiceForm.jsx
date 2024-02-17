@@ -423,8 +423,8 @@ export default function ProfarmaInvoiceForm(props) {
             // max={parseFloat(profarmaMainData?.Net_Total)}
             name="Discount"
             onChange={modifyInputs}
-            // disabled
-            // className="input-disabled"
+            disabled={profarmaMainData?.ProformaInvNo}
+            className={profarmaMainData?.ProformaInvNo ? "input-disabled" : ""}
           />
         </div>
         <div className="col-md-3">
@@ -435,8 +435,8 @@ export default function ProfarmaInvoiceForm(props) {
             min={0}
             name="Del_Chg"
             onChange={modifyInputs}
-            // disabled
-            // className="input-disabled"
+            disabled={profarmaMainData?.ProformaInvNo}
+            className={profarmaMainData?.ProformaInvNo ? "input-disabled" : ""}
           />
         </div>
         <div className="col-md-3">
@@ -479,13 +479,38 @@ export default function ProfarmaInvoiceForm(props) {
       </div>
       <div className="row">
         <div className="col-md-6 d-flex justify-content-between align-items-center">
-          <button className="button-style m-0" onClick={saveInvoiceFunc}>
+          <button
+            disabled={profarmaMainData?.ProformaInvNo}
+            className={
+              profarmaMainData?.ProformaInvNo
+                ? "button-style m-0 button-disabled"
+                : "button-style m-0"
+            }
+            onClick={saveInvoiceFunc}
+          >
             Save Invoice
           </button>
-          <button className="button-style m-0" onClick={createInvoiceFirst}>
+          <button
+            disabled={profarmaMainData?.ProformaInvNo}
+            className={
+              profarmaMainData?.ProformaInvNo
+                ? "button-style m-0 button-disabled"
+                : "button-style m-0"
+            }
+            onClick={createInvoiceFirst}
+          >
             Create Invoice
           </button>
-          <button className="button-style m-0">Print Copy</button>
+          <button
+            disabled={!profarmaMainData?.ProformaInvNo}
+            className={
+              !profarmaMainData?.ProformaInvNo
+                ? "button-style m-0 button-disabled"
+                : "button-style m-0"
+            }
+          >
+            Print Copy
+          </button>
         </div>
         <div className="col-md-6 d-flex justify-content-between align-items-center">
           <div>
@@ -502,7 +527,12 @@ export default function ProfarmaInvoiceForm(props) {
             <select
               id="taxDropdown"
               style={{ fontSize: "inherit", width: "100%" }}
-              className="ip-select mt-1"
+              disabled={profarmaMainData?.ProformaInvNo}
+              className={
+                profarmaMainData?.ProformaInvNo
+                  ? "input-disabled ip-select mt-1"
+                  : "ip-select mt-1"
+              }
               onChange={(e) => {
                 const taxOn = taxDropdownData[e.target.value].TaxOn?.split(
                   "("
@@ -592,7 +622,15 @@ export default function ProfarmaInvoiceForm(props) {
             </select>
           </div>
           <div>
-            <button className="button-style m-0" onClick={deleteTaxes}>
+            <button
+              disabled={profarmaMainData?.ProformaInvNo}
+              className={
+                profarmaMainData?.ProformaInvNo
+                  ? "button-style m-0 button-disabled"
+                  : "button-style m-0"
+              }
+              onClick={deleteTaxes}
+            >
               Delete Taxes
             </button>
           </div>
@@ -602,6 +640,7 @@ export default function ProfarmaInvoiceForm(props) {
       <div className="row">
         <div className="col-md-6">
           <ProductTable
+            profarmaMainData={profarmaMainData}
             profarmaDetailsData={profarmaDetailsData}
             changeQTY={changeQTY}
           />
