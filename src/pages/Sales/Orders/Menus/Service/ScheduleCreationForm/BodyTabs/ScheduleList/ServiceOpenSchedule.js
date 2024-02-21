@@ -4,13 +4,14 @@ import { Link, useLocation } from "react-router-dom";
 import AlertModal from "../../../Components/Alert";
 import { postRequest } from "../../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../../api/constants";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
+import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state || []; // Get DwgNameList from location state
 
-  console.log("DwgNameList is", DwgNameList[0]);
+  //  console.log("DwgNameList is", DwgNameList[0]);
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
@@ -20,14 +21,13 @@ function ServiceOpenSchedule() {
     setNewState(DwgNameList);
   }, [DwgNameList]); // Dependency array containing DwgNameList
 
-
   let [schedule, setSchedule] = useState(false);
   let [profileOrder1, setProfileOrder1] = useState(false);
   let [profileOrder2, setProfileOrder2] = useState(false);
   let [fixtureOrder1, setFixtureOrder1] = useState(false);
   let [fixtureOrder2, setFixtureOrder2] = useState(false);
 
-  const[openTask,setOpenTask]=useState(false);
+  const [openTask, setOpenTask] = useState(false);
 
   const openSchedule = (e) => {
     e.preventDefault();
@@ -84,6 +84,9 @@ function ServiceOpenSchedule() {
   };
 
   const [formdata, setFormdata] = useState({});
+  const [PNAndInvRegisterData, setPNAndInvRegisterData] = useState([]);
+  const [PNAndInvDetailsData, setPNAndInvDetailsData] = useState([]);
+
   useEffect(() => {
     postRequest(
       endpoints.getScheduleListgetFormDetails,
@@ -94,11 +97,24 @@ function ServiceOpenSchedule() {
       (response) => {
         // console.log("response is", response);
         setFormdata(response);
+        postRequest(
+          endpoints.getAllPNAndInvRegisterbyOrderNo,
+          { Order_No: response[0]?.Order_No },
+          (PNAndInvData) => {
+            // console.log("PNAndInvData is", PNAndInvData);
+            setPNAndInvRegisterData(PNAndInvData.registerData);
+            setPNAndInvDetailsData(PNAndInvData.detailsData);
+            // setTaskMaterialData(response);
+          }
+        );
       }
     );
   }, [DwgNameList[0]?.ScheduleId]);
 
-  console.log(formdata);
+  //  console.log("formdata......", formdata);
+
+  // console.log("PNAndInvRegisterData", PNAndInvRegisterData);
+  // console.log("PNAndInvDetailsData", PNAndInvDetailsData);
 
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
@@ -107,7 +123,7 @@ function ServiceOpenSchedule() {
       endpoints.getScheduleListTaskandMaterial,
       { TaskNo: DwgNameList[0]?.TaskNo },
       (response) => {
-        console.log("response is",response);
+        //  console.log("response is", response);
         setTaskMaterialData(response);
       }
     );
@@ -134,96 +150,91 @@ function ServiceOpenSchedule() {
     setScheduleDetailsRow(list);
   };
 
-    //Default first row select
-    useEffect(() => {
-      if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-        onClickofScheduleDtails(newState[0], 0); // Select the first row
-      }
-    }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  //Default first row select
+  useEffect(() => {
+    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+      onClickofScheduleDtails(newState[0], 0); // Select the first row
+    }
+  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  console.log(scheduleDetailsRow);
+  //  console.log(scheduleDetailsRow);
 
   //Onclick of ShortClose
-  const onClickShortClose=()=>{
+  const onClickShortClose = () => {
     postRequest(
       endpoints.onClickShortClose,
-      {scheduleDetailsRow},
+      { scheduleDetailsRow },
       (response) => {
-        console.log("response is",response);
+        //  console.log("response is", response);
       }
     );
-  }
+  };
 
   //Onclick save Button
-  const onClickSave=()=>{
-    postRequest(
-      endpoints.onClickSave,
-      { scheduleDetailsRow},
-      (response) => {
-        toast.success('Saved', {
-          position: toast.POSITION.TOP_CENTER
-        });
-      }
-    );
-  }
+  const onClickSave = () => {
+    postRequest(endpoints.onClickSave, { scheduleDetailsRow }, (response) => {
+      toast.success("Saved", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    });
+  };
 
   //Onclick Suspend
-  const OnClickSuspend=()=>{
+  const OnClickSuspend = () => {
     postRequest(
       endpoints.onClickSuspend,
-      { scheduleDetailsRow},
+      { scheduleDetailsRow },
       (response) => {
         // console.log("response",response.message)
-        if(response.message==='Clear Order Suspension of the order before trying to clear it for schedule')
-        {
-          toast.success('Clear Order Suspension of the order before trying to clear it for schedule', {
-            position: toast.POSITION.TOP_CENTER
-          });
-        }
-        else{
-          toast.success('Suspended', {
-            position: toast.POSITION.TOP_CENTER
+        if (
+          response.message ===
+          "Clear Order Suspension of the order before trying to clear it for schedule"
+        ) {
+          toast.success(
+            "Clear Order Suspension of the order before trying to clear it for schedule",
+            {
+              position: toast.POSITION.TOP_CENTER,
+            }
+          );
+        } else {
+          toast.success("Suspended", {
+            position: toast.POSITION.TOP_CENTER,
           });
         }
       }
     );
-  }
+  };
 
   //Onclick of Cancel
-  const onClickCancel=()=>{
-    postRequest(
-      endpoints.onClickCancel,
-      { scheduleDetailsRow},
-      (response) => {
-        // console.log("response cancel is",response.message)
-        if(response.message==='Cannot Cancel Schedules Once Programmed'){
-          toast.error('Cannot Cancel Schedules Once Programmed', {
-            position: toast.POSITION.TOP_CENTER
-          });
-        }
-        else{
-          toast.error('Schedules cancelled successfully', {
-            position: toast.POSITION.TOP_CENTER
-          });
-        }
+  const onClickCancel = () => {
+    postRequest(endpoints.onClickCancel, { scheduleDetailsRow }, (response) => {
+      // console.log("response cancel is",response.message)
+      if (response.message === "Cannot Cancel Schedules Once Programmed") {
+        toast.error("Cannot Cancel Schedules Once Programmed", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        toast.error("Schedules cancelled successfully", {
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
-    );
-  }
+    });
+  };
 
-  const onClickScheduled=()=>{
+  const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
-      { scheduleDetailsRow,formdata},
+      { scheduleDetailsRow, formdata },
       (response) => {
         // console.log("response of Scheduled is",response);
         toast.success(response.message, {
-          position: toast.POSITION.TOP_CENTER
-        })
+          position: toast.POSITION.TOP_CENTER,
+        });
       }
     );
-  }
+  };
 
-  console.log(scheduleDetailsRow)
+  //  console.log(scheduleDetailsRow);
 
   return (
     <div>
@@ -296,11 +307,17 @@ function ServiceOpenSchedule() {
         </div>
 
         <div className="col-md-8 sm-12 mt-5">
-          <button className="button-style" onClick={OnClickSuspend}>Suspend</button>
+          <button className="button-style" onClick={OnClickSuspend}>
+            Suspend
+          </button>
 
-          <button className="button-style" onClick={onClickShortClose}>ShortClose</button>
+          <button className="button-style" onClick={onClickShortClose}>
+            ShortClose
+          </button>
 
-          <button className="button-style" onClick={onClickCancel}>Cancel</button>
+          <button className="button-style" onClick={onClickCancel}>
+            Cancel
+          </button>
 
           <Link to="/Orders/Service/ScheduleCreationForm">
             <button className="button-style">Close</button>
@@ -318,7 +335,9 @@ function ServiceOpenSchedule() {
           <button className="button-style">Task</button>
         </div>
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={onClickSave}>Save</button>
+          <button className="button-style" onClick={onClickSave}>
+            Save
+          </button>
         </div>
         <div className="col-md-2 col-sm-3">
           <button className="button-style">Check Status</button>
@@ -701,91 +720,10 @@ function ServiceOpenSchedule() {
           </Tab> */}
 
           <Tab eventKey="Packing Notes/Invoices" title="Packing Notes/Invoices">
-            <button className="button-style mt-3">Show Invoice</button>
-            <div className="row mt-2">
-              <div className="col-md-5 mt-2" style={{ overflowY: "scroll" }}>
-                <Table
-                  striped
-                  className="table-data border mt-2"
-                  style={{
-                    border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
-                  }}
-                >
-                  <thead className="tableHeaderBGColor">
-                    <tr>
-                      <th style={{ whiteSpace: "nowrap" }}>PN No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>PN Date</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Inv No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Inv Date</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Grand Total</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Received</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Total_Wt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="tablebody"></tbody>
-                </Table>
-              </div>
-
-              <div className="col-md-7 mt-2" style={{ overflowY: "scroll" }}>
-                <Table
-                  striped
-                  className="table-data border mt-2"
-                  style={{
-                    border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
-                  }}
-                >
-                  <thead className="tableHeaderBGColor">
-                    <tr>
-                      <th style={{ whiteSpace: "nowrap" }}>Drawing Name</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Material</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Quantity</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mtrl Value</th>
-                      <th style={{ whiteSpace: "nowrap" }}>JW Value</th>
-                      <th style={{ whiteSpace: "nowrap" }}>
-                        Draft_dc_inv_Details
-                      </th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Inv_No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Inv_Srl</th>
-                      <th style={{ whiteSpace: "nowrap" }}>ScheduleID</th>
-                      <th style={{ whiteSpace: "nowrap" }}>
-                        OrderSchDetailsID
-                      </th>
-                      <th style={{ whiteSpace: "nowrap" }}>Cust_Code</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Dwg_Code</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Dwg_No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mtrl</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Material</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Qty</th>
-                      <th style={{ whiteSpace: "nowrap" }}>QtyReturned</th>
-                      <th style={{ whiteSpace: "nowrap" }}>UOM</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Unit_Wt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Srl_Wt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>WtReturned</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Unit Rate</th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Srl_Amt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Excise_CL_no</th>
-                      <th style={{ whiteSpace: "nowrap" }}>SrlType</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mtrl_rate</th>
-                      <th style={{ whiteSpace: "nowrap" }}>JW_Rate</th>
-                      <th style={{ whiteSpace: "nowrap" }}>PackingLevel</th>
-                      <th style={{ whiteSpace: "nowrap" }}>InspLevel</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mprocess</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Operation</th>
-                      <th style={{ whiteSpace: "nowrap" }}>TotalWeight</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Desp Status</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Total Amount</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Selected</th>
-                    </tr>
-                  </thead>
-                  <tbody className="tablebody"></tbody>
-                </Table>
-              </div>
-            </div>
+            <PackingNoteAndInvoice
+              PNAndInvRegisterData={PNAndInvRegisterData}
+              PNAndInvDetailsData={PNAndInvDetailsData}
+            />
           </Tab>
         </Tabs>
       </div>
