@@ -98,6 +98,7 @@ import ProfileScheduleCreationForm from "./pages/Sales/Orders/Menus/Profile/Sche
 import { QuotationProvider } from "./context/QuotationContext";
 import { OrderProvider } from "./context/OrderContext";
 import ServiceOpenSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
+import FindProOrder from "./pages/Sales/Orders/Menus/Profile/Find Order/FindOrder";
 function App() {
   return (
     <BrowserRouter>
@@ -116,7 +117,7 @@ function App() {
                 <Route path="Profile">
                   <Route index={true} />
                   <Route path="NewOrder" element={<ProfileNewOrder />} />
-                  <Route path="FindOrder" element={<FindOrder />} />
+                  <Route path="FindOrder" element={<FindProOrder />} />
                   <Route
                     path="ScheduleCreationForm"
                     element={<ProfileScheduleCreationForm />}

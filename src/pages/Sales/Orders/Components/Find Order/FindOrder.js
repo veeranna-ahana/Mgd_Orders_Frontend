@@ -14,14 +14,14 @@ export default function FindOrder(props) {
         endpoints.getOrderDataforFindOrder,
         { ordtype: props.Type },
         (FindOrderData) => {
-          console.log(FindOrderData);
+          //console.log(FindOrderData);
           setorderNoData(FindOrderData);
         }
       );
     }
     fetchData();
   }, []);
-  console.log("orderNoData", orderNoData);
+  //console.log("orderNoData", orderNoData);
 
   return (
     <div>
@@ -45,7 +45,7 @@ export default function FindOrder(props) {
                 placeholder="Select ..."
                 onChange={(selected) => {
                   // Handle the selected item
-                  console.log("Selected order No", selected[0]?.value);
+                  //console.log("Selected order No", selected[0]?.value);
                   setSelectedorderNo(selected[0]?.value);
                 }}
               />
@@ -55,7 +55,16 @@ export default function FindOrder(props) {
           </div>
           <div className="col-md-2 sm-12 mt-3">
             <Link
-              to={`/Orders/Service/ScheduleCreationForm`}
+              // to={`/Orders/Service/ScheduleCreationForm`}
+              to={
+                props.Type === "Profile"
+                  ? `/Orders/Profile/ScheduleCreationForm`
+                  : props.Type === "Service"
+                  ? `/Orders/Service/ScheduleCreationForm`
+                  : props.Type === "Fabrication"
+                  ? `/Orders/Fabrication/ScheduleCreationForm`
+                  : null
+              }
               state={selectedorderNo}
             >
               <button
