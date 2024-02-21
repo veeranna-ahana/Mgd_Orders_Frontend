@@ -31,10 +31,10 @@ export default function ScheduleCreationForm(props) {
   const [BomData, setBomData] = useState([]);
   const [findOldpart, setfindOldpart] = useState();
 
-  // ////console.log("order no", orderNo);
-  // ////console.log("OrderCustData.Cust_Code", OrderCustData.Cust_Code);
+  const [profarmaInvMain, setProfarmaInvMain] = useState([]);
+  const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
 
-  //////console.log("props", props.Type);
+  const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchData = () => {
     postRequest(
@@ -72,41 +72,37 @@ export default function ScheduleCreationForm(props) {
         );
       }
     );
-    // postRequest(
-    //   endpoints.PostNewSrlData,
-    //   { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
-    //   (ordrdtlsdata) => {
-    //     // ////console.log("ordrdtlsdata", ordrdtlsdata);
-    //     setOrdrDetailsData(ordrdtlsdata);
-    //   }
-    // );
+    postRequest(
+      endpoints.getProfarmaMain,
+      { OrderNo: orderNo },
+      (profarmaMainData) => {
+        // console.log("profarmaMainData", profarmaMainData);
 
-    // postRequest(
-    //   endpoints.GetBomData,
-    //   { custcode: OrderCustData.Cust_Code },
-    //   (bomdata) => {
-    //     //console.log("bomdata......", bomdata);
-    //     // setBomData(bomdata);
-    //   }
-    // );
+        setProfarmaInvMain(profarmaMainData);
+        // console.log("ordrdtlsdata", ordrdtlsdata);
+        // setOrdrDetailsData(ordrdtlsdata);
+      }
+    );
+    postRequest(
+      endpoints.getProfarmaDetails,
+      { OrderNo: orderNo },
+      (profarmaDetailsData) => {
+        // console.log("profarmaDetailsData", profarmaDetailsData);
 
-    // postRequest(
-    //   endpoints.GetBomData,
-    //   { custcode: OrderCustData.Cust_Code },
-    //   (bomdata) => {
-    //     //console.log("bomdata......", bomdata);
-    //     setBomData(bomdata);
-    //   }
-    // );
+        setProfarmaInvDetails(profarmaDetailsData);
+        // console.log("ordrdtlsdata", ordrdtlsdata);
+        // setOrdrDetailsData(ordrdtlsdata);
+      }
+    );
+
+    setSelectedItems([]);
   };
 
-  ////console.log("OrdrDetailsData", OrdrDetailsData);
+  // console.log("OrdrDetailsData", OrdrDetailsData);
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  const [selectedItems, setSelectedItems] = useState([]);
 
   const selectItem = (OrdrDetailsItem) => {
     const isSelected = selectedItems.includes(OrdrDetailsItem);
@@ -208,10 +204,20 @@ export default function ScheduleCreationForm(props) {
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
-              <ScheduleList OrderData={OrderData} />
+              <ScheduleList
+                OrderData={OrderData}
+                OrderCustData={OrderCustData}
+              />
             </Tab>
-            <Tab eventKey="profarmaInvoiceList" title="Profarma Invoice List">
-              <ProfarmaInvoiceList OrderData={OrderData} />
+            <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">
+              <ProfarmaInvoiceList
+                OrderData={OrderData}
+                OrderCustData={OrderCustData}
+                selectedItems={selectedItems}
+                profarmaInvMain={profarmaInvMain}
+                profarmaInvDetails={profarmaInvDetails}
+                fetchData={fetchData}
+              />
             </Tab>
             {props.Type === "Profile" ? (
               <Tab eventKey="materialPlanner" title="Material Planner">

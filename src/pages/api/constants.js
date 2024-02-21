@@ -36,6 +36,19 @@ export const endpoints = {
   LoadArrival: `${API}/OrderDetails/LoadArrival`,
   LoadArrival2: `${API}/OrderDetails/LoadArrival2`,
 
+  // profarma inv list...............
+  getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
+  getProfarmaDetails: `${API}/profarmaInvList/getProfarmaDetails`,
+  postCreateInvoice: `${API}/profarmaInvList/postCreateInvoice`,
+  postDeleteInvoice: `${API}/profarmaInvList/postDeleteInvoice`,
+  // profarma inv form
+  getTaxData: `${API}/profarmaInvForm/getTaxData`,
+  getProfarmaFormMain: `${API}/profarmaInvForm/getProfarmaFormMain`,
+  getProfarmaFormDetails: `${API}/profarmaInvForm/getProfarmaFormDetails`,
+  getProfarmaFormTaxes: `${API}/profarmaInvForm/getProfarmaFormTaxes`,
+  postSaveInvoice: `${API}/profarmaInvForm/postSaveInvoice`,
+  postInvFormCreateInvoice: `${API}/profarmaInvForm/postInvFormCreateInvoice`,
+
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,
   getCustomerDets: `${API}/customers/getcustomer`,
@@ -264,4 +277,23 @@ export const endpoints = {
   //Paking And Invoice
   getData: `${API}/gettest/getdata`,
   getCustomerData: `${API}/schedulelist/getallcustomers`,
+
+
+  //ScheduleList Service
+  getScheduleListData:`${API}/ScheduleList/getScheduleListData`,
+  getScheduleListDwgData:`${API}/ScheduleList/getDwgTableData`,
+  getScheduleListTaskandMaterial:`${API}/ScheduleList/getTaskandMterial`,
+
+  //OpenSchedule Srvice
+  getScheduleListgetFormDetails:`${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose:`${API}/ScheduleList/shortClose`,
+  onClickSave:`${API}/ScheduleList/save`,
+  onClickSuspend:`${API}/ScheduleList/suspendButton`,
+  onClickCancel:`${API}/ScheduleList/onClickCancel`,
+  onClickScheduled:`${API}/ScheduleList/ScheduleButton`,
+
+  // running no
+  getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
+  updateRunningNoBySrlType: `${API}/runningNo/updateRunningNoBySrlType`,
+
 };

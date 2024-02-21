@@ -33,6 +33,7 @@ import ProfileDispatched from "./pages/Sales/Orders/Menus/Profile/OrderList/Prof
 import ProfileAll from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileAll";
 
 import ProfamaInvoiceForm from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
+import ProfarmaInvoiceForm from "./pages/Sales/Orders/Components/ProfarmaInvoiceForm/ProfarmaInvoiceForm";
 import NCProgram from "./pages/Sales/Orders/Menus/Profile/FindSchedule/NCProgram";
 import EditDXF from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
 import FixturesReady from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesReady";
@@ -176,6 +177,11 @@ function App() {
                     <Route path="Ready" element={<InternalReady />} />
                     <Route path="HandedOver" element={<InternalHandedOver />} />
                   </Route>
+
+                  <Route
+                    path="ProfarmaInvoiceForm"
+                    element={<ProfarmaInvoiceForm />}
+                  />
                 </Route>
 
                 <Route path="Service">
@@ -216,6 +222,11 @@ function App() {
                   />
                   <Route path="ImportQtn" element={<ServiceImportQtn />} />
                   <Route path="EditDxf" element={<ServiceEditDxf />} />
+
+                  <Route
+                    path="ProfarmaInvoiceForm"
+                    element={<ProfarmaInvoiceForm />}
+                  />
                 </Route>
 
                 <Route path="Fabrication">
@@ -252,6 +263,11 @@ function App() {
                   <Route path="OrderSchedule" element={<FabOrderSchedule />} />
                   <Route path="ImportQtn" element={<FabImportQtn />} />
                   <Route path="EditDxf" element={<FabEditDxf />} />
+
+                  <Route
+                    path="ProfarmaInvoiceForm"
+                    element={<ProfarmaInvoiceForm />}
+                  />
                 </Route>
 
                 <Route path="CombinedSchedules">
