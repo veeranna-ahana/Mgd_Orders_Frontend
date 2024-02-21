@@ -25,10 +25,16 @@ export const endpoints = {
   getOrderListData: `${API}/order/getorderlistdata`,
   getOrderDetailsByOrdrNoAndType: `${API}/order/getOrderDetailsByOrdrNoAndType`,
 
-  //-----------------------------------------
+  //------------------veeranna-----------------------
   getOrderDataforFindOrder: `${API}/order/getOrderDataforFindOrder`,
   PostNewSrlData: `${API}/order/postnewsrldata`,
-  InsertNewSrlData: `${API}/order/insertnewsrldata`,
+  InsertNewSrlData: `${API}/OrderDetails/insertnewsrldata`,
+  OrderDetailsTest: `${API}/OrderDetails/test`,
+  GetBomData: `${API}/OrderDetails/getbomdata`,
+  GetFindOldpartData: `${API}/OrderDetails/getfindoldpartdata`,
+  loadStockPosition: `${API}/OrderDetails/loadStockPosition`,
+  LoadArrival: `${API}/OrderDetails/LoadArrival`,
+  LoadArrival2: `${API}/OrderDetails/LoadArrival2`,
 
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
