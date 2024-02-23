@@ -287,6 +287,14 @@ export const endpoints = {
 
   // packingNote and Invoice
   getAllPNAndInvRegisterbyOrderNo: `${API}/orderPackingNoteAndInvoice/getAllPNAndInvRegisterbyOrderNo`,
+  aboutInvoicePN: `${API}/orderPackingNoteAndInvoice/aboutInvoicePN`,
+  getSetRateConsumerData: `${API}/orderPackingNoteAndInvoice/getSetRateConsumerData`,
+  getPnInvTaxData: `${API}/orderPackingNoteAndInvoice/getTaxData`,
+  getAllStates: `${API}/orderPackingNoteAndInvoice/getAllStates`,
+  cancelPN: `${API}/orderPackingNoteAndInvoice/cancelPN`,
+  updatePNProfileData: `${API}/orderPackingNoteAndInvoice/updatePNProfileData`,
+  createInvoice: `${API}/orderPackingNoteAndInvoice/createInvoice`,
+  updateRatesPN: `${API}/orderPackingNoteAndInvoice/updateRatesPN`,
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
