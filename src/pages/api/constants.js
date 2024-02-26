@@ -291,6 +291,19 @@ export const endpoints = {
   onClickSuspend:`${API}/ScheduleList/suspendButton`,
   onClickCancel:`${API}/ScheduleList/onClickCancel`,
   onClickScheduled:`${API}/ScheduleList/ScheduleButton`,
+  getSalesContact:`${API}/ScheduleList/getSalesContact`,
+  onClickTask:`${API}/ScheduleList/taskOnclick`,
+
+  
+  //NCProgram Button
+  onClickNCProgram:`${API}/NCProgram/getFormData`,
+  getMachineList:`${API}/NCProgram/getMachines`,
+  addNCProgram:`${API}/NCProgram/addProgram`,
+  sendMtrlIssue:`${API}/NCProgram/sendMTrlIssue`,
+  DeleteNCProgram:`${API}/NCProgram/DeleteNCProgram`,
+  SaveButton:`${API}/NCProgram/ButtonSave`,
+  getNCPrograms:`${API}/NCProgram/getPrograms`,
+  
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
