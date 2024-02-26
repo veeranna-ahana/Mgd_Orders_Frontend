@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useOrderContext } from "../../../../context/OrderContext";
 import { BsChevronCompactLeft } from "react-icons/bs";
+import YesNoModal from "./Components/YesNoModal";
 
 const { getRequest, postRequest } = require("../../../api/apiinstance");
 const { endpoints } = require("../../../api/constants");
@@ -42,6 +43,7 @@ function NewOrder(props) {
   let [formquotationNo, setFormQuotationNo] = useState("");
   let [purchaseorder, setPurchaseorder] = useState("");
   const [isChecked, setChecked] = useState(false);
+  const [SmShow, setSmShow] = useState(false);
   // let Oformat = searchParams.get("OrdType");
 
   // console.log(" Order Type : " + Oformat);
@@ -277,18 +279,32 @@ function NewOrder(props) {
     const newCheckedValue = !isChecked;
     setChecked(newCheckedValue);
     setFormMagodDelivery(newCheckedValue);
+    if (newCheckedValue === true) {
+      setFormShippingAddress(formBillingAddress);
+    } else {
+      setFormShippingAddress("");
+    }
 
     // Log the updated value to the console
     //console.log("Checkbox is now:", newCheckedValue);
   };
+  console.log("...............", formMagodDelivery);
   // const TransportChargesInpChnage = (e) => {
   //   e.preventDefault();
   ////console.log(e.target.value);
   //   setFormTransportCharges(true);
   // };
-
+  const handleSaveButtonClick = () => {
+    setSmShow(true);
+  };
   return (
     <div>
+      <YesNoModal
+        SmShow={SmShow}
+        setSmShow={setSmShow}
+        SaveOrder={SaveOrder}
+        onHide={() => setSmShow(false)}
+      />
       <div className="col-md-12">
         <div className="row">
           {/* <h4 className="title">Sales Department</h4> */}
@@ -304,7 +320,7 @@ function NewOrder(props) {
         style={{
           backgroundColor: "black",
           height: "3px",
-        }}
+        }} o
       /> */}
       <Form className="form mt-0" onSubmit={SaveOrder}>
         <div
@@ -322,6 +338,7 @@ function NewOrder(props) {
             // className="button-style button-disabled"
             disabled={!purchaseorder}
             style={{ width: "120px" }}
+            // onClick={handleSaveButtonClick}
           >
             Save Order
           </button>

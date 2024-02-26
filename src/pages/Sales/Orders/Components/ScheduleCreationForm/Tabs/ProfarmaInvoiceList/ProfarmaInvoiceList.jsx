@@ -144,7 +144,6 @@ export default function ProfarmaInvoiceList(props) {
     }
   }
 
-  // console.log("selectedProfarmaMainRow", selectedProfarmaMainRow.ProfarmaID);
   return (
     <>
       <div>
@@ -163,8 +162,10 @@ export default function ProfarmaInvoiceList(props) {
           </div>
           <div className="col-md-2">
             <button
+              disabled={selectedProfarmaMainRow.ProformaInvNo}
               className={
-                selectedProfarmaMainRow.ProfarmaID
+                selectedProfarmaMainRow.ProfarmaID &&
+                !selectedProfarmaMainRow.ProformaInvNo
                   ? "button-style m-0"
                   : "button-style button-disabled m-0"
               }

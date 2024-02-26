@@ -67,7 +67,12 @@ function OrdrTable(props) {
                   }}
                 >
                   <td>
-                    <Form.Check type="checkbox" id="selected" />
+                    <Form.Check
+                      type="checkbox"
+                      id="selected"
+                      // key={i}
+                      // onClick={() => selectItem(OrdrDetailsItem)}
+                    />
                   </td>
                   <td>{OrdrDetailsItem.DwgName}</td>
                   <td>

@@ -39,7 +39,7 @@ import React, { useState } from "react";
 import NewOrder from "../../../Components/NewOrder";
 import FindOrder from "../../../Components/Find Order/FindOrder";
 
-function ServiceFindOrder() {
+function ServiceFindOrder(props) {
   const [ServiceType, setServiceType] = useState("Service");
   return (
     <div>

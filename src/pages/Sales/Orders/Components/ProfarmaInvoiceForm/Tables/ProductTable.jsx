@@ -31,6 +31,12 @@ export default function ProductTable(props) {
                       background: "transparent",
                       border: "none",
                     }}
+                    disabled={props.profarmaMainData?.ProformaInvNo}
+                    className={
+                      props.profarmaMainData?.ProformaInvNo
+                        ? "input-disabled"
+                        : ""
+                    }
                     onChange={(e) => {
                       props.changeQTY(key, e.target.value || 0);
                     }}
