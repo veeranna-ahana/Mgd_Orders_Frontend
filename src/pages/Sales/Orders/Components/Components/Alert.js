@@ -33,7 +33,8 @@ function AlertModal(props) {
           style={{ backgroundColor: "#2b3a55", border: "#2b3a55" }}
           onClick={() => {
             props.firstbutton();
-          }} >
+          }}
+        >
           {props.firstbuttontext}
         </Button>
         {props.secondbuttontext ? (

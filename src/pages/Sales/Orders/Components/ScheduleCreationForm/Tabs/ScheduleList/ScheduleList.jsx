@@ -35,7 +35,7 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
       );
     }
   }, [OrderData]); // Watch for changes in OrderData
- 
+
   // useEffect(() => {
   //   ScheduleListData();
   // }, []);
@@ -56,11 +56,7 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
     );
   };
 
-  console.log("DwgNameList is",DwgNameList);
-
-  const onClickofScheduled=()=>{
-    console.log("response")
-  }
+  console.log(rowScheduleList);
 
   return (
     <>
@@ -77,11 +73,25 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
           <div className="col-md-2 col-sm-12">
             <Link
               to={"/Orders/Service/ServiceOpenSchedule"}
-              state=
-              {DwgNameList}
+              state={DwgNameList}
             >
-              <button className="button-style">Open Schedule</button>
+              <button
+                className="button-style"
+                disabled={Object.keys(rowScheduleList).length === 0 }
+              >
+                Open Schedule
+              </button>
             </Link>
+            {Object.keys(rowScheduleList).length === 0 && (
+              <style>
+                {`
+            .button-style[disabled] {
+                background-color: grey;
+                cursor: not-allowed;
+            }
+            `}
+              </style>
+            )}
           </div>
         </div>
 
