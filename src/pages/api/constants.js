@@ -25,10 +25,16 @@ export const endpoints = {
   getOrderListData: `${API}/order/getorderlistdata`,
   getOrderDetailsByOrdrNoAndType: `${API}/order/getOrderDetailsByOrdrNoAndType`,
 
-  //-----------------------------------------
+  //------------------veeranna-----------------------
   getOrderDataforFindOrder: `${API}/order/getOrderDataforFindOrder`,
   PostNewSrlData: `${API}/order/postnewsrldata`,
-  InsertNewSrlData: `${API}/order/insertnewsrldata`,
+  InsertNewSrlData: `${API}/OrderDetails/insertnewsrldata`,
+  OrderDetailsTest: `${API}/OrderDetails/test`,
+  GetBomData: `${API}/OrderDetails/getbomdata`,
+  GetFindOldpartData: `${API}/OrderDetails/getfindoldpartdata`,
+  loadStockPosition: `${API}/OrderDetails/loadStockPosition`,
+  LoadArrival: `${API}/OrderDetails/LoadArrival`,
+  LoadArrival2: `${API}/OrderDetails/LoadArrival2`,
 
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
@@ -295,6 +301,23 @@ export const endpoints = {
   updatePNProfileData: `${API}/orderPackingNoteAndInvoice/updatePNProfileData`,
   createInvoice: `${API}/orderPackingNoteAndInvoice/createInvoice`,
   updateRatesPN: `${API}/orderPackingNoteAndInvoice/updateRatesPN`,
+  getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose: `${API}/ScheduleList/shortClose`,
+  onClickSave: `${API}/ScheduleList/save`,
+  onClickSuspend: `${API}/ScheduleList/suspendButton`,
+  onClickCancel: `${API}/ScheduleList/onClickCancel`,
+  onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
+  getSalesContact: `${API}/ScheduleList/getSalesContact`,
+  onClickTask: `${API}/ScheduleList/taskOnclick`,
+
+  //NCProgram Button
+  onClickNCProgram: `${API}/NCProgram/getFormData`,
+  getMachineList: `${API}/NCProgram/getMachines`,
+  addNCProgram: `${API}/NCProgram/addProgram`,
+  sendMtrlIssue: `${API}/NCProgram/sendMTrlIssue`,
+  DeleteNCProgram: `${API}/NCProgram/DeleteNCProgram`,
+  SaveButton: `${API}/NCProgram/ButtonSave`,
+  getNCPrograms: `${API}/NCProgram/getPrograms`,
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,

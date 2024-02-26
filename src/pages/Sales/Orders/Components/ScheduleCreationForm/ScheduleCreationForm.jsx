@@ -20,39 +20,56 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 // import { useOrderContext } from "../../../../../context/OrderContext";
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  console.log("props", props);
+  console.log("props", props.Type);
 
-  // //console.log("location...", location?.state);
+  // //////console.log("location...", location?.state);
 
   const [orderNo, setorderNo] = useState(location?.state);
   const [OrderData, setOrderData] = useState({});
   const [OrderCustData, setOrderCustData] = useState({});
   const [OrdrDetailsData, setOrdrDetailsData] = useState([]);
-
-
+  const [BomData, setBomData] = useState([]);
+  const [findOldpart, setfindOldpart] = useState();
 
   const [profarmaInvMain, setProfarmaInvMain] = useState([]);
   const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
 
   const [selectedItems, setSelectedItems] = useState([]);
 
-
   const fetchData = () => {
     postRequest(
       endpoints.getOrderDetailsByOrdrNoAndType,
       { orderNo: orderNo, orderType: props.Type },
       (orderData) => {
-        //console.log("orderData.....", orderData);
-        setOrderData(orderData.orderData[0]);
-        setOrderCustData(orderData.custData[0]);
-      }
-    );
-    postRequest(
-      endpoints.PostNewSrlData,
-      { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
-      (ordrdtlsdata) => {
-        // console.log("ordrdtlsdata", ordrdtlsdata);
-        setOrdrDetailsData(ordrdtlsdata);
+        // console.log("orderDetails.....", orderData);
+        setOrderData(orderData?.orderData[0]);
+        setOrderCustData(orderData?.custData[0]);
+
+        postRequest(
+          endpoints.GetBomData,
+          { custcode: orderData?.custData[0]?.Cust_Code },
+          (bomdata) => {
+            //console.log("bomdata......", bomdata);
+            setBomData(bomdata);
+          }
+        );
+        postRequest(
+          endpoints.GetFindOldpartData,
+          { custcode: orderData?.custData[0]?.Cust_Code },
+          (findOldpartData) => {
+            console.log("findOldpartData......", findOldpartData);
+            setfindOldpart(findOldpartData);
+          }
+        );
+
+        postRequest(
+          endpoints.PostNewSrlData,
+          { custcode: orderData?.custData[0]?.Cust_Code, OrderNo: orderNo },
+          (ordrdtlsdata) => {
+            // ////console.log("ordrdtlsdata", ordrdtlsdata);
+            setOrdrDetailsData(ordrdtlsdata);
+          }
+        );
       }
     );
     postRequest(
@@ -97,12 +114,49 @@ export default function ScheduleCreationForm(props) {
         : [...prevSelectedItems, OrdrDetailsItem];
 
       // Log the updated state
-      console.log("Selected Order details Rows:", updatedSelectedItems);
+      ////console.log("Selected Order details Rows:", updatedSelectedItems);
 
       return updatedSelectedItems;
     });
   };
 
+  const handleSelectAll = () => {
+    setSelectedItems(OrdrDetailsData);
+  };
+
+  const handleReverseSelection = () => {
+    if (selectedItems.length === 0) {
+      handleSelectAll();
+    } else {
+      const newArray = [];
+
+      for (let i = 0; i < OrdrDetailsData.length; i++) {
+        const element = OrdrDetailsData[i];
+
+        if (selectedItems.includes(element)) {
+          // the element is selected, needs to be removed
+          // //console.log("true");
+        } else {
+          // not selected, needs to be added to the newArray
+          newArray.push(element);
+          // //console.log("false");
+        }
+      }
+
+      // Update the selected rows with the newArray
+      setSelectedItems(newArray);
+    }
+  };
+  // let insertnewsrldata = () => {
+  //   ////console.log("entering into insertnewsrldata");
+  //   postRequest(
+  //     endpoints.InsertNewSrlData,
+  //     { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
+  //     (InsertedNewSrlData) => {
+  //       ////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+  //     }
+  //   );
+  // };
   return (
     <>
       <div>
@@ -119,7 +173,11 @@ export default function ScheduleCreationForm(props) {
             <ProductionScheduleCreation OrderData={OrderData} />
           </Tab>
           <Tab eventKey="findoldpart" title="Find Old Part">
-            <FindOldPart OrderData={OrderData} />
+            <FindOldPart
+              OrderData={OrderData}
+              findOldpart={findOldpart}
+              setfindOldpart={setfindOldpart}
+            />
           </Tab>
           <Tab eventKey="materialinfo" title="Material Info">
             <MaterialInfo OrderData={OrderData} />
@@ -132,12 +190,24 @@ export default function ScheduleCreationForm(props) {
                 OrderData={OrderData}
                 OrderCustData={OrderCustData}
                 OrdrDetailsData={OrdrDetailsData}
+                setOrdrDetailsData={setOrdrDetailsData}
                 selectedItems={selectedItems}
                 selectItem={selectItem}
+                fetchData={fetchData}
+                BomData={BomData}
+                setBomData={setBomData}
+                findOldpart={findOldpart}
+                setfindOldpart={setfindOldpart}
+                handleSelectAll={handleSelectAll}
+                handleReverseSelection={handleReverseSelection}
+                // insertnewsrldata={insertnewsrldata}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
-              <ScheduleList OrderData={OrderData} OrderCustData={OrderCustData} />
+              <ScheduleList
+                OrderData={OrderData}
+                OrderCustData={OrderCustData}
+              />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">
               <ProfarmaInvoiceList

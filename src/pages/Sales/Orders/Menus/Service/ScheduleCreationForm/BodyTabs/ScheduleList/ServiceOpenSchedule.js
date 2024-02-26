@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Tabs, Tab, Table, Form } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AlertModal from "../../../Components/Alert";
-import { postRequest } from "../../../../../../../api/apiinstance";
+import { getRequest, postRequest } from "../../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../../api/constants";
 import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
+import { Create } from "@mui/icons-material";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
@@ -15,9 +16,9 @@ function ServiceOpenSchedule() {
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
+  const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
 
   useEffect(() => {
-    // Update newState whenever DwgNameList changes
     setNewState(DwgNameList);
   }, [DwgNameList]); // Dependency array containing DwgNameList
 
@@ -80,7 +81,7 @@ function ServiceOpenSchedule() {
     const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
     const day = date.getDate().toString().padStart(2, "0");
     // Use template literals to format the date
-    return `${day}-${month}-${year}`;
+    return `${year}-${month}-${day}`;
   };
 
   const [formdata, setFormdata] = useState({});
@@ -115,19 +116,43 @@ function ServiceOpenSchedule() {
 
   // console.log("PNAndInvRegisterData", PNAndInvRegisterData);
   // console.log("PNAndInvDetailsData", PNAndInvDetailsData);
+  //get Sales Contact
+  const [ProgramEngineer, setProgramEngineer] = useState([]);
+  useEffect(() => {
+    getRequest(endpoints.getSalesContact, (response) => {
+      console.log("response is", response);
+      setProgramEngineer(response);
+    });
+  }, []);
+
+  // //Onclick of Table
+  // const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
+  // const onClickofScheduleDtails = (item, index) => {
+  //   let list = { ...item, index: index };
+  //   setScheduleDetailsRow(list);
+  // };
+
+  // //Default first row select
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+
+  // console.log(scheduleDetailsRow);
 
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
     postRequest(
       endpoints.getScheduleListTaskandMaterial,
-      { TaskNo: DwgNameList[0]?.TaskNo },
+      { scheduleDetailsRow },
       (response) => {
-        //  console.log("response is", response);
+        // console.log("response is", response);
         setTaskMaterialData(response);
       }
     );
-  }, [DwgNameList?.TaskNo]); // Watch for changes in OrderData
+  }, [scheduleDetailsRow]); // Watch for changes in OrderData
 
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
@@ -144,7 +169,6 @@ function ServiceOpenSchedule() {
   }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
 
   //Onclick of Table
-  const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
   const onClickofScheduleDtails = (item, index) => {
     let list = { ...item, index: index };
     setScheduleDetailsRow(list);
@@ -165,18 +189,66 @@ function ServiceOpenSchedule() {
       endpoints.onClickShortClose,
       { scheduleDetailsRow },
       (response) => {
-        //  console.log("response is", response);
+        // console.log("response is",response);
+        if (response.message === "Success") {
+          toast.success(response.message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else
+          toast.warning(response.message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
       }
     );
   };
 
+  //Hanlechange
+  const [changedEngineer, setChangedEngineer] = useState("");
+  const handleChangeProgramEngineer = (e) => {
+    setChangedEngineer(e.target.value);
+  };
+
+  //handleChange DeliveryDate
+  const [deliveryDate, setDeliveryDate] = useState(formatDate(""));
+  const handleChangeDeliveryDate = (e) => {
+    setDeliveryDate(e.target.value);
+  };
+
+  useEffect(() => {
+    if (formdata[0]?.Delivery_Date) {
+      setDeliveryDate(formatDate(formdata[0].Delivery_Date));
+    }
+  }, [formdata]);
+
+  //OnChange Special Instruction
+  const [SpclInstruction, setSpecialInstruction] = useState("");
+  const handleChangeSpecialInstruction = (e) => {
+    setSpecialInstruction(e.target.value);
+  };
+
+  useEffect(() => {
+    setChangedEngineer(formdata[0]?.Dealing_Engineer);
+    // setDeliveryDate(formdata[0]?.Delivery_Date);
+    setSpecialInstruction(formdata[0]?.Special_Instructions);
+  }, [formdata]);
+
   //Onclick save Button
   const onClickSave = () => {
-    postRequest(endpoints.onClickSave, { scheduleDetailsRow }, (response) => {
-      toast.success("Saved", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    });
+    postRequest(
+      endpoints.onClickSave,
+      {
+        scheduleDetailsRow,
+        formdata,
+        SpclInstruction: SpclInstruction,
+        deliveryDate: deliveryDate,
+        changedEngineer: changedEngineer,
+      },
+      (response) => {
+        toast.success("Saved", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    );
   };
 
   //Onclick Suspend
@@ -221,6 +293,7 @@ function ServiceOpenSchedule() {
     });
   };
 
+  //Scheduled
   const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
@@ -234,7 +307,38 @@ function ServiceOpenSchedule() {
     );
   };
 
-  //  console.log(scheduleDetailsRow);
+  console.log(scheduleDetailsRow);
+
+  //OnClick NCProgram
+  const navigate = useNavigate();
+  const onClickNCProgram = () => {
+    postRequest(
+      endpoints.onClickNCProgram,
+      { rowselectTaskMaterial },
+      (response) => {
+        postRequest(
+          endpoints.getMachineList,
+          { NCprogramForm: response },
+          (responsedata) => {
+            // console.log("API response:", responsedata);
+            navigate("/Orders/Service/NCProgram", {
+              state: { response: response, responsedata: responsedata },
+            });
+          }
+        );
+      }
+    );
+  };
+
+  const onClickTasked = () => {
+    console.log(scheduleDetailsRow);
+    postRequest(endpoints.onClickTask, { scheduleDetailsRow }, (response) => {
+      // console.log("response of Scheduled is",response);
+      toast.success(response.message, {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    });
+  };
 
   return (
     <div>
@@ -247,51 +351,73 @@ function ServiceOpenSchedule() {
         <h4>Service</h4>
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Customer</label>
-          <input type="text" value={formdata[0]?.Cust_name} />
+          <input type="text" value={formdata[0]?.Cust_name} disabled />
         </div>
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Sales Contact</label>
-          <input type="text" value={formdata[0]?.SalesContact} />
+          <input type="text" value={formdata[0]?.SalesContact} disabled />
         </div>
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Schedule No</label>
-          <input type="text" value={formdata[0]?.ScheduleId} />
+          <input type="text" value={formdata[0]?.OrdSchNo} disabled />
         </div>
       </div>
 
       <div className="row mt-2">
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Schedule Type</label>
-          <input type="text" value={formdata[0]?.ScheduleType} />
+          <input type="text" value={formdata[0]?.ScheduleType} disabled />
         </div>
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Schedule Status</label>
-          <input type="text" value={formdata[0]?.Schedule_Status} />
+          <input type="text" value={formdata[0]?.Schedule_Status} disabled />
         </div>
 
         <div className="col-md-4 sm-12">
           <label className="form-label">PO</label>
-          <input type="text" value={formdata[0]?.PO} />
+          <input type="text" value={formdata[0]?.PO} disabled />
         </div>
       </div>
 
       <div className="row mt-2">
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Program Engineer</label>
-          <input type="text" value={formdata[0]?.Dealing_Engineer} />
+          <select
+            id=""
+            className="ip-select"
+            onChange={handleChangeProgramEngineer}
+          >
+            <option value={formdata[0]?.Dealing_Engineer}>
+              {formdata[0]?.Dealing_Engineer}
+            </option>
+            {ProgramEngineer.map((item, key) => {
+              return (
+                <>
+                  <option value={item.Name}>{item.Name}</option>
+                </>
+              );
+            })}
+          </select>
         </div>
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Target Date</label>
-          <input type="text" value={formatDate(formdata[0]?.schTgtDate)} />
+          <input
+            type="date"
+            value={formatDate(formdata[0]?.schTgtDate)}
+            disabled
+          />
         </div>
-
         <div className="col-md-4 sm-12">
           <label className="form-label">Delivery Date</label>
-          <input type="date" value={formatDate(formdata[0]?.Delivery_Date)} />
+          <input
+            type="date"
+            value={deliveryDate}
+            onChange={handleChangeDeliveryDate}
+          />
         </div>
       </div>
 
@@ -299,6 +425,7 @@ function ServiceOpenSchedule() {
         <div className="col-md-4 sm-12">
           <label className="form-label">Special Instruction</label>
           <textarea
+            onChange={handleChangeSpecialInstruction}
             id="exampleFormControlTextarea1"
             rows="3"
             style={{ width: "360px" }}
@@ -307,15 +434,36 @@ function ServiceOpenSchedule() {
         </div>
 
         <div className="col-md-8 sm-12 mt-5">
-          <button className="button-style" onClick={OnClickSuspend}>
+          <button
+            className="button-style"
+            onClick={OnClickSuspend}
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
             Suspend
           </button>
 
-          <button className="button-style" onClick={onClickShortClose}>
+          <button
+            className="button-style"
+            onClick={onClickShortClose}
+            disabled={
+              formdata[0]?.Schedule_Status === "Tasked" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
             ShortClose
           </button>
 
-          <button className="button-style" onClick={onClickCancel}>
+          <button
+            className="button-style"
+            onClick={onClickCancel}
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
             Cancel
           </button>
 
@@ -327,39 +475,99 @@ function ServiceOpenSchedule() {
 
       <div className="row mt-2">
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={onClickScheduled}>
+          <button
+            className="button-style"
+            onClick={onClickScheduled}
+            disabled={
+              formdata[0]?.Schedule_Status === "Tasked" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
             Schedule
           </button>
+          {(formdata[0]?.Schedule_Status === "Tasked" ||
+            formdata[0]?.Schedule_Status === "Dispatched") && (
+            <style>
+              {`
+            .button-style[disabled] {
+                background-color: grey;
+                cursor: not-allowed;
+            }
+            `}
+            </style>
+          )}
         </div>
+
         <div className="col-md-2 col-sm-3">
-          <button className="button-style">Task</button>
-        </div>
-        <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={onClickSave}>
-            Save
+          <button className="button-style" onClick={onClickTasked} disabled>
+            Task
           </button>
         </div>
+
         <div className="col-md-2 col-sm-3">
-          <button className="button-style">Check Status</button>
+          <button
+            className="button-style"
+            onClick={onClickSave}
+            disabled={formdata[0]?.Schedule_Status === "Dispatched"}
+          >
+            Save
+          </button>
+          {formdata[0]?.Schedule_Status === "Dispatched" && (
+            <style>
+              {`
+            .button-style[disabled] {
+                background-color: grey;
+                cursor: not-allowed;
+            }
+            `}
+            </style>
+          )}
         </div>
+
         <div className="col-md-2 col-sm-3">
-          <button className="button-style ">Print Schedule</button>
+          <button
+            className="button-style"
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
+            Check Status
+          </button>
         </div>
+
         <div className="col-md-2 col-sm-3">
-          <Link to="/Orders/Service/NCProgram">
-            <button className="button-style ">NC Program</button>
-          </Link>
+          <button
+            className="button-style "
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
+            Print Schedule
+          </button>
         </div>
+
+        <div className="col-md-2 col-sm-3">
+          {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
+          <button className="button-style " onClick={onClickNCProgram}>
+            NC Program
+          </button>
+          {/* </Link> */}
+        </div>
+
         {/* <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={profileOrderOpen1}>
             Profile Order
           </button>
         </div> */}
+
         <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={fixtureOrderOpen1}>
             Fixture Order
           </button>
         </div>
+
         {/* <div className="col-md-2 col-sm-3">
           <button className="button-style ">Show DXF</button>
         </div> */}
@@ -475,7 +683,7 @@ function ServiceOpenSchedule() {
                               <td>{value.NoOfDwgs}</td>
                               <td>{value.TotalParts}</td>
                               <td>{value.Priority}</td>
-                              <td>{value.PStatus}</td>
+                              <td>{value.TStatus}</td>
                               <td>{value.Machine}</td>
                             </tr>
                           </>
@@ -529,7 +737,7 @@ function ServiceOpenSchedule() {
                   overflowY: "scroll",
                 }}
               >
-                <Table
+                {/* <Table
                   striped
                   className="table-data border mt-2"
                   style={{
@@ -546,14 +754,14 @@ function ServiceOpenSchedule() {
                     </tr>
                   </thead>
                   <tbody className="tablebody"></tbody>
-                </Table>
+                </Table> */}
               </div>
-              <div
+              {/* <div
                 className="col-md-2"
                 style={{ width: "260px", marginLeft: "30px" }}
-              >
-                <div className="ip-box form-bg">
-                  <h5>
+              > */}
+              {/* <div className="ip-box form-bg"> */}
+              {/* <h5>
                     <b>Task Material</b>
                   </h5>
 
@@ -562,8 +770,8 @@ function ServiceOpenSchedule() {
                     style={{ width: "200px" }}
                     type="number"
                     className="in-fields"
-                  />
-
+                  /> */}
+              {/* 
                   <label className="form-label">Length</label>
                   <input style={{ width: "200px" }} className="in-fields" />
 
@@ -571,15 +779,15 @@ function ServiceOpenSchedule() {
                   <input style={{ width: "200px" }} className="in-fields" />
 
                   <label className="form-label">Quantity</label>
-                  <input style={{ width: "200px" }} className="in-fields" />
+                  <input style={{ width: "200px" }} className="in-fields" /> */}
 
-                  <div className="row justify-content-center mt-3 mb-3">
+              {/* <div className="row justify-content-center mt-3 mb-3">
                     <button className="button-style" style={{ width: "120px" }}>
                       Save
                     </button>
-                  </div>
-                </div>
-              </div>
+                  </div> */}
+              {/* </div> */}
+              {/* </div> */}
             </div>
           </Tab>
 

@@ -58,11 +58,6 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
     );
   };
 
-  // console.log("DwgNameList is", DwgNameList);
-
-  // const onClickofScheduled = () => {
-  //   console.log("response");
-  // };
 
   return (
     <>
@@ -81,8 +76,25 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
               to={"/Orders/Service/ServiceOpenSchedule"}
               state={DwgNameList}
             >
-              <button className="button-style m-0">Open Schedule</button>
+
+              <button
+                className="button-style"
+                disabled={Object.keys(rowScheduleList).length === 0 }
+              >
+                Open Schedule
+              </button>
+
             </Link>
+            {Object.keys(rowScheduleList).length === 0 && (
+              <style>
+                {`
+            .button-style[disabled] {
+                background-color: grey;
+                cursor: not-allowed;
+            }
+            `}
+              </style>
+            )}
           </div>
         </div>
 

@@ -172,9 +172,9 @@ code {
   font-weight: 600;
 }
 
-.selcted-row-clr{
-  background-color:#98A8F8!important;
-    color: white;
+.selcted-row-clr {
+  background-color: #98a8f8 !important;
+  color: white;
 }
 
 .form-label {
@@ -247,7 +247,46 @@ code {
   padding: 6px 1px 2px 15px;
   /* border-radius: 10px; */
 }
-.table-space{
-  white-space:nowrap;
+
+.rbt-input-main .form-control .rbt-input {
+  outline: "none " !important;
+  border: "none" !important;
+}
+.rbt-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0px !important;
+  border-bottom: 1px solid black !important;
 }
 
+.rbt-input {
+  /* margin-top: 13px !important; */
+  border-radius: 0px !important;
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0px !important;
+
+  margin: 0px !important;
+
+  margin-top: 0px !important;
+  border-bottom: 1px solid black !important;
+}
+
+.rbt-input::placeholder {
+  padding: 0 px !important;
+  margin: 0 px !important;
+}
+.in-field {
+  height: 35px;
+
+  /* margin-top: 10px; */
+
+  border-radius: 6px;
+
+  text-indent: 5px;
+}
+.table-space {
+  white-space: nowrap;
+}

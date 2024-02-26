@@ -33,6 +33,7 @@ import ProfileDispatched from "./pages/Sales/Orders/Menus/Profile/OrderList/Prof
 import ProfileAll from "./pages/Sales/Orders/Menus/Profile/OrderList/ProfileAll";
 
 import ProfamaInvoiceForm from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/ProfarmaInvoiceListTab/ProfamaInvoiceForm";
+import ProfarmaInvoiceForm from "./pages/Sales/Orders/Components/ProfarmaInvoiceForm/ProfarmaInvoiceForm";
 import NCProgram from "./pages/Sales/Orders/Menus/Profile/FindSchedule/NCProgram";
 import EditDXF from "./pages/Sales/Orders/Menus/Profile/Find Order/Body Tabs/OrderDetailsTab/ButtonTabs/EditDXF";
 import FixturesReady from "./pages/Sales/Orders/Menus/Profile/FixturesOrderList/FixturesReady";
@@ -98,9 +99,10 @@ import ProfileScheduleCreationForm from "./pages/Sales/Orders/Menus/Profile/Sche
 import { QuotationProvider } from "./context/QuotationContext";
 import { OrderProvider } from "./context/OrderContext";
 import ServiceOpenSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
-import ProfarmaInvoiceForm from "./pages/Sales/Orders/Components/ProfarmaInvoiceForm/ProfarmaInvoiceForm";
+// import ProfarmaInvoiceForm from "./pages/Sales/Orders/Components/ProfarmaInvoiceForm/ProfarmaInvoiceForm";
 import PackingNoteAndInvoiceDetails from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/Tabs/Details/PackingNoteAndInvoiceDetails";
 
+import FindProOrder from "./pages/Sales/Orders/Menus/Profile/Find Order/FindOrder";
 function App() {
   return (
     <BrowserRouter>
@@ -119,7 +121,7 @@ function App() {
                 <Route path="Profile">
                   <Route index={true} />
                   <Route path="NewOrder" element={<ProfileNewOrder />} />
-                  <Route path="FindOrder" element={<FindOrder />} />
+                  <Route path="FindOrder" element={<FindProOrder />} />
                   <Route
                     path="ScheduleCreationForm"
                     element={<ProfileScheduleCreationForm />}
