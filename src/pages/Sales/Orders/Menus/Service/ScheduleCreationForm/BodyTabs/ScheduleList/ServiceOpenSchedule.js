@@ -5,16 +5,18 @@ import AlertModal from "../../../Components/Alert";
 import { getRequest, postRequest } from "../../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../../api/constants";
 import { ToastContainer, toast } from "react-toastify";
+import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create } from "@mui/icons-material";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state || []; // Get DwgNameList from location state
 
-  console.log("DwgNameList is", DwgNameList[0]);
+  //  console.log("DwgNameList is", DwgNameList[0]);
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
+  const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
 
   useEffect(() => {
     setNewState(DwgNameList);
@@ -83,6 +85,9 @@ function ServiceOpenSchedule() {
   };
 
   const [formdata, setFormdata] = useState({});
+  const [PNAndInvRegisterData, setPNAndInvRegisterData] = useState([]);
+  const [PNAndInvDetailsData, setPNAndInvDetailsData] = useState([]);
+
   useEffect(() => {
     postRequest(
       endpoints.getScheduleListgetFormDetails,
@@ -93,10 +98,24 @@ function ServiceOpenSchedule() {
       (response) => {
         // console.log("response is", response);
         setFormdata(response);
+        postRequest(
+          endpoints.getAllPNAndInvRegisterbyOrderNo,
+          { Order_No: response[0]?.Order_No },
+          (PNAndInvData) => {
+            // console.log("PNAndInvData is", PNAndInvData);
+            setPNAndInvRegisterData(PNAndInvData.registerData);
+            setPNAndInvDetailsData(PNAndInvData.detailsData);
+            // setTaskMaterialData(response);
+          }
+        );
       }
     );
   }, [DwgNameList[0]?.ScheduleId]);
 
+  //  console.log("formdata......", formdata);
+
+  // console.log("PNAndInvRegisterData", PNAndInvRegisterData);
+  // console.log("PNAndInvDetailsData", PNAndInvDetailsData);
   //get Sales Contact
   const [ProgramEngineer, setProgramEngineer] = useState([]);
   useEffect(() => {
@@ -106,21 +125,21 @@ function ServiceOpenSchedule() {
     });
   }, []);
 
-  //Onclick of Table
-  const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
-  const onClickofScheduleDtails = (item, index) => {
-    let list = { ...item, index: index };
-    setScheduleDetailsRow(list);
-  };
+  // //Onclick of Table
+  // const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
+  // const onClickofScheduleDtails = (item, index) => {
+  //   let list = { ...item, index: index };
+  //   setScheduleDetailsRow(list);
+  // };
 
-  //Default first row select
-  useEffect(() => {
-    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-      onClickofScheduleDtails(newState[0], 0); // Select the first row
-    }
-  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // //Default first row select
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  console.log(scheduleDetailsRow);
+  // console.log(scheduleDetailsRow);
 
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
@@ -148,6 +167,21 @@ function ServiceOpenSchedule() {
       onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
     }
   }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
+
+  //Onclick of Table
+  const onClickofScheduleDtails = (item, index) => {
+    let list = { ...item, index: index };
+    setScheduleDetailsRow(list);
+  };
+
+  //Default first row select
+  useEffect(() => {
+    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+      onClickofScheduleDtails(newState[0], 0); // Select the first row
+    }
+  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+
+  //  console.log(scheduleDetailsRow);
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -317,7 +351,7 @@ function ServiceOpenSchedule() {
         <h4>Service</h4>
         <div className="col-md-4 sm-12 ">
           <label className="form-label">Customer</label>
-          <input type="text" value={formdata[0]?.Cust_name} disabled/>
+          <input type="text" value={formdata[0]?.Cust_name} disabled />
         </div>
 
         <div className="col-md-4 sm-12">
@@ -344,7 +378,7 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-4 sm-12">
           <label className="form-label">PO</label>
-          <input type="text" value={formdata[0]?.PO}  disabled/>
+          <input type="text" value={formdata[0]?.PO} disabled />
         </div>
       </div>
 
@@ -371,7 +405,11 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Target Date</label>
-          <input type="date" value={formatDate(formdata[0]?.schTgtDate)} disabled />
+          <input
+            type="date"
+            value={formatDate(formdata[0]?.schTgtDate)}
+            disabled
+          />
         </div>
         <div className="col-md-4 sm-12">
           <label className="form-label">Delivery Date</label>
@@ -396,20 +434,35 @@ function ServiceOpenSchedule() {
         </div>
 
         <div className="col-md-8 sm-12 mt-5">
-          <button className="button-style" onClick={OnClickSuspend}
-          disabled={formdata[0]?.Schedule_Status==='Created' || formdata[0]?.Schedule_Status==='Dispatched' }
+          <button
+            className="button-style"
+            onClick={OnClickSuspend}
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
           >
             Suspend
           </button>
 
-          <button className="button-style" onClick={onClickShortClose}
-            disabled={formdata[0]?.Schedule_Status==='Tasked' || formdata[0]?.Schedule_Status==='Dispatched' }
+          <button
+            className="button-style"
+            onClick={onClickShortClose}
+            disabled={
+              formdata[0]?.Schedule_Status === "Tasked" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
           >
             ShortClose
           </button>
 
-          <button className="button-style" onClick={onClickCancel}
-            disabled={formdata[0]?.Schedule_Status==='Created' || formdata[0]?.Schedule_Status==='Dispatched' }
+          <button
+            className="button-style"
+            onClick={onClickCancel}
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
           >
             Cancel
           </button>
@@ -422,21 +475,27 @@ function ServiceOpenSchedule() {
 
       <div className="row mt-2">
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={onClickScheduled}
-          disabled={formdata[0]?.Schedule_Status==='Tasked' || formdata[0]?.Schedule_Status==='Dispatched' }
+          <button
+            className="button-style"
+            onClick={onClickScheduled}
+            disabled={
+              formdata[0]?.Schedule_Status === "Tasked" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
           >
             Schedule
           </button>
-          {(formdata[0]?.Schedule_Status==='Tasked' || formdata[0]?.Schedule_Status==='Dispatched') && (
-              <style>
-                {`
+          {(formdata[0]?.Schedule_Status === "Tasked" ||
+            formdata[0]?.Schedule_Status === "Dispatched") && (
+            <style>
+              {`
             .button-style[disabled] {
                 background-color: grey;
                 cursor: not-allowed;
             }
             `}
-              </style>
-            )}
+            </style>
+          )}
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -446,30 +505,47 @@ function ServiceOpenSchedule() {
         </div>
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" 
-          onClick={onClickSave}
-          disabled={formdata[0]?.Schedule_Status==='Dispatched' }
+          <button
+            className="button-style"
+            onClick={onClickSave}
+            disabled={formdata[0]?.Schedule_Status === "Dispatched"}
           >
             Save
           </button>
-          {formdata[0]?.Schedule_Status==='Dispatched'  && (
-              <style>
-                {`
+          {formdata[0]?.Schedule_Status === "Dispatched" && (
+            <style>
+              {`
             .button-style[disabled] {
                 background-color: grey;
                 cursor: not-allowed;
             }
             `}
-              </style>
-            )}
+            </style>
+          )}
         </div>
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" disabled={formdata[0]?.Schedule_Status==='Created' || formdata[0]?.Schedule_Status==='Dispatched' }>Check Status</button>
+          <button
+            className="button-style"
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
+            Check Status
+          </button>
         </div>
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style " disabled={formdata[0]?.Schedule_Status==='Created' || formdata[0]?.Schedule_Status==='Dispatched' }>Print Schedule</button>
+          <button
+            className="button-style "
+            disabled={
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Dispatched"
+            }
+          >
+            Print Schedule
+          </button>
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -852,91 +928,10 @@ function ServiceOpenSchedule() {
           </Tab> */}
 
           <Tab eventKey="Packing Notes/Invoices" title="Packing Notes/Invoices">
-            <button className="button-style mt-3">Show Invoice</button>
-            <div className="row mt-2">
-              <div className="col-md-5 mt-2" style={{ overflowY: "scroll" }}>
-                <Table
-                  striped
-                  className="table-data border mt-2"
-                  style={{
-                    border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
-                  }}
-                >
-                  <thead className="tableHeaderBGColor">
-                    <tr>
-                      <th style={{ whiteSpace: "nowrap" }}>PN No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>PN Date</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Inv No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Inv Date</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Grand Total</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Received</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Total_Wt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody className="tablebody"></tbody>
-                </Table>
-              </div>
-
-              <div className="col-md-7 mt-2" style={{ overflowY: "scroll" }}>
-                <Table
-                  striped
-                  className="table-data border mt-2"
-                  style={{
-                    border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
-                  }}
-                >
-                  <thead className="tableHeaderBGColor">
-                    <tr>
-                      <th style={{ whiteSpace: "nowrap" }}>Drawing Name</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Material</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Quantity</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mtrl Value</th>
-                      <th style={{ whiteSpace: "nowrap" }}>JW Value</th>
-                      <th style={{ whiteSpace: "nowrap" }}>
-                        Draft_dc_inv_Details
-                      </th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Inv_No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Inv_Srl</th>
-                      <th style={{ whiteSpace: "nowrap" }}>ScheduleID</th>
-                      <th style={{ whiteSpace: "nowrap" }}>
-                        OrderSchDetailsID
-                      </th>
-                      <th style={{ whiteSpace: "nowrap" }}>Cust_Code</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Dwg_Code</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Dwg_No</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mtrl</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Material</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Qty</th>
-                      <th style={{ whiteSpace: "nowrap" }}>QtyReturned</th>
-                      <th style={{ whiteSpace: "nowrap" }}>UOM</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Unit_Wt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Srl_Wt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>WtReturned</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Unit Rate</th>
-                      <th style={{ whiteSpace: "nowrap" }}>DC_Srl_Amt</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Excise_CL_no</th>
-                      <th style={{ whiteSpace: "nowrap" }}>SrlType</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mtrl_rate</th>
-                      <th style={{ whiteSpace: "nowrap" }}>JW_Rate</th>
-                      <th style={{ whiteSpace: "nowrap" }}>PackingLevel</th>
-                      <th style={{ whiteSpace: "nowrap" }}>InspLevel</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Mprocess</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Operation</th>
-                      <th style={{ whiteSpace: "nowrap" }}>TotalWeight</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Desp Status</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Total Amount</th>
-                      <th style={{ whiteSpace: "nowrap" }}>Selected</th>
-                    </tr>
-                  </thead>
-                  <tbody className="tablebody"></tbody>
-                </Table>
-              </div>
-            </div>
+            <PackingNoteAndInvoice
+              PNAndInvRegisterData={PNAndInvRegisterData}
+              PNAndInvDetailsData={PNAndInvDetailsData}
+            />
           </Tab>
         </Tabs>
       </div>
