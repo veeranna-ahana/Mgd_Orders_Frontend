@@ -32,16 +32,24 @@ export default function ProfarmaInvoiceForm(props) {
 
   const rowLimit = 20;
   const fetchData = () => {
-    getRequest(endpoints.getTaxData, (taxData) => {
-      setTaxDropdownData(taxData);
-    });
-
     postRequest(
       endpoints.getProfarmaFormMain,
       { ProfarmaID: ProfarmaID },
       (profarmaMainData) => {
         setProfarmaMainData(profarmaMainData[0]);
-        // console.log("qwqwqwqw", profarmaMainData);
+
+        // console.log("profarmaMainData", profarmaMainData);
+        postRequest(
+          endpoints.getTaxData,
+          {
+            Cust_Code: profarmaMainData[0].Cust_Code,
+            unitStateID: "29",
+            unitGST: "29AABCM1970H1ZE",
+          },
+          (taxData) => {
+            setTaxDropdownData(taxData);
+          }
+        );
       }
     );
 
@@ -548,84 +556,332 @@ export default function ProfarmaInvoiceForm(props) {
                     : "ip-select mt-1"
                 }
                 onChange={(e) => {
-                  const taxOn = taxDropdownData[e.target.value].TaxOn?.split(
-                    "("
-                  )[0]
-                    .split(")")[0]
+                  const taxOn = taxDropdownData[e.target.value].TaxOn.replace(
+                    "(",
+                    ""
+                  )
+                    .replace(")", "")
                     .split("+");
-
                   let applicableTaxes = [];
                   let arr = [];
-
                   let totalTaxAmount = 0;
 
-                  // console.log("taxOn", taxOn);
-                  for (let i = 0; i < taxOn.length; i++) {
-                    const element = parseInt(taxOn[i]);
-                    if (element === 1) {
-                      // console.log("111", taxDropdownData[e.target.value]);
-                      applicableTaxes.push(taxDropdownData[e.target.value]);
-                    } else {
-                      // console.log("else", taxDropdownData);
-
+                  if (
+                    taxDropdownData[e.target.value].UnderGroup.toUpperCase() ===
+                      "INCOMETAX" ||
+                    taxDropdownData[e.target.value].UnderGroup.toUpperCase() ===
+                      "INCOME TAX"
+                  ) {
+                    for (let i = 1; i < taxOn.length; i++) {
+                      const element = taxOn[i];
                       taxDropdownData
-                        .filter((obj) => parseInt(obj.TaxID) === element)
-                        .map((val, key) => applicableTaxes.push(val));
+                        .filter((obj) => obj.TaxID === parseInt(element))
+                        .map((value, key) => applicableTaxes.push(value));
                     }
-                  }
-
-                  // console.log("applicableTaxes", applicableTaxes);
-
-                  for (let i = 0; i < applicableTaxes.length; i++) {
-                    const element = applicableTaxes[i];
+                    applicableTaxes.push(taxDropdownData[e.target.value]);
+                    // let taxableAmount = (
+                    //   parseFloat(invRegisterData?.Net_Total) -
+                    //   parseFloat(invRegisterData?.Discount) +
+                    //   parseFloat(invRegisterData?.Del_Chg)
+                    // ).toFixed(2);
 
                     let taxableAmount = parseFloat(
                       profarmaMainData?.AssessableValue || 0
                     ).toFixed(2);
+                    // let totalTaxAmount = 0;
+                    for (let i = 0; i < applicableTaxes.length; i++) {
+                      const element = applicableTaxes[i];
+                      if (
+                        element.UnderGroup.toUpperCase() === "INCOMETAX" ||
+                        element.UnderGroup.toUpperCase() === "INCOME TAX"
+                      ) {
+                        let TaxableAmntForTCS =
+                          parseFloat(taxableAmount) +
+                          parseFloat(totalTaxAmount);
+                        let TaxAmtForRow = (
+                          (TaxableAmntForTCS *
+                            parseFloat(element.Tax_Percent)) /
+                          100
+                        ).toFixed(2);
+                        totalTaxAmount =
+                          parseFloat(totalTaxAmount) + parseFloat(TaxAmtForRow);
 
-                    let taxAmount = parseFloat(
-                      (taxableAmount * parseFloat(element.Tax_Percent)) / 100
+                        const taxTableRow = {
+                          ProfarmaID: profarmaMainData.ProfarmaID,
+                          TaxID: element.TaxID,
+                          Tax_Name: element.TaxName,
+                          TaxOn: element.TaxOn,
+                          TaxableAmount: taxableAmount,
+                          TaxPercent: parseFloat(element.Tax_Percent).toFixed(
+                            2
+                          ),
+                          TaxAmt: TaxAmtForRow,
+                        };
+                        arr.push(
+                          taxTableRow
+                          // {
+                          //   // TaxID: element.TaxID,
+                          //   // TaxOn: element.TaxOn,
+                          //   // TaxPercent: element.Tax_Percent,
+                          //   // Tax_Name: element.TaxName,
+                          //   // taxableAmount: TaxableAmntForTCS,
+                          //   // TaxAmt: TaxAmtForRow,
+
+                          //   ProfarmaID: profarmaMainData.ProfarmaID,
+                          //   TaxID: element.TaxID,
+                          //   Tax_Name: element.TaxName,
+                          //   TaxOn: element.TaxOn,
+                          //   TaxableAmount: taxableAmount,
+                          //   TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
+                          //   TaxAmt: TaxAmtForRow,
+                          // }
+                        );
+                      } else {
+                        let TaxAmtForRow = (
+                          (taxableAmount * parseFloat(element.Tax_Percent)) /
+                          100
+                        ).toFixed(2);
+                        totalTaxAmount =
+                          parseFloat(totalTaxAmount) + parseFloat(TaxAmtForRow);
+                        const taxTableRow = {
+                          ProfarmaID: profarmaMainData.ProfarmaID,
+                          TaxID: element.TaxID,
+                          Tax_Name: element.TaxName,
+                          TaxOn: element.TaxOn,
+                          TaxableAmount: taxableAmount,
+                          TaxPercent: parseFloat(element.Tax_Percent).toFixed(
+                            2
+                          ),
+                          TaxAmt: TaxAmtForRow,
+                        };
+                        arr.push(
+                          taxTableRow
+                          // {
+                          //   // TaxID: element.TaxID,
+                          //   // TaxOn: element.TaxOn,
+                          //   // TaxPercent: element.Tax_Percent,
+                          //   // Tax_Name: element.TaxName,
+                          //   // taxableAmount: TaxableAmntForTCS,
+                          //   // TaxAmt: TaxAmtForRow,
+
+                          //   ProfarmaID: profarmaMainData.ProfarmaID,
+                          //   TaxID: element.TaxID,
+                          //   Tax_Name: element.TaxName,
+                          //   TaxOn: element.TaxOn,
+                          //   TaxableAmount: taxableAmount,
+                          //   TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
+                          //   TaxAmt: TaxAmtForRow,
+                          // }
+                        );
+                      }
+                    }
+                    // setInvTaxData(arr);
+                    // let newInvTotal =
+                    //   parseFloat(taxableAmount) +
+                    //   parseFloat(totalTaxAmount);
+                    // let newGrandTotal = Math.round(newInvTotal);
+                    // let newRoundOff = newGrandTotal - newInvTotal;
+                    // setInvRegisterData({
+                    //   ...invRegisterData,
+                    //   TaxAmount: parseFloat(totalTaxAmount).toFixed(2),
+                    //   InvTotal: newInvTotal.toFixed(2),
+                    //   GrandTotal: newGrandTotal.toFixed(2),
+                    //   Round_Off: newRoundOff.toFixed(2),
+                    // });
+
+                    let invTotal =
+                      parseFloat(profarmaMainData.Net_Total) -
+                      parseFloat(profarmaMainData.Discount) +
+                      parseFloat(profarmaMainData.Del_Chg) +
+                      parseFloat(totalTaxAmount);
+
+                    let grandTotal = Math.round(invTotal);
+                    setProfarmaTaxData(arr);
+                    setProfarmaMainData({
+                      ...profarmaMainData,
+                      TaxAmount: totalTaxAmount,
+                      InvTotal: invTotal,
+                      Round_Off: grandTotal - invTotal,
+                      GrandTotal: grandTotal,
+                    });
+                  } else {
+                    for (let i = 0; i < taxOn.length; i++) {
+                      const element = taxOn[i];
+                      if (parseInt(element) === 1) {
+                        applicableTaxes.push(taxDropdownData[e.target.value]);
+                      } else {
+                        // filter gets the data in array, there may be more then 1 rows, so mappppp....
+                        taxDropdownData
+                          .filter((obj) => obj.TaxID === parseInt(element))
+                          .map((value, key) => applicableTaxes.push(value));
+                      }
+                    }
+                    // let taxableAmount = (
+                    //   parseFloat(invRegisterData?.Net_Total) -
+                    //   parseFloat(invRegisterData?.Discount) +
+                    //   parseFloat(invRegisterData?.Del_Chg)
+                    // ).toFixed(2);
+
+                    let taxableAmount = parseFloat(
+                      profarmaMainData?.AssessableValue || 0
                     ).toFixed(2);
+                    let totalTaxAmount = 0;
+                    for (let i = 0; i < applicableTaxes.length; i++) {
+                      const element = applicableTaxes[i];
+                      let TaxAmtForRow = (
+                        (taxableAmount * parseFloat(element.Tax_Percent)) /
+                        100
+                      ).toFixed(2);
+                      totalTaxAmount =
+                        parseFloat(totalTaxAmount) + parseFloat(TaxAmtForRow);
 
-                    const taxTableRow = {
-                      ProfarmaID: profarmaMainData.ProfarmaID,
-                      TaxID: element.TaxID,
-                      Tax_Name: element.TaxName,
-                      TaxOn: element.TaxOn,
-                      TaxableAmount: taxableAmount,
-                      TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
-                      TaxAmt: taxAmount,
-                    };
+                      const taxTableRow = {
+                        ProfarmaID: profarmaMainData.ProfarmaID,
+                        TaxID: element.TaxID,
+                        Tax_Name: element.TaxName,
+                        TaxOn: element.TaxOn,
+                        TaxableAmount: taxableAmount,
+                        TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
+                        TaxAmt: TaxAmtForRow,
+                      };
 
-                    arr.push(taxTableRow);
-                    totalTaxAmount =
-                      parseFloat(totalTaxAmount) + parseFloat(taxAmount);
+                      arr.push(taxTableRow);
+                      // if (arr.length > 0) {
+                      //   arr = [
+                      //     ...arr,
+                      //     {
+                      //       TaxID: element.TaxID,
+                      //       TaxOn: element.TaxOn,
+                      //       TaxPercent: element.Tax_Percent,
+                      //       Tax_Name: element.TaxName,
+                      //       taxableAmount: taxableAmount,
+                      //       TaxAmt: TaxAmtForRow,
+                      //     },
+                      //   ];
+                      // } else {
+                      //   arr = [
+                      //     {
+                      //       TaxID: element.TaxID,
+                      //       TaxOn: element.TaxOn,
+                      //       TaxPercent: element.Tax_Percent,
+                      //       Tax_Name: element.TaxName,
+                      //       taxableAmount: taxableAmount,
+                      //       TaxAmt: TaxAmtForRow,
+                      //     },
+                      //   ];
+                      // }
+                    }
 
-                    // console.log("taxTableRow", taxTableRow);
-                    // console.log("taxprofarma", profarmaTaxData);
-                    // if (profarmaTaxData.length > 0) {
-                    //   setProfarmaTaxData([...profarmaTaxData, taxTableRow]);
-                    // } else {
-                    //   setProfarmaTaxData([taxTableRow]);
-                    // }
+                    // setInvTaxData(arr);
+                    // let newInvTotal =
+                    //   parseFloat(taxableAmount) +
+                    //   parseFloat(totalTaxAmount);
+                    // let newGrandTotal = Math.round(newInvTotal);
+                    // let newRoundOff = newGrandTotal - newInvTotal;
+                    // setInvRegisterData({
+                    //   ...invRegisterData,
+                    //   TaxAmount: parseFloat(totalTaxAmount).toFixed(2),
+                    //   InvTotal: newInvTotal.toFixed(2),
+                    //   GrandTotal: newGrandTotal.toFixed(2),
+                    //   Round_Off: newRoundOff.toFixed(2),
+                    // });
+
+                    let invTotal =
+                      parseFloat(profarmaMainData.Net_Total) -
+                      parseFloat(profarmaMainData.Discount) +
+                      parseFloat(profarmaMainData.Del_Chg) +
+                      parseFloat(totalTaxAmount);
+
+                    let grandTotal = Math.round(invTotal);
+                    setProfarmaTaxData(arr);
+                    setProfarmaMainData({
+                      ...profarmaMainData,
+                      TaxAmount: totalTaxAmount,
+                      InvTotal: invTotal,
+                      Round_Off: grandTotal - invTotal,
+                      GrandTotal: grandTotal,
+                    });
                   }
-
-                  let invTotal =
-                    parseFloat(profarmaMainData.Net_Total) -
-                    parseFloat(profarmaMainData.Discount) +
-                    parseFloat(profarmaMainData.Del_Chg) +
-                    parseFloat(totalTaxAmount);
-
-                  let grandTotal = Math.round(invTotal);
-                  setProfarmaTaxData(arr);
-                  setProfarmaMainData({
-                    ...profarmaMainData,
-                    TaxAmount: totalTaxAmount,
-                    InvTotal: invTotal,
-                    Round_Off: grandTotal - invTotal,
-                    GrandTotal: grandTotal,
-                  });
                 }}
+                // onChange={(e) => {
+                //   const taxOn = taxDropdownData[e.target.value].TaxOn?.split(
+                //     "("
+                //   )[0]
+                //     .split(")")[0]
+                //     .split("+");
+
+                //   let applicableTaxes = [];
+                //   let arr = [];
+
+                //   let totalTaxAmount = 0;
+
+                //   // console.log("taxOn", taxOn);
+                //   for (let i = 0; i < taxOn.length; i++) {
+                //     const element = parseInt(taxOn[i]);
+                //     if (element === 1) {
+                //       // console.log("111", taxDropdownData[e.target.value]);
+                //       applicableTaxes.push(taxDropdownData[e.target.value]);
+                //     } else {
+                //       // console.log("else", taxDropdownData);
+
+                //       taxDropdownData
+                //         .filter((obj) => parseInt(obj.TaxID) === element)
+                //         .map((val, key) => applicableTaxes.push(val));
+                //     }
+                //   }
+
+                //   // console.log("applicableTaxes", applicableTaxes);
+
+                //   for (let i = 0; i < applicableTaxes.length; i++) {
+                //     const element = applicableTaxes[i];
+
+                //     let taxableAmount = parseFloat(
+                //       profarmaMainData?.AssessableValue || 0
+                //     ).toFixed(2);
+
+                //     let taxAmount = parseFloat(
+                //       (taxableAmount * parseFloat(element.Tax_Percent)) / 100
+                //     ).toFixed(2);
+
+                //     const taxTableRow = {
+                //       ProfarmaID: profarmaMainData.ProfarmaID,
+                //       TaxID: element.TaxID,
+                //       Tax_Name: element.TaxName,
+                //       TaxOn: element.TaxOn,
+                //       TaxableAmount: taxableAmount,
+                //       TaxPercent: parseFloat(element.Tax_Percent).toFixed(2),
+                //       TaxAmt: taxAmount,
+                //     };
+
+                //     arr.push(taxTableRow);
+                //     totalTaxAmount =
+                //       parseFloat(totalTaxAmount) + parseFloat(taxAmount);
+
+                //     // console.log("taxTableRow", taxTableRow);
+                //     // console.log("taxprofarma", profarmaTaxData);
+                //     // if (profarmaTaxData.length > 0) {
+                //     //   setProfarmaTaxData([...profarmaTaxData, taxTableRow]);
+                //     // } else {
+                //     //   setProfarmaTaxData([taxTableRow]);
+                //     // }
+                //   }
+
+                //   let invTotal =
+                //     parseFloat(profarmaMainData.Net_Total) -
+                //     parseFloat(profarmaMainData.Discount) +
+                //     parseFloat(profarmaMainData.Del_Chg) +
+                //     parseFloat(totalTaxAmount);
+
+                //   let grandTotal = Math.round(invTotal);
+                //   setProfarmaTaxData(arr);
+                //   setProfarmaMainData({
+                //     ...profarmaMainData,
+                //     TaxAmount: totalTaxAmount,
+                //     InvTotal: invTotal,
+                //     Round_Off: grandTotal - invTotal,
+                //     GrandTotal: grandTotal,
+                //   });
+                // }}
               >
                 <option value="none" selected disabled hidden>
                   Select an Option
