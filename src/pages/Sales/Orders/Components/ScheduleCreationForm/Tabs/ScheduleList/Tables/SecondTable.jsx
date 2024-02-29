@@ -5,7 +5,7 @@ export default function SecondTable(props) {
   return (
     <>
       <div>
-        <Table striped className="table-data border">
+        <Table striped className="table-data border table-space">
           <thead className="tableHeaderBGColor">
             <tr>
               <th>Dwg Name</th>

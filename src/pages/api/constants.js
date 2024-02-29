@@ -284,6 +284,40 @@ export const endpoints = {
   getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
 
   //OpenSchedule Srvice
+
+  getScheduleListgetFormDetails:`${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose:`${API}/ScheduleList/shortClose`,
+  onClickSave:`${API}/ScheduleList/save`,
+  onClickSuspend:`${API}/ScheduleList/suspendButton`,
+  onClickCancel:`${API}/ScheduleList/onClickCancel`,
+  onClickScheduled:`${API}/ScheduleList/ScheduleButton`,
+  getSalesContact:`${API}/ScheduleList/getSalesContact`,
+  onClickTask:`${API}/ScheduleList/taskOnclick`,
+  onClickPerformance:`${API}/ScheduleList/onClickPerformce`,
+  onClickFixtureOrder:`${API}/ScheduleList/fixtureOrder`,
+  deleteScheduleList:`${API}/ScheduleList/deleteScheduleList`,
+  
+  //NCProgram Button
+  onClickNCProgram:`${API}/NCProgram/getFormData`,
+  getMachineList:`${API}/NCProgram/getMachines`,
+  addNCProgram:`${API}/NCProgram/addProgram`,
+  sendMtrlIssue:`${API}/NCProgram/sendMTrlIssue`,
+  DeleteNCProgram:`${API}/NCProgram/DeleteNCProgram`,
+  SaveButton:`${API}/NCProgram/ButtonSave`,
+  getNCPrograms:`${API}/NCProgram/getPrograms`,
+  getPartsData:`${API}/NCProgram/NCProgramPartsData`,
+
+  //Production Schedule Creation
+  CreateSchedule:`${API}/productionSchCreation/createSchedule`,
+  shortcloseOrder:`${API}/productionSchCreation/shortCloseOrder`,
+  //ShortClose to Recorded
+  shortclosetoRecorded:`${API}/productionSchCreation/shortclosetoRecorded`,
+  cancelOrder:`${API}/productionSchCreation/cancelOrder`,
+  //Cancel to Recorded
+  canceltoRecorded:`${API}/productionSchCreation/canceltoRecord`,
+  suspendOrder:`${API}/productionSchCreation/suspendOrder`,
+  scheduleListbasedOnScheduleType:`${API}/productionSchCreation/schedulelistbasedonScheduleType`,
+
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
   onClickShortClose: `${API}/ScheduleList/shortClose`,
   onClickSave: `${API}/ScheduleList/save`,
@@ -318,6 +352,7 @@ export const endpoints = {
   DeleteNCProgram: `${API}/NCProgram/DeleteNCProgram`,
   SaveButton: `${API}/NCProgram/ButtonSave`,
   getNCPrograms: `${API}/NCProgram/getPrograms`,
+
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
