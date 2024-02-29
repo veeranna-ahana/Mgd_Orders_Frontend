@@ -99,6 +99,9 @@ import ProfileScheduleCreationForm from "./pages/Sales/Orders/Menus/Profile/Sche
 import { QuotationProvider } from "./context/QuotationContext";
 import { OrderProvider } from "./context/OrderContext";
 import ServiceOpenSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ServiceOpenSchedule";
+// import ProfarmaInvoiceForm from "./pages/Sales/Orders/Components/ProfarmaInvoiceForm/ProfarmaInvoiceForm";
+import PackingNoteAndInvoiceDetails from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/Tabs/Details/PackingNoteAndInvoiceDetails";
+
 import FindProOrder from "./pages/Sales/Orders/Menus/Profile/Find Order/FindOrder";
 function App() {
   return (
@@ -190,7 +193,6 @@ function App() {
                     path="ScheduleCreationForm"
                     element={<ServiceScheduleCreationForm />}
                   />
-
                   <Route path="FindOrder" element={<ServiceFindOrder />} />
                   <Route
                     path="ProfamaInvoiceForm"
@@ -200,7 +202,10 @@ function App() {
                     path="ServiceOpenSchedule"
                     element={<ServiceOpenSchedule />}
                   />
-
+                  <Route
+                    path="PackingNoteAndInvoiceDetails"
+                    element={<PackingNoteAndInvoiceDetails />}
+                  />
                   <Route path="OrderList">
                     <Route path="All" element={<ServiceAll />} />
                     <Route path="Completed" element={<ServiceCompleted />} />
@@ -222,7 +227,6 @@ function App() {
                   />
                   <Route path="ImportQtn" element={<ServiceImportQtn />} />
                   <Route path="EditDxf" element={<ServiceEditDxf />} />
-
                   <Route
                     path="ProfarmaInvoiceForm"
                     element={<ProfarmaInvoiceForm />}
