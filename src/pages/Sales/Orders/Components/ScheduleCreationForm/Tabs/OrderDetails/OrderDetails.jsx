@@ -11,6 +11,7 @@ import ImportDwgModal from "./Modals/ImportDwgModal";
 import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
 import ImportQtnModal from "./Modals/ImportQtnModal";
 import { toast } from "react-toastify";
+import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 // import ImportDwgModal from "./Modals/ImportDwgModal";
 
 const {
@@ -65,6 +66,12 @@ export default function OrderDetails(props) {
     handleReverseSelection,
   } = props;
 
+  // import from excel
+  const [importExcelModal, setImportExcelModal] = useState(false);
+
+  function importExcelFunc() {
+    setImportExcelModal(true);
+  }
   let lastOrderSrl = 0;
 
   for (let i = 0; i < OrdrDetailsData.length; i++) {
@@ -721,6 +728,11 @@ export default function OrderDetails(props) {
         handleImportQtnMdl={handleImportQtnMdl}
         handleCloseImportQtnMdl={handleCloseImportQtnMdl}
       />
+
+      <ImportExcelModal
+        setImportExcelModal={setImportExcelModal}
+        importExcelModal={importExcelModal}
+      />
       <div>
         {/* {console.log(".....", props)} */}
         <div className="row justify-content-left m-3">
@@ -738,6 +750,7 @@ export default function OrderDetails(props) {
           <button
             className="button-style"
             style={{ width: "140px", marginLeft: "4px" }}
+            onClick={importExcelFunc}
           >
             Import EXCEL
           </button>
