@@ -34,9 +34,21 @@ function ServiceNCProgram() {
     });
   };
 
+  //get PartsData
+  const [partsData, setPartsData] = useState([]);
+  const getPartsData = () => {
+    postRequest(endpoints.getPartsData, { NCprogramForm }, (response) => {
+      // console.log("NCProgramList is", response);
+      setPartsData(response);
+    });
+  };
+
   useEffect(() => {
     getNCProgramData();
+    getPartsData();
   }, [NCprogramForm]);
+
+  console.log("partsData is", partsData);
 
   //row select
   const [selectedNCprogram, setSelectedNCProgram] = useState({});
@@ -57,11 +69,11 @@ function ServiceNCProgram() {
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
     postRequest(endpoints.addNCProgram, { NCprogramForm }, (response) => {
-      if(response.message==='Success')
-      toast.success(response.message, {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      else{
+      if (response.message === "Success")
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      else {
         toast.warning(response.message, {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -122,7 +134,7 @@ function ServiceNCProgram() {
     );
   };
 
- 
+
 
   return (
     <div>
@@ -278,7 +290,22 @@ function ServiceNCProgram() {
                   <th style={{ whiteSpace: "nowrap" }}>Available</th>
                 </tr>
               </thead>
-              <tbody className="tablebody"></tbody>
+              <tbody className="tablebody">
+                {partsData.length > 0 ? (
+                  partsData.map((item, key) => (
+                    <tr key={key}>
+                      <td>{item.PartID}</td>
+                      <td>{item.QtyPerAssy}</td>
+                      <td>{item.QtyRequired}</td>
+                      <td>{item.QtyAvialable}</td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4">No data to show</td>
+                  </tr>
+                )}
+              </tbody>
             </Table>
           </div>
 

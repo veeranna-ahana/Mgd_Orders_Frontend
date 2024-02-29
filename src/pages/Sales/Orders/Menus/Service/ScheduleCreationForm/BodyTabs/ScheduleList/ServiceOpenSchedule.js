@@ -154,6 +154,8 @@ function ServiceOpenSchedule() {
     );
   }, [scheduleDetailsRow]); // Watch for changes in OrderData
 
+  console.log("scheduleDetailsRow", scheduleDetailsRow);
+
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
   const onRowSelectTaskMaterialTable = (item, index) => {
@@ -330,6 +332,7 @@ function ServiceOpenSchedule() {
     );
   };
 
+  //onClick Tasked
   const onClickTasked = () => {
     console.log(scheduleDetailsRow);
     postRequest(endpoints.onClickTask, { scheduleDetailsRow }, (response) => {
@@ -339,6 +342,32 @@ function ServiceOpenSchedule() {
       });
     });
   };
+
+  //onClicked Performance
+  const [Performancedata, setPerformancedata] = useState([]);
+  const [showPerformancedata, setShowPerformance] = useState(false);
+  const onClickPerformance = () => {
+    postRequest(endpoints.onClickPerformance, { formdata }, (response) => {
+      setPerformancedata(response);
+      setShowPerformance(true);
+      console.log(response);
+    });
+  };
+
+  console.log(formdata);
+
+
+    //OnClick Yes Fixture Order 
+    const[fixturedata,setFixtureData]=useState([]);
+    const onClickYesFixtureOrder = () => {
+      postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
+        console.log(response);
+        setFixtureData(response);
+        setFixtureOrder1(false);
+      });
+    };
+
+    console.log("fixturedata is",fixturedata)
 
   return (
     <div>
@@ -496,6 +525,15 @@ function ServiceOpenSchedule() {
             `}
             </style>
           )}
+
+        </div>
+
+        <div className="col-md-2 col-sm-3">
+          {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
+          <button className="button-style " onClick={onClickNCProgram}>
+            NC Program
+          </button>
+          {/* </Link> */}
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -522,6 +560,7 @@ function ServiceOpenSchedule() {
             `}
             </style>
           )}
+
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -534,7 +573,9 @@ function ServiceOpenSchedule() {
           >
             Check Status
           </button>
+>
         </div>
+
 
         <div className="col-md-2 col-sm-3">
           <button
@@ -546,14 +587,6 @@ function ServiceOpenSchedule() {
           >
             Print Schedule
           </button>
-        </div>
-
-        <div className="col-md-2 col-sm-3">
-          {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
-          <button className="button-style " onClick={onClickNCProgram}>
-            NC Program
-          </button>
-          {/* </Link> */}
         </div>
 
         {/* <div className="col-md-2 col-sm-3">
@@ -636,7 +669,12 @@ function ServiceOpenSchedule() {
             <div className="row mt-3">
               <div style={{ display: "flex", gap: "170px" }}>
                 <h5 className="mt-3">Task List</h5>
-                <button className="button-style mb-2">Performance</button>
+                <button
+                  className="button-style mb-2"
+                  onClick={onClickPerformance}
+                >
+                  Performance
+                </button>
               </div>
               <div className="col-md-6">
                 <div style={{ overflowY: "scroll" }}>
@@ -660,10 +698,20 @@ function ServiceOpenSchedule() {
                         <th>Priority</th>
                         <th>Status</th>
                         <th>Machine</th>
+                        {showPerformancedata && (
+                          <>
+                            <th>Machine Time</th>
+                            <th>HourRate</th>
+                            <th>TargetHourRate</th>
+                          </>
+                        )}
                       </tr>
                     </thead>
-                    <tbody className="tablebody">
+                    <tbody className="tablebody table-space">
                       {TaskMaterialData.map((value, key) => {
+                        const performanceRow = Performancedata.find(
+                          (item) => item.NcTaskId === value.NcTaskId
+                        );
                         return (
                           <>
                             <tr
@@ -685,6 +733,29 @@ function ServiceOpenSchedule() {
                               <td>{value.Priority}</td>
                               <td>{value.TStatus}</td>
                               <td>{value.Machine}</td>
+                              {showPerformancedata && performanceRow && (
+                                <>
+                                  <td>
+                                    {typeof performanceRow.MachineTime ===
+                                    "number"
+                                      ? Number(
+                                          performanceRow.MachineTime
+                                        ).toFixed(1)
+                                      : performanceRow.MachineTime}
+                                  </td>
+                                  <td>
+                                    {typeof performanceRow.HourRate === "number"
+                                      ? performanceRow.HourRate.toFixed(2)
+                                      : performanceRow.HourRate}
+                                  </td>
+                                  <td>
+                                    {typeof performanceRow.TargetHourRate ===
+                                    "number"
+                                      ? performanceRow.TargetHourRate.toFixed(2)
+                                      : performanceRow.TargetHourRate}
+                                  </td>
+                                </>
+                              )}
                             </tr>
                           </>
                         );
@@ -946,7 +1017,7 @@ function ServiceOpenSchedule() {
         firstbuttontext="Yes"
         secondbuttontext="No"
       />
-
+{/* 
       <AlertModal
         show={profileOrder2}
         onHide={(e) => setProfileOrder2(e)}
@@ -954,15 +1025,15 @@ function ServiceOpenSchedule() {
         title="magod_Order"
         message="Order Created"
         firstbuttontext="Ok"
-      />
+      /> */}
 
       <AlertModal
         show={fixtureOrder1}
         onHide={(e) => setFixtureOrder1(e)}
-        firstbutton={fixtureOrderOpen2}
+        firstbutton={onClickYesFixtureOrder}
         secondbutton={fixtureOrderClose1}
         title="magod_Order"
-        message="Do you wish to create or use internal order for this schedule"
+        message="Do you wish to create or use internal order for this schedule?"
         firstbuttontext="Yes"
         secondbuttontext="No"
       />
@@ -984,6 +1055,7 @@ function ServiceOpenSchedule() {
         message="Scheduled"
         firstbuttontext="Ok"
       />
+
     </div>
   );
 }
