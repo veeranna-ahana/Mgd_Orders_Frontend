@@ -293,7 +293,9 @@ export const endpoints = {
   onClickScheduled:`${API}/ScheduleList/ScheduleButton`,
   getSalesContact:`${API}/ScheduleList/getSalesContact`,
   onClickTask:`${API}/ScheduleList/taskOnclick`,
-
+  onClickPerformance:`${API}/ScheduleList/onClickPerformce`,
+  onClickFixtureOrder:`${API}/ScheduleList/fixtureOrder`,
+  deleteScheduleList:`${API}/ScheduleList/deleteScheduleList`,
   
   //NCProgram Button
   onClickNCProgram:`${API}/NCProgram/getFormData`,
@@ -303,7 +305,18 @@ export const endpoints = {
   DeleteNCProgram:`${API}/NCProgram/DeleteNCProgram`,
   SaveButton:`${API}/NCProgram/ButtonSave`,
   getNCPrograms:`${API}/NCProgram/getPrograms`,
-  
+  getPartsData:`${API}/NCProgram/NCProgramPartsData`,
+
+  //Production Schedule Creation
+  CreateSchedule:`${API}/productionSchCreation/createSchedule`,
+  shortcloseOrder:`${API}/productionSchCreation/shortCloseOrder`,
+  //ShortClose to Recorded
+  shortclosetoRecorded:`${API}/productionSchCreation/shortclosetoRecorded`,
+  cancelOrder:`${API}/productionSchCreation/cancelOrder`,
+  //Cancel to Recorded
+  canceltoRecorded:`${API}/productionSchCreation/canceltoRecord`,
+  suspendOrder:`${API}/productionSchCreation/suspendOrder`,
+  scheduleListbasedOnScheduleType:`${API}/productionSchCreation/schedulelistbasedonScheduleType`,
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
