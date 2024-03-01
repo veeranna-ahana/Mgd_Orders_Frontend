@@ -9,8 +9,9 @@ import { Tab, Tabs } from "react-bootstrap";
 import { propTypes } from "react-bootstrap/esm/Image";
 import ImportDwgModal from "./Modals/ImportDwgModal";
 import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
-import ImportQtnModal from "./Modals/ImportQtnModal";
+import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
 import { toast } from "react-toastify";
+import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 // import ImportDwgModal from "./Modals/ImportDwgModal";
 
 const {
@@ -65,6 +66,12 @@ export default function OrderDetails(props) {
     handleReverseSelection,
   } = props;
 
+  // import from excel
+  const [importExcelModal, setImportExcelModal] = useState(false);
+
+  function importExcelFunc() {
+    setImportExcelModal(true);
+  }
   let lastOrderSrl = 0;
 
   for (let i = 0; i < OrdrDetailsData.length; i++) {
@@ -561,9 +568,9 @@ export default function OrderDetails(props) {
     // ////console.log("modal opend ");
     setImportQtnMdl(true);
   };
-  const handleCloseImportQtnMdl = () => {
-    setImportQtnMdl(false);
-  };
+  // const handleCloseImportQtnMdl = () => {
+  //   setImportQtnMdl(false);
+  // };
 
   // partid dropdown
   const [selectedPartId, setSelectedPartId] = useState([]);
@@ -721,8 +728,13 @@ export default function OrderDetails(props) {
       <ImportQtnModal
         importQtnMdl={importQtnMdl}
         setImportQtnMdl={setImportQtnMdl}
-        handleImportQtnMdl={handleImportQtnMdl}
-        handleCloseImportQtnMdl={handleCloseImportQtnMdl}
+        // handleImportQtnMdl={handleImportQtnMdl}
+        // handleCloseImportQtnMdl={handleCloseImportQtnMdl}
+      />
+
+      <ImportExcelModal
+        setImportExcelModal={setImportExcelModal}
+        importExcelModal={importExcelModal}
       />
       <div>
         {/* {console.log(".....", props)} */}
@@ -741,6 +753,7 @@ export default function OrderDetails(props) {
           <button
             className="button-style"
             style={{ width: "140px", marginLeft: "4px" }}
+            onClick={importExcelFunc}
           >
             Import EXCEL
           </button>

@@ -2712,3 +2712,417 @@ Public Class Schedule
 
     End Sub
 End Class
+
+
+' ---------------------------------------------------------------------------------------------------------------------------------
+
+Public Class NCProgramNo_Alloter
+    Private DA_NcTask, DA_NCProgram As MySql.Data.MySqlClient.MySqlDataAdapter
+    Private NcTaskId As Int32
+    Private Task As Magod.NCProgramming.TaskListRow
+    Private TaskPart As magod.NCProgramming.Task_PartsListRow
+
+    Public Sub New(ByVal _NcTaskId As Int32)
+
+        ' This call is required by the Windows Form Designer.
+        InitializeComponent()
+
+        ' Add any initialization after the InitializeComponent() call.
+
+        NcTaskId = _NcTaskId
+
+        '**** this opens up the production program creator for Service Tasks
+        '*** If Task has BOM set to True then the material is in Parts
+        '**** else it is the Task Part ID itself
+
+
+
+        setupData()
+    End Sub
+    Private Sub setupData()
+
+
+        DA_NcTask = Orders.getDBLink.getMySqlDataAdopter
+        With DA_NcTask
+            With .SelectCommand
+                't.`NcTaskId`, t.`DwgName` FROM magodmis.task_partslist t
+                .CommandText = "SELECT n.*,t.DwgName as AssyName FROM magodmis.nc_task_list n,magodmis.task_partslist t " _
+                & "WHERE n.`NcTaskId`=@NcTaskId AND t.`NcTaskId`=n.`NcTaskId`"
+                .Parameters.AddWithValue("@NcTaskId", NcTaskId)
+            End With
+            .Fill(NcProgramming1.TaskList)
+            Task = NcProgramming1.TaskList.FindByNcTaskId(NcTaskId)
+            With .UpdateCommand
+                .CommandText = "UPDATE magodmis.nc_task_list n SET n.`TStatus` =@TStatus, n.`Machine`=@Machine WHERE n.`NcTaskId`=@NcTaskId;"
+                .Parameters.AddWithValue("@NcTaskId", NcTaskId)
+                .Parameters.Add("@TStatus", MySql.Data.MySqlClient.MySqlDbType.VarChar, 20, "TStatus")
+                .Parameters.Add("@Machine", MySql.Data.MySqlClient.MySqlDbType.VarChar, 20, "Machine")
+            End With
+        End With
+
+        DA_NCProgram = Orders.getDBLink.getMySqlDataAdopter
+        With DA_NCProgram
+            With .SelectCommand
+                .CommandText = "SELECT * FROM magodmis.ncprograms n WHERE n.`NcTaskId`=@NcTaskId;"
+                .Parameters.AddWithValue("@NcTaskId", NcTaskId)
+
+            End With
+            .Fill(NcProgramming1.TaskProgramList)
+            With .UpdateCommand
+                .CommandText = "UPDATE magodmis.ncprograms SET PStatus=@PStatus WHERE NcId=@NcId;"
+                .Parameters.Add("@PStatus", MySql.Data.MySqlClient.MySqlDbType.VarChar, 40, "PStatus")
+                .Parameters.Add("@NcId", MySql.Data.MySqlClient.MySqlDbType.Int32, 20, "NcId")
+            End With
+
+            With .DeleteCommand
+                .CommandText = "DELETE FROM magodmis.ncprograms  WHERE NcId=@NcId;"
+                .Parameters.Add("@NcId", MySql.Data.MySqlClient.MySqlDbType.Int32, 20, "NcId")
+
+            End With
+        End With
+
+        If Not NcProgramming1.TaskList.Rows.Count = 0 Then
+            With Orders.getCommand
+                .Parameters.Clear()
+                '**** get Machines for this Operation
+                .CommandText = "SELECT m.`RefProcess`,  m1.* FROM machine_data.machine_process_list m, machine_data.machine_list m1 " _
+                                & "WHERE m.`RefProcess`=@RefProcess AND m1.`Machine_srl`=m.`Machine_srl`;"
+                .Parameters.AddWithValue("@RefProcess", NcProgramming1.TaskList.Rows(0).Item("Operation"))
+                .Parameters.AddWithValue("@NcTaskId", NcTaskId)
+
+                .Connection.Open()
+                NcProgramming1.MachineList.Load(.ExecuteReader)
+                '**** Status of Task Parts
+                .CommandText = "UPDATE magodmis.task_partslist t, (SELECT Sum(n.`TotQtyNested`-n.`QtyRejected`) as TotalQtyNested," _
+                            & "n.`Task_Part_Id` FROM magodmis.ncprogram_partslist n,magodmis.ncprograms n1  WHERE n.`NCId`=n1.`NCId` " _
+                            & "AND n1.`NcTaskId`=@NcTaskId GROUP BY n.`Task_Part_Id`) as A SET t.`QtyNested`=A.TotalQtyNested " _
+                            & "WHERE A.`Task_Part_Id`=t.`Task_Part_ID` AND t.`NcTaskId`=@NcTaskId ;"
+                .ExecuteNonQuery()
+                .CommandText = "SELECT * FROM magodmis.task_partslist t WHERE t.`NcTaskId`=@NcTaskId;"
+                NcProgramming1.Task_PartsList.Load(.ExecuteReader)
+
+                TaskPart = NcProgramming1.Task_PartsList.First
+
+                '  Task.AssyName = TaskPart.DwgName
+                .Connection.Close()
+                Me.Label_Material.Text = String.Format("{0} / {1}", NcProgramming1.TaskList.Rows(0).Item("CustMtrl"), NcProgramming1.TaskList.Rows(0).Item("Mtrl_Code"))
+            End With
+        End If
+        '****** get the Parts List for the Assy and parts required for it
+        Dim sql As New System.Text.StringBuilder
+        '****** If Service task has BOM select Parts of BOM Else Select Task Parts as
+        With sql
+            .Append(" SELECT    c2.`PartId`,c1.`Quantity` as QtyPerAssy, c2.`Id` As CustBOM_Id, t.`Task_Part_ID`,t.`QtyNested`*c1.`Quantity` as QtyRequired ")
+            .Append("FROM magodmis.task_partslist t,magodmis.orderscheduledetails o,magodmis.cust_assy_data c,")
+            .Append("magodmis.cust_assy_bom_list c1,magodmis.cust_bomlist c2 ")
+            .Append("WHERE t.`NcTaskId`=@NcTaskId and t.`HasBOM`and t.`SchDetailsId`=o.`SchDetailsID` ")
+            .Append("AND c.`MagodCode` = o.`Dwg_Code` AND c1.`Cust_AssyId`=c.`Id` AND c1.`Cust_BOM_ListId`=c2.`Id`;")
+        End With
+
+        With Orders.getCommand
+            .CommandText = "SELECT t.`HasBOM` FROM magodmis.task_partslist t WHERE t.`NcTaskId` =@NcTaskId;"
+
+            .Connection.Open()
+            Dim hasBOM As Boolean = .ExecuteScalar
+            If hasBOM Then
+                '*********** if Task Part has a BOM then select the List of BOM available
+                .CommandText = sql.ToString
+            Else
+                '*********** if Task Part is Single Part Service then select the the Part Details Qty To Nest as requirement
+                .CommandText = "SELECT  o.`DwgName` as PartID ,1 as QtyPerAssy,c.`Id` as CustBOM_Id,t.Task_Part_ID, t.QtyToNest as QtyRequired " _
+                              & "FROM magodmis.task_partslist t,magodmis.orderscheduledetails o,magodmis.cust_bomlist c " _
+                              & "WHERE o.`SchDetailsID`=t.`SchDetailsId` AND t.`NcTaskId`=@NcTaskId AND c.`MagodPartId`=o.`Dwg_Code`;"
+
+            End If
+            NcProgramming1.TaskAssy_BOMList.Load(.ExecuteReader)
+
+            '***** update availbility
+            .CommandText = "SELECT  Sum(cast(m.`QtyAccepted`- m.`QtyIssued` as Signed))  as QtyAvialable " _
+                        & "FROM magodmis.mtrl_part_receipt_details m WHERE m.`CustBOM_Id` =@CustBOM_Id"
+            'SELECT CAST(CAST(1-2 AS UNSIGNED) AS SIGNED);
+            .Parameters.Clear()
+            .Parameters.Add("@CustBOM_Id", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            For Each part As magod.NCProgramming.TaskAssy_BOMListRow In NcProgramming1.TaskAssy_BOMList.Rows
+                .Parameters("@CustBOM_Id").Value = part.CustBOM_Id
+                Dim qtyAvailable As Integer = .ExecuteScalar
+                If qtyAvailable < 0 Then
+                    MsgBox(String.Format("Part Id {0} Qty Available is less than Zero, Check with Admin", qtyAvailable))
+                Else
+                    part.QtyAvialable = .ExecuteScalar
+                End If
+
+            Next
+            .Connection.Close()
+        End With
+    End Sub
+
+    Private Sub btn_Save_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_Save.Click
+        SaveTask()
+       
+    End Sub
+    Private Sub SaveTask()
+        BS_NcTask.EndEdit()
+        DA_NcTask.Update(NcProgramming1.TaskList)
+        BS_NCPgmes.EndEdit()
+        DA_NCProgram.Update(NcProgramming1.TaskProgramList)
+        With Orders.getCommand
+            .Parameters.Clear()
+            .Parameters.Add("@NCId", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            .Parameters.AddWithValue("@Task_Part_Id", TaskPart.Task_Part_ID)
+            .Parameters.Add("@TotQtyNested", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            .Parameters.Add("@EstimatedTime", MySql.Data.MySqlClient.MySqlDbType.Int32)
+            .Parameters.Add("@TotalLOC", MySql.Data.MySqlClient.MySqlDbType.Double)
+            .Parameters.Add("@TotalHoles", MySql.Data.MySqlClient.MySqlDbType.Int24)
+            .Parameters.Add("@PStatus", MySql.Data.MySqlClient.MySqlDbType.VarChar)
+
+
+            Dim updateNCProgram As String = "UPDATE magodmis.ncprograms n SET n.`Qty`=@TotQtyNested ," _
+            & " n.`TotalParts`=@TotQtyNested, n.`EstimatedTime`=@EstimatedTime, n.`TotalHoles`=@TotalHoles,n.`TotalLOC`=@TotalLOC, n.`PStatus`=@PStatus WHERE n.`NCId`=@NCId "
+            Dim UpdateNCPgmPart As String = "UPDATE magodmis.ncprogram_partslist n SET n.`TotQtyNested`=@TotQtyNested ,n.`Sheets`=@TotQtyNested " _
+                            & "WHERE n.`NCId`=@NCId AND n.`Task_Part_Id`=@Task_Part_Id; "
+
+            .Connection.Open()
+            For Each ncprogramme As Magod.NCProgramming.TaskProgramListRow In NcProgramming1.TaskProgramList.Rows
+                .Parameters("@NCId").Value = ncprogramme.Ncid
+                .Parameters("@TotQtyNested").Value = ncprogramme.Qty
+                .Parameters("@EstimatedTime").Value = ncprogramme.EstimatedTime
+                .Parameters("@TotalLOC").Value = ncprogramme.TotalLOC
+                .Parameters("@TotalHoles").Value = ncprogramme.TotalHoles
+                .Parameters("@PStatus").Value = ncprogramme.PStatus
+
+                .CommandText = updateNCProgram
+                .ExecuteNonQuery()
+                .CommandText = UpdateNCPgmPart
+                .ExecuteNonQuery()
+
+            Next
+            .CommandText = "UPDATE magodmis.task_partslist t, (SELECT Sum(n.`TotQtyNested`-n.`QtyRejected`) as TotalQtyNested," _
+                      & "n.`Task_Part_Id` FROM magodmis.ncprogram_partslist n,magodmis.ncprograms n1  WHERE n.`NCId`=n1.`NCId` " _
+                      & "AND n1.`NcTaskId`=@NcTaskId GROUP BY n.`Task_Part_Id`) as A SET t.`QtyNested`=A.TotalQtyNested " _
+                      & "WHERE A.`Task_Part_Id`=t.`Task_Part_ID` AND t.`NcTaskId`=@NcTaskId ;"
+            .Parameters.Clear()
+            .Parameters.AddWithValue("@NcTaskId", NcTaskId)
+
+            .ExecuteNonQuery()
+            NcProgramming1.Task_PartsList.Clear()
+            .CommandText = "SELECT * FROM magodmis.task_partslist t WHERE t.`NcTaskId`=@NcTaskId;"
+            NcProgramming1.Task_PartsList.Load(.ExecuteReader)
+            TaskPart = NcProgramming1.Task_PartsList.Rows(0)
+            .Connection.Close()
+        End With
+    End Sub
+
+    ' ADD NCProgram
+    Private Sub btn_AddProgram_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_AddProgram.Click
+        If Not TaskPart.QtyToNest > TaskPart.QtyNested Then
+            MsgBox("Quantity Tasked has already been programmed")
+            Exit Sub
+        End If
+        Dim Task As magod.NCProgramming.TaskListRow = NcProgramming1.TaskList.FindByNcTaskId(NcTaskId)
+        If Task.Operation = "Fabrication" Then
+            MsgBox("Program Number applicable for Single Operation Only")
+            Exit Sub
+        End If
+        If Task.IsMachineNull Then
+            MsgBox("Machine for task Not selected, Select Machine")
+            Exit Sub
+
+        End If
+        Dim cmd As MySql.Data.MySqlClient.MySqlCommand = Orders.getDBLink.getCommand
+        Dim newNCProgram As magod.NCProgramming.TaskProgramListRow = NcProgramming1.TaskProgramList.NewTaskProgramListRow
+        ' Dim intNCId, NcProgramNo As Integer
+
+        Dim srlNo As New magod.Voucher
+        With srlNo
+            .VoucherType = "NcProgramNo"
+            .VoucherCreationRequsetDate = Today
+            .ReviewPeriod = magod.ReviewPeriod.Never
+            .ResetValue = 100000
+            .VoucherNoLength = 6
+            .RunningNoTableName = "magod_runningno"
+            .DataSchema = "magod_setup"
+            .EffectiveFrom = Today
+            .UnitName = Orders.UnitName
+            .setCommand(cmd)
+            .checkCreateRunningNo()
+            .checkIfVoucherTypeExists()
+
+        End With
+        With newNCProgram
+            .TaskNo = Task.TaskNo
+            .Cust_Code = Task.Cust_code
+            .CustMtrl = Task.CustMtrl
+            .Machine = Task.Machine
+            .MProcess = Task.MProcess
+            .Mtrl_Code = Task.Mtrl_Code
+            .NcTaskId = Task.NcTaskId
+            .NoOfDwgs = Task.NoOfDwgs
+            .TotalParts = Task.TotalParts
+            .PStatus = "Created"
+            .Priority = "Normal"
+            .Qty = TaskPart.QtyToNest - TaskPart.QtyNested
+            .Operation = Task.Operation
+            .HasBOM = TaskPart.HasBOM
+            .Shape = "Units"
+        End With
+        Try
+            With cmd
+                .Connection.Open()
+                Dim strNCProgramNo = srlNo.getNextSrl()
+                cmd.CommandText = "START TRANSACTION"
+                .ExecuteNonQuery()
+
+                '**** Insert A Program to the List
+                cmd.CommandText = "INSERT INTO " _
+              & "magodmis.ncprograms( `NcTaskId`,`TaskNo`,`NCProgramNo`,  `Qty`,`TotalParts`," _
+              & "`Machine`, `Mprocess`,`Operation`, `Mtrl_code`,`Cust_code`,`CustMtrl`, `DeliveryDate`," _
+              & "`pstatus`,`NoOfDwgs`,`HasBOM`,`Shape`)  " _
+              & "Values(@NcTaskId,@TaskNo,@NCProgramNo,@Qty,@TotalParts,@Machine,@Mprocess,@Operation," _
+              & "@Mtrl_code,@Cust_code,@CustMtrl,@DeliveryDate," _
+              & "'Created',@NoOfDwgs,@HasBOM,@Shape);"
+
+                With cmd.Parameters
+                    .Clear()
+                    .AddWithValue("@NcTaskId", Task.NcTaskId)
+                    .AddWithValue("@Taskno", newNCProgram.TaskNo)
+                    .AddWithValue("@Qty", newNCProgram.Qty)
+                    .AddWithValue("@TotalParts", newNCProgram.Qty)
+                    .AddWithValue("@Machine", newNCProgram.Machine)
+                    .AddWithValue("@Operation", newNCProgram.Operation)
+                    .AddWithValue("@Mprocess", newNCProgram.MProcess)
+                    .AddWithValue("@Mtrl_code", newNCProgram.Mtrl_Code)
+                    .AddWithValue("@Shape", newNCProgram.Shape)
+                    .AddWithValue("@Cust_code", newNCProgram.Cust_Code)
+                    .AddWithValue("@CustMtrl", newNCProgram.CustMtrl)
+                    If Task.IsDeliveryDateNull Then
+                        .AddWithValue("@DeliveryDate", Nothing)
+                    Else
+                        .AddWithValue("@DeliveryDate", Task.DeliveryDate)
+                    End If
+                    '  .AddWithValue("@DeliveryDate", task.DeliveryDate)
+
+                    .AddWithValue("@NoOfDwgs", newNCProgram.NoOfDwgs)
+                    .AddWithValue("@NcProgramNo", strNCProgramNo)
+                    If NcProgramming1.TaskAssy_BOMList.Rows.Count > 0 Then
+                        .AddWithValue("@HasBOM", 1)
+                    Else
+                        .AddWithValue("@HasBOM", 0)
+                    End If
+
+                End With
+
+                cmd.ExecuteNonQuery()
+
+                '*** To retrieve the NCId we need to call the last insertid
+                cmd.CommandText = "SELECT LAST_INSERT_ID();"
+                newNCProgram.Ncid = cmd.ExecuteScalar
+                newNCProgram.NCProgramNo = strNCProgramNo
+                srlNo.setNext()
+
+                '***** Insert NcProgram Part List
+                .CommandText = "INSERT INTO magodmis.ncprogram_partslist(NcProgramNo, TaskNo, DwgName, PartID, QtyNested, " _
+                & "Sheets,  TotQtyNested, Task_Part_Id, NCId,HasBOM) VALUES(@NcProgramNo, @TaskNo, @DwgName, 1, 1, " _
+                & "@Sheets,  @TotQtyNested, @Task_Part_Id, @NCId,@HasBOM); "
+
+                With cmd.Parameters
+                    .Clear()
+                    .AddWithValue("@NcProgramNo", strNCProgramNo)
+                    .AddWithValue("@Taskno", newNCProgram.TaskNo)
+                    .AddWithValue("@DwgName", TaskPart.DwgName)
+                    .AddWithValue("@Sheets", newNCProgram.Qty)
+                    .AddWithValue("@TotQtyNested", newNCProgram.Qty)
+                    .AddWithValue("@Task_Part_Id", TaskPart.Task_Part_ID)
+                    .AddWithValue("@NCId", newNCProgram.Ncid)
+                    .AddWithValue("@NcTaskId", Task.NcTaskId)
+                    .AddWithValue("@HasBOM", newNCProgram.HasBOM)
+                End With
+                .ExecuteNonQuery()
+
+
+                cmd.CommandText = "COMMIT;"
+                cmd.ExecuteNonQuery()
+
+                NcProgramming1.TaskProgramList.AddTaskProgramListRow(newNCProgram)
+                newNCProgram.AcceptChanges()
+
+                .CommandText = "UPDATE magodmis.task_partslist t, (SELECT Sum(n.`TotQtyNested`-n.`QtyRejected`) as TotalQtyNested," _
+                           & "n.`Task_Part_Id` FROM magodmis.ncprogram_partslist n,magodmis.ncprograms n1  WHERE n.`NCId`=n1.`NCId` " _
+                           & "AND n1.`NcTaskId`=@NcTaskId GROUP BY n.`Task_Part_Id`) as A SET t.`QtyNested`=A.TotalQtyNested " _
+                           & "WHERE A.`Task_Part_Id`=t.`Task_Part_ID` AND t.`NcTaskId`=@NcTaskId ;"
+                .Parameters.Clear()
+                .Parameters.AddWithValue("@NcTaskId", Task.NcTaskId)
+
+                .ExecuteNonQuery()
+                NcProgramming1.Task_PartsList.Clear()
+                .CommandText = "SELECT * FROM magodmis.task_partslist t WHERE t.`NcTaskId`=@NcTaskId;"
+                NcProgramming1.Task_PartsList.Load(.ExecuteReader)
+                TaskPart = NcProgramming1.Task_PartsList.Rows(0)
+
+            End With
+        Catch ex As Exception
+            MsgBox(ex.Message)
+
+            cmd.CommandText = "ROLLBACK;"
+            cmd.ExecuteNonQuery()
+        Finally
+            cmd.Connection.Close()
+            cmd.Parameters.Clear()
+            cmd.CommandText = ""
+        End Try
+       
+
+    End Sub
+  
+    Private Sub NCProgramNo_Alloter_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+        SaveTask()
+    End Sub
+
+    Private Sub btn_MtrlIssue_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btn_MtrlIssue.Click
+        Dim msg As String = String.Format("Do you wish to release program no {0} to Material Issue?", Me.DataGridView1.CurrentRow.Cells("NCProgramNo").Value)
+
+        If MsgBox(msg, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Me.DataGridView1.CurrentRow.Cells("PStatus").Value = "Mtrl Issue"
+            BS_NCPgmes.EndEdit()
+            setProgramStatus(Me.DataGridView1.CurrentRow.Index)
+         
+        End If
+        'NCProgramNo
+
+    End Sub
+
+    Private Sub DataGridView1_RowEnter(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles DataGridView1.RowEnter
+        If Not Me.DataGridView1.Rows(e.RowIndex) Is Nothing Then
+           
+            setProgramStatus(e.RowIndex)
+        End If
+
+    End Sub
+
+    Private Sub Btn_deleteProgram_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Btn_deleteProgram.Click
+        Dim msg As String = String.Format("Do you wish to Delete program no {0} ?", Me.DataGridView1.CurrentRow.Cells("NCProgramNo").Value)
+
+        If MsgBox(msg, MsgBoxStyle.YesNo) = MsgBoxResult.Yes Then
+            Me.DataGridView1.Rows.Remove(Me.DataGridView1.CurrentRow)
+            If Not Me.DataGridView1.CurrentRow Is Nothing Then
+                setProgramStatus(Me.DataGridView1.CurrentRow.Index)
+            End If
+
+            BS_NCPgmes.EndEdit()
+            SaveTask()
+          
+        End If
+    End Sub
+
+    Private Sub setProgramStatus(ByVal rowNo As Int16)
+        If Me.DataGridView1.Rows(rowNo).Cells("PStatus").Value = "Created" Then
+            Me.btn_MtrlIssue.Enabled = True
+            Me.Btn_deleteProgram.Enabled = True
+            Me.DataGridView1.Rows(rowNo).ReadOnly = False
+        Else
+            Me.btn_MtrlIssue.Enabled = False
+            Me.Btn_deleteProgram.Enabled = False
+            Me.DataGridView1.Rows(rowNo).ReadOnly = True
+        End If
+
+    End Sub
+End Class

@@ -278,22 +278,85 @@ export const endpoints = {
   getData: `${API}/gettest/getdata`,
   getCustomerData: `${API}/schedulelist/getallcustomers`,
 
-
   //ScheduleList Service
-  getScheduleListData:`${API}/ScheduleList/getScheduleListData`,
-  getScheduleListDwgData:`${API}/ScheduleList/getDwgTableData`,
-  getScheduleListTaskandMaterial:`${API}/ScheduleList/getTaskandMterial`,
+  getScheduleListData: `${API}/ScheduleList/getScheduleListData`,
+  getScheduleListDwgData: `${API}/ScheduleList/getDwgTableData`,
+  getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
 
   //OpenSchedule Srvice
-  getScheduleListgetFormDetails:`${API}/ScheduleList/getFormDeatils`,
-  onClickShortClose:`${API}/ScheduleList/shortClose`,
-  onClickSave:`${API}/ScheduleList/save`,
-  onClickSuspend:`${API}/ScheduleList/suspendButton`,
-  onClickCancel:`${API}/ScheduleList/onClickCancel`,
-  onClickScheduled:`${API}/ScheduleList/ScheduleButton`,
+
+  getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose: `${API}/ScheduleList/shortClose`,
+  onClickSave: `${API}/ScheduleList/save`,
+  onClickSuspend: `${API}/ScheduleList/suspendButton`,
+  onClickCancel: `${API}/ScheduleList/onClickCancel`,
+  onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
+  getSalesContact: `${API}/ScheduleList/getSalesContact`,
+  onClickTask: `${API}/ScheduleList/taskOnclick`,
+  onClickPerformance: `${API}/ScheduleList/onClickPerformce`,
+  onClickFixtureOrder: `${API}/ScheduleList/fixtureOrder`,
+  deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
+
+  //NCProgram Button
+  onClickNCProgram: `${API}/NCProgram/getFormData`,
+  getMachineList: `${API}/NCProgram/getMachines`,
+  addNCProgram: `${API}/NCProgram/addProgram`,
+  sendMtrlIssue: `${API}/NCProgram/sendMTrlIssue`,
+  DeleteNCProgram: `${API}/NCProgram/DeleteNCProgram`,
+  SaveButton: `${API}/NCProgram/ButtonSave`,
+  getNCPrograms: `${API}/NCProgram/getPrograms`,
+  getPartsData: `${API}/NCProgram/NCProgramPartsData`,
+
+  //Production Schedule Creation
+  CreateSchedule: `${API}/productionSchCreation/createSchedule`,
+  shortcloseOrder: `${API}/productionSchCreation/shortCloseOrder`,
+  //ShortClose to Recorded
+  shortclosetoRecorded: `${API}/productionSchCreation/shortclosetoRecorded`,
+  cancelOrder: `${API}/productionSchCreation/cancelOrder`,
+  //Cancel to Recorded
+  canceltoRecorded: `${API}/productionSchCreation/canceltoRecord`,
+  suspendOrder: `${API}/productionSchCreation/suspendOrder`,
+  scheduleListbasedOnScheduleType: `${API}/productionSchCreation/schedulelistbasedonScheduleType`,
+
+  getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose: `${API}/ScheduleList/shortClose`,
+  onClickSave: `${API}/ScheduleList/save`,
+  onClickSuspend: `${API}/ScheduleList/suspendButton`,
+  onClickCancel: `${API}/ScheduleList/onClickCancel`,
+  onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
+
+  // packingNote and Invoice
+  getAllPNAndInvRegisterbyOrderNo: `${API}/orderPackingNoteAndInvoice/getAllPNAndInvRegisterbyOrderNo`,
+  aboutInvoicePN: `${API}/orderPackingNoteAndInvoice/aboutInvoicePN`,
+  getSetRateConsumerData: `${API}/orderPackingNoteAndInvoice/getSetRateConsumerData`,
+  getPnInvTaxData: `${API}/orderPackingNoteAndInvoice/getTaxData`,
+  getAllStates: `${API}/orderPackingNoteAndInvoice/getAllStates`,
+  cancelPN: `${API}/orderPackingNoteAndInvoice/cancelPN`,
+  updatePNProfileData: `${API}/orderPackingNoteAndInvoice/updatePNProfileData`,
+  createInvoice: `${API}/orderPackingNoteAndInvoice/createInvoice`,
+  updateRatesPN: `${API}/orderPackingNoteAndInvoice/updateRatesPN`,
+  getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
+  onClickShortClose: `${API}/ScheduleList/shortClose`,
+  onClickSave: `${API}/ScheduleList/save`,
+  onClickSuspend: `${API}/ScheduleList/suspendButton`,
+  onClickCancel: `${API}/ScheduleList/onClickCancel`,
+  onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
+  getSalesContact: `${API}/ScheduleList/getSalesContact`,
+  onClickTask: `${API}/ScheduleList/taskOnclick`,
+
+  //NCProgram Button
+  onClickNCProgram: `${API}/NCProgram/getFormData`,
+  getMachineList: `${API}/NCProgram/getMachines`,
+  addNCProgram: `${API}/NCProgram/addProgram`,
+  sendMtrlIssue: `${API}/NCProgram/sendMTrlIssue`,
+  DeleteNCProgram: `${API}/NCProgram/DeleteNCProgram`,
+  SaveButton: `${API}/NCProgram/ButtonSave`,
+  getNCPrograms: `${API}/NCProgram/getPrograms`,
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
   updateRunningNoBySrlType: `${API}/runningNo/updateRunningNoBySrlType`,
 
+  // import qtn
+  getQtnData: `${API}/orderDetails/getQtnData`,
 };

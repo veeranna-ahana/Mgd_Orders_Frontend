@@ -463,6 +463,9 @@ export default function ScheduleCreationForm(props) {
     setShow(false);
   };
 
+  console.log("ordDwgtskDetsData is",ordDwgtskDetsData);
+
+
   return (
     <div>
       <div className="col-md-12">
@@ -620,6 +623,7 @@ export default function ScheduleCreationForm(props) {
             </div>
           </div>
         </Tab>
+
         <Tab
           eventKey="productionschedulecreation"
           title="Production Schedule Creation"
@@ -629,7 +633,7 @@ export default function ScheduleCreationForm(props) {
               <div className="col-md-2 col-sm-12">
                 <button className="button-style  ">Suspended Order</button>
                 <button className="button-style mt-2 ">Cancel Order</button>
-                <button className="button-style mt-2 ">Short Close</button>
+                <button className="button-style mt-2 " onClick={onClickShortClose}>Short Close</button>
               </div>
               <div className="col-md-4 col-sm-12">
                 <h5 className="mt-2">
@@ -747,6 +751,7 @@ export default function ScheduleCreationForm(props) {
             </div>
           </div>
         </Tab>
+
         <Tab eventKey="findoldpart" title="Find OldPart">
           <div>
             <div className="row mt-3 mb-3">
@@ -1273,7 +1278,7 @@ export default function ScheduleCreationForm(props) {
                                     <div className="row">
                                       <div>
                                         <label
-                                          className="form-label"
+                                          className="form-label"ordDwgtskDetsData
                                           style={{ whiteSpace: "nowrap" }}
                                         >
                                           Inspection Level
@@ -2207,6 +2212,9 @@ export default function ScheduleCreationForm(props) {
           </Modal.Body>
         </Modal>
       </div>
+
+   
+
     </div>
   );
 }

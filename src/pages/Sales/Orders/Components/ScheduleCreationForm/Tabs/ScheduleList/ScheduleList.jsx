@@ -5,10 +5,12 @@ import { postRequest } from "../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../api/constants";
 import FirstTable from "./Tables/FirstTable";
 import SecondTable from "./Tables/SecondTable";
+import AlertModal from "../../../../Menus/Service/Components/Alert";
+import { ToastContainer, toast } from "react-toastify";
 // import { Link, useNavigate } from "react-router-dom";
 // import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
-export default function ScheduleList({ OrderData, OrderCustData }) {
+export default function ScheduleList({ OrderData, OrderCustData,setScheduleListData,scheduleListData}) {
   // console.log(OrderCustData);
 
   // console.log(OrderData);
@@ -23,8 +25,7 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
     return `${day}/${month}/${year}`;
   };
 
-  //getScheduleList Table Data
-  const [scheduleListData, setScheduleListData] = useState([]);
+
   // Fetch schedule list data when OrderData changes
   useEffect(() => {
     if (OrderData && OrderData.Order_No) {
@@ -58,11 +59,32 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
     );
   };
 
-  // console.log("DwgNameList is", DwgNameList);
+  //delete ask modal
+  const[deleteAsk,setDeleteAsk]=useState(false);
+  const DeleteAskModal=()=>{
+    setDeleteAsk(true);
+  }
 
-  // const onClickofScheduled = () => {
-  //   console.log("response");
-  // };
+  const deleteScheduleList=()=>{
+    postRequest(
+      endpoints.deleteScheduleList,
+      { rowScheduleList },
+      (response) => {
+        setDeleteAsk(false);
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        postRequest(
+          endpoints.getScheduleListData,
+          { Order_No: OrderData.Order_No },
+          (response) => {
+            setScheduleListData(response);
+          }
+        );        
+      }
+    );
+  }
+
 
   return (
     <>
@@ -71,18 +93,37 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
           <div className="col-md-2">
             <button
               className="button-style m-0"
-              // onClick={openModal}
+              onClick={DeleteAskModal}
+              disabled={rowScheduleList.Created=='Created'}
             >
               Delete Schedule
             </button>
           </div>
+
           <div className="col-md-2">
             <Link
               to={"/Orders/Service/ServiceOpenSchedule"}
               state={DwgNameList}
             >
-              <button className="button-style m-0">Open Schedule</button>
+
+              <button
+                className="button-style"
+                disabled={Object.keys(rowScheduleList).length === 0 }
+              >
+                Open Schedule
+              </button>
+
             </Link>
+            {Object.keys(rowScheduleList).length === 0 && (
+              <style>
+                {`
+            .button-style[disabled] {
+                background-color: grey;
+                cursor: not-allowed;
+            }
+            `}
+              </style>
+            )}
           </div>
         </div>
 
@@ -105,14 +146,17 @@ export default function ScheduleList({ OrderData, OrderCustData }) {
             <SecondTable DwgNameList={DwgNameList} />
           </div>
         </div>
-        {/* <AlertModal
-                show={alertModal}
-                onHide={(e) => setAlertModal(e)}
-                firstbutton={closeModal}
+
+        <AlertModal
+                show={deleteAsk}
+                onHide={(e) => setDeleteAsk(e)}
+                firstbutton={deleteScheduleList}
+                secondbutton={(e) => setDeleteAsk(e)}
+                secondbuttontext="No"
                 title="magod_Order"
-                message="Select Draft Schedules to Delete"
-                firstbuttontext="Ok"
-              /> */}
+                message={`Do you wish to Delete?`}
+                firstbuttontext="Yes"
+              />
       </div>
     </>
   );

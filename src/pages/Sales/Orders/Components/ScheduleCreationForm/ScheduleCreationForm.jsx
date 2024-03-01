@@ -12,12 +12,7 @@ import ScheduleList from "./Tabs/ScheduleList/ScheduleList";
 import FormHeader from "./FormHeader";
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
-// import { Modal } from "react-bootstrap";
-// import { Typeahead } from "react-bootstrap-typeahead";
-// import { getRequest, postRequest } from "../../../../api/apiinstance";
-// import { endpoints } from "../../../../api/constants";
-// import AlertModal from "../Components/Alert";
-// import { useOrderContext } from "../../../../../context/OrderContext";
+
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
   console.log("props", props.Type);
@@ -35,6 +30,9 @@ export default function ScheduleCreationForm(props) {
   const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
 
   const [selectedItems, setSelectedItems] = useState([]);
+
+    //getScheduleList Table Data
+    const [scheduleListData, setScheduleListData] = useState([]);
 
   const fetchData = () => {
     postRequest(
@@ -170,7 +168,10 @@ export default function ScheduleCreationForm(props) {
             eventKey="productionschedulecreation"
             title="Production Schedule Creation"
           >
-            <ProductionScheduleCreation OrderData={OrderData} />
+            <ProductionScheduleCreation OrderData={OrderData} 
+            selectedItems={selectedItems}
+            setScheduleListData={setScheduleListData}
+            />
           </Tab>
           <Tab eventKey="findoldpart" title="Find Old Part">
             <FindOldPart
@@ -207,6 +208,8 @@ export default function ScheduleCreationForm(props) {
               <ScheduleList
                 OrderData={OrderData}
                 OrderCustData={OrderCustData}
+                scheduleListData={scheduleListData}
+                setScheduleListData={setScheduleListData}
               />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">
