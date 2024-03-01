@@ -9,7 +9,7 @@ import { Tab, Tabs } from "react-bootstrap";
 import { propTypes } from "react-bootstrap/esm/Image";
 import ImportDwgModal from "./Modals/ImportDwgModal";
 import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
-import ImportQtnModal from "./Modals/ImportQtnModal";
+import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
 import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 // import ImportDwgModal from "./Modals/ImportDwgModal";
@@ -568,9 +568,9 @@ export default function OrderDetails(props) {
     // ////console.log("modal opend ");
     setImportQtnMdl(true);
   };
-  const handleCloseImportQtnMdl = () => {
-    setImportQtnMdl(false);
-  };
+  // const handleCloseImportQtnMdl = () => {
+  //   setImportQtnMdl(false);
+  // };
 
   // partid dropdown
   const [selectedPartId, setSelectedPartId] = useState([]);
@@ -725,8 +725,8 @@ export default function OrderDetails(props) {
       <ImportQtnModal
         importQtnMdl={importQtnMdl}
         setImportQtnMdl={setImportQtnMdl}
-        handleImportQtnMdl={handleImportQtnMdl}
-        handleCloseImportQtnMdl={handleCloseImportQtnMdl}
+        // handleImportQtnMdl={handleImportQtnMdl}
+        // handleCloseImportQtnMdl={handleCloseImportQtnMdl}
       />
 
       <ImportExcelModal
