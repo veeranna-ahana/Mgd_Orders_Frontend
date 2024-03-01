@@ -7,10 +7,10 @@ import {
   postRequest,
 } from "../../../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../../../api/constants";
+import { toast } from "react-toastify";
 
 export default function ImportExcelModal(props) {
   const [qtnListData, setQtnListData] = useState([]);
-  const [qtnItemListData, setQtnItemListData] = useState([]);
   const [selectedQtn, setSelectedQtn] = useState({});
   const [filteredQtnListData, setFilteredQtnListData] = useState([]);
   const closeModal = () => {
@@ -18,23 +18,31 @@ export default function ImportExcelModal(props) {
   };
 
   useEffect(() => {
-    postRequest(endpoints.getQtnData, {}, (QtnData) => {
+    postRequest(endpoints.getQtnList, {}, (QtnData) => {
       let arr = [];
-
       for (let i = 0; i < QtnData.qtnList.length; i++) {
         const element = QtnData.qtnList[i];
         element.label = element.QtnNo;
         element.value = element.QtnNo;
         arr.push(element);
       }
-
       setQtnListData(arr);
-      setQtnItemListData(QtnData.qtnItemList);
     });
   }, []);
 
-  //  console.log("qtnListData", qtnListData);
-  //  console.log("qtnItemListData", qtnItemListData);
+  function handleChangeQtn(qtnId) {
+    postRequest(
+      endpoints.getQtnDataByQtnID,
+      { qtnId: qtnId },
+      (qtnItemData) => {
+        setFilteredQtnListData(qtnItemData.qtnItemList);
+        if (qtnItemData.qtnItemList.length === 0) {
+          toast.warning("No data found for the Selected Quotation");
+          setFilteredQtnListData([]);
+        }
+      }
+    );
+  }
   return (
     <>
       <Modal
@@ -49,15 +57,16 @@ export default function ImportExcelModal(props) {
         <Modal.Body>
           <IQMFormHeader
             qtnListData={qtnListData}
-            qtnItemListData={qtnItemListData}
             setSelectedQtn={setSelectedQtn}
             selectedQtn={selectedQtn}
             setFilteredQtnListData={setFilteredQtnListData}
+            // func
+            handleChangeQtn={handleChangeQtn}
           />
           <div className="p-1"></div>
           <div className="row">
             <div className="col-md-12">
-              <IQMTable />
+              <IQMTable filteredQtnListData={filteredQtnListData} />
             </div>
           </div>
         </Modal.Body>
