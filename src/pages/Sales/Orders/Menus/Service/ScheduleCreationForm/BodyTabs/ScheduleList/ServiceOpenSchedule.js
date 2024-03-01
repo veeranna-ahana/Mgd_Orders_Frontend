@@ -12,7 +12,7 @@ function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state || []; // Get DwgNameList from location state
 
-  //  console.log("DwgNameList is", DwgNameList[0]);
+   console.log("DwgNameList is", DwgNameList[0]);
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
@@ -89,6 +89,7 @@ function ServiceOpenSchedule() {
   const [PNAndInvDetailsData, setPNAndInvDetailsData] = useState([]);
 
   useEffect(() => {
+    console.log("func called");
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
@@ -96,7 +97,6 @@ function ServiceOpenSchedule() {
         ScheduleId: DwgNameList[0]?.ScheduleId,
       },
       (response) => {
-        // console.log("response is", response);
         setFormdata(response);
         postRequest(
           endpoints.getAllPNAndInvRegisterbyOrderNo,
@@ -367,7 +367,9 @@ function ServiceOpenSchedule() {
       });
     };
 
-    console.log("fixturedata is",fixturedata)
+    console.log("fixturedata is",fixturedata);
+
+    const Orsch=formdata[0]?.Order_No+" "+formdata[0]?.ScheduleNo;
 
   return (
     <div>
@@ -390,7 +392,7 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Schedule No</label>
-          <input type="text" value={formdata[0]?.OrdSchNo} disabled />
+          <input type="text" value={Orsch} disabled />
         </div>
       </div>
 
@@ -520,7 +522,6 @@ function ServiceOpenSchedule() {
               {`
             .button-style[disabled] {
                 background-color: grey;
-                cursor: not-allowed;
             }
             `}
             </style>
@@ -540,6 +541,13 @@ function ServiceOpenSchedule() {
           <button className="button-style" onClick={onClickTasked} disabled>
             Task
           </button>
+          <style>
+              {`
+            .button-style[disabled] {
+                background-color: grey;
+            }
+            `}
+            </style>
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -573,7 +581,6 @@ function ServiceOpenSchedule() {
           >
             Check Status
           </button>
->
         </div>
 
 
