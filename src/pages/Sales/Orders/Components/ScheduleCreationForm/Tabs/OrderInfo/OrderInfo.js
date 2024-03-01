@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 export default function OrderInfo(props) {
-  //console.log("propssss", props.OrderData);
+  console.log("propssss", props.OrderData);
   //console.log("props.OrderData?.salesContact", props.OrderData?.SalesContact);
   //console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
 
@@ -16,7 +16,7 @@ export default function OrderInfo(props) {
 
   // Format the date as dd mm yyyy
   const formattedDate = `${year}-${month}-${day}`;
-  //console.log(formattedDate);
+  console.log(formattedDate);
 
   return (
     <>
@@ -33,8 +33,8 @@ export default function OrderInfo(props) {
           <div className="col-md-2 sm-12 ">
             <label className="form-label">Delivery Date</label>
             <input
-              type="date"
-              className="mt-1"
+              type="text"
+              className=""
               id="deliveryDate"
               value={formattedDate}
             />

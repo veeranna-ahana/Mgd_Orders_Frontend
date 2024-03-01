@@ -54,6 +54,10 @@ function OrdrDtls(props) {
     setHasBOM,
   } = props;
 
+  const [materialCode, setMaterialCode] = useState(
+    selectedItems[0]?.Mtrl_Code || ""
+  );
+
   // console.log("BomData.......", BomData);
 
   // console.log("selectedItems.srlNo", selectedItems[0]?.Order_Srl);
@@ -69,7 +73,10 @@ function OrdrDtls(props) {
   // };
   // const [SelectedPartId, setSelectedPartId] = useState();
   // const [BomArry, setBomArry] = useState([]);
-
+  const handleMaterialCodeChange = (event) => {
+    // Update the state when the dropdown value changes
+    setMaterialCode(event.target.value);
+  };
   return (
     <div>
       <AddNewSrlModal
@@ -158,7 +165,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.DwgName || " "}
+                      defaultValue={selectedItems[0]?.DwgName || " "}
                     />
                   </div>
                 </div>
@@ -175,7 +182,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.JWCost || " "}
+                      defaultValue={selectedItems[0]?.JWCost || " "}
                     />
                   </div>
                 </div>
@@ -187,16 +194,24 @@ function OrdrDtls(props) {
                 <div className="row">
                   <div>
                     <label className="form-label">Material</label>
-                    <input
+                    {/* <input
                       className="in-fields"
                       type="text"
                       value={selectedItems[0]?.Mtrl_Code || " "}
-                    />
-                    {/* <select id="" className="ip-select dropdown-field ">
-                      <option value="option1">option 1</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                    </select> */}
+                    /> */}
+                    {mtrldata.length > 0 || mtrldata != null ? (
+                      <Typeahead
+                        id="basic-example"
+                        labelKey="Mtrl_Code"
+                        onChange={handleMtrlCodeTypeaheadChange}
+                        selected={selectedItems} // Use selected prop instead of defaultInputValue
+                        options={mtrldata}
+                        placeholder="Choose a Material..."
+                        required
+                      ></Typeahead>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -212,7 +227,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.MtrlCost || " "}
+                      defaultValue={selectedItems[0]?.MtrlCost || " "}
                     />
                   </div>
                 </div>
@@ -232,7 +247,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.Mtrl_Source || " "}
+                      defaultValue={selectedItems[0]?.Mtrl_Source || " "}
                     />
 
                     {/* <select id="" className="ip-select dropdown-field ">
@@ -255,7 +270,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.UnitPrice || " "}
+                      defaultValue={selectedItems[0]?.UnitPrice || " "}
                     />
                   </div>
                 </div>
@@ -270,7 +285,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.Operation || " "}
+                      defaultValue={selectedItems[0]?.Operation || " "}
                     />
                     {/* <select id="" className="ip-select dropdown-field ">
                       <option value="option1">option 1</option>
@@ -292,7 +307,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.InspLevel || " "}
+                      defaultValue={selectedItems[0]?.InspLevel || " "}
                     />
                     {/* <select id="" className="ip-select dropdown-field ">
                       <option value="option1">option 1</option>
@@ -312,7 +327,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.Qty_Ordered || " "}
+                      defaultValue={selectedItems[0]?.Qty_Ordered || " "}
                     />
                     {/* <div className="row">
                       <div className="col-md-8  col-sm-12 mt-1">
@@ -345,7 +360,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.PackingLevel || " "}
+                      defaultValue={selectedItems[0]?.PackingLevel || " "}
                     />
                     {/* <select id="" className="ip-select dropdown-field ">
                       <option value="option1">option 1</option>
@@ -363,7 +378,7 @@ function OrdrDtls(props) {
           <Form className="">
             <div
               className="ip-box form-bg"
-              style={{ height: "550px", width: "180px" }}
+              style={{ height: "552px", width: "180px" }}
             >
               <h5 className="mt-3">
                 <b>Process details</b>
@@ -374,7 +389,7 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    value={selectedItems[0]?.Qty_Ordered || " "}
+                    defaultValue={selectedItems[0]?.Qty_Ordered || " "}
                   />
                 </div>
               </div>
@@ -394,7 +409,7 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    value={selectedItems[0]?.QtyProduced || " "}
+                    defaultValue={selectedItems[0]?.QtyProduced || " "}
                   />
                 </div>
               </div>
@@ -404,7 +419,7 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    value={selectedItems[0]?.QtyPacked || " "}
+                    defaultValue={selectedItems[0]?.QtyPacked || " "}
                   />
                 </div>
               </div>
@@ -414,7 +429,7 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    value={selectedItems[0]?.QtyDelivered || " "}
+                    defaultValue={selectedItems[0]?.QtyDelivered || " "}
                   />
                 </div>
               </div>
@@ -444,55 +459,60 @@ function OrdrDtls(props) {
         </div>
       </div>
       {/* <Form className="mt-2" style={{ marginLeft: "0px" }}> */}
-      <div className="ip-box form-bg mb-3">
-        <h5 className="">
-          <b>Load Drawing</b>
-        </h5>
-        <div className="row">
-          <div className="col-md-4">
-            {" "}
-            <label className="form-label">Part id</label>
-            {/* {console.log(BomData.bomdata)} */}
-            {BomData?.length != 0 ? (
-              <Typeahead
-                className="in-fields"
-                selected={selectedPartId}
-                // id="basic-example"
-                options={options}
-                placeholder="Select ..."
-                onChange={handleSelectChange}
-                // onChange={(selected) => {
-                //   // Handle the selected item
-                //   console.log("Selected PartId", selected[0]?.label);
-                //   console.log("Selected...", selected);
 
-                //   const arr = BomData.filter(
-                //     (obj) => obj.PartId === selected[0]?.label
-                //   );
-                //   console.log("arr", arr);
-                //   setBomArry(arr);
-                // }}
-              />
-            ) : null}
-            {/* ----- */}
-            <button
-              className="button-style"
-              style={{ width: "195px", marginTop: "26%" }}
-              onClick={() => PostOrderDetails(3)}
-            >
-              Add Drawing to Order
-            </button>
-            <button
-              className="button-style "
-              style={{ width: "195px", marginTop: "23%" }}
-            >
-              Save to Customer Dwg
-            </button>
-          </div>
-          <div className="col-md-8">
-            <label className="form-label">{""}</label>
+      <div className="row">
+        <div className="col-md-12">
+          {" "}
+          {props.OrderData?.Type === "Profile" ? (
+            <div className="ip-box form-bg mb-3">
+              <h5 className="">
+                <b>Load Drawing</b>
+              </h5>
+              <div className="row">
+                <div className="col-md-4">
+                  {" "}
+                  <label className="form-label">Part id</label>
+                  {/* {console.log(BomData.bomdata)} */}
+                  {BomData?.length != 0 ? (
+                    <Typeahead
+                      className="in-fields"
+                      selected={selectedPartId}
+                      // id="basic-example"
+                      options={options}
+                      placeholder="Select ..."
+                      onChange={handleSelectChange}
+                      // onChange={(selected) => {
+                      //   // Handle the selected item
+                      //   console.log("Selected PartId", selected[0]?.label);
+                      //   console.log("Selected...", selected);
 
-            {/* <select
+                      //   const arr = BomData.filter(
+                      //     (obj) => obj.PartId === selected[0]?.label
+                      //   );
+                      //   console.log("arr", arr);
+                      //   setBomArry(arr);
+                      // }}
+                    />
+                  ) : null}
+                  {/* ----- */}
+                  <button
+                    className="button-style"
+                    style={{ width: "195px", marginTop: "26%" }}
+                    onClick={() => PostOrderDetails(3)}
+                  >
+                    Add Drawing to Order
+                  </button>
+                  <button
+                    className="button-style "
+                    style={{ width: "195px", marginTop: "23%" }}
+                  >
+                    Save to Customer Dwg
+                  </button>
+                </div>
+                <div className="col-md-8">
+                  <label className="form-label">{""}</label>
+
+                  {/* <select
                   id=""
                   className="ip-select dropdown-field "
                   style={{ width: "230px" }}
@@ -501,65 +521,136 @@ function OrdrDtls(props) {
                   <option value="option2">option 2</option>
                   <option value="option3">option 3</option>
                 </select> */}
-            <input className="in-fields " style={{ marginTop: "5.5%" }} />
-            <div className="row">
-              <div className="col-md-6">
-                <label className="form-label">LOC</label>
-                <input className="in-fields" type="text" />
-                <label className="form-label">Pierces</label>
-                <input className="in-fields" type="text" />
-                {/* <label className="form-label">Part Weight</label>
+                  <input className="in-fields " style={{ marginTop: "5.5%" }} />
+                  <div className="row">
+                    <div className="col-md-6">
+                      <label className="form-label">LOC</label>
+                      <input className="in-fields" type="text" />
+                      <label className="form-label">Pierces</label>
+                      <input className="in-fields" type="text" />
+                      {/* <label className="form-label">Part Weight</label>
                   <input
                     className="in-fields"
                     type="text"
                     value={BomArry[0]?.Weight}
                   /> */}
-              </div>
+                    </div>
 
-              <div className="col-md-6">
-                <label className="form-label">Process</label>
-                <input className="in-fields" type="text" />
-                <label className="form-label"> Part Weight</label>{" "}
-                <input
-                  className="in-fields"
-                  type="text"
-                  // value={BomArry[0]?.Weight}
-                />
-                {/* <label className="form-label">Material Cost</label>
+                    <div className="col-md-6">
+                      <label className="form-label">Process</label>
+                      <input className="in-fields" type="text" />
+                      <label className="form-label"> Part Weight</label>{" "}
+                      <input
+                        className="in-fields"
+                        type="text"
+                        // value={BomArry[0]?.Weight}
+                      />
+                      {/* <label className="form-label">Material Cost</label>
                   <input
                     className="in-fields"
                     type="text"
                     value={BomArry?.MtrlCost}
                   /> */}
+                    </div>
+                  </div>
+                </div>
+                <div className="row mt-2 mb-3">
+                  <div className="col-md-3">
+                    <label className="form-label mt-2">J W Cost</label>
+                  </div>
+                  <div className="col-md-3">
+                    {" "}
+                    <input
+                      className="in-fields"
+                      type="text"
+                      value={BomArry[0]?.JobWorkCost}
+                    />
+                  </div>
+                  <div className="col-md-3">
+                    <label className="form-label mt-2">Mtrl Cost</label>
+                  </div>
+                  <div className="col-md-3">
+                    {" "}
+                    <input
+                      className="in-fields"
+                      type="text"
+                      value={BomArry[0]?.MtrlCost}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="row mt-2 mb-3">
-            <div className="col-md-3">
-              <label className="form-label mt-2">J W Cost</label>
+          ) : (
+            <div className="ip-box form-bg mb-3">
+              <div className="row">
+                <div className="col-md-7">
+                  {" "}
+                  <h5 className="mt-2">
+                    <b>Load Drawing</b>
+                  </h5>
+                </div>
+                <div className="col-md-4">
+                  {" "}
+                  <button
+                    className="button-style"
+                    style={{ width: "195px" }}
+                    onClick={() => PostOrderDetails(3)}
+                  >
+                    Add Drawing to Order
+                  </button>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col-md-2">
+                  {" "}
+                  <label className="form-label">Part id</label>
+                </div>
+                <div className="col-md-4">
+                  {" "}
+                  {BomData?.length != 0 ? (
+                    <Typeahead
+                      className="in-fields"
+                      selected={selectedPartId}
+                      // id="basic-example"
+                      options={options}
+                      placeholder="Select ..."
+                      onChange={handleSelectChange}
+                    />
+                  ) : null}
+                </div>
+                <div className="col-md-6">
+                  <input className="in-fields " />
+                </div>
+                <div className="row mt-2 mb-3">
+                  <div className="col-md-4">
+                    <label className="form-label">Process</label>
+                    <input className="in-fields" type="text" />
+                  </div>
+                  <div className="col-md-4">
+                    <label className="form-label ">J W Cost</label>
+                    <input
+                      className="in-fields"
+                      type="text"
+                      defaultValue={BomArry[0]?.JobWorkCost}
+                    />
+                  </div>
+
+                  <div className="col-md-4">
+                    <label className="form-label ">Mtrl Cost</label>
+                    <input
+                      className="in-fields"
+                      type="text"
+                      defaultValue={BomArry[0]?.MtrlCost}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="col-md-3">
-              {" "}
-              <input
-                className="in-fields"
-                type="text"
-                value={BomArry[0]?.JobWorkCost}
-              />
-            </div>
-            <div className="col-md-3">
-              <label className="form-label mt-2">Mtrl Cost</label>
-            </div>
-            <div className="col-md-3">
-              {" "}
-              <input
-                className="in-fields"
-                type="text"
-                value={BomArry[0]?.MtrlCost}
-              />
-            </div>
-          </div>
+          )}
         </div>
       </div>
+
       {/* </Form> */}
     </div>
   );

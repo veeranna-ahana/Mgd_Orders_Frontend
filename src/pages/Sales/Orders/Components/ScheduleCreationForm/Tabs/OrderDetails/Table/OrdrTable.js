@@ -29,13 +29,16 @@ function OrdrTable(props) {
   // };
 
   return (
-    <div style={{ overflowX: "scroll", overflowY: "scroll", height: "860px" }}>
+    <div style={{ overflowX: "scroll", overflowY: "scroll", height: "825px" }}>
       <Table striped className="table-data border" style={{ border: "1px" }}>
         <thead className="tableHeaderBGColor">
           <tr>
             <th>Select</th>
             <th style={{ whiteSpace: "nowrap" }}>Drawing/Part Name</th>
-            <th style={{ whiteSpace: "nowrap" }}>Dwg Exists</th>
+
+            {props.OrderData?.Type === "Profile" ? (
+              <th style={{ whiteSpace: "nowrap" }}>Dwg Exists</th>
+            ) : null}
             <th>Material</th>
             <th>Operation</th>
             <th>Source</th>
@@ -75,9 +78,12 @@ function OrdrTable(props) {
                     />
                   </td>
                   <td>{OrdrDetailsItem.DwgName}</td>
-                  <td>
-                    <Form.Check type="checkbox" id="selected" />
-                  </td>
+
+                  {props.OrderData?.Type === "Profile" ? (
+                    <td>
+                      <Form.Check type="checkbox" id="selected" />
+                    </td>
+                  ) : null}
                   <td>{OrdrDetailsItem.Mtrl_Code}</td>
                   <td>{OrdrDetailsItem.Operation}</td>
                   <td>{OrdrDetailsItem.Mtrl_Source}</td>

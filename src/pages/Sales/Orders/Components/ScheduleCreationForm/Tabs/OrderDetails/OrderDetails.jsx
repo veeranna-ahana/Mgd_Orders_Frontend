@@ -592,9 +592,10 @@ export default function OrderDetails(props) {
     // description: item.Description,
   }));
 
-  let PostOrderDetails = (flag) => {
+  const PostOrderDetails = (flag) => {
+    let requestData = {};
     if (flag === 1) {
-      var requestData = {
+      requestData = {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
@@ -625,7 +626,7 @@ export default function OrderDetails(props) {
       console.log("clicked on ImportDwg button");
     } else if (flag === 3) {
       setHasBOM(1);
-      var requestData = {
+      requestData = {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
@@ -653,15 +654,17 @@ export default function OrderDetails(props) {
     }
     // Make the API request
     console.log("calling InsertNewSrlData api ");
+    console.log("req data  ", requestData);
+
     postRequest(
       endpoints.InsertNewSrlData,
 
-      { requestData },
+      { requestData: requestData },
       (InsertedNewSrlData) => {
         console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
-          fetchData();
           toast.success("Added serial successfully");
+          fetchData();
           handleCloseImportDwg();
         } else {
           toast.warning("Serial not adde");
@@ -802,9 +805,11 @@ export default function OrderDetails(props) {
           </div>
           <div className="col-md-6">
             <Tabs>
-              <Tab eventKey="drawing" title="Drawing">
-                <Drawings />
-              </Tab>
+              {props.OrderData?.Type === "Profile" ? (
+                <Tab eventKey="drawing" title="Drawing">
+                  <Drawings />
+                </Tab>
+              ) : null}
               <Tab eventKey="orderDetailsForm" title="Order Details">
                 <OrdrDtls
                   OrderData={OrderData}

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function FormHeader(props) {
+  let navigate = useNavigate();
   return (
     <>
       <div className="col-md-12">
@@ -37,10 +38,7 @@ export default function FormHeader(props) {
             Save
           </button>
           <Link to={"/Orders/FindOrder"}>
-            <button
-              className="button-style "
-              // onClick={() => navigate(-1)}
-            >
+            <button className="button-style " onClick={() => navigate(-1)}>
               Close
             </button>
           </Link>
