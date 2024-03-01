@@ -15,7 +15,7 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  console.log("props", props.Type);
+  //  console.log("props", props.Type);
 
   // //////console.log("location...", location?.state);
 
@@ -31,8 +31,8 @@ export default function ScheduleCreationForm(props) {
 
   const [selectedItems, setSelectedItems] = useState([]);
 
-    //getScheduleList Table Data
-    const [scheduleListData, setScheduleListData] = useState([]);
+  //getScheduleList Table Data
+  const [scheduleListData, setScheduleListData] = useState([]);
 
   const fetchData = () => {
     postRequest(
@@ -55,7 +55,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetFindOldpartData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (findOldpartData) => {
-            console.log("findOldpartData......", findOldpartData);
+            ////  console.log("findOldpartData......", findOldpartData);
             setfindOldpart(findOldpartData);
           }
         );
@@ -168,9 +168,10 @@ export default function ScheduleCreationForm(props) {
             eventKey="productionschedulecreation"
             title="Production Schedule Creation"
           >
-            <ProductionScheduleCreation OrderData={OrderData} 
-            selectedItems={selectedItems}
-            setScheduleListData={setScheduleListData}
+            <ProductionScheduleCreation
+              OrderData={OrderData}
+              selectedItems={selectedItems}
+              setScheduleListData={setScheduleListData}
             />
           </Tab>
           <Tab eventKey="findoldpart" title="Find Old Part">

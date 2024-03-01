@@ -21,7 +21,7 @@ export default function FindOldPart(props) {
         ? prevSelectedParts.filter((item) => item.id !== findOldpartItem.id)
         : [...prevSelectedParts, findOldpartItem];
 
-      console.log("Selected Order details Rows:", updatedSelectedItems);
+      ////  console.log("Selected Order details Rows:", updatedSelectedItems);
 
       return updatedSelectedItems;
     });

@@ -8,15 +8,15 @@ export default function IQMFormHeader(props) {
   //   //     (obj) => obj.QtnID === 14132
   //   //   );
 
-  //   //   console.log("arr", arr);
+  //   //////  console.log("arr", arr);
   //   // }
   //   const arr = props.qtnItemListData?.filter(
   //     (obj) => obj.QtnID === props.selectedQtn?.QtnID
   //   );
 
-  //   console.log("props.selectedQtn", props.selectedQtn?.QtnID);
+  //////  console.log("props.selectedQtn", props.selectedQtn?.QtnID);
 
-  //   console.log("arr", arr);
+  //////  console.log("arr", arr);
   // }, [props.selectedQtn]);
 
   return (
@@ -33,16 +33,16 @@ export default function IQMFormHeader(props) {
             options={props.qtnListData}
             placeholder="Select any option"
             onChange={(selected) => {
-              console.log("selected", selected[0]);
+              ////  console.log("selected", selected[0]);
               props.setSelectedQtn(selected[0]);
 
               let arr = props.qtnItemListData?.filter(
                 (obj) => obj.QtnID === selected[0]?.QtnID
               );
 
-              console.log("props.selectedQtn", selected[0]?.QtnID);
+              ////  console.log("props.selectedQtn", selected[0]?.QtnID);
 
-              console.log("arr", arr);
+              ////  console.log("arr", arr);
             }}
           />
         </div>

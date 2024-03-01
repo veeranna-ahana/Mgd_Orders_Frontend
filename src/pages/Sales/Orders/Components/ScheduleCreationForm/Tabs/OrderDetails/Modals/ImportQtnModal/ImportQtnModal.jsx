@@ -33,8 +33,8 @@ export default function ImportExcelModal(props) {
     });
   }, []);
 
-  console.log("qtnListData", qtnListData);
-  console.log("qtnItemListData", qtnItemListData);
+  //  console.log("qtnListData", qtnListData);
+  //  console.log("qtnItemListData", qtnItemListData);
   return (
     <>
       <Modal
