@@ -12,7 +12,7 @@ function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state || []; // Get DwgNameList from location state
 
-   console.log("DwgNameList is", DwgNameList[0]);
+  ////  console.log("DwgNameList is", DwgNameList[0]);
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
@@ -89,7 +89,7 @@ function ServiceOpenSchedule() {
   const [PNAndInvDetailsData, setPNAndInvDetailsData] = useState([]);
 
   useEffect(() => {
-    console.log("func called");
+    // console.log("func called");
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
@@ -112,7 +112,7 @@ function ServiceOpenSchedule() {
     );
   }, [DwgNameList[0]?.ScheduleId]);
 
-  //  console.log("formdata......", formdata);
+  ////  console.log("formdata......", formdata);
 
   // console.log("PNAndInvRegisterData", PNAndInvRegisterData);
   // console.log("PNAndInvDetailsData", PNAndInvDetailsData);
@@ -120,7 +120,7 @@ function ServiceOpenSchedule() {
   const [ProgramEngineer, setProgramEngineer] = useState([]);
   useEffect(() => {
     getRequest(endpoints.getSalesContact, (response) => {
-      console.log("response is", response);
+      //  console.log("response is", response);
       setProgramEngineer(response);
     });
   }, []);
@@ -154,7 +154,7 @@ function ServiceOpenSchedule() {
     );
   }, [scheduleDetailsRow]); // Watch for changes in OrderData
 
-  console.log("scheduleDetailsRow", scheduleDetailsRow);
+  //  console.log("scheduleDetailsRow", scheduleDetailsRow);
 
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
@@ -183,7 +183,7 @@ function ServiceOpenSchedule() {
     }
   }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  //  console.log(scheduleDetailsRow);
+  ////  console.log(scheduleDetailsRow);
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -309,7 +309,7 @@ function ServiceOpenSchedule() {
     );
   };
 
-  console.log(scheduleDetailsRow);
+  //  console.log(scheduleDetailsRow);
 
   //OnClick NCProgram
   const navigate = useNavigate();
@@ -334,7 +334,7 @@ function ServiceOpenSchedule() {
 
   //onClick Tasked
   const onClickTasked = () => {
-    console.log(scheduleDetailsRow);
+    //  console.log(scheduleDetailsRow);
     postRequest(endpoints.onClickTask, { scheduleDetailsRow }, (response) => {
       // console.log("response of Scheduled is",response);
       toast.success(response.message, {
@@ -350,26 +350,25 @@ function ServiceOpenSchedule() {
     postRequest(endpoints.onClickPerformance, { formdata }, (response) => {
       setPerformancedata(response);
       setShowPerformance(true);
-      console.log(response);
+      //  console.log(response);
     });
   };
 
-  console.log(formdata);
+  //  console.log(formdata);
 
+  //OnClick Yes Fixture Order
+  const [fixturedata, setFixtureData] = useState([]);
+  const onClickYesFixtureOrder = () => {
+    postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
+      //  console.log(response);
+      setFixtureData(response);
+      setFixtureOrder1(false);
+    });
+  };
 
-    //OnClick Yes Fixture Order 
-    const[fixturedata,setFixtureData]=useState([]);
-    const onClickYesFixtureOrder = () => {
-      postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-        console.log(response);
-        setFixtureData(response);
-        setFixtureOrder1(false);
-      });
-    };
+  // console.log("fixturedata is",fixturedata);
 
-    console.log("fixturedata is",fixturedata);
-
-    const Orsch=formdata[0]?.Order_No+" "+formdata[0]?.ScheduleNo;
+  const Orsch = formdata[0]?.Order_No + " " + formdata[0]?.ScheduleNo;
 
   return (
     <div>
@@ -526,7 +525,6 @@ function ServiceOpenSchedule() {
             `}
             </style>
           )}
-
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -542,12 +540,12 @@ function ServiceOpenSchedule() {
             Task
           </button>
           <style>
-              {`
+            {`
             .button-style[disabled] {
                 background-color: grey;
             }
             `}
-            </style>
+          </style>
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -568,7 +566,6 @@ function ServiceOpenSchedule() {
             `}
             </style>
           )}
-
         </div>
 
         <div className="col-md-2 col-sm-3">
@@ -582,7 +579,6 @@ function ServiceOpenSchedule() {
             Check Status
           </button>
         </div>
-
 
         <div className="col-md-2 col-sm-3">
           <button
@@ -616,11 +612,11 @@ function ServiceOpenSchedule() {
       <div className="row">
         <Tabs className=" tab_font mt-4">
           <Tab eventKey="Schedule Details" title="Schedule Details">
-            <div className="mt-3" style={{ overflowY: "scroll" }}>
+            <div className="mt-3" style={{ overflow: "auto", height: "350px" }}>
               <Table
                 striped
                 className="table-data border"
-                style={{ border: "1px", height: "350px" }}
+                style={{ border: "1px" }}
               >
                 <thead className="tableHeaderBGColor table-space">
                   <tr>
@@ -684,14 +680,12 @@ function ServiceOpenSchedule() {
                 </button>
               </div>
               <div className="col-md-6">
-                <div style={{ overflowY: "scroll" }}>
+                <div style={{ height: "300px", overflow: "auto" }}>
                   <Table
                     striped
                     className="table-data border mt-2"
                     style={{
                       border: "1px",
-                      height: "300px",
-                      overflowY: "scroll",
                     }}
                   >
                     <thead className="tableHeaderBGColor table-space">
@@ -772,14 +766,12 @@ function ServiceOpenSchedule() {
                 </div>
               </div>
               <div className="col-md-6">
-                <div style={{ overflowY: "scroll" }}>
+                <div style={{ height: "300px", overflow: "auto" }}>
                   <Table
                     striped
                     className="table-data border mt-2"
                     style={{
                       border: "1px",
-                      height: "300px",
-                      overflowY: "scroll",
                     }}
                   >
                     <thead className="tableHeaderBGColor table-space">
@@ -808,14 +800,14 @@ function ServiceOpenSchedule() {
                 </div>
               </div>
             </div>
-            <div className="row mt-4">
+            {/* <div className="row mt-4">
               <div
                 className="col-md-6"
                 style={{
                   overflowY: "scroll",
                 }}
               >
-                {/* <Table
+                <Table
                   striped
                   className="table-data border mt-2"
                   style={{
@@ -832,14 +824,14 @@ function ServiceOpenSchedule() {
                     </tr>
                   </thead>
                   <tbody className="tablebody"></tbody>
-                </Table> */}
+                </Table>
               </div>
-              {/* <div
+              <div
                 className="col-md-2"
                 style={{ width: "260px", marginLeft: "30px" }}
-              > */}
-              {/* <div className="ip-box form-bg"> */}
-              {/* <h5>
+              >
+              <div className="ip-box form-bg">
+              <h5>
                     <b>Task Material</b>
                   </h5>
 
@@ -848,8 +840,8 @@ function ServiceOpenSchedule() {
                     style={{ width: "200px" }}
                     type="number"
                     className="in-fields"
-                  /> */}
-              {/* 
+                  />
+              
                   <label className="form-label">Length</label>
                   <input style={{ width: "200px" }} className="in-fields" />
 
@@ -857,16 +849,16 @@ function ServiceOpenSchedule() {
                   <input style={{ width: "200px" }} className="in-fields" />
 
                   <label className="form-label">Quantity</label>
-                  <input style={{ width: "200px" }} className="in-fields" /> */}
+                  <input style={{ width: "200px" }} className="in-fields" />
 
-              {/* <div className="row justify-content-center mt-3 mb-3">
+              <div className="row justify-content-center mt-3 mb-3">
                     <button className="button-style" style={{ width: "120px" }}>
                       Save
                     </button>
-                  </div> */}
-              {/* </div> */}
-              {/* </div> */}
-            </div>
+                  </div>
+              </div>
+              </div>
+            </div> */}
           </Tab>
 
           {/* <Tab eventKey="Material Planner" title="Material Planner">
@@ -1024,7 +1016,7 @@ function ServiceOpenSchedule() {
         firstbuttontext="Yes"
         secondbuttontext="No"
       />
-{/* 
+      {/* 
       <AlertModal
         show={profileOrder2}
         onHide={(e) => setProfileOrder2(e)}
@@ -1062,7 +1054,6 @@ function ServiceOpenSchedule() {
         message="Scheduled"
         firstbuttontext="Ok"
       />
-
     </div>
   );
 }
