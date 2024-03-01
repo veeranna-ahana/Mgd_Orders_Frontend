@@ -83,6 +83,13 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
           toast.success(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
+          postRequest(
+            endpoints.getScheduleListData,
+            { Order_No: OrderData.Order_No },
+            (response) => {
+              setScheduleListData(response);
+            }
+          );
         }
         else{
           toast.warning(response.message, {
