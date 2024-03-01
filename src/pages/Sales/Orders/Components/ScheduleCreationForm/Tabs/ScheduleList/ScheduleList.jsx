@@ -6,6 +6,7 @@ import { endpoints } from "../../../../../../api/constants";
 import FirstTable from "./Tables/FirstTable";
 import SecondTable from "./Tables/SecondTable";
 import AlertModal from "../../../../Menus/Service/Components/Alert";
+import { ToastContainer, toast } from "react-toastify";
 // import { Link, useNavigate } from "react-router-dom";
 // import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
@@ -70,7 +71,16 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
       { rowScheduleList },
       (response) => {
         setDeleteAsk(false);
-        console.log("orderData.....", response.message);
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        postRequest(
+          endpoints.getScheduleListData,
+          { Order_No: OrderData.Order_No },
+          (response) => {
+            setScheduleListData(response);
+          }
+        );        
       }
     );
   }
