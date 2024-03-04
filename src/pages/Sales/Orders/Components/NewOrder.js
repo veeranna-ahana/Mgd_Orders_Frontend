@@ -554,6 +554,7 @@ function NewOrder(props) {
                     type="text"
                     onChange={(e) => setCustomerContact(e.target.value)}
                     value={CustomerContact}
+                    required
                   />
                 </div>
               </div>

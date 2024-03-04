@@ -4,7 +4,8 @@ import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function FormHeader(props) {
   let navigate = useNavigate();
-  const { OrderData, OrderCustData, handleRegisterBtn } = props;
+  const { OrderData, OrderCustData, handleRegisterBtn, handleSaveBtn } = props;
+
   return (
     <>
       <div className="col-md-12">
@@ -34,7 +35,9 @@ export default function FormHeader(props) {
           </button>
           <button
             className="button-style"
-            // onClick={openModal}
+            onClick={() => {
+              handleSaveBtn();
+            }}
           >
             Save
           </button>

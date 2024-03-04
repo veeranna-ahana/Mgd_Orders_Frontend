@@ -15,7 +15,7 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { toast } from "react-toastify";
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-   console.log("props", props.OrersData);
+  console.log("props", props.OrersData);
 
   // //////console.log("location...", location?.state);
 
@@ -115,6 +115,10 @@ export default function ScheduleCreationForm(props) {
     );
   };
 
+  const handleSaveBtn = () => {
+    toast.success("Order Saved Successfully");
+  };
+
   const selectItem = (OrdrDetailsItem) => {
     const isSelected = selectedItems.includes(OrdrDetailsItem);
 
@@ -169,9 +173,9 @@ export default function ScheduleCreationForm(props) {
   //   );
   // };
 
-  useEffect(()=>{
+  useEffect(() => {
     setOrderData(props.OrersData);
-  },[props.OrersData])
+  }, [props.OrersData]);
   return (
     <>
       <div>
@@ -179,6 +183,7 @@ export default function ScheduleCreationForm(props) {
           OrderData={OrderData}
           OrderCustData={OrderCustData}
           handleRegisterBtn={handleRegisterBtn}
+          handleSaveBtn={handleSaveBtn}
         />
 
         <Tabs defaultActiveKey="orderinfo" id="uncontrolled-tab-example">
