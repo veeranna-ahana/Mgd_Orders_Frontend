@@ -342,7 +342,6 @@ function NewOrder(props) {
             // className="button-style button-disabled"
             disabled={!purchaseorder}
             style={{ width: "120px" }}
-            // onClick={handleSaveButtonClick}
           >
             Save Order
           </button>

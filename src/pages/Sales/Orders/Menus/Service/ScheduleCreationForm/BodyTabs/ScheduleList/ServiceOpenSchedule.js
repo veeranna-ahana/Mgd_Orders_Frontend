@@ -200,6 +200,16 @@ function ServiceOpenSchedule() {
           toast.warning(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
+          postRequest(
+            endpoints.getScheduleListgetFormDetails,
+            {
+              Cust_Code: DwgNameList[0]?.Cust_Code,
+              ScheduleId: DwgNameList[0]?.ScheduleId,
+            },
+            (response) => {
+              setFormdata(response);
+            }
+          )
       }
     );
   };
@@ -274,6 +284,16 @@ function ServiceOpenSchedule() {
           toast.success("Suspended", {
             position: toast.POSITION.TOP_CENTER,
           });
+          postRequest(
+            endpoints.getScheduleListgetFormDetails,
+            {
+              Cust_Code: DwgNameList[0]?.Cust_Code,
+              ScheduleId: DwgNameList[0]?.ScheduleId,
+            },
+            (response) => {
+              setFormdata(response);
+            }
+          )
         }
       }
     );
@@ -291,6 +311,16 @@ function ServiceOpenSchedule() {
         toast.error("Schedules cancelled successfully", {
           position: toast.POSITION.TOP_CENTER,
         });
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        )
       }
     });
   };
@@ -305,6 +335,16 @@ function ServiceOpenSchedule() {
         toast.success(response.message, {
           position: toast.POSITION.TOP_CENTER,
         });
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        )
       }
     );
   };
@@ -360,9 +400,12 @@ function ServiceOpenSchedule() {
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
     postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-      //  console.log(response);
+       console.log(response);
       setFixtureData(response);
       setFixtureOrder1(false);
+      navigate("/Orders/Service/ScheduleCreationForm", {
+        state: response,
+      });
     });
   };
 

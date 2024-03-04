@@ -122,12 +122,21 @@
 
 import React, { useState } from "react";
 import ScheduleCreationForm from "../../../Components/ScheduleCreationForm/ScheduleCreationForm";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+
 
 function ServiceScheduleCreationForm(props) {
+  const location = useLocation(); // Access location object using useLocation hook
+  const OrersData = location?.state || []; // Get DwgNameList from location state
+
+  console.log("OrersData",OrersData);
+
   const [ServiceType, setServiceType] = useState("Service");
   return (
     <div>
-      <ScheduleCreationForm Type={ServiceType} />
+      <ScheduleCreationForm Type={ServiceType}
+      OrersData={OrersData}
+       />
     </div>
   );
 }

@@ -15,7 +15,7 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { toast } from "react-toastify";
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  //  console.log("props", props.Type);
+   console.log("props", props.OrersData);
 
   // //////console.log("location...", location?.state);
 
@@ -168,6 +168,10 @@ export default function ScheduleCreationForm(props) {
   //     }
   //   );
   // };
+
+  useEffect(()=>{
+    setOrderData(props.OrersData);
+  },[props.OrersData])
   return (
     <>
       <div>
