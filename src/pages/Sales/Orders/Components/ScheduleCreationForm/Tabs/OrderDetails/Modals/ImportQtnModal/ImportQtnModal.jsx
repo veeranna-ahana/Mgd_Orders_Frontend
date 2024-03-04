@@ -43,6 +43,53 @@ export default function ImportExcelModal(props) {
       }
     );
   }
+
+  function loadQuotationFunc() {
+    let arr = [];
+
+    for (let i = 0; i < filteredQtnListData?.length; i++) {
+      const element = filteredQtnListData[i];
+
+      // console.log("element", element);
+
+      let dataArranged = {
+        DwgName: element.Name,
+        Mtrl_Code: element.Material,
+        Operation: element.Operation,
+        Mtrl_Source: selectedQtn.QtnType === "Sales" ? "Magod" : "Customer",
+        InspLevel: "Insp1",
+        tolerance: "Standard(+/-0.1mm)- 100 Microns",
+        PackingLevel: "Pkng1",
+        JWCost: (
+          parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+        ).toFixed(2),
+        MtrlCost: parseFloat(0).toFixed(2),
+        UnitPrice: (
+          parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+        ).toFixed(2),
+        Qty_Ordered: element.Quantity,
+        Total: (
+          parseFloat(element.Quantity) *
+          parseFloat(
+            parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+          )
+        ).toFixed(2),
+      };
+
+      arr.push(dataArranged);
+
+      // console.log("sa", sa);
+    }
+
+    // console.log("arr", arr);
+    props.setOrdrDetailsData(arr);
+    toast.success("Import Quotation Successful");
+    closeModal();
+  }
+
+  // console.log("selectedQtn", selectedQtn);
+  // console.log("filteredQtnListData", filteredQtnListData);
+  // console.log("props.OrdrDetailsData", props.OrdrDetailsData);
   return (
     <>
       <Modal
@@ -74,7 +121,7 @@ export default function ImportExcelModal(props) {
           <button
             className="button-style m-0 me-3"
             style={{ width: "auto" }}
-            //   onClick={yesClicked}
+            onClick={loadQuotationFunc}
           >
             Load Quotation
           </button>
