@@ -358,5 +358,6 @@ export const endpoints = {
   updateRunningNoBySrlType: `${API}/runningNo/updateRunningNoBySrlType`,
 
   // import qtn
-  getQtnData: `${API}/orderDetails/getQtnData`,
+  getQtnList: `${API}/orderDetails/getQtnList`,
+  getQtnDataByQtnID: `${API}/orderDetails/getQtnDataByQtnID`,
 };

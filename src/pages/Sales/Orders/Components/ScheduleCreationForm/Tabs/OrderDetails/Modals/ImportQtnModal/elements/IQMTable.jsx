@@ -8,61 +8,45 @@ export default function IQMTable(props) {
         <thead className="tableHeaderBGColor">
           <tr>
             <th>SL No</th>
-            <th>Drawing Name</th>
-            <th>Material Code</th>
-            <th>Source</th>
+            <th>ID</th>
+            <th>Qtn ID</th>
+            <th>Name</th>
+            <th>Material</th>
             <th>Operation</th>
-            <th>Order Qty</th>
-            <th>JW Cost</th>
-            <th>Material Cost</th>
-            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Base Price</th>
+            <th>Discount Amount</th>
+            <th>Final Price</th>
+            <th>Total Amount</th>
           </tr>
         </thead>
         <tbody className="tablebody">
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>{" "}
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>{" "}
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>{" "}
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>
+          {props.filteredQtnListData?.map((val, key) => (
+            <>
+              <tr>
+                <td>{key + 1}</td>
+                <td>{val.ID}</td>
+                <td>{val.QtnId}</td>
+                <td>{val.Name}</td>
+                <td>{val.Material}</td>
+                <td>{val.Operation}</td>
+                <td>{val.Quantity}</td>
+                <td>{parseFloat(val.BasePrice).toFixed(2)}</td>
+                <td>{parseFloat(val.DiscountAmount).toFixed(2)}</td>
+                <td>
+                  {(
+                    parseFloat(val.BasePrice) - parseFloat(val.DiscountAmount)
+                  ).toFixed(2)}
+                </td>
+                <td>
+                  {(
+                    parseFloat(val.Quantity) *
+                    (parseFloat(val.BasePrice) - parseFloat(val.DiscountAmount))
+                  ).toFixed(2)}
+                </td>
+              </tr>
+            </>
+          ))}
         </tbody>
       </Table>
     </>

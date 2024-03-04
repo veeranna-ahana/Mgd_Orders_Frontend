@@ -6,10 +6,14 @@ import { postRequest } from "../../../../../../api/apiinstance";
 import AlertModal from "../../../../Menus/Service/Components/Alert";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function ProductionScheduleCreation({ OrderData,selectedItems,setScheduleListData}) {
-  console.log("OrderData",OrderData);
+export default function ProductionScheduleCreation({
+  OrderData,
+  selectedItems,
+  setScheduleListData,
+}) {
+  //  console.log("OrderData",OrderData);
 
-  console.log("selectedItems",selectedItems);
+  //  console.log("selectedItems",selectedItems);
 
   const [scheduleType, setScheduleType] = useState("Job Work");
   const [scheduleOption, setScheduleOption] = useState("Full Order");
@@ -18,7 +22,7 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
   const handleScheduleTypeChange = (event) => {
     const { value } = event.target;
     setScheduleType(value);
-    console.log("Schedule Type:", value);
+    //  console.log("Schedule Type:", value);
     if (OrderData) {
       fetchScheduleList(value);
     }
@@ -26,38 +30,39 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
 
   // API call to fetch schedule list
   const fetchScheduleList = (type) => {
-    postRequest(endpoints.scheduleListbasedOnScheduleType,
+    postRequest(
+      endpoints.scheduleListbasedOnScheduleType,
       { OrderData, scheduleType: type },
       (response) => {
         // console.log("schedulelist response ", response);
         setScheduleListData(response);
-      });
+      }
+    );
   };
 
   useEffect(() => {
     if (OrderData && scheduleType) {
       fetchScheduleList(scheduleType);
     }
-  }, [OrderData, scheduleType]); 
-  
+  }, [OrderData, scheduleType]);
+
   // Handle change for schedule option radio buttons
   const handleScheduleOptionChange = (event) => {
     const { value } = event.target;
     setScheduleOption(value);
-    console.log("Schedule Option:", value);
-    if(value==='Partial Order'){
+    //  console.log("Schedule Option:", value);
+    if (value === "Partial Order") {
       toast.warning("Only Selected Serials will be included in the Schedule", {
         position: toast.POSITION.TOP_CENTER,
       });
-    }
-    else{
+    } else {
       toast.warning("All Serials will be included in the Schedule", {
         position: toast.POSITION.TOP_CENTER,
       });
     }
   };
 
-  console.log("selected Schedule type is ",scheduleType,"selected schedule option is",scheduleOption);
+  //  console.log("selected Schedule type is ",scheduleType,"selected schedule option is",scheduleOption);
 
   //onclick Refresh Status
   const onClickRefreshStatus = () => {
@@ -67,38 +72,43 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
   };
 
   //Onclick Create Schedule
-  const createSchedule=()=>{
+  const createSchedule = () => {
     // console.log(selectedItems.length,scheduleOption);
-  if(selectedItems.length===0 && scheduleOption==='Partial Order'){
-    toast.warning('Select Parts to add to Schedule', {
-      position: toast.POSITION.TOP_CENTER,
-    });
-  }
-  else{
-    postRequest(endpoints.CreateSchedule,
-       { OrderData,scheduleType:scheduleType,selectedItems,scheduleOption:scheduleOption }, 
-       (response) => {
-        // console.log("response is",response);
-        if(response.message==='Successfully Inserted'){
-          toast.success(response.message, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-          postRequest(
-            endpoints.getScheduleListData,
-            { Order_No: OrderData.Order_No },
-            (response) => {
-              setScheduleListData(response);
-            }
-          );
+    if (selectedItems.length === 0 && scheduleOption === "Partial Order") {
+      toast.warning("Select Parts to add to Schedule", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
+      postRequest(
+        endpoints.CreateSchedule,
+        {
+          OrderData,
+          scheduleType: scheduleType,
+          selectedItems,
+          scheduleOption: scheduleOption,
+        },
+        (response) => {
+          // console.log("response is",response);
+          if (response.message === "Successfully Inserted") {
+            toast.success(response.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+            postRequest(
+              endpoints.getScheduleListData,
+              { Order_No: OrderData.Order_No },
+              (response) => {
+                setScheduleListData(response);
+              }
+            );
+          } else {
+            toast.warning(response.message, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         }
-        else{
-          toast.warning(response.message, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
-    });
-  }
-  }
+      );
+    }
+  };
 
   //Onclick of ShortClose
   const [openShortClose, setOpenShortClose] = useState(false);
@@ -110,7 +120,7 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
         position: toast.POSITION.TOP_CENTER,
       });
       postRequest(endpoints.shortcloseOrder, { OrderData }, (response) => {
-        console.log(response.message);
+        //  console.log(response.message);
         toast.success(response.message, {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -198,7 +208,7 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
                 <div className="row">
                   <div className="col-md-2 mt-2 col-sm-12">
                     <input
-                    class="form-check-input"
+                      class="form-check-input"
                       type="radio"
                       name="scheduleType"
                       value="Sales"
@@ -214,7 +224,7 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
                 <div className="row">
                   <div className="col-md-2 mt-2 col-sm-12">
                     <input
-                    class="form-check-input"
+                      class="form-check-input"
                       type="radio"
                       name="scheduleType"
                       checked={scheduleType === "Job Work"}
@@ -241,7 +251,7 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
                 <div className="row">
                   <div className="col-md-2 mt-2 col-sm-12">
                     <input
-                    class="form-check-input"
+                      class="form-check-input"
                       type="radio"
                       name="scheduleOption"
                       value="Full Order"
@@ -289,9 +299,11 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
 
             <button className="button-style mt-3 ">Clear Filter</button>
 
+
             <button className="button-style mt-3 " onClick={createSchedule}
              disabled={OrderData?.Order_Status==='Closed'|| OrderData?.Order_Status==='Cancelled' || OrderData?.Order_Status==='Dispatched' || OrderData?.Order_Status==='Suspended'  ||  OrderData?.Order_Status==='Packed'|| OrderData?.Order_Status==='Produced' || OrderData?.Order_Status==='Created' ||  OrderData?.Order_Status==='ShortClosed' }
             >Create Schedule</button>
+
           </div>
         </div>
 
@@ -305,7 +317,7 @@ export default function ProductionScheduleCreation({ OrderData,selectedItems,set
                   Open Folder
                 </button>
               </div>
-{/* 
+              {/* 
               <div className="col-md-4 mt-3 col-sm-12">
                 <button className="button-style">Check DXF</button>
               </div>
