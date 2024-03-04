@@ -90,7 +90,7 @@ function OrdrTable(props) {
                   <td>{OrdrDetailsItem.MtrlCost}</td>
                   <td>{OrdrDetailsItem.UnitPrice}</td>
                   <td>{OrdrDetailsItem.Qty_Ordered}</td>
-                  <td>{OrdrDetailsItem["Total"]}</td>
+                  <td>{OrdrDetailsItem.Total}</td>
                 </tr>
               );
             })
