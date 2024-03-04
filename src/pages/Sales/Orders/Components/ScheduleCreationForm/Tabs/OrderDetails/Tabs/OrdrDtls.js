@@ -117,6 +117,7 @@ function OrdrDtls(props) {
       />
 
       <div className="row">
+        {/* {selectedItems.map((item, i) => ( */}
         <div className="col-md-8 col-sm-12">
           <div className="ip-box form-bg">
             <div className="row mt-3">
@@ -135,7 +136,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={selectedItems[0]?.Order_Srl || " "}
+                      value={
+                        selectedItems[selectedItems.length - 1]?.Order_Srl ||
+                        " "
+                      }
                     />
                   </div>
                 </div>
@@ -165,7 +169,9 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.DwgName || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.DwgName || " "
+                      }
                     />
                   </div>
                 </div>
@@ -182,7 +188,9 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.JWCost || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.JWCost || " "
+                      }
                     />
                   </div>
                 </div>
@@ -227,7 +235,9 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.MtrlCost || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.MtrlCost || " "
+                      }
                     />
                   </div>
                 </div>
@@ -247,7 +257,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.Mtrl_Source || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.Mtrl_Source ||
+                        " "
+                      }
                     />
 
                     {/* <select id="" className="ip-select dropdown-field ">
@@ -270,7 +283,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.UnitPrice || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.UnitPrice ||
+                        " "
+                      }
                     />
                   </div>
                 </div>
@@ -285,7 +301,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.Operation || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.Operation ||
+                        " "
+                      }
                     />
                     {/* <select id="" className="ip-select dropdown-field ">
                       <option value="option1">option 1</option>
@@ -307,7 +326,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.InspLevel || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.InspLevel ||
+                        " "
+                      }
                     />
                     {/* <select id="" className="ip-select dropdown-field ">
                       <option value="option1">option 1</option>
@@ -327,7 +349,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.Qty_Ordered || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.Qty_Ordered ||
+                        " "
+                      }
                     />
                     {/* <div className="row">
                       <div className="col-md-8  col-sm-12 mt-1">
@@ -360,7 +385,10 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      defaultValue={selectedItems[0]?.PackingLevel || " "}
+                      defaultValue={
+                        selectedItems[selectedItems.length - 1]?.PackingLevel ||
+                        " "
+                      }
                     />
                     {/* <select id="" className="ip-select dropdown-field ">
                       <option value="option1">option 1</option>
@@ -373,7 +401,7 @@ function OrdrDtls(props) {
             </div>
           </div>
         </div>
-
+        {/* ))} */}
         <div className="col-md-4 col-sm-12">
           <Form className="">
             <div
@@ -389,7 +417,10 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    defaultValue={selectedItems[0]?.Qty_Ordered || " "}
+                    defaultValue={
+                      selectedItems[selectedItems.length - 1]?.Qty_Ordered ||
+                      " "
+                    }
                   />
                 </div>
               </div>
@@ -399,7 +430,10 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    value={selectedItems[0]?.QtyScheduled || " "}
+                    value={
+                      selectedItems[selectedItems.length - 1]?.QtyScheduled ||
+                      " "
+                    }
                   />
                 </div>
               </div>
@@ -409,7 +443,10 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    defaultValue={selectedItems[0]?.QtyProduced || " "}
+                    defaultValue={
+                      selectedItems[selectedItems.length - 1]?.QtyProduced ||
+                      " "
+                    }
                   />
                 </div>
               </div>
@@ -419,7 +456,9 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    defaultValue={selectedItems[0]?.QtyPacked || " "}
+                    defaultValue={
+                      selectedItems[selectedItems.length - 1]?.QtyPacked || " "
+                    }
                   />
                 </div>
               </div>
@@ -429,7 +468,10 @@ function OrdrDtls(props) {
                   <input
                     className="in-fields"
                     type="text"
-                    defaultValue={selectedItems[0]?.QtyDelivered || " "}
+                    defaultValue={
+                      selectedItems[selectedItems.length - 1]?.QtyDelivered ||
+                      " "
+                    }
                   />
                 </div>
               </div>

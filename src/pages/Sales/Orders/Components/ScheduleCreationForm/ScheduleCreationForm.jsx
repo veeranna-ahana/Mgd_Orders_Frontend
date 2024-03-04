@@ -31,8 +31,8 @@ export default function ScheduleCreationForm(props) {
 
   const [selectedItems, setSelectedItems] = useState([]);
 
-    //getScheduleList Table Data
-    const [scheduleListData, setScheduleListData] = useState([]);
+  //getScheduleList Table Data
+  const [scheduleListData, setScheduleListData] = useState([]);
 
   const fetchData = () => {
     postRequest(
@@ -112,7 +112,7 @@ export default function ScheduleCreationForm(props) {
         : [...prevSelectedItems, OrdrDetailsItem];
 
       // Log the updated state
-      ////console.log("Selected Order details Rows:", updatedSelectedItems);
+      console.log("Selected Order details Rows:", updatedSelectedItems);
 
       return updatedSelectedItems;
     });
@@ -168,9 +168,10 @@ export default function ScheduleCreationForm(props) {
             eventKey="productionschedulecreation"
             title="Production Schedule Creation"
           >
-            <ProductionScheduleCreation OrderData={OrderData} 
-            selectedItems={selectedItems}
-            setScheduleListData={setScheduleListData}
+            <ProductionScheduleCreation
+              OrderData={OrderData}
+              selectedItems={selectedItems}
+              setScheduleListData={setScheduleListData}
             />
           </Tab>
           <Tab eventKey="findoldpart" title="Find Old Part">
