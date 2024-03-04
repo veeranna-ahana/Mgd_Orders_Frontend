@@ -525,13 +525,13 @@ function OrdrDtls(props) {
                       onChange={handleSelectChange}
                       // onChange={(selected) => {
                       //   // Handle the selected item
-                      //   console.log("Selected PartId", selected[0]?.label);
-                      //   console.log("Selected...", selected);
+                      // //  console.log("Selected PartId", selected[0]?.label);
+                      // //  console.log("Selected...", selected);
 
                       //   const arr = BomData.filter(
                       //     (obj) => obj.PartId === selected[0]?.label
                       //   );
-                      //   console.log("arr", arr);
+                      // //  console.log("arr", arr);
                       //   setBomArry(arr);
                       // }}
                     />

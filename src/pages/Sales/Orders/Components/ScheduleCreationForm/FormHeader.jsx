@@ -4,6 +4,7 @@ import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function FormHeader(props) {
   let navigate = useNavigate();
+  const { OrderData, OrderCustData, handleRegisterBtn } = props;
   return (
     <>
       <div className="col-md-12">
@@ -25,9 +26,9 @@ export default function FormHeader(props) {
         <div className="col-md-5">
           <button
             className="button-style"
-            // onClick={() => {
-            //   openRegisterOrder();
-            // }}
+            onClick={() => {
+              handleRegisterBtn();
+            }}
           >
             Register Order
           </button>

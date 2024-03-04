@@ -15,7 +15,8 @@ export default function OrderInfo(props) {
   const year = orderDate.getFullYear();
 
   // Format the date as dd mm yyyy
-  const formattedDate = `${year}-${month}-${day}`;
+  // const formattedDate = `${year}-${month}-${day}`;
+  const formattedDate = `${day}-${month}-${year}`;
   console.log(formattedDate);
 
   return (
@@ -49,7 +50,7 @@ export default function OrderInfo(props) {
             <input
               type="checkbox"
               className="checkBoxStyle mt-1"
-              // style={{ width: "20px", marginLeft: "45%" }}
+              checked={props.OrderData?.Delivery === 1}
             />
           </div>
           <div className="col-md-2 sm-12 ">

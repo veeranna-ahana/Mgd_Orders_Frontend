@@ -579,11 +579,11 @@ export default function OrderDetails(props) {
   const handleSelectChange = (selected) => {
     // setHasBOM(1);
     // Handle the selected item
-    console.log("Selected PartId", selected[0]?.label);
-    console.log("Selected...", selected);
+    ////  console.log("Selected PartId", selected[0]?.label);
+    ////  console.log("Selected...", selected);
 
     const arr = BomData.filter((obj) => obj.PartId === selected[0]?.label);
-    console.log("arr", arr);
+    ////  console.log("arr", arr);
     setBomArry(arr);
 
     // If you need to store the selected PartId in the component's state
@@ -620,7 +620,7 @@ export default function OrderDetails(props) {
 
         NewSrlFormData: NewSrlFormData,
       };
-      console.log("clicked on Add new serial button");
+      ////  console.log("clicked on Add new serial button");
     } else if (flag === 2) {
       if (
         props.OrderData?.Order_Status === "Created" ||
@@ -629,8 +629,8 @@ export default function OrderDetails(props) {
         toast.warning("Cannot import after the Order is recorded");
       }
 
-      console.log(" ImportDwg button...", props.OrderData?.Order_Status);
-      console.log("clicked on ImportDwg button");
+      ////  console.log(" ImportDwg button...", props.OrderData?.Order_Status);
+      ////  console.log("clicked on ImportDwg button");
     } else if (flag === 3) {
       setHasBOM(1);
       requestData = {
@@ -655,12 +655,12 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
       };
 
-      console.log("clicked on add dwg to order button");
+      ////  console.log("clicked on add dwg to order button");
     } else {
       //console.error("Invalid flag value");
     }
     // Make the API request
-    console.log("calling InsertNewSrlData api ");
+    ////  console.log("calling InsertNewSrlData api ");
     console.log("req data  ", requestData);
 
     postRequest(
@@ -668,7 +668,7 @@ export default function OrderDetails(props) {
 
       { requestData: requestData },
       (InsertedNewSrlData) => {
-        console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        ////  console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           toast.success("Added serial successfully");
           fetchData();
@@ -682,7 +682,7 @@ export default function OrderDetails(props) {
   };
   // const setBomArry = (arr) => {
   //   // Implement setBomArray logic if needed
-  //   console.log("Setting BomArray:", arr);
+  // //  console.log("Setting BomArray:", arr);
   // };
   return (
     <>

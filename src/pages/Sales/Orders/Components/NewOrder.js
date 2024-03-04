@@ -183,6 +183,7 @@ function NewOrder(props) {
     let Transportcharges = e.target.elements.formTransportCharges.value;
 
     //console.log("qtnno", qtnno);
+    console.log("MagodDelivery", MagodDelivery);
     //Console.log("Entering API Call");
     await postRequest(
       endpoints.saveCreateOrder,

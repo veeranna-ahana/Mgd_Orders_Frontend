@@ -22,7 +22,7 @@ function OrdrTable(props) {
   //       : [...prevSelectedItems, OrdrDetailsItem];
 
   //     // Log the updated state
-  //     console.log("Selected Order details Rows:", updatedSelectedItems);
+  //   //  console.log("Selected Order details Rows:", updatedSelectedItems);
 
   //     return updatedSelectedItems;
   //   });
