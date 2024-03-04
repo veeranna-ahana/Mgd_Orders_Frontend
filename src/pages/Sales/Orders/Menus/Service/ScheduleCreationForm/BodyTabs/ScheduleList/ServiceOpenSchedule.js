@@ -411,8 +411,9 @@ function ServiceOpenSchedule() {
 
   // console.log("fixturedata is",fixturedata);
 
-  const Orsch = formdata[0]?.Order_No + " " + formdata[0]?.ScheduleNo;
-
+  const ScheduleNo = formdata[0]?.ScheduleNo;
+  const Orsch = formdata[0]?.Order_No + " " + (ScheduleNo != null && ScheduleNo !== 'null' && ScheduleNo !== undefined ? ScheduleNo : '');
+  
   //CHECK STATUS
   const checkstatus=()=>{
     postRequest(
