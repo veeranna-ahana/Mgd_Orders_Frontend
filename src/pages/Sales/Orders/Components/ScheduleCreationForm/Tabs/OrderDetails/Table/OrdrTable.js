@@ -29,25 +29,25 @@ function OrdrTable(props) {
   // };
 
   return (
-    <div style={{ overflowX: "scroll", overflowY: "scroll", height: "860px" }}>
+    <div style={{ overflow: "auto", height: "480px" }}>
       <Table striped className="table-data border" style={{ border: "1px" }}>
         <thead className="tableHeaderBGColor">
           <tr>
-            <th>Select</th>
-            <th style={{ whiteSpace: "nowrap" }}>Drawing/Part Name</th>
-            <th style={{ whiteSpace: "nowrap" }}>Dwg Exists</th>
+            {/* <th>Select</th> */}
+            <th>Drawing/Part Name</th>
+            <th>Dwg Exists</th>
             <th>Material</th>
             <th>Operation</th>
             <th>Source</th>
-            <th style={{ whiteSpace: "nowrap" }}>Insp Level</th>
+            <th>Insp Level</th>
             <th>Tolerance</th>
-            <th style={{ whiteSpace: "nowrap" }}>Packing Level</th>
-            <th>LOC</th>
-            <th>Pierces</th>
-            <th style={{ whiteSpace: "nowrap" }}>JW Cost</th>
-            <th style={{ whiteSpace: "nowrap" }}>Mtrl Cost</th>
-            <th style={{ whiteSpace: "nowrap" }}>Unit Rate</th>
-            <th style={{ whiteSpace: "nowrap" }}>Qty Ordered</th>
+            <th>Packing Level</th>
+            {/* <th>LOC</th> */}
+            {/* <th>Pierces</th> */}
+            <th>JW Cost</th>
+            <th>Mtrl Cost</th>
+            <th>Unit Rate</th>
+            <th>Qty Ordered</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -66,14 +66,14 @@ function OrdrTable(props) {
                     backgroundColor: isSelected ? "#98a8f8" : "",
                   }}
                 >
-                  <td>
+                  {/* <td>
                     <Form.Check
                       type="checkbox"
                       id="selected"
                       // key={i}
                       // onClick={() => selectItem(OrdrDetailsItem)}
                     />
-                  </td>
+                  </td> */}
                   <td>{OrdrDetailsItem.DwgName}</td>
                   <td>
                     <Form.Check type="checkbox" id="selected" />
@@ -84,8 +84,8 @@ function OrdrTable(props) {
                   <td>{OrdrDetailsItem.InspLevel}</td>
                   <td>{OrdrDetailsItem.tolerance}</td>
                   <td>{OrdrDetailsItem.PackingLevel}</td>
-                  <td>{OrdrDetailsItem.LOC}</td>
-                  <td>{OrdrDetailsItem.Holes}</td>
+                  {/* <td>{OrdrDetailsItem.LOC}</td> */}
+                  {/* <td>{OrdrDetailsItem.Holes}</td> */}
                   <td>{OrdrDetailsItem.JWCost}</td>
                   <td>{OrdrDetailsItem.MtrlCost}</td>
                   <td>{OrdrDetailsItem.UnitPrice}</td>
