@@ -284,7 +284,6 @@ export const endpoints = {
   getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
 
   //OpenSchedule Srvice
-
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
   onClickShortClose: `${API}/ScheduleList/shortClose`,
   onClickSave: `${API}/ScheduleList/save`,
