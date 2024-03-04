@@ -200,6 +200,16 @@ function ServiceOpenSchedule() {
           toast.warning(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
+          postRequest(
+            endpoints.getScheduleListgetFormDetails,
+            {
+              Cust_Code: DwgNameList[0]?.Cust_Code,
+              ScheduleId: DwgNameList[0]?.ScheduleId,
+            },
+            (response) => {
+              setFormdata(response);
+            }
+          )
       }
     );
   };
@@ -274,6 +284,16 @@ function ServiceOpenSchedule() {
           toast.success("Suspended", {
             position: toast.POSITION.TOP_CENTER,
           });
+          postRequest(
+            endpoints.getScheduleListgetFormDetails,
+            {
+              Cust_Code: DwgNameList[0]?.Cust_Code,
+              ScheduleId: DwgNameList[0]?.ScheduleId,
+            },
+            (response) => {
+              setFormdata(response);
+            }
+          )
         }
       }
     );
@@ -291,6 +311,16 @@ function ServiceOpenSchedule() {
         toast.error("Schedules cancelled successfully", {
           position: toast.POSITION.TOP_CENTER,
         });
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        )
       }
     });
   };
@@ -305,6 +335,16 @@ function ServiceOpenSchedule() {
         toast.success(response.message, {
           position: toast.POSITION.TOP_CENTER,
         });
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        )
       }
     );
   };
@@ -360,15 +400,31 @@ function ServiceOpenSchedule() {
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
     postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-      //  console.log(response);
+       console.log(response);
       setFixtureData(response);
       setFixtureOrder1(false);
+      navigate("/Orders/Service/ScheduleCreationForm", {
+        state: response,
+      });
     });
   };
 
   // console.log("fixturedata is",fixturedata);
 
   const Orsch = formdata[0]?.Order_No + " " + formdata[0]?.ScheduleNo;
+
+  //CHECK STATUS
+  const checkstatus=()=>{
+    postRequest(
+      endpoints.getScheduleListgetFormDetails,
+      {
+        Cust_Code: DwgNameList[0]?.Cust_Code,
+        ScheduleId: DwgNameList[0]?.ScheduleId,
+      },
+      (response) => {
+        setFormdata(response);
+      })
+  }
 
   return (
     <div>
@@ -469,7 +525,8 @@ function ServiceOpenSchedule() {
             onClick={OnClickSuspend}
             disabled={
               formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Dispatched"
+              formdata[0]?.Schedule_Status === "Dispatched"||
+              formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected" || formdata[0]?.Schedule_Status === "Closed" || formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Cancelled"
             }
           >
             Suspend
@@ -479,8 +536,7 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickShortClose}
             disabled={
-              formdata[0]?.Schedule_Status === "Tasked" ||
-              formdata[0]?.Schedule_Status === "Dispatched"
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Created" || formdata[0]?.Schedule_Status === "Scheduled"  || formdata[0]?.Schedule_Status === "Tasked"
             }
           >
             ShortClose
@@ -490,8 +546,8 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickCancel}
             disabled={
-              formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Dispatched"
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" ||  formdata[0]?.Schedule_Status === "Created" || formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
+              formdata[0]?.Schedule_Status === "Production" 
             }
           >
             Cancel
@@ -509,8 +565,8 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickScheduled}
             disabled={
-              formdata[0]?.Schedule_Status === "Tasked" ||
-              formdata[0]?.Schedule_Status === "Dispatched"
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Scheduled"  || formdata[0]?.Schedule_Status === "Tasked" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
+              formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected"
             }
           >
             Schedule
@@ -529,14 +585,23 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-2 col-sm-3">
           {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
-          <button className="button-style " onClick={onClickNCProgram}>
+          <button className="button-style " onClick={onClickNCProgram}
+           disabled={
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended"
+            }
+          >
             NC Program
           </button>
           {/* </Link> */}
         </div>
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={onClickTasked} disabled>
+          <button className="button-style" onClick={onClickTasked} 
+           disabled={
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Created" || formdata[0]?.Schedule_Status === "Tasked" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
+              formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected"
+            }
+          >
             Task
           </button>
           <style>
@@ -552,8 +617,9 @@ function ServiceOpenSchedule() {
           <button
             className="button-style"
             onClick={onClickSave}
-            disabled={formdata[0]?.Schedule_Status === "Dispatched"}
-          >
+            disabled={
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended"
+            }          >
             Save
           </button>
           {formdata[0]?.Schedule_Status === "Dispatched" && (
@@ -571,9 +637,9 @@ function ServiceOpenSchedule() {
         <div className="col-md-2 col-sm-3">
           <button
             className="button-style"
+            onClick={checkstatus}
             disabled={
-              formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Dispatched"
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended"
             }
           >
             Check Status
@@ -584,8 +650,8 @@ function ServiceOpenSchedule() {
           <button
             className="button-style "
             disabled={
-              formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Dispatched"
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
+              formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected" ||  formdata[0]?.Schedule_Status === "Created" 
             }
           >
             Print Schedule
@@ -599,7 +665,11 @@ function ServiceOpenSchedule() {
         </div> */}
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={fixtureOrderOpen1}>
+          <button className="button-style" onClick={fixtureOrderOpen1}
+            disabled={
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" ||  formdata[0]?.Schedule_Status === "Created" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Ready"
+            }
+          >
             Fixture Order
           </button>
         </div>

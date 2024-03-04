@@ -255,7 +255,7 @@ function AddNewSrlModal(props) {
                   <div className="col-md-6">
                     <Form.Group controlId="rates">
                       <InputField
-                        label="unitPrice"
+                        label="UnitPrice"
                         id="Qty"
                         value={unitPrice}
                         onChangeCallback={setUnitPrice}
@@ -266,7 +266,7 @@ function AddNewSrlModal(props) {
                     {" "}
                     <Form.Group controlId="rates">
                       <InputField
-                        label="materialRate"
+                        label="MaterialRate"
                         id="Qty"
                         value={materialRate}
                         onChangeCallback={setMaterialRate}

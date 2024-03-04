@@ -12,10 +12,10 @@ import ScheduleList from "./Tabs/ScheduleList/ScheduleList";
 import FormHeader from "./FormHeader";
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
-
+import { toast } from "react-toastify";
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  //  console.log("props", props.Type);
+   console.log("props", props.OrersData);
 
   // //////console.log("location...", location?.state);
 
@@ -102,6 +102,19 @@ export default function ScheduleCreationForm(props) {
     fetchData();
   }, []);
 
+  const handleRegisterBtn = () => {
+    postRequest(
+      endpoints.registerOrder,
+      { Order_No: orderNo, Order_Status: "Recorded" },
+      (registerOrderData) => {
+        console.log("registerOrderData......", registerOrderData);
+
+        setOrderData({ ...OrderData, Order_Status: "Recorded" });
+        toast.success("Order Registered Successfully");
+      }
+    );
+  };
+
   const selectItem = (OrdrDetailsItem) => {
     const isSelected = selectedItems.includes(OrdrDetailsItem);
 
@@ -112,7 +125,7 @@ export default function ScheduleCreationForm(props) {
         : [...prevSelectedItems, OrdrDetailsItem];
 
       // Log the updated state
-      ////console.log("Selected Order details Rows:", updatedSelectedItems);
+      console.log("Selected Order details Rows:", updatedSelectedItems);
 
       return updatedSelectedItems;
     });
@@ -155,10 +168,18 @@ export default function ScheduleCreationForm(props) {
   //     }
   //   );
   // };
+
+  useEffect(()=>{
+    setOrderData(props.OrersData);
+  },[props.OrersData])
   return (
     <>
       <div>
-        <FormHeader OrderData={OrderData} OrderCustData={OrderCustData} />
+        <FormHeader
+          OrderData={OrderData}
+          OrderCustData={OrderCustData}
+          handleRegisterBtn={handleRegisterBtn}
+        />
 
         <Tabs defaultActiveKey="orderinfo" id="uncontrolled-tab-example">
           <Tab eventKey="orderinfo" title="Order Info">

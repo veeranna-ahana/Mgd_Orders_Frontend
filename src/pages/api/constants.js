@@ -35,6 +35,7 @@ export const endpoints = {
   loadStockPosition: `${API}/OrderDetails/loadStockPosition`,
   LoadArrival: `${API}/OrderDetails/LoadArrival`,
   LoadArrival2: `${API}/OrderDetails/LoadArrival2`,
+  registerOrder: `${API}/order/registerOrder`,
 
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
@@ -284,7 +285,6 @@ export const endpoints = {
   getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
 
   //OpenSchedule Srvice
-
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
   onClickShortClose: `${API}/ScheduleList/shortClose`,
   onClickSave: `${API}/ScheduleList/save`,
