@@ -557,15 +557,6 @@ export default function OrderDetails(props) {
   };
 
   const [importOldOrdrMdl, setImportOldOrdrMdl] = useState(false);
-  const [bulkChnangMdl, setBulkChnangMdl] = useState(false);
-
-  const handlebulkChnangMdl = () => {
-    // ////console.log("modal opend ");
-    setBulkChnangMdl(true);
-  };
-  const handleClosebulkChnangMdl = () => {
-    setBulkChnangMdl(false);
-  };
 
   const handleImportOldOrdrMdl = () => {
     // ////console.log("modal opend ");
@@ -697,6 +688,16 @@ export default function OrderDetails(props) {
   //   // Implement setBomArray logic if needed
   // //  console.log("Setting BomArray:", arr);
   // };
+
+  const [bulkChnangMdl, setBulkChnangMdl] = useState(false);
+
+  const handlebulkChnangMdl = () => {
+    setBulkChnangMdl(true);
+  };
+
+  const handleClosesetBulkChnangMdl = () => {
+    setBulkChnangMdl(false);
+  };
   return (
     <>
       <ImportDwgModal
@@ -753,12 +754,59 @@ export default function OrderDetails(props) {
         setImportExcelModal={setImportExcelModal}
         importExcelModal={importExcelModal}
       />
-      {/* <BulkChangeModal
+      <BulkChangeModal
         bulkChnangMdl={bulkChnangMdl}
         setBulkChnangMdl={setBulkChnangMdl}
         handlebulkChnangMdl={handlebulkChnangMdl}
-        handleClosebulkChnangMdl={handleClosebulkChnangMdl}
-      /> */}
+        handleClosesetBulkChnangMdl={handleClosesetBulkChnangMdl}
+        OrderData={OrderData}
+        OrderCustData={OrderCustData}
+        OrdrDetailsData={OrdrDetailsData}
+        importdwgshow={importdwgshow}
+        setImportDwgShow={setImportDwgShow}
+        handleImportDwg={handleImportDwg}
+        handleCloseImportDwg={handleCloseImportDwg}
+        mtrldata={mtrldata}
+        selectMtrl={selectMtrl}
+        strmtrlcode={strmtrlcode}
+        procdata={procdata}
+        selectProc={selectProc}
+        selectMtrlSrc={selectMtrlSrc}
+        tolerancedata={tolerancedata}
+        selectTolerance={selectTolerance}
+        inspdata={inspdata}
+        selectInsp={selectInsp}
+        packdata={packdata}
+        selectPack={selectPack}
+        InputField={InputField}
+        quantity={quantity}
+        setQuantity={setQuantity}
+        jwRate={jwRate}
+        setJwRate={setJwRate}
+        materialRate={materialRate}
+        setMaterialRate={setMaterialRate}
+        unitPrice={unitPrice}
+        setUnitPrice={setUnitPrice}
+        DwgName={DwgName}
+        handleDwgInputChange={handleDwgInputChange}
+        PostSrlData={PostSrlData}
+        insertnewsrldata={insertnewsrldata}
+        handleMtrlCodeTypeaheadChange={handleMtrlCodeTypeaheadChange}
+        PostOrderDetails={PostOrderDetails}
+        BomData={BomData}
+        setBomData={setBomData}
+        handleSelectChange={handleSelectChange}
+        selectedPartId={selectedPartId}
+        setSelectedPartId={setSelectedPartId}
+        options={options}
+        BomArry={BomArry}
+        setBomArry={setBomArry}
+        HasBOM={HasBOM}
+        setHasBOM={setHasBOM}
+        LastSlctedRow={LastSlctedRow}
+        setLastSlctedRow={setLastSlctedRow}
+        selectedItems={selectedItems}
+      />
       <div>
         {/* {console.log(".....", props)} */}
         <div className="row justify-content-left m-3">
@@ -803,7 +851,6 @@ export default function OrderDetails(props) {
           <button
             className="button-style"
             style={{ width: "130px", marginLeft: "4px" }}
-            // onClick={handleBulkCngBtn}
             onClick={handlebulkChnangMdl}
           >
             Bulk Change

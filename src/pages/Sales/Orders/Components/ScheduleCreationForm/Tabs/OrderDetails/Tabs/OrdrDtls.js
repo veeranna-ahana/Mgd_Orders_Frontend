@@ -478,29 +478,17 @@ function OrdrDtls(props) {
                 <div className="col-md-4">
                   {" "}
                   <label className="form-label">Part id</label>
-                  {/* {console.log(BomData.bomdata)} */}
                   {BomData?.length != 0 ? (
                     <Typeahead
                       className="in-fields"
                       selected={selectedPartId}
                       // id="basic-example"
                       options={options}
+                      labelKey="label"
                       placeholder="Select ..."
                       onChange={handleSelectChange}
-                      // onChange={(selected) => {
-                      //   // Handle the selected item
-                      // //  console.log("Selected PartId", selected[0]?.label);
-                      // //  console.log("Selected...", selected);
-
-                      //   const arr = BomData.filter(
-                      //     (obj) => obj.PartId === selected[0]?.label
-                      //   );
-                      // //  console.log("arr", arr);
-                      //   setBomArry(arr);
-                      // }}
                     />
                   ) : null}
-                  {/* ----- */}
                   <button
                     className="button-style"
                     style={{ width: "195px", marginTop: "26%" }}

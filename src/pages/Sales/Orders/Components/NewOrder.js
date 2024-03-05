@@ -668,7 +668,7 @@ function NewOrder(props) {
                 <div className="col-md-4 mb-2 col-sm-12">
                   <label className="form-label">Billing State</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                {/* <div className="col-md-8  mb-2 col-sm-12">
                   <select className="ip-select in-fields" id="formBillingState">
                     <option>Select State</option>
                     {statesdata.map((stat) => {
@@ -677,6 +677,15 @@ function NewOrder(props) {
                       );
                     })}
                   </select>
+                </div> */}
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <input
+                    id=""
+                    className="in-fields"
+                    disabled
+                    type="text"
+                    value={formBillingState}
+                  />
                 </div>
               </div>
             </div>

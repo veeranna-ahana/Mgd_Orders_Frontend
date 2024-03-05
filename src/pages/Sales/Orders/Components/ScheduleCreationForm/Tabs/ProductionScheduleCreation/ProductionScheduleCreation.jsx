@@ -89,7 +89,7 @@ export default function ProductionScheduleCreation({
         },
         (response) => {
           // console.log("response is",response);
-          if (response.message === "Successfully Inserted") {
+          if (response.message === "Draft Schedule Created") {
             toast.success(response.message, {
               position: toast.POSITION.TOP_CENTER,
             });

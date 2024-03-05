@@ -13,9 +13,10 @@ import FormHeader from "./FormHeader";
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { toast } from "react-toastify";
+
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  // console.log("props", props.OrersData);
+  console.log("props", props);
 
   // //////console.log("location...", location?.state);
 
@@ -47,7 +48,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetBomData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (bomdata) => {
-            //console.log("bomdata......", bomdata);
+            console.log("bomdata......", bomdata);
             setBomData(bomdata);
           }
         );
@@ -164,19 +165,6 @@ export default function ScheduleCreationForm(props) {
       // Update the selected rows with the newArray
       setSelectedItems(newArray);
     }
-  };
-
-  const handleBulkCngBtn = () => {
-    postRequest(
-      endpoints.bulkChangeUpdate,
-      { Order_No: orderNo, Order_Status: "Recorded" },
-      (registerOrderData) => {
-        console.log("registerOrderData......", registerOrderData);
-
-        setOrderData({ ...OrderData, Order_Status: "Recorded" });
-        toast.success("Order Registered Successfully");
-      }
-    );
   };
   // let insertnewsrldata = () => {
   //   ////console.log("entering into insertnewsrldata");
