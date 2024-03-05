@@ -50,49 +50,50 @@ export default function ImportExcelModal(props) {
     for (let i = 0; i < filteredQtnListData?.length; i++) {
       const element = filteredQtnListData[i];
 
-      // console.log("element", element);
-
       let dataArranged = {
+        Order_No: props.OrderData.Order_No,
+        Order_Srl: i + 1,
         Cust_Code: props.OrderData.Cust_Code,
         DwgName: element.Name,
         Mtrl_Code: element.Material,
         MProcess: "Process 1",
-        Operation: element.Operation,
         Mtrl_Source: selectedQtn.QtnType === "Sales" ? "Magod" : "Customer",
+        Qty_Ordered: element.Quantity,
         InspLevel: "Insp1",
-        tolerance: "Standard(+/-0.1mm)- 100 Microns",
         PackingLevel: "Pkng1",
-        JWCost: (
-          parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
-        ).toFixed(2),
-        MtrlCost: parseFloat(0).toFixed(2),
         UnitPrice: (
           parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
         ).toFixed(2),
         UnitWt: parseFloat(0).toFixed(2),
-        Qty_Ordered: element.Quantity,
         Order_Status: "Received",
-        // Total: (
-        //   parseFloat(element.Quantity) *
-        //   parseFloat(
-        //     parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
-        //   )
-        // ).toFixed(2),
+        JWCost: (
+          parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+        ).toFixed(2),
+        MtrlCost: parseFloat(0).toFixed(2),
+        Operation: element.Operation,
+        tolerance: "Standard(+/-0.1mm)- 100 Microns",
       };
       arr.push(dataArranged);
-
-      // console.log("sa", sa);
     }
 
-    // console.log("arr", arr);
-    props.setOrdrDetailsData(arr);
-    toast.success("Import Quotation Successful");
-    closeModal();
+    postRequest(
+      endpoints.postDetailsDataInImportQtn,
+      {
+        detailsData: arr,
+      },
+      (detailsDataInImportAtn) => {
+        // console.log("detailsDataInImportAtn", detailsDataInImportAtn);
+        if (detailsDataInImportAtn.result) {
+          props.setOrdrDetailsData(arr);
+          toast.success("Import Quotation Successful");
+          closeModal();
+        } else {
+          toast.warning("uncaught backend error");
+        }
+      }
+    );
   }
 
-  // console.log("selectedQtn", selectedQtn);
-  // console.log("filteredQtnListData", filteredQtnListData);
-  // console.log("props.OrdrDetailsData", props.OrdrDetailsData);
   return (
     <>
       <Modal

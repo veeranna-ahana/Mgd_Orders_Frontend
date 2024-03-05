@@ -361,4 +361,5 @@ export const endpoints = {
   getQtnList: `${API}/orderDetails/getQtnList`,
   getQtnDataByQtnID: `${API}/orderDetails/getQtnDataByQtnID`,
   postDeleteDetailsByOrderNo: `${API}/orderDetails/postDeleteDetailsByOrderNo`,
+  postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
 };
