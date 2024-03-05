@@ -15,7 +15,7 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { toast } from "react-toastify";
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  console.log("props", props.OrersData);
+  // console.log("props", props.OrersData);
 
   // //////console.log("location...", location?.state);
 
@@ -30,7 +30,7 @@ export default function ScheduleCreationForm(props) {
   const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
 
   const [selectedItems, setSelectedItems] = useState([]);
-
+  const [LastSlctedRow, setLastSlctedRow] = useState();
   //getScheduleList Table Data
   const [scheduleListData, setScheduleListData] = useState([]);
 
@@ -96,8 +96,6 @@ export default function ScheduleCreationForm(props) {
     setSelectedItems([]);
   };
 
-  // console.log("OrdrDetailsData", OrdrDetailsData);
-
   useEffect(() => {
     fetchData();
   }, []);
@@ -130,11 +128,16 @@ export default function ScheduleCreationForm(props) {
 
       // Log the updated state
       console.log("Selected Order details Rows:", updatedSelectedItems);
+      const lastSelectedRow =
+        updatedSelectedItems[updatedSelectedItems.length - 1];
+      // console.log("Last Selected Row:", lastSelectedRow);
+      setLastSlctedRow(lastSelectedRow);
 
       return updatedSelectedItems;
     });
   };
 
+  console.log("LastSlctedRow", LastSlctedRow);
   const handleSelectAll = () => {
     setSelectedItems(OrdrDetailsData);
   };
@@ -161,6 +164,19 @@ export default function ScheduleCreationForm(props) {
       // Update the selected rows with the newArray
       setSelectedItems(newArray);
     }
+  };
+
+  const handleBulkCngBtn = () => {
+    postRequest(
+      endpoints.bulkChangeUpdate,
+      { Order_No: orderNo, Order_Status: "Recorded" },
+      (registerOrderData) => {
+        console.log("registerOrderData......", registerOrderData);
+
+        setOrderData({ ...OrderData, Order_Status: "Recorded" });
+        toast.success("Order Registered Successfully");
+      }
+    );
   };
   // let insertnewsrldata = () => {
   //   ////console.log("entering into insertnewsrldata");
@@ -221,6 +237,9 @@ export default function ScheduleCreationForm(props) {
                 setOrdrDetailsData={setOrdrDetailsData}
                 selectedItems={selectedItems}
                 selectItem={selectItem}
+                LastSlctedRow={LastSlctedRow}
+                setLastSlctedRow={setLastSlctedRow}
+                handleBulkCngBtn={handleBulkCngBtn}
                 fetchData={fetchData}
                 BomData={BomData}
                 setBomData={setBomData}

@@ -12,6 +12,7 @@ import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
 import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
 import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
+import BulkChangeModal from "./Modals/BulkChangeModal";
 // import ImportDwgModal from "./Modals/ImportDwgModal";
 
 const {
@@ -64,6 +65,9 @@ export default function OrderDetails(props) {
     setBomData,
     handleSelectAll,
     handleReverseSelection,
+    LastSlctedRow,
+    setLastSlctedRow,
+    handleBulkCngBtn,
   } = props;
 
   // import from excel
@@ -553,6 +557,15 @@ export default function OrderDetails(props) {
   };
 
   const [importOldOrdrMdl, setImportOldOrdrMdl] = useState(false);
+  const [bulkChnangMdl, setBulkChnangMdl] = useState(false);
+
+  const handlebulkChnangMdl = () => {
+    // ////console.log("modal opend ");
+    setBulkChnangMdl(true);
+  };
+  const handleClosebulkChnangMdl = () => {
+    setBulkChnangMdl(false);
+  };
 
   const handleImportOldOrdrMdl = () => {
     // ////console.log("modal opend ");
@@ -740,6 +753,12 @@ export default function OrderDetails(props) {
         setImportExcelModal={setImportExcelModal}
         importExcelModal={importExcelModal}
       />
+      {/* <BulkChangeModal
+        bulkChnangMdl={bulkChnangMdl}
+        setBulkChnangMdl={setBulkChnangMdl}
+        handlebulkChnangMdl={handlebulkChnangMdl}
+        handleClosebulkChnangMdl={handleClosebulkChnangMdl}
+      /> */}
       <div>
         {/* {console.log(".....", props)} */}
         <div className="row justify-content-left m-3">
@@ -784,6 +803,8 @@ export default function OrderDetails(props) {
           <button
             className="button-style"
             style={{ width: "130px", marginLeft: "4px" }}
+            // onClick={handleBulkCngBtn}
+            onClick={handlebulkChnangMdl}
           >
             Bulk Change
           </button>
@@ -875,6 +896,8 @@ export default function OrderDetails(props) {
                   setBomArry={setBomArry}
                   HasBOM={HasBOM}
                   setHasBOM={setHasBOM}
+                  LastSlctedRow={LastSlctedRow}
+                  setLastSlctedRow={setLastSlctedRow}
                 />
               </Tab>
             </Tabs>
