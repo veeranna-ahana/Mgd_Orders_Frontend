@@ -13,6 +13,7 @@ import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
 import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 import BulkChangeModal from "./Modals/BulkChangeModal";
+import ConfirmationModal from "../../../../Modal/ConfirmationModal";
 // import ImportDwgModal from "./Modals/ImportDwgModal";
 
 const {
@@ -70,8 +71,15 @@ export default function OrderDetails(props) {
     handleBulkCngBtn,
   } = props;
 
+  // confirmation modal
+  const [ConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
+
   // import from excel
   const [importExcelModal, setImportExcelModal] = useState(false);
+
+  // import qoutation
+
+  const [importQtnMdl, setImportQtnMdl] = useState(false);
 
   function importExcelFunc() {
     setImportExcelModal(true);
@@ -566,11 +574,32 @@ export default function OrderDetails(props) {
     setImportOldOrdrMdl(false);
   };
 
-  const [importQtnMdl, setImportQtnMdl] = useState(false);
+  function deleteRowsByOrderNoFunc() {
+    // console.log("delete rows by order functions");
+    postRequest(
+      endpoints.postDeleteDetailsByOrderNo,
+      { Order_No: props.OrderData.Order_No },
+      (deleteData) => {
+        if (deleteData.affectedRows > 0) {
+          setOrdrDetailsData([]);
+          toast.success("Delete the serials sucessfully");
+          setConfirmationModalOpen(false);
+          setImportQtnMdl(true);
+        } else {
+          toast.warning(deleteData);
+        }
+      }
+    );
+  }
 
   const handleImportQtnMdl = () => {
     // ////console.log("modal opend ");
-    setImportQtnMdl(true);
+    // console.log("sddfsd");
+    if (props.OrdrDetailsData.length > 0) {
+      setConfirmationModalOpen(true);
+    } else {
+      setImportQtnMdl(true);
+    }
   };
   // const handleCloseImportQtnMdl = () => {
   //   setImportQtnMdl(false);
@@ -665,7 +694,7 @@ export default function OrderDetails(props) {
     }
     // Make the API request
     ////  console.log("calling InsertNewSrlData api ");
-    console.log("req data  ", requestData);
+    // console.log("req data  ", requestData);
 
     postRequest(
       endpoints.InsertNewSrlData,
@@ -698,8 +727,19 @@ export default function OrderDetails(props) {
   const handleClosesetBulkChnangMdl = () => {
     setBulkChnangMdl(false);
   };
+
   return (
     <>
+      {/* <ConfirmationModa/> */}
+      <ConfirmationModal
+        confirmModalOpen={ConfirmationModalOpen}
+        setConfirmModalOpen={setConfirmationModalOpen}
+        yesClickedFunc={deleteRowsByOrderNoFunc}
+        message={
+          "There are other serials in this order, \n You must delete them to copy the old order, \n Delete Now?"
+        }
+      />
+
       <ImportDwgModal
         importdwgmdlshow={importdwgmdlshow}
         setImportDwgmdlShow={setImportDwgmdlShow}
@@ -742,6 +782,7 @@ export default function OrderDetails(props) {
       <ImportQtnModal
         importQtnMdl={importQtnMdl}
         setImportQtnMdl={setImportQtnMdl}
+        OrderData={props.OrderData}
         // table data
         OrdrDetailsData={props.OrdrDetailsData}
         setOrdrDetailsData={props.setOrdrDetailsData}
