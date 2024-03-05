@@ -13,8 +13,11 @@ export default function ImportExcelModal(props) {
   const [qtnListData, setQtnListData] = useState([]);
   const [selectedQtn, setSelectedQtn] = useState({});
   const [filteredQtnListData, setFilteredQtnListData] = useState([]);
+
   const closeModal = () => {
     props.setImportQtnMdl(false);
+    setSelectedQtn({});
+    setFilteredQtnListData([]);
   };
 
   useEffect(() => {
@@ -31,6 +34,7 @@ export default function ImportExcelModal(props) {
   }, []);
 
   function handleChangeQtn(qtnId) {
+    setFilteredQtnListData([]);
     postRequest(
       endpoints.getQtnDataByQtnID,
       { qtnId: qtnId },
@@ -38,60 +42,63 @@ export default function ImportExcelModal(props) {
         setFilteredQtnListData(qtnItemData.qtnItemList);
         if (qtnItemData.qtnItemList.length === 0) {
           toast.warning("No data found for the Selected Quotation");
-          setFilteredQtnListData([]);
         }
       }
     );
   }
 
   function loadQuotationFunc() {
-    let arr = [];
+    if (filteredQtnListData.length > 0) {
+      let arr = [];
 
-    for (let i = 0; i < filteredQtnListData?.length; i++) {
-      const element = filteredQtnListData[i];
+      for (let i = 0; i < filteredQtnListData?.length; i++) {
+        const element = filteredQtnListData[i];
 
-      let dataArranged = {
-        Order_No: props.OrderData.Order_No,
-        Order_Srl: i + 1,
-        Cust_Code: props.OrderData.Cust_Code,
-        DwgName: element.Name,
-        Mtrl_Code: element.Material,
-        MProcess: "Process 1",
-        Mtrl_Source: selectedQtn.QtnType === "Sales" ? "Magod" : "Customer",
-        Qty_Ordered: element.Quantity,
-        InspLevel: "Insp1",
-        PackingLevel: "Pkng1",
-        UnitPrice: (
-          parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
-        ).toFixed(2),
-        UnitWt: parseFloat(0).toFixed(2),
-        Order_Status: "Received",
-        JWCost: (
-          parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
-        ).toFixed(2),
-        MtrlCost: parseFloat(0).toFixed(2),
-        Operation: element.Operation,
-        tolerance: "Standard(+/-0.1mm)- 100 Microns",
-      };
-      arr.push(dataArranged);
-    }
-
-    postRequest(
-      endpoints.postDetailsDataInImportQtn,
-      {
-        detailsData: arr,
-      },
-      (detailsDataInImportAtn) => {
-        // console.log("detailsDataInImportAtn", detailsDataInImportAtn);
-        if (detailsDataInImportAtn.result) {
-          props.setOrdrDetailsData(arr);
-          toast.success("Import Quotation Successful");
-          closeModal();
-        } else {
-          toast.warning("uncaught backend error");
-        }
+        let dataArranged = {
+          Order_No: props.OrderData.Order_No,
+          Order_Srl: i + 1,
+          Cust_Code: props.OrderData.Cust_Code,
+          DwgName: element.Name,
+          Mtrl_Code: element.Material,
+          MProcess: "Process 1",
+          Mtrl_Source: selectedQtn.QtnType === "Sales" ? "Magod" : "Customer",
+          Qty_Ordered: element.Quantity,
+          InspLevel: "Insp1",
+          PackingLevel: "Pkng1",
+          UnitPrice: (
+            parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+          ).toFixed(2),
+          UnitWt: parseFloat(0).toFixed(2),
+          Order_Status: "Received",
+          JWCost: (
+            parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+          ).toFixed(2),
+          MtrlCost: parseFloat(0).toFixed(2),
+          Operation: element.Operation,
+          tolerance: "Standard(+/-0.1mm)- 100 Microns",
+        };
+        arr.push(dataArranged);
       }
-    );
+
+      postRequest(
+        endpoints.postDetailsDataInImportQtn,
+        {
+          detailsData: arr,
+        },
+        (detailsDataInImportAtn) => {
+          // console.log("detailsDataInImportAtn", detailsDataInImportAtn);
+          if (detailsDataInImportAtn.result) {
+            props.setOrdrDetailsData(arr);
+            toast.success("Import Quotation Successful");
+            closeModal();
+          } else {
+            toast.warning("uncaught backend error");
+          }
+        }
+      );
+    } else {
+      toast.warning("Please select Quotation Number");
+    }
   }
 
   return (

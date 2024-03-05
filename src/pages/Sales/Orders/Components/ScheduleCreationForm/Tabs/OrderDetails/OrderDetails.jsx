@@ -577,13 +577,13 @@ export default function OrderDetails(props) {
       { Order_No: props.OrderData.Order_No },
       (deleteData) => {
         if (deleteData.affectedRows > 0) {
+          setOrdrDetailsData([]);
           toast.success("Delete the serials sucessfully");
           setConfirmationModalOpen(false);
           setImportQtnMdl(true);
         } else {
           toast.warning(deleteData);
         }
-        // console.log("delete data", deleteData);
       }
     );
   }
@@ -690,7 +690,7 @@ export default function OrderDetails(props) {
     }
     // Make the API request
     ////  console.log("calling InsertNewSrlData api ");
-    console.log("req data  ", requestData);
+    // console.log("req data  ", requestData);
 
     postRequest(
       endpoints.InsertNewSrlData,
@@ -713,6 +713,7 @@ export default function OrderDetails(props) {
   //   // Implement setBomArray logic if needed
   // //  console.log("Setting BomArray:", arr);
   // };
+
   return (
     <>
       {/* <ConfirmationModa/> */}
