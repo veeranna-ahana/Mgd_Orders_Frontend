@@ -53,8 +53,10 @@ export default function ImportExcelModal(props) {
       // console.log("element", element);
 
       let dataArranged = {
+        Cust_Code: props.OrderData.Cust_Code,
         DwgName: element.Name,
         Mtrl_Code: element.Material,
+        MProcess: "Process 1",
         Operation: element.Operation,
         Mtrl_Source: selectedQtn.QtnType === "Sales" ? "Magod" : "Customer",
         InspLevel: "Insp1",
@@ -67,15 +69,16 @@ export default function ImportExcelModal(props) {
         UnitPrice: (
           parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
         ).toFixed(2),
+        UnitWt: parseFloat(0).toFixed(2),
         Qty_Ordered: element.Quantity,
-        Total: (
-          parseFloat(element.Quantity) *
-          parseFloat(
-            parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
-          )
-        ).toFixed(2),
+        Order_Status: "Received",
+        // Total: (
+        //   parseFloat(element.Quantity) *
+        //   parseFloat(
+        //     parseFloat(element.BasePrice) - parseFloat(element.DiscountAmount)
+        //   )
+        // ).toFixed(2),
       };
-
       arr.push(dataArranged);
 
       // console.log("sa", sa);

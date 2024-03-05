@@ -767,6 +767,7 @@ export default function OrderDetails(props) {
       <ImportQtnModal
         importQtnMdl={importQtnMdl}
         setImportQtnMdl={setImportQtnMdl}
+        OrderData={props.OrderData}
         // table data
         OrdrDetailsData={props.OrdrDetailsData}
         setOrdrDetailsData={props.setOrdrDetailsData}
