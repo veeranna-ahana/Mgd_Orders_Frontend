@@ -360,4 +360,6 @@ export const endpoints = {
   // import qtn
   getQtnList: `${API}/orderDetails/getQtnList`,
   getQtnDataByQtnID: `${API}/orderDetails/getQtnDataByQtnID`,
+  postDeleteDetailsByOrderNo: `${API}/orderDetails/postDeleteDetailsByOrderNo`,
+  postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
 };
