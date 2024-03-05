@@ -400,7 +400,7 @@ function ServiceOpenSchedule() {
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
     postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-       console.log(response);
+       console.log("response for fixture order",response);
       setFixtureData(response);
       setFixtureOrder1(false);
       navigate("/Orders/Service/ScheduleCreationForm", {
@@ -412,7 +412,7 @@ function ServiceOpenSchedule() {
   // console.log("fixturedata is",fixturedata);
 
   const ScheduleNo = formdata[0]?.ScheduleNo;
-const Orsch = formdata[0]?.Order_No + " " + (ScheduleNo != null && ScheduleNo !== 'null' && ScheduleNo !== undefined ? ScheduleNo : '');
+  const Orsch = formdata[0]?.Order_No + " " + (ScheduleNo != null && ScheduleNo !== 'null' && ScheduleNo !== undefined ? ScheduleNo : '');
 
 
   //CHECK STATUS
@@ -600,7 +600,9 @@ const Orsch = formdata[0]?.Order_No + " " + (ScheduleNo != null && ScheduleNo !=
         <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={onClickTasked} 
            disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Created" || formdata[0]?.Schedule_Status === "Tasked" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
+              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" || 
+               formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Created" || 
+               formdata[0]?.Schedule_Status === "Tasked" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
               formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected"
             }
           >
