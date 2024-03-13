@@ -13,12 +13,39 @@ import FormHeader from "./FormHeader";
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { toast } from "react-toastify";
+import AlertModal from "../Components/Alert";
 
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
   console.log("props", props);
 
-  // //////console.log("location...", location?.state);
+  const [newSerial, setNewSerial] = useState({
+    DrawingName: "",
+    Material: "",
+    MtrlSrc: "",
+    Operation: "",
+    Quantity: 0,
+    JW_Rate: 0.0,
+    Mtrl_Rate: 0.0,
+    UnitPrice: 0.0,
+    InspLvl: 0,
+    PkngLvl: 0,
+  });
+  const [imprtDwg, setImprtDwg] = useState({
+    custcode: "",
+    OrderNo: 0,
+    newOrderSrl: 0,
+    Material: "",
+    MtrlSrc: "",
+    tolerance: "",
+    Operation: "",
+    Quantity: 0,
+    JW_Rate: 0.0,
+    Mtrl_Rate: 0.0,
+    UnitPrice: 0.0,
+    InspLvl: 0,
+    PkngLvl: 0,
+  });
 
   const [orderNo, setorderNo] = useState(location?.state);
   const [OrderData, setOrderData] = useState({});
@@ -26,15 +53,20 @@ export default function ScheduleCreationForm(props) {
   const [OrdrDetailsData, setOrdrDetailsData] = useState([]);
   const [BomData, setBomData] = useState([]);
   const [findOldpart, setfindOldpart] = useState();
-
+  //profarmaInvDetail data
   const [profarmaInvMain, setProfarmaInvMain] = useState([]);
   const [profarmaInvDetails, setProfarmaInvDetails] = useState([]);
-
+  // row selection data
   const [selectedItems, setSelectedItems] = useState([]);
-  const [LastSlctedRow, setLastSlctedRow] = useState();
+  const [selectedSrl, setSelectedSrl] = useState([]);
+  const [LastSlctedRow, setLastSlctedRow] = useState([]);
   //getScheduleList Table Data
   const [scheduleListData, setScheduleListData] = useState([]);
-
+  // Register button
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
+  // Alert Modals
+  const [alertModal, setAlertModal] = useState(false);
+  const [registerOrder, setRegisterOrder] = useState(false);
   const fetchData = () => {
     postRequest(
       endpoints.getOrderDetailsByOrdrNoAndType,
@@ -101,6 +133,27 @@ export default function ScheduleCreationForm(props) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setOrderData(props.OrersData);
+  }, [props.OrersData]);
+
+  // alert modals for register and save
+  const openModal = (e) => {
+    e.preventDefault();
+    setAlertModal(true);
+  };
+  const closeModal = () => {
+    setAlertModal(false);
+  };
+  const openRegisterOrder = (e) => {
+    e.preventDefault();
+    setRegisterOrder(true);
+  };
+  const closeRegisterOrder = () => {
+    setRegisterOrder(false);
+  };
+
+  // Register Button
   const handleRegisterBtn = () => {
     postRequest(
       endpoints.registerOrder,
@@ -110,39 +163,41 @@ export default function ScheduleCreationForm(props) {
 
         setOrderData({ ...OrderData, Order_Status: "Recorded" });
         toast.success("Order Registered Successfully");
+        closeRegisterOrder();
       }
     );
+    setButtonDisabled(true);
   };
-
+  // Save Button
   const handleSaveBtn = () => {
     toast.success("Order Saved Successfully");
   };
-
+  // Row selection in orderDetails tab
   const selectItem = (OrdrDetailsItem) => {
     const isSelected = selectedItems.includes(OrdrDetailsItem);
-
-    // Use the callback function to log the updated state after the update
+    // callback function to log the updated state after the update
     setSelectedItems((prevSelectedItems) => {
       const updatedSelectedItems = isSelected
         ? prevSelectedItems.filter((item) => item !== OrdrDetailsItem)
         : [...prevSelectedItems, OrdrDetailsItem];
-
-      // Log the updated state
-      console.log("Selected Order details Rows:", updatedSelectedItems);
+      // console.log("Selected Order details Rows:", updatedSelectedItems);
+      const selectedOrderSrl = updatedSelectedItems.map(
+        (item) => item.Order_Srl
+      );
+      console.log("selectedOrderSrl", selectedOrderSrl);
+      setSelectedSrl(selectedOrderSrl);
       const lastSelectedRow =
         updatedSelectedItems[updatedSelectedItems.length - 1];
       // console.log("Last Selected Row:", lastSelectedRow);
       setLastSlctedRow(lastSelectedRow);
-
       return updatedSelectedItems;
     });
   };
-
-  console.log("LastSlctedRow", LastSlctedRow);
+  // selectAll button
   const handleSelectAll = () => {
     setSelectedItems(OrdrDetailsData);
   };
-
+  // reverse Button
   const handleReverseSelection = () => {
     if (selectedItems.length === 0) {
       handleSelectAll();
@@ -154,32 +209,27 @@ export default function ScheduleCreationForm(props) {
 
         if (selectedItems.includes(element)) {
           // the element is selected, needs to be removed
-          // //console.log("true");
         } else {
           // not selected, needs to be added to the newArray
           newArray.push(element);
-          // //console.log("false");
         }
       }
-
       // Update the selected rows with the newArray
       setSelectedItems(newArray);
     }
   };
-  // let insertnewsrldata = () => {
-  //   ////console.log("entering into insertnewsrldata");
-  //   postRequest(
-  //     endpoints.InsertNewSrlData,
-  //     { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
-  //     (InsertedNewSrlData) => {
-  //       ////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
-  //     }
-  //   );
-  // };
 
-  useEffect(() => {
-    setOrderData(props.OrersData);
-  }, [props.OrersData]);
+  // NOT USED
+  let insertnewsrldata = () => {
+    postRequest(
+      endpoints.InsertNewSrlData,
+      { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
+      (InsertedNewSrlData) => {
+        console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+      }
+    );
+  };
+
   return (
     <>
       <div>
@@ -188,6 +238,11 @@ export default function ScheduleCreationForm(props) {
           OrderCustData={OrderCustData}
           handleRegisterBtn={handleRegisterBtn}
           handleSaveBtn={handleSaveBtn}
+          isButtonDisabled={isButtonDisabled}
+          openRegisterOrder={openRegisterOrder}
+          closeRegisterOrder={closeRegisterOrder}
+          openModal={openModal}
+          closeModal={closeModal}
         />
 
         <Tabs defaultActiveKey="orderinfo" id="uncontrolled-tab-example">
@@ -227,7 +282,7 @@ export default function ScheduleCreationForm(props) {
                 selectItem={selectItem}
                 LastSlctedRow={LastSlctedRow}
                 setLastSlctedRow={setLastSlctedRow}
-                handleBulkCngBtn={handleBulkCngBtn}
+                // handleBulkCngBtn={handleBulkCngBtn}
                 fetchData={fetchData}
                 BomData={BomData}
                 setBomData={setBomData}
@@ -235,6 +290,7 @@ export default function ScheduleCreationForm(props) {
                 setfindOldpart={setfindOldpart}
                 handleSelectAll={handleSelectAll}
                 handleReverseSelection={handleReverseSelection}
+                selectedSrl={selectedSrl}
                 // insertnewsrldata={insertnewsrldata}
               />
             </Tab>
@@ -264,259 +320,27 @@ export default function ScheduleCreationForm(props) {
           </Tabs>
         </div>
 
-        {/* <AlertModal
-        show={alertModal}
-        onHide={(e) => setAlertModal(e)}
-        firstbutton={closeModal}
-        title="magod_Order"
-        message="Record Saved"
-        firstbuttontext="Ok"
-      /> */}
+        <AlertModal
+          show={alertModal}
+          onHide={(e) => setAlertModal(e)}
+          firstbutton={closeModal}
+          title="magod_Order"
+          message="Record Saved"
+          firstbuttontext="Ok"
+        />
 
-        {/* <AlertModal
-        show={registerOrder}
-        onHide={(e) => setRegisterOrder(e)}
-        firstbutton={closeRegisterOrder}
-        secondbutton={closeRegisterOrder}
-        title="magod_Order"
-        message="You can add New Serials, Change Quantity and Rates once you register an Open Order. Continue ?"
-        firstbuttontext="Yes"
-        secondbuttontext="No"
-      /> */}
+        <AlertModal
+          show={registerOrder}
+          onHide={(e) => setRegisterOrder(e)}
+          firstbutton={handleRegisterBtn}
+          secondbutton={closeRegisterOrder}
+          title="magod_Order"
+          // message="You can add New Serials, Change Quantity and Rates once you register an Open Order. Continue ?"
+          message="No Change for Quantity, PackingLevels and Rates once you register. Proceed ?"
+          firstbuttontext="Yes"
+          secondbuttontext="No"
+        />
       </div>
     </>
   );
 }
-
-// {/* Import Drawings */}
-
-// <div className="row mt-1" style={{ maxHeight: "600px" }}>
-//   <Modal show={importdwgshow}>
-//     <Modal.Header
-//       className="justify-content-md-center"
-//       style={{
-//         paddingTop: "10px",
-//         backgroundColor: "#283E81",
-//         color: "#ffffff",
-//       }}
-//     >
-//       <Modal.Title>Enter Default Parameters for Import</Modal.Title>
-//     </Modal.Header>
-//     <Modal.Body>
-//       <div className="form-style">
-//         <Form onSubmit={importdrawings} style={{ overflowY: "scroll" }}>
-//           <div className="row mb-1">
-//             <div className="col">
-//               <div className="row">
-//                 <Form.Group controlId="strmtrlcode">
-//                   <div className="md-col-2">
-//                     <Form.Label className="form-label">
-//                       Material Code
-//                     </Form.Label>
-//                     {mtrldata.length > 0 || mtrldata != null ? (
-//                       <Typeahead
-//                         id="basic-example"
-//                         labelKey="Mtrl_Code"
-//                         onChange={selectMtrl}
-//                         selected={strmtrlcode}
-//                         options={mtrldata}
-//                         placeholder="Choose a Material..."
-//                       ></Typeahead>
-//                     ) : (
-//                       ""
-//                     )}
-//                   </div>
-//                 </Form.Group>
-//               </div>
-//               <div className="row mt-1">
-//                 <Form.Group controlId="strprocess">
-//                   <div className="md-col-4">
-//                     <label className="form-label">Process</label>
-//                     {procdata.length > 0 ? (
-//                       <select
-//                         className="ip-select"
-//                         id="strprocess"
-//                         onChange={selectProc}
-//                       >
-//                         <option value="" disabled selected>
-//                           ** Select **
-//                         </option>
-//                         {procdata.map((proc) => {
-//                           return (
-//                             <option value={proc["ProcessDescription"]}>
-//                               {proc["ProcessDescription"]}
-//                             </option>
-//                           );
-//                         })}
-//                       </select>
-//                     ) : (
-//                       ""
-//                     )}
-//                   </div>
-//                 </Form.Group>
-//               </div>
-//               <div className="row mt-1">
-//                 <Form.Group controlId="source">
-//                   <div className="md-col-4">
-//                     <label className="form-label">Source</label>
-//                     <select
-//                       className="ip-select"
-//                       id="strsource"
-//                       onChange={selectMtrlSrc}
-//                     >
-//                       <option value="" disabled selected>
-//                         ** Select **
-//                       </option>
-//                       <option value={"Customer"}>Customer</option>
-//                       <option value={"Magod"}>Magod</option>
-//                     </select>
-//                   </div>
-//                 </Form.Group>
-//               </div>
-
-//               <div className="row mt-1">
-//                 <div className="md-col-4">
-//                   <label className="form-label">Tolerance</label>
-//                   {tolerancedata.length > 0 ? (
-//                     <select
-//                       className="ip-select"
-//                       id="strtolerance"
-//                       onChange={selectTolerance}
-//                     >
-//                       <option value="" disabled selected>
-//                         ** Select **
-//                       </option>
-//                       {tolerancedata.map((toltype) => {
-//                         return (
-//                           <option value={toltype["ToleranceType"]}>
-//                             {toltype["ToleranceType"]}
-//                           </option>
-//                         );
-//                       })}
-//                     </select>
-//                   ) : (
-//                     ""
-//                   )}
-//                 </div>
-//               </div>
-
-//               <div className="row mt-1">
-//                 <div className="md-col-4">
-//                   <label className="form-label">Insp Level</label>
-//                   {inspdata.length > 0 ? (
-//                     <select
-//                       id="strinsp"
-//                       className="ip-select"
-//                       onChange={selectInsp}
-//                     >
-//                       <option value="" disabled selected>
-//                         ** Select **
-//                       </option>
-//                       {inspdata.map((insplvl) => {
-//                         return (
-//                           <option value={insplvl["InspLevel"]}>
-//                             {insplvl["InspLevel"]}
-//                           </option>
-//                         );
-//                       })}
-//                     </select>
-//                   ) : (
-//                     ""
-//                   )}
-//                 </div>
-//               </div>
-//               <div className="row mt-1">
-//                 <div className="md-col-4">
-//                   <label className="form-label">Packing Level</label>
-//                   {packdata.length > 0 ? (
-//                     <select
-//                       id="strpkng"
-//                       className="ip-select"
-//                       onChange={selectPack}
-//                     >
-//                       <option value="" disabled selected>
-//                         ** Select **
-//                       </option>
-//                       {packdata.map((packlvl) => {
-//                         return (
-//                           <option value={packlvl["PkngLevel"]}>
-//                             {packlvl["PkngLevel"]}
-//                           </option>
-//                         );
-//                       })}
-//                     </select>
-//                   ) : (
-//                     ""
-//                   )}
-//                 </div>
-//               </div>
-
-//               <div className="row mt-1">
-//                 <div className="md-col-4">
-//                   <label className="form-label">Quantity </label>
-//                   <input type="text" id="Qty" />
-//                 </div>
-//               </div>
-//               <div className="row">
-//                 <Form.Group controlId="rates">
-//                   <div className="md-col-4">
-//                     <Form.Label className="form-label">Rate </Form.Label>
-//                   </div>
-//                   <div className="md-col-4">
-//                     <div className="row">
-//                       <Form.Label className="form-label">
-//                         Cutting{" "}
-//                       </Form.Label>
-//                       <input type="text" id="dblCuttingRate" />
-//                       {/* </div>
-//                                               <div className="row"> */}
-//                       <Form.Label className="form-label">
-//                         Piercing{" "}
-//                       </Form.Label>
-//                       <input type="text" id="dblPierceRate" />
-//                     </div>
-//                   </div>
-//                 </Form.Group>
-//               </div>
-//               <div className="row mt-1">
-//                 <Form.Group controlId="files">
-//                   <div className="md-col-4">
-//                     <Form.Label className="form-label">
-//                       Select Files{" "}
-//                     </Form.Label>
-//                     <Form.Control
-//                       type="file"
-//                       multiple="multiple"
-//                       accept=".dxf"
-//                     />
-//                   </div>
-//                 </Form.Group>
-//               </div>
-//               <div className="row mt-2">
-//                 <div className="col">
-//                   <button
-//                     className="button-style"
-//                     type="submit"
-//                     style={{ width: "120px" }}
-//                   >
-//                     Ok
-//                   </button>
-//                 </div>
-//                 <div className="col">
-//                   <button
-//                     className="button-style"
-//                     style={{ width: "120px" }}
-//                     variant="secondary"
-//                     // onClick={() => handleCloseImportDwg()}
-//                   >
-//                     Close
-//                   </button>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </Form>
-//       </div>
-//     </Modal.Body>
-//   </Modal>
-// </div>

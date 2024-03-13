@@ -176,6 +176,7 @@ function AddNewSrlModal(props) {
                                   <option
                                     key={proc["ProcessDescription"]}
                                     value={proc["ProcessDescription"]}
+                                    required
                                   >
                                     {proc["ProcessDescription"]}
                                   </option>
@@ -246,6 +247,7 @@ function AddNewSrlModal(props) {
                         id="Qty"
                         value={jwRate}
                         onChangeCallback={setJwRate}
+                        required
                       />
                     </Form.Group>
                   </div>
@@ -259,6 +261,7 @@ function AddNewSrlModal(props) {
                         id="Qty"
                         value={unitPrice}
                         onChangeCallback={setUnitPrice}
+                        required
                       />
                     </Form.Group>
                   </div>
@@ -270,6 +273,7 @@ function AddNewSrlModal(props) {
                         id="Qty"
                         value={materialRate}
                         onChangeCallback={setMaterialRate}
+                        required
                       />
                     </Form.Group>
                   </div>

@@ -37,6 +37,7 @@ export const endpoints = {
   LoadArrival2: `${API}/OrderDetails/LoadArrival2`,
   registerOrder: `${API}/order/registerOrder`,
   bulkChangeUpdate: `${API}/OrderDetails/bulkChangeUpdate`,
+  singleChangeUpdate: `${API}/OrderDetails/singleChangeUpdate`,
 
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,

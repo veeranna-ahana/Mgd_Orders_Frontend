@@ -79,6 +79,22 @@ function OrdrDtls(props) {
     // Update the state when the dropdown value changes
     setMaterialCode(event.target.value);
   };
+
+  useEffect(() => {
+    setQuantity(LastSlctedRow?.Qty_Ordered || "");
+  }, [LastSlctedRow]);
+  useEffect(() => {
+    // Set the default value from the array
+    if (LastSlctedRow && LastSlctedRow.length > 0) {
+      setQuantity(LastSlctedRow?.Qty_Ordered); // You can adjust this based on your array structure
+    }
+  }, [LastSlctedRow]);
+
+  const handleQuantityChange = (event) => {
+    setQuantity(event.target.value);
+    // Your other logic if needed
+  };
+  console.log("setQuantity", quantity);
   return (
     <div>
       <AddNewSrlModal
@@ -179,7 +195,7 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
+                    {/* <label
                       className="form-label"
                       style={{ whiteSpace: "nowrap" }}
                     >
@@ -189,6 +205,21 @@ function OrdrDtls(props) {
                       className="in-fields"
                       type="text"
                       value={LastSlctedRow?.JWCost || " "}
+                    /> */}
+                    {/* <InputField
+                      label="JW Rate"
+                      id="jwrate"
+                      value={jwRate}
+                      onChangeCallback={setJwRate}
+                      required
+                    /> */}
+                    <InputField
+                      className="ip-select in-fields"
+                      label="JW Rate"
+                      id="jwrate"
+                      value={jwRate}
+                      onChangeCallback={setJwRate}
+                      required
                     />
                   </div>
                 </div>
@@ -207,10 +238,11 @@ function OrdrDtls(props) {
                     /> */}
                     {mtrldata.length > 0 || mtrldata != null ? (
                       <Typeahead
+                        className="ip-select in-fields"
                         id="basic-example"
                         labelKey="Mtrl_Code"
                         onChange={handleMtrlCodeTypeaheadChange}
-                        selected={selectedItems} // Use selected prop instead of defaultInputValue
+                        selected={selectedItems}
                         options={mtrldata}
                         placeholder="Choose a Material..."
                         required
@@ -224,16 +256,24 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
+                    {/* <label
                       className="form-label"
                       style={{ whiteSpace: "nowrap" }}
                     >
                       Material Rate
-                    </label>
-                    <input
+                    </label> */}
+                    {/* <input
                       className="in-fields"
                       type="text"
                       value={LastSlctedRow?.MtrlCost || " "}
+                    /> */}
+
+                    <InputField
+                      className="ip-select in-fields"
+                      label="Mtrl Rate"
+                      id="mtrlRate"
+                      value={materialRate}
+                      onChangeCallback={setMaterialRate}
                     />
                   </div>
                 </div>
@@ -255,12 +295,6 @@ function OrdrDtls(props) {
                       type="text"
                       value={LastSlctedRow?.Mtrl_Source || " "}
                     />
-
-                    {/* <select id="" className="ip-select dropdown-field ">
-                      <option value="option1">option 1</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                    </select> */}
                   </div>
                 </div>
               </div>
@@ -329,28 +363,16 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label className="form-label">Quantity</label>
-                    <input
-                      className="in-fields"
-                      type="text"
-                      value={LastSlctedRow?.Qty_Ordered || " "}
+                    {/* <label className="form-label">Quantity</label> */}
+
+                    <InputField
+                      className="ip-select in-fields"
+                      label="Quantity"
+                      id="Qty"
+                      value={quantity}
+                      onChangeCallback={setQuantity}
+                      required
                     />
-                    {/* <div className="row">
-                      <div className="col-md-8  col-sm-12 mt-1">
-                        <label
-                          className="form-label"
-                          style={{
-                            whiteSpace: "nowrap",
-                            marginLeft: "-10px",
-                          }}
-                        >
-                          Has BOM
-                        </label>
-                      </div>
-                      <div className="col-md-4 col-sm-12 mt-2 mb-1">
-                        <input type="checkbox" className="checkBoxStyle" />
-                      </div>
-                    </div> */}
                   </div>
                 </div>
               </div>
@@ -614,12 +636,76 @@ function OrdrDtls(props) {
                   ) : null}
                 </div>
                 <div className="col-md-6">
-                  <input className="in-fields " />
+                  {mtrldata.length > 0 || mtrldata != null ? (
+                    <Typeahead
+                      className="ip-select in-fields"
+                      id="basic-example"
+                      labelKey="Mtrl_Code"
+                      onChange={handleMtrlCodeTypeaheadChange}
+                      // selected={Material}
+                      options={mtrldata}
+                      placeholder="Choose a Material..."
+                      required
+                    ></Typeahead>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="row mt-2 mb-3">
                   <div className="col-md-4">
-                    <label className="form-label">Process</label>
-                    <input className="in-fields" type="text" />
+                    <label className="form-label">Operation</label>
+                    {procdata.length > 0 ? (
+                      <select
+                        className="ip-select in-fields"
+                        id="strprocess"
+                        onChange={selectProc}
+                      >
+                        <option value="" disabled selected>
+                          ** Select **
+                        </option>
+                        {procdata.map((proc) => {
+                          // Check if "Service" column has non-zero values
+                          if (props.OrderData?.Type === "Service") {
+                            if (proc["Service"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else if (props.OrderData?.Type === "Fabrication") {
+                            if (proc["MultiOperation"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else {
+                            if (proc["Profile"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          }
+
+                          return null; // Exclude options with zero values in "Service" column
+                        })}
+                      </select>
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <div className="col-md-4">
                     <label className="form-label ">J W Cost</label>

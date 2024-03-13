@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { useOrderContext } from "../../../../../../../context/OrderContext";
-import AddNewSrlModal from "./Modals/AddNewSrlModal";
 import OrdrTable from "./Table/OrdrTable";
 import Drawings from "./Tabs/Drawings";
 import OrdrDtls from "./Tabs/OrdrDtls";
 import { Tab, Tabs } from "react-bootstrap";
-import { propTypes } from "react-bootstrap/esm/Image";
 import ImportDwgModal from "./Modals/ImportDwgModal";
 import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
 import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
@@ -14,15 +11,29 @@ import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 import BulkChangeModal from "./Modals/BulkChangeModal";
 import ConfirmationModal from "../../../../Modal/ConfirmationModal";
+// import { propTypes } from "react-bootstrap/esm/Image";
+// import AddNewSrlModal from "./Modals/AddNewSrlModal";
+// import { Link, useNavigate } from "react-router-dom";
 // import ImportDwgModal from "./Modals/ImportDwgModal";
-
 const {
   getRequest,
   postRequest,
 } = require("../../../../../../api/apiinstance");
 const { endpoints } = require("../../../../../../api/constants");
 
-const InputField = ({ label, id, value, onChangeCallback }) => {
+const InputField = ({
+  label,
+  id,
+  value,
+  onChangeCallback,
+  required,
+  disabled,
+  style,
+  className,
+  onCheckboxChange,
+  isChecked,
+  checkboxIndex,
+}) => {
   const [isValid, setIsValid] = useState(true);
 
   const handleInputChange = (e) => {
@@ -36,13 +47,28 @@ const InputField = ({ label, id, value, onChangeCallback }) => {
 
   return (
     <div className="md-col-4">
-      <label className="form-label">{label}</label>
+      <div className="row">
+        <div className="col-md-9">
+          <label className="form-label">{label}</label>
+        </div>
+        <div className="col-md-3 mt-3">
+          {" "}
+          <input
+            type="checkbox"
+            onChange={() => onCheckboxChange(checkboxIndex)}
+            checked={isChecked}
+          />
+        </div>
+      </div>
+
       <input
         type="text"
         id={id}
         value={value}
         onChange={handleInputChange}
         style={{ borderColor: isValid ? "initial" : "red" }}
+        disabled={disabled}
+        className={className}
       />
       {!isValid && (
         <p style={{ color: "red" }}>
@@ -69,38 +95,43 @@ export default function OrderDetails(props) {
     LastSlctedRow,
     setLastSlctedRow,
     handleBulkCngBtn,
+    selectedSrl,
   } = props;
 
-  // confirmation modal
   const [ConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
-
   // import from excel
   const [importExcelModal, setImportExcelModal] = useState(false);
-
   // import qoutation
-
   const [importQtnMdl, setImportQtnMdl] = useState(false);
 
   function importExcelFunc() {
     setImportExcelModal(true);
   }
+
   let lastOrderSrl = 0;
 
   for (let i = 0; i < OrdrDetailsData.length; i++) {
     const element = OrdrDetailsData[i];
-    ////console.log("OrdrDetailsData.....", element.Order_Srl);
 
-    // Check if the current Order_Srl is greater than the last one
     if (element.Order_Srl > lastOrderSrl) {
       lastOrderSrl = element.Order_Srl;
     }
   }
+  // for (let i = 0; i < selectedItems?.length; i++) {
+  //   const element = selectedItems[i];
+  //   //////console.log("OrdrDetailsData.....", element.Order_Srl);
 
+  //   // Check if the current Order_Srl is greater than the last one
+  //   if (element.Order_Srl > lastOrderSrl) {
+  //     lastOrderSrl = element.Order_Srl;
+  //   }
+  //   setSelectedSrl(element.Order_Srl);
+  // }
+
+  // //console.log("setselectedSrl", selectedSrl);
   // Increment the last Order_Srl by 1
-  var newOrderSrl = lastOrderSrl + 1;
 
-  ////console.log("Last Order_Srl:", lastOrderSrl);
-  ////console.log("New Order_Srl:", newOrderSrl);
+  var newOrderSrl = lastOrderSrl + 1;
 
   const handleInputChange = (fieldName, value) => {
     setNewSrlFormData({
@@ -110,10 +141,6 @@ export default function OrderDetails(props) {
   };
 
   var Cust_Code = props.OrderCustData?.Cust_Code;
-
-  // //console.log("props...", props.OrderCustData);
-  // //console.log("Cust_Code....", Cust_Code);
-
   var OrderNo = props.OrderData?.Order_No;
   var Type = props.OrderData?.Type;
   var QtnNo = props.OrderData?.QtnNo;
@@ -185,10 +212,10 @@ export default function OrderDetails(props) {
   const [materialRate, setMaterialRate] = useState("");
   const [unitPrice, setUnitPrice] = useState("");
   const [SerialData, setSerialData] = useState("");
-  ////console.log("quantity", quantity);
-  ////console.log("jwRate", jwRate);
-  ////console.log("materialRate", materialRate);
-  ////console.log("unitPrice", unitPrice);
+  //////console.log("quantity", quantity);
+  //////console.log("jwRate", jwRate);
+  //////console.log("materialRate", materialRate);
+  //////console.log("unitPrice", unitPrice);
   const [NewSrlFormData, setNewSrlFormData] = useState({
     DrawingName: "",
     Material: "",
@@ -215,7 +242,7 @@ export default function OrderDetails(props) {
 
   const [SerailData, setSerailData] = useState([]);
 
-  //////console.log("SerailData", SerailData);
+  ////////console.log("SerailData", SerailData);
   // const [BomData, setBomData] = useState();
   const handleDwgInputChange = (event) => {
     // This function will be called whenever the input value changes
@@ -223,7 +250,7 @@ export default function OrderDetails(props) {
     // Set the input value to the state
     setDwgName(newValue);
     // Add your logic here to handle the changed value
-    ////console.log("dwg name:", newValue);
+    //////console.log("dwg name:", newValue);
 
     setNewSrlFormData({
       ...NewSrlFormData,
@@ -231,17 +258,17 @@ export default function OrderDetails(props) {
     });
   };
 
-  ////console.log("DrawingName", NewSrlFormData.DrawingName);
+  //////console.log("DrawingName", NewSrlFormData.DrawingName);
 
   // const selectMtrl = (selectedOptions) => {
   //   // This function will be called whenever the selection changes
   //   setMaterial(selectedOptions[0]?.Mtrl_Code);
   //   // Add your logic here to handle the changed selection
-  //   //////console.log("Selected Material:", selectedOptions[0]?.Mtrl_Code);
+  //   ////////console.log("Selected Material:", selectedOptions[0]?.Mtrl_Code);
   // };
   // let selectMtrlSrc = async (e) => {
   //   e.preventDefault();
-  //   //////console.log("mtrl src", e.target.value);
+  //   ////////console.log("mtrl src", e.target.value);
   //   setMtrlSrc(e.target.value);
   // };
   let PostSrlData = () => {};
@@ -253,9 +280,31 @@ export default function OrderDetails(props) {
   const [HasBOM, setHasBOM] = useState(0);
   const [Dwg, setDwg] = useState(0);
   //-------------------------------------------------------
+  const [blkCngCheckBox, setBlkCngCheckBox] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const handleblkCngCheckBox = (index) => {
+    // Toggle the value when the checkbox changes
+    const newCheckboxValues = [...blkCngCheckBox];
+    newCheckboxValues[index] = !newCheckboxValues[index];
+    setBlkCngCheckBox(newCheckboxValues);
+    // Log the updated value to the //console
+    //console.log("Checkbox is now:", newCheckboxValues);
+  };
+  // //console.log("blkCngCheckBox", blkCngCheckBox);
 
   let insertnewsrldata = () => {
-    ////console.log("entering into insertnewsrldata");
+    //////console.log("entering into insertnewsrldata");
     postRequest(
       endpoints.InsertNewSrlData,
       {
@@ -277,7 +326,7 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
       },
       (InsertedNewSrlData) => {
-        //console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        ////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           fetchData();
           toast.success("Added serial successfully");
@@ -289,22 +338,57 @@ export default function OrderDetails(props) {
       }
     );
   };
-  let test = () => {
-    ////console.log("entering into OrderDetailsTest");
+
+  let updateOrdrData = () => {
     postRequest(
-      endpoints.OrderDetailsTest,
-      { custcode: "coming from OrderDetailsTest" },
-      (testData) => {
-        ////console.log(" testData", testData);
+      endpoints.bulkChangeUpdate,
+      {
+        OrderNo: OrderNo,
+        custcode: Cust_Code,
+        quantity: quantity,
+        OrderSrl: selectedSrl,
+        // blkCngCheckBox: blkCngCheckBox,
+      },
+      (blkChngData) => {
+        //console.log(" blkChngData", blkChngData);
+        if (blkChngData.affectedRows != 0) {
+          toast.success("Updated successfully");
+          fetchData();
+          handleClosesetBulkChnangMdl();
+        } else {
+          toast.warning("Serial not updated check once");
+        }
+      }
+    );
+  };
+  let singleupdateOrdrData = () => {
+    postRequest(
+      endpoints.singleChangeUpdate,
+      {
+        OrderNo: OrderNo,
+        custcode: Cust_Code,
+        quantity: quantity,
+        OrderSrl: selectedSrl,
+        JwCost: jwRate,
+        mtrlcost: materialRate,
+      },
+      (singleChngData) => {
+        //console.log(" blkChngData", blkChngData);
+        if (singleChngData.affectedRows != 0) {
+          toast.success("Updated successfully");
+          fetchData();
+        } else {
+          toast.warning("Serial not updated check once");
+        }
       }
     );
   };
 
-  ////console.log("mtrldata", mtrldata);
+  //////console.log("mtrldata", mtrldata);
 
   useEffect(() => {
     async function fetchData() {
-      //console.log("Cust_Code....", Cust_Code);
+      ////console.log("Cust_Code....", Cust_Code);
       postRequest(
         endpoints.getCustomerDets,
         { custcode: Cust_Code },
@@ -317,20 +401,20 @@ export default function OrderDetails(props) {
       //   endpoints.PostNewSrlData,
       //   { custcode: Cust_Code, OrderNo: OrderNo },
       //   (srldata) => {
-      //     //////console.log("srl data", srldata);
+      //     ////////console.log("srl data", srldata);
       //     setSerailData(srldata);
       //   }
       // );
 
       await postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
-        ////////console.log(sdata);
+        //////////console.log(sdata);
         setSalesExecdata(sdata);
       });
       await postRequest(
         endpoints.getSalesIndiExecLists,
         { salesContact: SalesContact },
         (sdata) => {
-          ////////console.log(sdata[0]["Name"]);
+          //////////console.log(sdata[0]["Name"]);
           // setSalesExecContact(sdata[0]["Name"]);
         }
       );
@@ -352,7 +436,7 @@ export default function OrderDetails(props) {
         }
       );
       getRequest(endpoints.getMaterials, (mtrldata) => {
-        ////console.log(mtrldata);
+        //////console.log(mtrldata);
         setMtrldata(mtrldata);
       });
       getRequest(endpoints.getProcessLists, (pdata) => {
@@ -369,9 +453,9 @@ export default function OrderDetails(props) {
         setPackdata(pckdata);
       });
 
-      //console.log("custcode:", Cust_Code);
+      ////console.log("custcode:", Cust_Code);
       // postRequest(endpoints.GetBomData, { custcode: Cust_Code }, (bomdata) => {
-      //   //console.log("bomdata......", bomdata);
+      //   ////console.log("bomdata......", bomdata);
       //   setBomData(bomdata);
       // });
     }
@@ -384,17 +468,17 @@ export default function OrderDetails(props) {
       selectedOptions.length > 0 ? selectedOptions[0] : null;
     setStrMtrlCode(selectedValue?.Mtrl_Code);
 
-    // You can also //console log the selected value
+    // You can also ////console log the selected value
     //console.log("Selected Value:", selectedValue?.Mtrl_Code);
   };
 
   let selectMtrl = async (e) => {
-    //////console.log("entering into select Mtrl");
-    //console.log(".........mtrl code", e.target.value);
+    ////////console.log("entering into select Mtrl");
+    ////console.log(".........mtrl code", e.target.value);
     e.preventDefault();
 
     const value = e.target.value;
-    //console.log("Select Material" + e.target.value);
+    ////console.log("Select Material" + e.target.value);
     setStrMtrlCode(e.target.value);
 
     setNewSrlFormData({
@@ -432,11 +516,11 @@ export default function OrderDetails(props) {
       ...NewSrlFormData,
       Operation: e.target.value,
     });
-    //////console.log(e.target.value);
+    ////////console.log(e.target.value);
   };
   let selectInsp = async (e) => {
     e.preventDefault();
-    //////console.log(e.target.value);
+    ////////console.log(e.target.value);
     setNewSrlFormData({
       ...NewSrlFormData,
       InspLvl: e.target.value,
@@ -445,7 +529,7 @@ export default function OrderDetails(props) {
 
   let selectPack = async (e) => {
     e.preventDefault();
-    //////console.log(e.target.value);
+    ////////console.log(e.target.value);
     setNewSrlFormData({
       ...NewSrlFormData,
       PkngLvl: e.target.value,
@@ -454,7 +538,7 @@ export default function OrderDetails(props) {
 
   let selectTolerance = (e) => {
     e.preventDefault();
-    // //console.log(e.target.value);
+    // ////console.log(e.target.value);
     let toltype;
     for (let i = 0; i < tolerancedata.length; i++) {
       if (tolerancedata[i]["ToleranceType"] === e.target.value) {
@@ -463,11 +547,11 @@ export default function OrderDetails(props) {
       }
     }
     setStrTolerance(e.target.value);
-    //////console.log(e.target.value);
+    ////////console.log(e.target.value);
   };
   let selectMtrlSrc = async (e) => {
     e.preventDefault();
-    // //console.log(e.target.value);
+    // ////console.log(e.target.value);
     setNewSrlFormData({
       ...NewSrlFormData,
       MtrlSrc: e.target.value,
@@ -482,7 +566,7 @@ export default function OrderDetails(props) {
   //   formData.append("thickness", thickness);
   //   formData.append("specficWeight", specificwt); // resp[0].Specific_Wt);
   //   //  setSpecificWt(resp[0].Specific_Wt);
-  //   ////////console.log("Sending to Service");
+  //   //////////console.log("Sending to Service");
   //   // const getCalcReq = await fetch('http://127.0.0.1:21341/getCalc', {
   //   const getCalcReq = await fetch("http://localhost:21341/getCalc", {
   //     method: "POST",
@@ -493,9 +577,9 @@ export default function OrderDetails(props) {
   //   });
   //   const res = await getCalcReq.json();
   //   //   const data = await res.json();
-  //   //    ////////console.log("Get Calc Response");
-  //   ////////console.log(res.data);
-  //   ////////console.log(res.data.partOutArea);
+  //   //    //////////console.log("Get Calc Response");
+  //   //////////console.log(res.data);
+  //   //////////console.log(res.data.partOutArea);
 
   //   setLengthOfCut(res.data.lengthOfCut);
   //   setNoofPierces(res.data.noOfPierces);
@@ -539,7 +623,7 @@ export default function OrderDetails(props) {
   //       : [...prevSelectedItems, OrdrDetailsItem];
 
   //     // Log the updated state
-  //     ////console.log("Selected Order details Rows:", updatedSelectedItems);
+  //     //////console.log("Selected Order details Rows:", updatedSelectedItems);
 
   //     return updatedSelectedItems;
   //   });
@@ -547,7 +631,7 @@ export default function OrderDetails(props) {
   const [importdwgshow, setImportDwgShow] = useState(false);
 
   const handleImportDwg = () => {
-    ////console.log("modal opend ");
+    //////console.log("modal opend ");
     setImportDwgShow(true);
   };
   const handleCloseImportDwg = () => {
@@ -557,7 +641,7 @@ export default function OrderDetails(props) {
   const [importdwgmdlshow, setImportDwgmdlShow] = useState(false);
 
   const handleImportDwgmdl = () => {
-    //////console.log("modal opend ");
+    ////////console.log("modal opend ");
     setImportDwgmdlShow(true);
   };
   const handleCloseImportDwgmdl = () => {
@@ -567,7 +651,7 @@ export default function OrderDetails(props) {
   const [importOldOrdrMdl, setImportOldOrdrMdl] = useState(false);
 
   const handleImportOldOrdrMdl = () => {
-    // ////console.log("modal opend ");
+    // //////console.log("modal opend ");
     setImportOldOrdrMdl(true);
   };
   const handleCloseImportOldOrdrMdl = () => {
@@ -575,7 +659,7 @@ export default function OrderDetails(props) {
   };
 
   function deleteRowsByOrderNoFunc() {
-    // console.log("delete rows by order functions");
+    // //console.log("delete rows by order functions");
     postRequest(
       endpoints.postDeleteDetailsByOrderNo,
       { Order_No: props.OrderData.Order_No },
@@ -593,8 +677,8 @@ export default function OrderDetails(props) {
   }
 
   const handleImportQtnMdl = () => {
-    // ////console.log("modal opend ");
-    // console.log("sddfsd");
+    // //////console.log("modal opend ");
+    // //console.log("sddfsd");
     if (props.OrdrDetailsData.length > 0) {
       setConfirmationModalOpen(true);
     } else {
@@ -612,11 +696,14 @@ export default function OrderDetails(props) {
   const handleSelectChange = (selected) => {
     // setHasBOM(1);
     // Handle the selected item
-    ////  console.log("Selected PartId", selected[0]?.label);
-    ////  console.log("Selected...", selected);
+    ////  //console.log("Selected PartId", selected[0]?.label);
+    ////  //console.log("Selected...", selected);
 
-    const arr = BomData.filter((obj) => obj.PartId === selected[0]?.label);
-    ////  console.log("arr", arr);
+    // const arr = BomData.filter((obj) => obj.PartId === selected[0]?.label);
+    const arr = BomData.filter(
+      (obj) => obj.UniqueColumn === selected[0]?.label
+    );
+    ////  //console.log("arr", arr);
     setBomArry(arr);
 
     // If you need to store the selected PartId in the component's state
@@ -625,7 +712,9 @@ export default function OrderDetails(props) {
   };
 
   const options = BomData?.map((item) => ({
-    label: item.PartId,
+    // label: item.PartId,
+    // label: item.AssyCust_PartId,
+    label: item.UniqueColumn,
     // Add other properties from your BomData item that you want to display
     // For example, you might have:
     // value: item.SomeValue,
@@ -653,17 +742,16 @@ export default function OrderDetails(props) {
 
         NewSrlFormData: NewSrlFormData,
       };
-      ////  console.log("clicked on Add new serial button");
+      ////  //console.log("clicked on Add new serial button");
     } else if (flag === 2) {
-      if (
-        props.OrderData?.Order_Status === "Created" ||
-        props.OrderData?.Order_Status === "Recorded"
-      ) {
+      if (props.OrderData?.Order_Status === "Recorded") {
         toast.warning("Cannot import after the Order is recorded");
+      } else {
+        handleImportDwgmdl();
       }
 
-      ////  console.log(" ImportDwg button...", props.OrderData?.Order_Status);
-      ////  console.log("clicked on ImportDwg button");
+      ////  //console.log(" ImportDwg button...", props.OrderData?.Order_Status);
+      ////  //console.log("clicked on ImportDwg button");
     } else if (flag === 3) {
       setHasBOM(1);
       requestData = {
@@ -679,29 +767,29 @@ export default function OrderDetails(props) {
         Qty_Ordered: 0,
         JwCost: BomArry[0]?.JobWorkCost,
         mtrlcost: BomArry[0]?.MtrlCost,
-        strmtrlcode: "",
-        material: "",
-        Operation: "",
+        strmtrlcode: strmtrlcode,
+        material: material,
+        Operation: Operation,
         insplevel: "",
         packinglevel: "",
         delivery_date: "",
         NewSrlFormData: NewSrlFormData,
       };
 
-      ////  console.log("clicked on add dwg to order button");
+      ////  //console.log("clicked on add dwg to order button");
     } else {
-      //console.error("Invalid flag value");
+      ////console.error("Invalid flag value");
     }
     // Make the API request
-    ////  console.log("calling InsertNewSrlData api ");
-    // console.log("req data  ", requestData);
+    ////  //console.log("calling InsertNewSrlData api ");
+    // //console.log("req data  ", requestData);
 
     postRequest(
       endpoints.InsertNewSrlData,
 
       { requestData: requestData },
       (InsertedNewSrlData) => {
-        ////  console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        ////  //console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           toast.success("Added serial successfully");
           fetchData();
@@ -715,7 +803,7 @@ export default function OrderDetails(props) {
   };
   // const setBomArry = (arr) => {
   //   // Implement setBomArray logic if needed
-  // //  console.log("Setting BomArray:", arr);
+  // //  //console.log("Setting BomArray:", arr);
   // };
 
   const [bulkChnangMdl, setBulkChnangMdl] = useState(false);
@@ -847,9 +935,13 @@ export default function OrderDetails(props) {
         LastSlctedRow={LastSlctedRow}
         setLastSlctedRow={setLastSlctedRow}
         selectedItems={selectedItems}
+        updateOrdrData={updateOrdrData}
+        handleblkCngCheckBox={handleblkCngCheckBox}
+        blkCngCheckBox={blkCngCheckBox}
+        setBlkCngCheckBox={setBlkCngCheckBox}
       />
       <div>
-        {/* {console.log(".....", props)} */}
+        {/* {//console.log(".....", props)} */}
         <div className="row justify-content-left m-3">
           {props.OrderData?.Type === "Profile" ? (
             <button
@@ -918,6 +1010,13 @@ export default function OrderDetails(props) {
               Edit DXF
             </button>
           ) : null}
+          {/* <button
+            className="button-style"
+            style={{ width: "100px", marginLeft: "4px" }}
+            onClick={singleupdateOrdrData}
+          >
+            Update
+          </button> */}
         </div>
         <div className="row mt-4">
           <div className="col-md-6">

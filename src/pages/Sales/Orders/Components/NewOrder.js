@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { useOrderContext } from "../../../../context/OrderContext";
 import { BsChevronCompactLeft } from "react-icons/bs";
 import YesNoModal from "./Components/YesNoModal";
+import AlertModal from "./Components/Alert";
 
 const { getRequest, postRequest } = require("../../../api/apiinstance");
 const { endpoints } = require("../../../api/constants");
@@ -47,7 +48,8 @@ function NewOrder(props) {
   // let Oformat = searchParams.get("OrdType");
 
   // console.log(" Order Type : " + Oformat);
-
+  // Alert Modals
+  const [alertModal, setAlertModal] = useState(false);
   useEffect(() => {
     setFormOrderDate(new Date().toISOString().slice(0, 10));
 
@@ -81,6 +83,16 @@ function NewOrder(props) {
     }
     fetchData();
   }, []);
+
+  // alert modals for register and save
+  const openModal = (e) => {
+    e.preventDefault();
+    setAlertModal(true);
+    // SaveOrder(e);
+  };
+  const closeModal = () => {
+    setAlertModal(false);
+  };
 
   let selectQtns = (selectedqtnno) => {
     //console.log(selectedqtnno);
@@ -130,7 +142,7 @@ function NewOrder(props) {
         document.getElementById("formPaymentTerms").value = cust.CreditTerms;
         document.getElementById("formBillingAddress").value = cust.Address;
         document.getElementById("formGSTNNo").value = cust.GSTNo;
-        document.getElementById("formBillingState").value = cust.State;
+        document.getElementById("formBillingState").value = cust?.State;
         document.getElementById("formGSTTaxState").value = cust.State;
         break;
       }
@@ -138,20 +150,28 @@ function NewOrder(props) {
   };
 
   async function SaveOrder(e) {
+    if (e) {
+      e.preventDefault();
+      // toast.error("Event", e);
+    } else {
+      console.error("Event object is undefined in SaveOrder function.");
+      toast.error("Event object is undefined in SaveOrder function.");
+      return;
+    }
     e.preventDefault();
     //console.log("entering into save order");
     let ordertype = props.Type;
     //console.log("ordertype", ordertype);
-    let purchaseorder = e.target.elements.formPurchaseOrderNo.value;
+    let purchaseorder = e.target.elements?.formPurchaseOrderNo.value;
 
     let qtnno = formquotationNo;
     //console.log("qtnno", qtnno);
-    let deldate = e.target.elements.formDeliveryDate.value;
+    let deldate = e.target.elements?.formDeliveryDate.value;
     //Console.log(deldate);
     let deliverydate = deldate;
 
-    let paymentterms = e.target.elements.formPaymentTerms.value;
-    let salesContact = e.target.elements.formSalesContact.value;
+    let paymentterms = e.target.elements?.formPaymentTerms.value;
+    let salesContact = e.target.elements?.formSalesContact.value;
     console.log("asdfghjkl...", salesContact);
     //let customername = e.target.elements.CustomerName.value;
     // postRequest(endpoints.getCustomerDets, { CustomerName }, (data) => {
@@ -167,20 +187,20 @@ function NewOrder(props) {
     // })
     ////Console.log(customer);
     //  let CustomerContact = e.target.elements.formCustomerContact.value;
-    let receivedby = e.target.elements.formReceivedBy.value;
-    let RecordedBy = e.target.elements.formRecordedBy.value;
+    let receivedby = e.target.elements?.formReceivedBy.value;
+    let RecordedBy = e.target.elements?.formRecordedBy.value;
     // let gstin = e.target.elements.formGSTNNo.value;
-    let DealingEngineer = e.target.elements.formDealingEngineer.value;
-    let DeliveryMode = e.target.elements.formDeliveryMode.value;
-    let billingAddress = e.target.elements.formBillingAddress.value;
-    let SpecialInstructions = e.target.elements.formSpecialInstructions.value;
-    let BillingState = e.target.elements.formBillingState.value;
+    let DealingEngineer = e.target.elements?.formDealingEngineer.value;
+    let DeliveryMode = e.target.elements?.formDeliveryMode.value;
+    let billingAddress = e.target.elements?.formBillingAddress.value;
+    let SpecialInstructions = e.target.elements?.formSpecialInstructions.value;
+    let BillingState = e.target.elements?.formBillingState?.value;
     // let MagodDelivery = e.target.elements.formMagodDelivery.value;
     let MagodDelivery = formMagodDelivery;
     //console.log("MagodDelivery", MagodDelivery);
-    let shippingAddress = e.target.elements.formShippingAddress.value;
-    let GSTTaxState = e.target.elements.formGSTTaxState.value;
-    let Transportcharges = e.target.elements.formTransportCharges.value;
+    let shippingAddress = e.target.elements?.formShippingAddress.value;
+    let GSTTaxState = e.target.elements?.formGSTTaxState.value;
+    let Transportcharges = e.target.elements?.formTransportCharges.value;
 
     //console.log("qtnno", qtnno);
     console.log("MagodDelivery", MagodDelivery);
@@ -240,35 +260,31 @@ function NewOrder(props) {
         await setOrderState(orders);
         //   localStorage.setItem("LazerOrder", JSON.stringify(orderno,customer))
         let Ordno = resp.orderno;
-        //Console.log(resp.orderno);
-        //Console.log(orders.ordertype);
-        toast.success(
-          "Order Created with " + Ordno,
-          { autoClose: 1000 },
-          { position: toast.POSITION.TOP_CENTER }
-        );
 
-        if (Ordno != null) {
-          if (props.Type === "Profile") {
-            navigate("/Orders/Profile/ScheduleCreationForm", {
-              state: Ordno,
-            });
-          } else if (props.Type === "Fabrication") {
-            navigate("/Orders/Fabrication/ScheduleCreationForm", {
-              state: Ordno,
-            });
-          } else if (props.Type === "Service") {
-            navigate("/Orders/Service/ScheduleCreationForm", {
-              state: Ordno,
-            });
+        toast.success("Order Created with " + Ordno, { autoClose: 800 });
+        setTimeout(() => {
+          if (Ordno != null) {
+            if (props.Type === "Profile") {
+              navigate("/Orders/Profile/ScheduleCreationForm", {
+                state: Ordno,
+              });
+            } else if (props.Type === "Fabrication") {
+              navigate("/Orders/Fabrication/ScheduleCreationForm", {
+                state: Ordno,
+              });
+            } else if (props.Type === "Service") {
+              navigate("/Orders/Service/ScheduleCreationForm", {
+                state: Ordno,
+              });
+            }
+          } else {
+            toast.error(
+              "Order Not Created",
+              { autoClose: 1000 },
+              { position: toast.POSITION.TOP_CENTER }
+            );
           }
-        } else {
-          toast.error(
-            "Order Not Created",
-            { autoClose: 1000 },
-            { position: toast.POSITION.TOP_CENTER }
-          );
-        }
+        }, 1700);
       }
     );
   }
@@ -303,12 +319,12 @@ function NewOrder(props) {
   };
   return (
     <div>
-      <YesNoModal
+      {/* <YesNoModal
         SmShow={SmShow}
         setSmShow={setSmShow}
         SaveOrder={SaveOrder}
         onHide={() => setSmShow(false)}
-      />
+      /> */}
       <div className="col-md-12">
         <div className="row">
           {/* <h4 className="title">Sales Department</h4> */}
@@ -340,6 +356,8 @@ function NewOrder(props) {
               purchaseorder ? "button-style" : "button-style button-disabled"
             }
             // className="button-style button-disabled"
+            // onClick={openModal}
+            onClick={(e) => openModal(e)}
             disabled={!purchaseorder}
             style={{ width: "120px" }}
           >
@@ -785,7 +803,30 @@ function NewOrder(props) {
             </div>
           </div>
         </div>
+        <AlertModal
+          show={alertModal}
+          onHide={() => setAlertModal(false)}
+          firstbutton={(e) => {
+            SaveOrder(e); // Invoke SaveOrder with the event object when the button is clicked
+            setAlertModal(false); // Close the modal after invoking SaveOrder
+          }}
+          title="magod_Order"
+          message="Order Created"
+          firstbuttontext="Ok"
+        />
       </Form>
+      {/* <AlertModal
+        show={alertModal}
+        onHide={(e) => setAlertModal(e)}
+        firstbutton={(e) => {
+          SaveOrder(e); // Invoke SaveOrder with the event object when the button is clicked
+          setAlertModal(false); // Close the modal after invoking SaveOrder
+        }}
+        titl
+        title="magod_Order"
+        message="Order Created"
+        firstbuttontext="Ok"
+      /> */}
     </div>
   );
 }

@@ -4,7 +4,17 @@ import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function FormHeader(props) {
   let navigate = useNavigate();
-  const { OrderData, OrderCustData, handleRegisterBtn, handleSaveBtn } = props;
+  const {
+    OrderData,
+    OrderCustData,
+    handleRegisterBtn,
+    handleSaveBtn,
+    isButtonDisabled,
+    openRegisterOrder,
+    closeRegisterOrder,
+    openModal,
+    closeModal,
+  } = props;
 
   return (
     <>
@@ -27,17 +37,22 @@ export default function FormHeader(props) {
         <div className="col-md-5">
           <button
             className="button-style"
-            onClick={() => {
-              handleRegisterBtn();
-            }}
+            // onClick={() => {
+            //   if (!isButtonDisabled) {
+            //     handleRegisterBtn();
+            //   }
+            // }}
+            onClick={props.openRegisterOrder}
+            disabled={props.isButtonDisabled}
           >
             Register Order
           </button>
           <button
             className="button-style"
-            onClick={() => {
-              handleSaveBtn();
-            }}
+            // onClick={() => {
+            //   handleSaveBtn();
+            // }}
+            onClick={props.openModal}
           >
             Save
           </button>
