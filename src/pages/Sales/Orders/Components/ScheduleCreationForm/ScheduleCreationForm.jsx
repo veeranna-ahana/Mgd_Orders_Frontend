@@ -15,37 +15,744 @@ import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { toast } from "react-toastify";
 import AlertModal from "../Components/Alert";
 
+const InputField = ({
+  label,
+  id,
+  value,
+  onChangeCallback,
+  required,
+  disabled,
+  style,
+  className,
+  onCheckboxChange,
+  isChecked,
+  checkboxIndex,
+  showCheckbox,
+}) => {
+  const [isValid, setIsValid] = useState(true);
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    const isValidNumber =
+      /^\d*\.?\d+$/.test(inputValue) && parseFloat(inputValue) >= 0;
+
+    setIsValid(isValidNumber);
+    onChangeCallback(inputValue);
+  };
+
+  return (
+    <div className="md-col-4">
+      <div className="row">
+        <div className="col-md-9">
+          <label className="form-label">{label}</label>
+        </div>
+        <div className="col-md-3 mt-3">
+          {/* <input
+            type="checkbox"
+            onChange={() => onCheckboxChange(checkboxIndex)}
+            checked={isChecked}
+          /> */}
+          <div className="col-md-3">
+            {showCheckbox && ( // Conditionally render the checkbox
+              <input
+                type="checkbox"
+                className="custom-checkbox"
+                onChange={() => onCheckboxChange(checkboxIndex)}
+                checked={isChecked}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+
+      <input
+        type="text"
+        id={id}
+        value={value}
+        onChange={handleInputChange}
+        style={{ borderColor: isValid ? "initial" : "red" }}
+        disabled={disabled}
+        className={className}
+      />
+      {!isValid && (
+        <p style={{ color: "red" }}>
+          Please enter a valid positive number for {label}.
+        </p>
+      )}
+    </div>
+  );
+};
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  console.log("props", props);
+  // console.log("props", props);
+  console.log("ocation.state", location.state);
+
+  const [mtrldata, setMtrldata] = useState([]);
+  const [procdata, setProcdata] = useState([]);
+  const [inspdata, setInspdata] = useState([]);
+  const [packdata, setPackdata] = useState([]);
+  const [tolerancedata, setTolerancedata] = useState([]);
+  const [salesExecdata, setSalesExecdata] = useState([]);
+  const [gradeid, setGradeID] = useState("");
+  const [material, setMaterial] = useState("");
+  const [DwgName, setDwgName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [jwRate, setJwRate] = useState("");
+  const [materialRate, setMaterialRate] = useState("");
+  const [unitPrice, setUnitPrice] = useState("");
+  const [Operation, setOperation] = useState("");
+  const [thickness, setThickness] = useState("");
+  const [specificwt, setSpecificWt] = useState(0);
+  const [grade, setGrade] = useState("");
+  const [HasBOM, setHasBOM] = useState(0);
+  const [Dwg, setDwg] = useState(0);
 
   const [newSerial, setNewSerial] = useState({
-    DrawingName: "",
-    Material: "",
-    MtrlSrc: "",
+    DwgName: "",
+    material: "",
+    strmtrlcode: "",
     Operation: "",
-    Quantity: 0,
-    JW_Rate: 0.0,
-    Mtrl_Rate: 0.0,
-    UnitPrice: 0.0,
-    InspLvl: 0,
-    PkngLvl: 0,
-  });
-  const [imprtDwg, setImprtDwg] = useState({
-    custcode: "",
+    StrTolerance: "", // NOT USED
+    InspLvl: "",
+    PkngLvl: "",
+    MtrlSrc: "",
+
+    custcode: props.OrderCustData?.Cust_Code,
     OrderNo: 0,
     newOrderSrl: 0,
-    Material: "",
-    MtrlSrc: "",
-    tolerance: "",
-    Operation: "",
-    Quantity: 0,
-    JW_Rate: 0.0,
-    Mtrl_Rate: 0.0,
-    UnitPrice: 0.0,
-    InspLvl: 0,
-    PkngLvl: 0,
+
+    quantity: 0.0,
+    jwRate: 0.0,
+    materialRate: 0.0,
+    unitPrice: 0.0,
+    Dwg_Code: "",
+    dwg: "",
   });
+  const [ordrDetailsChange, setordrDetailsChange] = useState({
+    custcode: props.OrderCustData?.Cust_Code,
+    DwgName: "",
+    material: "",
+    strmtrlcode: "",
+    Operation: "",
+    StrTolerance: "", // NOT USED
+    InspLvl: "",
+    PkngLvl: "",
+    MtrlSrc: "",
+    quantity: 0.0,
+    jwRate: 0.0,
+    materialRate: 0.0,
+    unitPrice: 0.0,
+  });
+
+  const [blkChange, setBlkChange] = useState({
+    custcode: props.OrderCustData?.Cust_Code,
+    DwgName: "",
+    material: "",
+    strmtrlcode: "",
+    Operation: "",
+    StrTolerance: "", // NOT USED
+    InspLvl: "",
+    PkngLvl: "",
+    MtrlSrc: "",
+    quantity: 0.0,
+    jwRate: 0.0,
+    materialRate: 0.0,
+    unitPrice: 0.0,
+  });
+  const [imprtDwgObj, setImprtDwgObj] = useState({
+    custcode: props.OrderCustData?.Cust_Code,
+    DwgName: "",
+    material: "",
+    strmtrlcode: "",
+    Operation: "",
+    StrTolerance: "",
+    InspLvl: "",
+    PkngLvl: "",
+    MtrlSrc: "", // NOT USED
+    quantity: 0.0,
+    jwRate: 0.0, // NOT USED
+    materialRate: 0.0, // NOT USED
+    unitPrice: 0.0, // NOT USED
+  });
+  let [orderdetailsdata, setOrderDetailsData] = useState([]);
+  let [Orderno, setOrderno] = useState(location.state);
+  // LOC AND DXF
+  let [lengthOfCut, setLengthOfCut] = useState(0);
+  let [noOfPierces, setNoofPierces] = useState(0);
+  let [partNetArea, setPartNetArea] = useState(0);
+  let [outOpen, setOutOpen] = useState(0);
+  let [complexity, setComplexity] = useState(0);
+  let [hasOpenContour, setHasOpenContour] = useState(0);
+  let [partNetWeight, setPartNetWeight] = useState(0);
+  let [partOutArea, setPartOutArea] = useState(0);
+  let [partOutWeight, setPartOutWeight] = useState(0);
+  let [rectArea, setRectArea] = useState(0);
+  let [rectWeight, setRectWeight] = useState(0);
+
+  const [orderStatus, setOrderStatus] = useState("Created");
+
+  //IMPORT DWG
+  let [strprocess, setStrProcess] = useState("");
+  let [strmtrlcode, setStrMtrlCode] = useState("");
+  let [strtolerance, setStrTolerance] = useState("");
+  let [mtrlcode, setMtrlCode] = useState("");
+  let [strMaterial, setStrMaterial] = useState("");
+  let [strGrade, setStrGrade] = useState("");
+  let [decThick, setDecThick] = useState(0);
+  let [dblSpWt, setDblSpWt] = useState(0);
+  let [dblCuttingRate, setDblCuttingRate] = useState(0);
+  let [dblPierceRate, setDblPierceRate] = useState(0);
+  let [strInsp, setStrInsp] = useState("");
+  let [strPkng, setStrPkng] = useState("");
+  let [strSource, setStrSource] = useState("");
+  let [strMtrlGrade, setStrMtrlGrade] = useState("");
+  let [Qty, setQty] = useState(0);
+  let [FormOk, setFormOk] = useState(false);
+  let [valOK, setValOK] = useState(false);
+  let [TMd, setTMd] = useState([]);
+  let [mtrl, setMtrl] = useState([]);
+  let [bolMtrl, setBolMtrl] = useState(false);
+  let [bolOperation, setBolOperation] = useState(false);
+  let [bolSource, setBolSource] = useState(false);
+  let [bolInsp, setBolInsp] = useState(false);
+  let [bolPkng, setBolPkng] = useState(false);
+  let [bolTolerance, setBolTolerance] = useState(false);
+  let [bolQty, setBolQty] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  // LOC CACLULATION AND DXF FILE
+  let locCalc = async (drwfile, material, grade, thickness, cb) => {
+    const formData = new FormData();
+    //  window.dxffiles.forEach(async (dfile) => {
+    formData.append("file", drwfile); //files[i]);
+    formData.append("thickness", thickness);
+    formData.append("specficWeight", specificwt); // resp[0].Specific_Wt);
+    //  setSpecificWt(resp[0].Specific_Wt);
+    //// console.log("Sending to Service");
+    // const getCalcReq = await fetch('http://127.0.0.1:21341/getCalc', {
+    const getCalcReq = await fetch("http://localhost:21341/getCalc", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: formData,
+    });
+    const res = await getCalcReq.json();
+    //   const data = await res.json();
+    //    //// console.log("Get Calc Response");
+    //// console.log(res.data);
+    //// console.log(res.data.partOutArea);
+
+    setLengthOfCut(res.data.lengthOfCut);
+    setNoofPierces(res.data.noOfPierces);
+    setPartNetArea(res.data.partNetArea);
+    setOutOpen(res.data.outOpen);
+    setComplexity(res.data.complexity);
+    setHasOpenContour(res.data.hasOpenContour);
+    setPartNetWeight(res.data.partNetWeight);
+    setPartOutArea(res.data.partOutArea);
+    setPartOutWeight(res.data.partOutWeight);
+    setRectArea(res.data.rectArea);
+    setRectWeight(res.data.rectWeight);
+    //  setSpecificWt(res.Specific_Wt)
+    cb({
+      lengthOfCut: res.data.lengthOfCut,
+      noOfPierces: res.data.noOfPierces,
+      partNetArea: res.data.partNetArea,
+      complexity: res.data.complexity,
+      hasOpenContour: res.data.hasOpenContour,
+      outOpen: res.data.outOpen,
+      partNetWeight: res.data.partNetWeight,
+      partOutArea: res.data.partOutArea,
+      partOutWeight: res.data.partOutWeight,
+      rectArea: res.data.rectArea,
+      rectWeight: res.data.rectWeight,
+    });
+    //, spWeight: res.data.Specific_Wt
+    // setQtnProfileData((olddata) => [...olddata, { file: files[i], operation: process, material, grade, thickness, quantity, materialcode,loc }]);
+    //});
+  };
+
+  async function dxfupload(files, destPath, response) {
+    const data = new FormData();
+    //// console.log(files);
+    for (let i = 0; i < files.length; i++) {
+      data.append("files", files[i]);
+    }
+    //// console.log(data);
+    let API = "http://localhost:6001";
+    const rawResponse = await fetch(`${API}/file/uploaddxf`, {
+      method: "POST",
+      headers: {
+        Accept: "multipart/form-data",
+        destinationPath: destPath,
+        // 'Content-Type': 'multipart/form-data'
+      },
+      body: data,
+    });
+    const content = await rawResponse.json();
+    response(content);
+  }
+
+  let importdrawings = async (e) => {
+    e.preventDefault();
+    //// console.log("Import Drawings");
+
+    if (!(orderStatus === "Created" || orderStatus === "Recorded")) {
+      alert("Cannot import after the Order is recorded");
+      return;
+    }
+
+    ////// console.log(document.getElementById("mtrlcode").value);
+    // let materialcode = mtrlcode; //e.target.elements.mtrlcode.value;
+    let materialcode = strmtrlcode;
+    //// console.log("materialcode", materialcode);
+    let process = strprocess; //e.target.elements.processdescription.value;
+    let quantity = quantity; // e.target.elements.quantity.value;
+    let materialsource = strSource; // e.target.elements.materialsource.value;
+    let tolerance = strtolerance; // e.target.elements.tolerance.value;
+    let insplevel = strInsp; // e.target.elements.insplevel.value;
+    let packinglevel = strPkng; // e.target.elements.packinglevel.value;
+    let files = e.target.elements.files.files;
+    setDblCuttingRate(dblCuttingRate);
+    setDblPierceRate(dblPierceRate);
+
+    for (let i = 0; i < files.length; i++) {
+      //// console.log(files[i]);
+      let drwfname = files[i];
+
+      //// console.log(drwfname);
+      locCalc(drwfname, material, grade, thickness, (output) => {
+        //// console.log(output);
+        //   //// console.log("Qtn Profile Data : ", typeof qtnProfileData);
+
+        let olddata = Object.entries(orderdetailsdata).map(([key, value]) => ({
+          key,
+          value,
+        }));
+        //  let olddata = [...qtnProfileData];
+
+        //// console.log("Old Data : " + olddata);
+        if (olddata === null || olddata === undefined) {
+          // Handle the case where olddata is null
+          return;
+        } else {
+          setOrderDetailsData((olddata) => {
+            // Append to existing olddata
+            return [
+              ...olddata,
+              {
+                file: files[i],
+                operation: process,
+                material,
+                grade,
+                thickness,
+                quantity,
+                mtrlcode,
+                lengthOfCut: output.lengthOfCut,
+                noOfPierces: output.noOfPierces, // ? 1 : 0,
+                partNetArea: output.partNetArea,
+                complexity: output.complexity,
+                hasOpenContour: output.hasOpenContour,
+                outOpen: output.outOpen,
+                partNetWeight: output.partNetWeight,
+                partOutArea: output.partOutArea,
+                partOutWeight: output.partOutWeight,
+                rectArea: output.rectArea,
+                rectWeight: output.rectWeight,
+              },
+            ];
+          });
+        }
+      });
+
+      //  let LOC = parseFloat(CuttingLength * 0.001).tofixed(2)
+      //  let Holes = PierceCount
+
+      //  let JWCost = Math.Round(LOC * dblCuttingRate + Holes * dblPierceRate, 0)
+      // .MtrlCost = 0
+      // .delivery_date = DateTimePicker_DelDate.Value.ToString
+    }
+
+    // let qno = quotationNo.replaceAll("/", "_");
+    // let month = qno.split("_")[1]
+    // let monthName = ["January", "Febraury", "March", "April", "May", "June",
+    //     "July", "August", "September", "October", "November", "December"][parseInt(month) - 1]
+
+    let destPath = `\\Wo\\` + Orderno + "\\DXF\\"; //quotationNo;
+
+    dxfupload(files, destPath, (res) => {
+      //// console.log(res);
+    });
+
+    window.dxffiles = files;
+    //// console.log(
+    //   materialcode,
+    //   material,
+    //   grade,
+    //   thickness,
+    //   process,
+    //   quantity,
+    //   files
+    // );
+    setShow(false);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // DWG NAME
+    if (name === "newSrlDwgname") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        DwgName: value,
+      }));
+    } else if (name === "blkCngDwgname") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        DwgName: value,
+      }));
+    } else if (name === "odrDtlDwgName") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        DwgName: value,
+      }));
+    }
+    // MATERIAL
+    if (name === "newSrlMaterial") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        material: value,
+      }));
+      postRequest(
+        endpoints.getmtrldetsbymtrlcode,
+        { mtrlcode: e.target.value },
+        (mtrldata) => {
+          if (mtrldata.length > 0) {
+            setThickness(mtrldata[0]["Thickness"]);
+            setGradeID(mtrldata[0]["MtrlGradeID"]);
+            setMaterial(mtrldata[0]["Mtrl_Type"]);
+            setGrade(mtrldata[0]["Grade"]);
+            setSpecificWt(mtrldata[0]["Specific_Wt"]);
+
+            locCalc(
+              window.dxffile,
+              mtrldata[0]["Mtrl_Type"],
+              mtrldata[0]["Grade"],
+              mtrldata[0]["Thickness"],
+              (output) => {}
+            );
+          }
+        }
+      );
+    } else if (name === "odrDtlMaterial") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        material: value,
+      }));
+      postRequest(
+        endpoints.getmtrldetsbymtrlcode,
+        { mtrlcode: e.target.value },
+        (mtrldata) => {
+          if (mtrldata.length > 0) {
+            setThickness(mtrldata[0]["Thickness"]);
+            setGradeID(mtrldata[0]["MtrlGradeID"]);
+            setMaterial(mtrldata[0]["Mtrl_Type"]);
+            setGrade(mtrldata[0]["Grade"]);
+            setSpecificWt(mtrldata[0]["Specific_Wt"]);
+
+            locCalc(
+              window.dxffile,
+              mtrldata[0]["Mtrl_Type"],
+              mtrldata[0]["Grade"],
+              mtrldata[0]["Thickness"],
+              (output) => {}
+            );
+          }
+        }
+      );
+    } else if (name === "blkCngMaterial") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        material: value,
+      }));
+      postRequest(
+        endpoints.getmtrldetsbymtrlcode,
+        { mtrlcode: e.target.value },
+        (mtrldata) => {
+          if (mtrldata.length > 0) {
+            setThickness(mtrldata[0]["Thickness"]);
+            setGradeID(mtrldata[0]["MtrlGradeID"]);
+            setMaterial(mtrldata[0]["Mtrl_Type"]);
+            setGrade(mtrldata[0]["Grade"]);
+            setSpecificWt(mtrldata[0]["Specific_Wt"]);
+
+            locCalc(
+              window.dxffile,
+              mtrldata[0]["Mtrl_Type"],
+              mtrldata[0]["Grade"],
+              mtrldata[0]["Thickness"],
+              (output) => {}
+            );
+          }
+        }
+      );
+    } else if (name === "impDwgMaterial") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        material: value,
+      }));
+      postRequest(
+        endpoints.getmtrldetsbymtrlcode,
+        { mtrlcode: e.target.value },
+        (mtrldata) => {
+          if (mtrldata.length > 0) {
+            setThickness(mtrldata[0]["Thickness"]);
+            setGradeID(mtrldata[0]["MtrlGradeID"]);
+            setMaterial(mtrldata[0]["Mtrl_Type"]);
+            setGrade(mtrldata[0]["Grade"]);
+            setSpecificWt(mtrldata[0]["Specific_Wt"]);
+
+            locCalc(
+              window.dxffile,
+              mtrldata[0]["Mtrl_Type"],
+              mtrldata[0]["Grade"],
+              mtrldata[0]["Thickness"],
+              (output) => {}
+            );
+          }
+        }
+      );
+    }
+    // MATERIAL CODE [ Feild name is material]
+    if (name === "newSrlMaterial") {
+      // const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+      //   const selectedValue =
+      //     selectedOptions.length > 0 ? selectedOptions[0] : null;
+      //   setStrMtrlCode(selectedValue?.Mtrl_Code);
+      // };
+
+      setNewSerial((prevState) => ({
+        ...prevState,
+        strmtrlcode: value,
+      }));
+    } else if (name === "odrDtlMaterial") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        strmtrlcode: value,
+      }));
+    } else if (name === "blkCngMaterial") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        strmtrlcode: value,
+      }));
+    } else if (name === "impDwgMaterial") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        strmtrlcode: value,
+      }));
+    }
+    // PROCESS OR OPERATION
+    if (name === "newSrlOperation") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        Operation: value,
+      }));
+    } else if (name === "odrDtlOperation") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        Operation: value,
+      }));
+    } else if (name === "blkCngOperation") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        Operation: value,
+      }));
+    } else if (name === "impDwgProcess") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        Operation: value,
+      }));
+    }
+    // TOLERENCE
+    if (name === "impDwgTolerance") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        StrTolerance: value,
+      }));
+    }
+    // INSP LVL
+    if (name === "newSrlInspLvl") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        InspLvl: value,
+      }));
+    } else if (name === "odrDtlInspLvl") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        InspLvl: value,
+      }));
+    } else if (name === "blkCngInspLvl") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        InspLvl: value,
+      }));
+    } else if (name === "impDwgInspLvl") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        InspLvl: value,
+      }));
+    }
+    // PKNG LVL
+    if (name === "newSrlPkngLvl") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        PkngLvl: value,
+      }));
+    } else if (name === "odrDtlPkngLvl") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        PkngLvl: value,
+      }));
+    } else if (name === "blkCngPkngLvl") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        PkngLvl: value,
+      }));
+    } else if (name === "impDwgPkngLvl") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        PkngLvl: value,
+      }));
+    }
+    // MATERIAL SOURSE
+    if (name === "newSrlMtrlSrc") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        MtrlSrc: value,
+      }));
+    } else if (name === "odrDtlMtrlSrc") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        MtrlSrc: value,
+      }));
+    } else if (name === "blkCngMtrlSrc") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        MtrlSrc: value,
+      }));
+    }
+    // QUANTITY
+    if (name === "newSrlQty") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        quantity: value,
+      }));
+    } else if (name === "odrDtlQuantity") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        quantity: value,
+      }));
+    } else if (name === "blkCngQty") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        quantity: value,
+      }));
+    } else if (name === "impDwgQty") {
+      setImprtDwgObj((prevState) => ({
+        ...prevState,
+        quantity: value,
+      }));
+    }
+    // JW RATE
+    if (name === "newSrlJWRate") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        jwRate: value,
+      }));
+    } else if (name === "odrDtljwrate") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        jwRate: value,
+      }));
+    } else if (name === "blkCngJWRate") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        jwRate: value,
+      }));
+    }
+    // MTRL RATE
+    if (name === "newSrlMaterialRate") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        materialRate: value,
+      }));
+    } else if (name === "odrDtlMtrlRate") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        materialRate: value,
+      }));
+    } else if (name === "blkCngMrate") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        materialRate: value,
+      }));
+    }
+    // UNIT PRICE
+    if (name === "newSrlUnitPrice") {
+      setNewSerial((prevState) => ({
+        ...prevState,
+        unitPrice: value,
+      }));
+    } else if (name === "odrDtlUnitPrice") {
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        unitPrice: value,
+      }));
+    } else if (name === "blkCngUnitPrice") {
+      setBlkChange((prevState) => ({
+        ...prevState,
+        unitPrice: value,
+      }));
+    }
+  };
+
+  console.log(" blkChange Operation ", blkChange.Operation);
+
+  let updateOrdrData = () => {
+    console.log("props.OrderData?.Orderno", Orderno);
+    console.log("props.OrderData?.location.state", location.state);
+    console.log("props.OrderData?.Order_No", props.OrderData?.Order_No);
+    postRequest(
+      endpoints.singleChangeUpdate,
+      {
+        OrderNo: Orderno,
+        custcode: props.OrderCustData?.Cust_Code,
+        DwgName: ordrDetailsChange.DwgName,
+        quantity: ordrDetailsChange.quantity,
+        OrderSrl: selectedSrl,
+        JwCost: ordrDetailsChange.jwRate,
+        mtrlcost: ordrDetailsChange.materialRate,
+        unitPrice: ordrDetailsChange.unitPrice,
+        Operation: ordrDetailsChange.Operation,
+        InspLvl: ordrDetailsChange.InspLvl,
+        PkngLvl: ordrDetailsChange.PkngLvl,
+      },
+      (singleChngData) => {
+        //console.log(" blkChngData", blkChngData);
+        if (singleChngData.affectedRows != 0) {
+          toast.success("Updated successfully");
+          fetchData();
+        } else {
+          toast.warning("Serial not updated check once");
+        }
+      }
+    );
+  };
+  // console.log("first", newSerial.quantity);
+  // console.log("second", imprtDwgObj.quantity);
 
   const [orderNo, setorderNo] = useState(location?.state);
   const [OrderData, setOrderData] = useState({});
@@ -72,7 +779,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.getOrderDetailsByOrdrNoAndType,
       { orderNo: orderNo, orderType: props.Type },
       (orderData) => {
-        // console.log("orderDetails.....", orderData);
+        console.log("orderDetails.....", orderData);
         setOrderData(orderData?.orderData[0]);
         setOrderCustData(orderData?.custData[0]);
 
@@ -80,7 +787,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetBomData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (bomdata) => {
-            console.log("bomdata......", bomdata);
+            // console.log("bomdata......", bomdata);
             setBomData(bomdata);
           }
         );
@@ -88,7 +795,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetFindOldpartData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (findOldpartData) => {
-            ////  console.log("findOldpartData......", findOldpartData);
+            ////  // console.log("findOldpartData......", findOldpartData);
             setfindOldpart(findOldpartData);
           }
         );
@@ -97,7 +804,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.PostNewSrlData,
           { custcode: orderData?.custData[0]?.Cust_Code, OrderNo: orderNo },
           (ordrdtlsdata) => {
-            // ////console.log("ordrdtlsdata", ordrdtlsdata);
+            // ////// console.log("ordrdtlsdata", ordrdtlsdata);
             setOrdrDetailsData(ordrdtlsdata);
           }
         );
@@ -107,10 +814,10 @@ export default function ScheduleCreationForm(props) {
       endpoints.getProfarmaMain,
       { OrderNo: orderNo },
       (profarmaMainData) => {
-        // console.log("profarmaMainData", profarmaMainData);
+        // // console.log("profarmaMainData", profarmaMainData);
 
         setProfarmaInvMain(profarmaMainData);
-        // console.log("ordrdtlsdata", ordrdtlsdata);
+        // // console.log("ordrdtlsdata", ordrdtlsdata);
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
@@ -118,10 +825,10 @@ export default function ScheduleCreationForm(props) {
       endpoints.getProfarmaDetails,
       { OrderNo: orderNo },
       (profarmaDetailsData) => {
-        // console.log("profarmaDetailsData", profarmaDetailsData);
+        // // console.log("profarmaDetailsData", profarmaDetailsData);
 
         setProfarmaInvDetails(profarmaDetailsData);
-        // console.log("ordrdtlsdata", ordrdtlsdata);
+        // // console.log("ordrdtlsdata", ordrdtlsdata);
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
@@ -159,7 +866,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.registerOrder,
       { Order_No: orderNo, Order_Status: "Recorded" },
       (registerOrderData) => {
-        console.log("registerOrderData......", registerOrderData);
+        // console.log("registerOrderData......", registerOrderData);
 
         setOrderData({ ...OrderData, Order_Status: "Recorded" });
         toast.success("Order Registered Successfully");
@@ -180,19 +887,32 @@ export default function ScheduleCreationForm(props) {
       const updatedSelectedItems = isSelected
         ? prevSelectedItems.filter((item) => item !== OrdrDetailsItem)
         : [...prevSelectedItems, OrdrDetailsItem];
-      // console.log("Selected Order details Rows:", updatedSelectedItems);
+      // // console.log("Selected Order details Rows:", updatedSelectedItems);
       const selectedOrderSrl = updatedSelectedItems.map(
         (item) => item.Order_Srl
       );
-      console.log("selectedOrderSrl", selectedOrderSrl);
+      // console.log("selectedOrderSrl", selectedOrderSrl);
       setSelectedSrl(selectedOrderSrl);
       const lastSelectedRow =
         updatedSelectedItems[updatedSelectedItems.length - 1];
       // console.log("Last Selected Row:", lastSelectedRow);
       setLastSlctedRow(lastSelectedRow);
+      setordrDetailsChange((prevState) => ({
+        ...prevState,
+        DwgName: lastSelectedRow?.DwgName || "",
+        jwRate: lastSelectedRow?.JWCost || "",
+        quantity: lastSelectedRow?.Qty_Ordered || "",
+        materialRate: lastSelectedRow?.MtrlCost || "",
+        unitPrice: lastSelectedRow?.UnitPrice || "",
+        Operation: lastSelectedRow?.Operation || "",
+        InspLvl: lastSelectedRow?.InspLevel || "",
+        PkngLvl: lastSelectedRow?.PackingLevel || "",
+      }));
+
       return updatedSelectedItems;
     });
   };
+
   // selectAll button
   const handleSelectAll = () => {
     setSelectedItems(OrdrDetailsData);
@@ -225,7 +945,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.InsertNewSrlData,
       { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
       (InsertedNewSrlData) => {
-        console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        // console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
       }
     );
   };
@@ -233,6 +953,24 @@ export default function ScheduleCreationForm(props) {
   return (
     <>
       <div>
+        {/* <div>
+          <div className="row mb-3">
+            <label>feild1</label>
+            <input
+              name="feild1"
+              value={newSerial.quantity}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="row mb-3">
+            <label>feild2</label>
+            <input
+              name="feild2"
+              value={imprtDwgObj.quantity}
+              onChange={handleChange}
+            />
+          </div>
+        </div> */}
         <FormHeader
           OrderData={OrderData}
           OrderCustData={OrderCustData}
@@ -243,6 +981,7 @@ export default function ScheduleCreationForm(props) {
           closeRegisterOrder={closeRegisterOrder}
           openModal={openModal}
           closeModal={closeModal}
+          updateOrdrData={updateOrdrData}
         />
 
         <Tabs defaultActiveKey="orderinfo" id="uncontrolled-tab-example">
@@ -292,6 +1031,17 @@ export default function ScheduleCreationForm(props) {
                 handleReverseSelection={handleReverseSelection}
                 selectedSrl={selectedSrl}
                 // insertnewsrldata={insertnewsrldata}
+                //---------new
+                newSerial={newSerial}
+                setNewSerial={setNewSerial}
+                ordrDetailsChange={ordrDetailsChange}
+                setordrDetailsChange={setordrDetailsChange}
+                blkChange={blkChange}
+                setBlkChange={setBlkChange}
+                imprtDwgObj={imprtDwgObj}
+                setImprtDwgObj={setImprtDwgObj}
+                handleChange={handleChange}
+                InputField={InputField}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">

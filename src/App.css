@@ -532,3 +532,9 @@ input::-webkit-inner-spin-button {
 .rowSelectedClass {
   background-color: #98a8f8 !important;
 }
+
+/* used in bulk change modal qty, jwrate ,unit prise, mtrl rate,  */
+.custom-checkbox {
+  width: 13px;
+  height: 13px;
+}

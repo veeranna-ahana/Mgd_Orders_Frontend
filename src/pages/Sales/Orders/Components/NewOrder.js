@@ -357,7 +357,7 @@ function NewOrder(props) {
             }
             // className="button-style button-disabled"
             // onClick={openModal}
-            onClick={(e) => openModal(e)}
+            // onClick={(e) => openModal(e)}
             disabled={!purchaseorder}
             style={{ width: "120px" }}
           >

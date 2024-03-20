@@ -54,6 +54,12 @@ function OrdrDtls(props) {
     setHasBOM,
     LastSlctedRow,
     setLastSlctedRow,
+    //-------NEW
+    newSerial,
+    setNewSerial,
+    ordrDetailsChange,
+    setordrDetailsChange,
+    handleChange,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
@@ -132,6 +138,10 @@ function OrdrDtls(props) {
         insertnewsrldata={insertnewsrldata}
         handleMtrlCodeTypeaheadChange={handleMtrlCodeTypeaheadChange}
         PostOrderDetails={PostOrderDetails}
+        //-----NEW ---
+        newSerial={newSerial}
+        setNewSerial={setNewSerial}
+        handleChange={handleChange}
       />
 
       <div className="row">
@@ -184,10 +194,13 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
-                      value={
-                        // selectedItems[0]?.DwgName || " "
-                        LastSlctedRow?.DwgName || " "
-                      }
+                      name="odrDtlDwgName"
+                      // value={
+                      //   // selectedItems[0]?.DwgName || " "
+                      //   LastSlctedRow?.DwgName || " "
+                      // }
+                      value={ordrDetailsChange.DwgName}
+                      onChange={handleChange}
                     />
                   </div>
                 </div>
@@ -195,17 +208,22 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    {/* <label
+                    <label
                       className="form-label"
                       style={{ whiteSpace: "nowrap" }}
                     >
                       Job Work Rate
                     </label>
                     <input
-                      className="in-fields"
-                      type="text"
-                      value={LastSlctedRow?.JWCost || " "}
-                    /> */}
+                      className="ip-select in-fields"
+                      label="JW Rate"
+                      id="jwrate"
+                      name="odrDtljwrate"
+                      required
+                      onChange={handleChange}
+                      value={ordrDetailsChange.jwRate}
+                      // value={LastSlctedRow?.JWCost || " "}
+                    />
                     {/* <InputField
                       label="JW Rate"
                       id="jwrate"
@@ -213,14 +231,17 @@ function OrdrDtls(props) {
                       onChangeCallback={setJwRate}
                       required
                     /> */}
-                    <InputField
+                    {/* <InputField
                       className="ip-select in-fields"
                       label="JW Rate"
                       id="jwrate"
-                      value={jwRate}
-                      onChangeCallback={setJwRate}
+                      name="odrDtljwrate"
+                      value={ordrDetailsChange.jwRate}
+                      // value={jwRate}
+                      // onChangeCallback={setJwRate}
+                      onChange={handleChange}
                       required
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -240,6 +261,7 @@ function OrdrDtls(props) {
                       <Typeahead
                         className="ip-select in-fields"
                         id="basic-example"
+                        name="odrDtlMaterial"
                         labelKey="Mtrl_Code"
                         onChange={handleMtrlCodeTypeaheadChange}
                         selected={selectedItems}
@@ -256,25 +278,31 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    {/* <label
+                    <label
                       className="form-label"
                       style={{ whiteSpace: "nowrap" }}
                     >
                       Material Rate
-                    </label> */}
-                    {/* <input
-                      className="in-fields"
-                      type="text"
-                      value={LastSlctedRow?.MtrlCost || " "}
-                    /> */}
-
-                    <InputField
+                    </label>
+                    <input
                       className="ip-select in-fields"
                       label="Mtrl Rate"
+                      name="odrDtlMtrlRate"
                       id="mtrlRate"
+                      onChange={handleChange}
+                      value={ordrDetailsChange.materialRate}
+                      required
+                    />
+
+                    {/* <InputField
+                      className="ip-select in-fields"
+                      label="Mtrl Rate"
+                      name="odrDtlMtrlRate"
+                      id="mtrlRate"
+                      required
                       value={materialRate}
                       onChangeCallback={setMaterialRate}
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -293,6 +321,7 @@ function OrdrDtls(props) {
                     <input
                       className="in-fields"
                       type="text"
+                      name="odrDtlMtrlSrc"
                       value={LastSlctedRow?.Mtrl_Source || " "}
                     />
                   </div>
@@ -308,10 +337,25 @@ function OrdrDtls(props) {
                       Unit Price
                     </label>
                     <input
-                      className="in-fields"
-                      type="text"
-                      value={LastSlctedRow?.UnitPrice || " "}
+                      className="ip-select in-fields"
+                      label="UnitPrice"
+                      name="odrDtlUnitPrice"
+                      id="Qty"
+                      // value={unitPrice}
+                      // onChangeCallback={setUnitPrice}
+                      onChange={handleChange}
+                      value={ordrDetailsChange.unitPrice}
+                      required
                     />
+                    {/* <InputField
+                      className="ip-select in-fields"
+                      label="UnitPrice"
+                      name="odrDtlUnitPrice"
+                      id="Qty"
+                      value={unitPrice}
+                      onChangeCallback={setUnitPrice}
+                      required
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -322,16 +366,67 @@ function OrdrDtls(props) {
                 <div className="row">
                   <div>
                     <label className="form-label">Operation</label>
-                    <input
+                    {/* <input
                       className="in-fields"
                       type="text"
                       value={LastSlctedRow?.Operation || " "}
-                    />
-                    {/* <select id="" className="ip-select dropdown-field ">
-                      <option value="option1">option 1</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                    </select> */}
+                    /> */}
+                    {procdata.length > 0 ? (
+                      <select
+                        className="ip-select in-fields"
+                        id="strprocess"
+                        name="odrDtlOperation"
+                        value={ordrDetailsChange.Operation}
+                        // onChange={selectProc}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled selected>
+                          ** Select **
+                        </option>
+                        {procdata.map((proc) => {
+                          // Check if "Service" column has non-zero values
+                          if (props.OrderData?.Type === "Service") {
+                            if (proc["Service"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else if (props.OrderData?.Type === "Fabrication") {
+                            if (proc["MultiOperation"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                  required
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else {
+                            if (proc["Profile"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          }
+
+                          return null; // Exclude options with zero values in "Service" column
+                        })}
+                      </select>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -344,16 +439,34 @@ function OrdrDtls(props) {
                     >
                       Inspection Level
                     </label>
-                    <input
+                    {/* <input
                       className="in-fields"
+                      name="odrDtlInspLvl"
                       type="text"
                       value={LastSlctedRow?.InspLevel || " "}
-                    />
-                    {/* <select id="" className="ip-select dropdown-field ">
-                      <option value="option1">option 1</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                    </select> */}
+                    /> */}
+                    {inspdata.length > 0 ? (
+                      <select
+                        id="strinsp"
+                        className="ip-select in-fields"
+                        name="odrDtlInspLvl"
+                        value={ordrDetailsChange.InspLvl}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled selected>
+                          ** Select **
+                        </option>
+                        {inspdata.map((insplvl) => {
+                          return (
+                            <option value={insplvl["InspLevel"]}>
+                              {insplvl["InspLevel"]}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>
@@ -364,11 +477,19 @@ function OrdrDtls(props) {
                 <div className="row">
                   <div>
                     {/* <label className="form-label">Quantity</label> */}
-
+                    {/* <input
+                      className="ip-select in-fields"
+                      id="Qty"
+                      name="AddNwSrlQty"
+                      value={quantity}
+                      onChange={(e) => handleChange(e, "AddNwSrlQty")}
+                      required
+                    /> */}
                     <InputField
                       className="ip-select in-fields"
                       label="Quantity"
                       id="Qty"
+                      name="odrDtlQuantity"
                       value={quantity}
                       onChangeCallback={setQuantity}
                       required
@@ -385,16 +506,34 @@ function OrdrDtls(props) {
                     >
                       Packing Level
                     </label>
-                    <input
+                    {/* <input
                       className="in-fields"
+                      name="odrDtlPkngLvl"
                       type="text"
                       value={LastSlctedRow?.PackingLevel || " "}
-                    />
-                    {/* <select id="" className="ip-select dropdown-field ">
-                      <option value="option1">option 1</option>
-                      <option value="option2">option 2</option>
-                      <option value="option3">option 3</option>
-                    </select> */}
+                    /> */}
+                    {packdata.length > 0 ? (
+                      <select
+                        id="strpkng"
+                        className="ip-select in-fields"
+                        name="odrDtlPkngLvl"
+                        value={ordrDetailsChange.PkngLvl}
+                        onChange={handleChange}
+                      >
+                        <option value="" disabled selected>
+                          ** Select **
+                        </option>
+                        {packdata.map((packlvl) => {
+                          return (
+                            <option value={packlvl["PkngLevel"]}>
+                              {packlvl["PkngLevel"]}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    ) : (
+                      ""
+                    )}
                   </div>
                 </div>
               </div>

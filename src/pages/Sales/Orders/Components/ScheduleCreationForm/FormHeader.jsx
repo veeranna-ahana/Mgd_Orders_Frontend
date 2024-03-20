@@ -14,7 +14,22 @@ export default function FormHeader(props) {
     closeRegisterOrder,
     openModal,
     closeModal,
+    updateOrdrData,
   } = props;
+
+  const openFolder = () => {
+    // Create a hidden file input element
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.setAttribute("directory", "");
+    fileInput.setAttribute("webkitdirectory", ""); // For Safari support
+    fileInput.setAttribute("mozdirectory", ""); // For Firefox support
+    fileInput.setAttribute("msdirectory", ""); // For Edge support
+    fileInput.setAttribute("odirectory", ""); // For Opera support
+    fileInput.setAttribute("multiple", ""); // Allow selection of multiple directories (optional)
+
+    fileInput.click();
+  };
 
   return (
     <>
@@ -22,7 +37,7 @@ export default function FormHeader(props) {
         <h4 className="title">Schedule List Creation Form</h4>
       </div>
       <div className="row">
-        <div className="col-md-7">
+        <div className="col-md-6">
           <h5 className="mt-2">
             <b>
               Order No: {props.OrderData?.Type} - {props.OrderData?.Order_No}
@@ -34,9 +49,10 @@ export default function FormHeader(props) {
             </b>
           </h5>
         </div>
-        <div className="col-md-5">
+        <div className="col-md-6">
           <button
             className="button-style"
+            style={{ width: "23%" }}
             // onClick={() => {
             //   if (!isButtonDisabled) {
             //     handleRegisterBtn();
@@ -49,15 +65,30 @@ export default function FormHeader(props) {
           </button>
           <button
             className="button-style"
-            // onClick={() => {
-            //   handleSaveBtn();
-            // }}
-            onClick={props.openModal}
+            style={{ width: "23%" }}
+            onClick={() => {
+              updateOrdrData();
+            }}
+            // onClick={props.openModal}
           >
             Save
           </button>
+          <button
+            className="button-style"
+            style={{ width: "23%" }}
+            // onClick={() => {
+            //   handleSaveBtn();
+            // }}
+            onClick={openFolder}
+          >
+            Open folder
+          </button>
           <Link to={"/Orders/FindOrder"}>
-            <button className="button-style " onClick={() => navigate(-1)}>
+            <button
+              className="button-style "
+              style={{ width: "23%" }}
+              onClick={() => navigate(-1)}
+            >
               Close
             </button>
           </Link>

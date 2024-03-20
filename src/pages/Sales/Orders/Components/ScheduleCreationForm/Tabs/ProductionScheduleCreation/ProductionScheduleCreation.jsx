@@ -180,20 +180,53 @@ export default function ProductionScheduleCreation({
       <div className="">
         <div className="row mt-2">
           <div className="col-md-2 col-sm-12">
-            <button className="button-style" onClick={onClickSuspendOrder}
-            disabled={OrderData?.Order_Status==='Closed'|| OrderData?.Order_Status==='Cancelled' || OrderData?.Order_Status==='Dispatched' || OrderData?.Order_Status==='ShortClosed' || OrderData?.Order_Status==='Created' ||  OrderData?.Order_Status==='Recorded' || OrderData?.Order_Status==='Packed'|| OrderData?.Order_Status==='Produced'}
+            <button
+              className="button-style"
+              onClick={onClickSuspendOrder}
+              disabled={
+                OrderData?.Order_Status === "Closed" ||
+                OrderData?.Order_Status === "Cancelled" ||
+                OrderData?.Order_Status === "Dispatched" ||
+                OrderData?.Order_Status === "ShortClosed" ||
+                OrderData?.Order_Status === "Created" ||
+                OrderData?.Order_Status === "Recorded" ||
+                OrderData?.Order_Status === "Packed" ||
+                OrderData?.Order_Status === "Produced"
+              }
             >
               Suspended Order
             </button>
 
-            <button className="button-style mt-2 " onClick={onClickCancel}
-            disabled={OrderData?.Order_Status==='Closed'|| OrderData?.Order_Status==='Cancelled' || OrderData?.Order_Status==='Dispatched' || OrderData?.Order_Status==='Suspended'  ||  OrderData?.Order_Status==='Recorded' || OrderData?.Order_Status==='Packed'|| OrderData?.Order_Status==='Produced' || OrderData?.Order_Status==='ShortClosed'}
+            <button
+              className="button-style mt-2 "
+              onClick={onClickCancel}
+              disabled={
+                OrderData?.Order_Status === "Closed" ||
+                OrderData?.Order_Status === "Cancelled" ||
+                OrderData?.Order_Status === "Dispatched" ||
+                OrderData?.Order_Status === "Suspended" ||
+                OrderData?.Order_Status === "Recorded" ||
+                OrderData?.Order_Status === "Packed" ||
+                OrderData?.Order_Status === "Produced" ||
+                OrderData?.Order_Status === "ShortClosed"
+              }
             >
               Cancel Order
             </button>
 
-            <button className="button-style mt-2 " onClick={onClickShortClose}
-             disabled={OrderData?.Order_Status==='Closed'|| OrderData?.Order_Status==='Cancelled' || OrderData?.Order_Status==='Dispatched' || OrderData?.Order_Status==='Suspended'  ||  OrderData?.Order_Status==='Recorded' || OrderData?.Order_Status==='Packed'|| OrderData?.Order_Status==='Produced' || OrderData?.Order_Status==='Created' }
+            <button
+              className="button-style mt-2 "
+              onClick={onClickShortClose}
+              disabled={
+                OrderData?.Order_Status === "Closed" ||
+                OrderData?.Order_Status === "Cancelled" ||
+                OrderData?.Order_Status === "Dispatched" ||
+                OrderData?.Order_Status === "Suspended" ||
+                OrderData?.Order_Status === "Recorded" ||
+                OrderData?.Order_Status === "Packed" ||
+                OrderData?.Order_Status === "Produced" ||
+                OrderData?.Order_Status === "Created"
+              }
             >
               Short Close
             </button>
@@ -299,11 +332,22 @@ export default function ProductionScheduleCreation({
 
             <button className="button-style mt-3 ">Clear Filter</button>
 
-
-            <button className="button-style mt-3 " onClick={createSchedule}
-             disabled={OrderData?.Order_Status==='Closed'|| OrderData?.Order_Status==='Cancelled' || OrderData?.Order_Status==='Dispatched' || OrderData?.Order_Status==='Suspended'  ||  OrderData?.Order_Status==='Packed'|| OrderData?.Order_Status==='Produced' || OrderData?.Order_Status==='Created' ||  OrderData?.Order_Status==='ShortClosed' }
-            >Create Schedule</button>
-
+            <button
+              className="button-style mt-3 "
+              onClick={createSchedule}
+              disabled={
+                OrderData?.Order_Status === "Closed" ||
+                OrderData?.Order_Status === "Cancelled" ||
+                OrderData?.Order_Status === "Dispatched" ||
+                OrderData?.Order_Status === "Suspended" ||
+                OrderData?.Order_Status === "Packed" ||
+                OrderData?.Order_Status === "Produced" ||
+                OrderData?.Order_Status === "Created" ||
+                OrderData?.Order_Status === "ShortClosed"
+              }
+            >
+              Create Schedule
+            </button>
           </div>
         </div>
 
@@ -312,11 +356,11 @@ export default function ProductionScheduleCreation({
 
           <div className="col-md-6">
             <div className="row">
-              <div className="col-md-4 mt-3 col-sm-12">
+              {/* <div className="col-md-4 mt-3 col-sm-12">
                 <button className="button-style" onClick={openFolder}>
                   Open Folder
                 </button>
-              </div>
+              </div> */}
               {/* 
               <div className="col-md-4 mt-3 col-sm-12">
                 <button className="button-style">Check DXF</button>
