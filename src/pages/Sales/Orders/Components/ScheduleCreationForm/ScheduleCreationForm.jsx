@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-   console.log("props", props);
+   console.log("props", props.OrersData);
 
   // //////console.log("location...", location?.state);
 
@@ -97,7 +97,6 @@ export default function ScheduleCreationForm(props) {
     setSelectedItems([]);
   };
 
-  // console.log("OrdrDetailsData", OrdrDetailsData);
 
   useEffect(() => {
     fetchData();
@@ -171,8 +170,10 @@ export default function ScheduleCreationForm(props) {
   // };
 
   // useEffect(()=>{
-  //   setOrderData(props.OrersData[0]);
+  //   setorderNo(props.OrersData[0].Order_No);
   // },[props.OrersData]);
+
+  console.log("location.state is",location.state);
 
 
   return (
