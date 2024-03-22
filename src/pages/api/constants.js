@@ -283,6 +283,8 @@ export const endpoints = {
   getScheduleListData: `${API}/ScheduleList/getScheduleListData`,
   getScheduleListDwgData: `${API}/ScheduleList/getDwgTableData`,
   getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
+  getDwgListData: `${API}/ScheduleList/getDwgDataListTMTab`,
+
 
   //OpenSchedule Srvice
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,

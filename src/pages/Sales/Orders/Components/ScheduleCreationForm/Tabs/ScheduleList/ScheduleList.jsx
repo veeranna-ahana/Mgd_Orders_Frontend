@@ -10,7 +10,12 @@ import { ToastContainer, toast } from "react-toastify";
 // import { Link, useNavigate } from "react-router-dom";
 // import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
-export default function ScheduleList({ OrderData, OrderCustData,setScheduleListData,scheduleListData}) {
+export default function ScheduleList({
+  OrderData,
+  OrderCustData,
+  setScheduleListData,
+  scheduleListData,
+}) {
   // console.log(OrderCustData);
 
   // console.log(OrderData);
@@ -24,7 +29,6 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
     // Use template literals to format the date
     return `${day}/${month}/${year}`;
   };
-
 
   // Fetch schedule list data when OrderData changes
   useEffect(() => {
@@ -60,12 +64,12 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
   };
 
   //delete ask modal
-  const[deleteAsk,setDeleteAsk]=useState(false);
-  const DeleteAskModal=()=>{
+  const [deleteAsk, setDeleteAsk] = useState(false);
+  const DeleteAskModal = () => {
     setDeleteAsk(true);
-  }
+  };
 
-  const deleteScheduleList=()=>{
+  const deleteScheduleList = () => {
     postRequest(
       endpoints.deleteScheduleList,
       { rowScheduleList },
@@ -80,11 +84,12 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
           (response) => {
             setScheduleListData(response);
           }
-        );        
+        );
       }
     );
-  }
+  };
 
+  console.log("rowScheduleList.Created", rowScheduleList.Schedule_Status);
 
   return (
     <>
@@ -92,12 +97,26 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
         <div className="row d-flex justify-content-center p-2">
           <div className="col-md-2">
             <button
-              className="button-style m-0"
-              onClick={DeleteAskModal}
-              disabled={rowScheduleList.Created=='Created'}
+              className={`button-style m-0 ${
+                rowScheduleList.Schedule_Status !== "Created" ? "disabled" : ""
+              }`}
+              onClick={
+                rowScheduleList.Schedule_Status === "Created"
+                  ? DeleteAskModal
+                  : null
+              }
+              disabled={rowScheduleList.Schedule_Status !== "Created"}
             >
               Delete Schedule
             </button>
+            <style>
+              {`
+      .button-style[disabled] {
+        background-color: grey;
+        cursor: not-allowed;
+      }
+    `}
+            </style>
           </div>
 
           <div className="col-md-2">
@@ -105,14 +124,12 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
               to={"/Orders/Service/ServiceOpenSchedule"}
               state={DwgNameList}
             >
-
               <button
                 className="button-style"
-                disabled={Object.keys(rowScheduleList).length === 0 }
+                disabled={Object.keys(rowScheduleList).length === 0}
               >
                 Open Schedule
               </button>
-
             </Link>
             {Object.keys(rowScheduleList).length === 0 && (
               <style>
@@ -148,15 +165,15 @@ export default function ScheduleList({ OrderData, OrderCustData,setScheduleListD
         </div>
 
         <AlertModal
-                show={deleteAsk}
-                onHide={(e) => setDeleteAsk(e)}
-                firstbutton={deleteScheduleList}
-                secondbutton={(e) => setDeleteAsk(e)}
-                secondbuttontext="No"
-                title="magod_Order"
-                message={`Do you wish to Delete?`}
-                firstbuttontext="Yes"
-              />
+          show={deleteAsk}
+          onHide={(e) => setDeleteAsk(e)}
+          firstbutton={deleteScheduleList}
+          secondbutton={(e) => setDeleteAsk(e)}
+          secondbuttontext="No"
+          title="magod_Order"
+          message={`Do you wish to Delete?`}
+          firstbuttontext="Yes"
+        />
       </div>
     </>
   );

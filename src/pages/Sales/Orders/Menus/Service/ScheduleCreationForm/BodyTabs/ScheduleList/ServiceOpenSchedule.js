@@ -12,7 +12,7 @@ function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state || []; // Get DwgNameList from location state
 
-  ////  console.log("DwgNameList is", DwgNameList[0]);
+  //  console.log("DwgNameList is", DwgNameList[0]);
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
@@ -22,22 +22,11 @@ function ServiceOpenSchedule() {
     setNewState(DwgNameList);
   }, [DwgNameList]); // Dependency array containing DwgNameList
 
-  let [schedule, setSchedule] = useState(false);
   let [profileOrder1, setProfileOrder1] = useState(false);
   let [profileOrder2, setProfileOrder2] = useState(false);
   let [fixtureOrder1, setFixtureOrder1] = useState(false);
-  let [fixtureOrder2, setFixtureOrder2] = useState(false);
 
   const [openTask, setOpenTask] = useState(false);
-
-  const openSchedule = (e) => {
-    e.preventDefault();
-    setSchedule(true);
-  };
-
-  const closeSchedule = () => {
-    setSchedule(false);
-  };
 
   let profileOrderOpen1 = (e) => {
     e.preventDefault();
@@ -65,15 +54,6 @@ function ServiceOpenSchedule() {
     setFixtureOrder1(false);
   };
 
-  let fixtureOrderOpen2 = () => {
-    setFixtureOrder1(false);
-    setFixtureOrder2(true);
-  };
-
-  let fixtureOrderClose2 = () => {
-    setFixtureOrder2(false);
-  };
-
   //date format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -89,12 +69,16 @@ function ServiceOpenSchedule() {
   const [PNAndInvDetailsData, setPNAndInvDetailsData] = useState([]);
 
   useEffect(() => {
-    // console.log("func called");
+    if (DwgNameList.length === 0) return; // Ensure DwgNameList is not empty
+    
+    // Standardize the case of the property name
+    const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
+  
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
         Cust_Code: DwgNameList[0]?.Cust_Code,
-        ScheduleId: DwgNameList[0]?.ScheduleId,
+        ScheduleId: scheduleId,
       },
       (response) => {
         setFormdata(response);
@@ -102,15 +86,14 @@ function ServiceOpenSchedule() {
           endpoints.getAllPNAndInvRegisterbyOrderNo,
           { Order_No: response[0]?.Order_No },
           (PNAndInvData) => {
-            // console.log("PNAndInvData is", PNAndInvData);
             setPNAndInvRegisterData(PNAndInvData.registerData);
             setPNAndInvDetailsData(PNAndInvData.detailsData);
-            // setTaskMaterialData(response);
           }
         );
       }
     );
-  }, [DwgNameList[0]?.ScheduleId]);
+  }, [DwgNameList[0]]);
+  
 
   ////  console.log("formdata......", formdata);
 
@@ -139,7 +122,7 @@ function ServiceOpenSchedule() {
   //   }
   // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  // console.log(scheduleDetailsRow);
+  console.log(scheduleDetailsRow);
 
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
@@ -154,13 +137,21 @@ function ServiceOpenSchedule() {
     );
   }, [scheduleDetailsRow]); // Watch for changes in OrderData
 
-  //  console.log("scheduleDetailsRow", scheduleDetailsRow);
 
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
+  const[tmDwgList,setTmDwgList]=useState([]);
   const onRowSelectTaskMaterialTable = (item, index) => {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
+    postRequest(
+      endpoints.getDwgListData,
+      { list },
+      (response) => {
+        console.log("response is", response);
+        setTmDwgList(response);
+      }
+    );
   };
 
   //Default first row select
@@ -200,16 +191,16 @@ function ServiceOpenSchedule() {
           toast.warning(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
-          postRequest(
-            endpoints.getScheduleListgetFormDetails,
-            {
-              Cust_Code: DwgNameList[0]?.Cust_Code,
-              ScheduleId: DwgNameList[0]?.ScheduleId,
-            },
-            (response) => {
-              setFormdata(response);
-            }
-          )
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        );
       }
     );
   };
@@ -274,7 +265,7 @@ function ServiceOpenSchedule() {
           response.message ===
           "Clear Order Suspension of the order before trying to clear it for schedule"
         ) {
-          toast.success(
+          toast.warning(
             "Clear Order Suspension of the order before trying to clear it for schedule",
             {
               position: toast.POSITION.TOP_CENTER,
@@ -293,7 +284,7 @@ function ServiceOpenSchedule() {
             (response) => {
               setFormdata(response);
             }
-          )
+          );
         }
       }
     );
@@ -320,21 +311,33 @@ function ServiceOpenSchedule() {
           (response) => {
             setFormdata(response);
           }
-        )
+        );
       }
     });
   };
 
   //Scheduled
+  const[openScheduleModal,setOpenScheduleModal]=useState(false);
+  const[responseSchedule,setResponseSchedule]=useState('');
+  const[delelteAskModal,setDeleteAskModal]=useState(false);
+  const[deleteResponse,setDeleteResponse]=useState('');
   const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
       { scheduleDetailsRow, formdata },
       (response) => {
-        // console.log("response of Scheduled is",response);
-        toast.success(response.message, {
-          position: toast.POSITION.TOP_CENTER,
-        });
+        if (response.message === "Scheduled") {
+          toast.success(response.message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else if (response.message.startsWith("Cannot Schedule Zero Quantity For")) {
+          setDeleteAskModal(true);
+          setDeleteResponse(response.message);
+          console.log(response.scheduleDetails);
+          } else {
+          setOpenScheduleModal(true);
+          setResponseSchedule(response.message);
+        }
         postRequest(
           endpoints.getScheduleListgetFormDetails,
           {
@@ -344,12 +347,36 @@ function ServiceOpenSchedule() {
           (response) => {
             setFormdata(response);
           }
-        )
+        );
       }
     );
   };
+  
 
-  //  console.log(scheduleDetailsRow);
+  //onClick of yes Payment ALert Modal
+  const onClickScheduleYes=()=>{
+    setOpenScheduleModal(false);
+    toast.warning("Caution Customer for Payment ", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+
+  //onClick No For Payment ALert Modal
+  const onClickScheduleNo=()=>{
+    setOpenScheduleModal(false);
+    toast.warning("Unit Head needs to approve this personally", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+
+  //Onclick of Yes for Zero Quantity(Delete Dwg)
+  const onclickYes=()=>{
+    setDeleteAskModal(false);
+    toast.warning("Deleted Sucessfully", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+  }
+
 
   //OnClick NCProgram
   const navigate = useNavigate();
@@ -394,29 +421,47 @@ function ServiceOpenSchedule() {
     });
   };
 
-  //  console.log(formdata);
 
   //OnClick Yes Fixture Order
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
     postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-       console.log("response for fixture order",response);
+      // console.log("response of Scheduled is",response);
+      toast.success("Order Created", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       setFixtureData(response);
       setFixtureOrder1(false);
-      navigate("/Orders/Service/ScheduleCreationForm", {
-        state: response,
-      });
+       if(response[0].Type==='Service'){
+        navigate("/Orders/Service/ScheduleCreationForm", {
+          state: response[0].Order_No,
+        });
+      }else if(response[0].Type==='Profile'){
+        navigate("/Orders/Profile/ScheduleCreationForm", {
+          state: response[0].Order_No,
+        });
+      }
+      else if(response[0].Type==='Fabrication')
+      {
+        navigate("/Orders/Fabrication/ScheduleCreationForm", {
+          state: response[0].Order_No,
+        });
+      }
     });
   };
 
   // console.log("fixturedata is",fixturedata);
 
   const ScheduleNo = formdata[0]?.ScheduleNo;
-  const Orsch = formdata[0]?.Order_No + " " + (ScheduleNo != null && ScheduleNo !== 'null' && ScheduleNo !== undefined ? ScheduleNo : '');
-
+  const Orsch =
+    formdata[0]?.Order_No +
+    " " +
+    (ScheduleNo != null && ScheduleNo !== "null" && ScheduleNo !== undefined
+      ? ScheduleNo
+      : "");
 
   //CHECK STATUS
-  const checkstatus=()=>{
+  const checkstatus = () => {
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
@@ -425,8 +470,13 @@ function ServiceOpenSchedule() {
       },
       (response) => {
         setFormdata(response);
-      })
-  }
+      }
+    );
+  };
+
+  console.log("formdata is",formdata)
+
+
 
   return (
     <div>
@@ -527,8 +577,12 @@ function ServiceOpenSchedule() {
             onClick={OnClickSuspend}
             disabled={
               formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Dispatched"||
-              formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected" || formdata[0]?.Schedule_Status === "Closed" || formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Cancelled"
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Completed" ||
+              formdata[0]?.Schedule_Status === "Inspected" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Cancelled"
             }
           >
             Suspend
@@ -538,7 +592,14 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickShortClose}
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Created" || formdata[0]?.Schedule_Status === "Scheduled"  || formdata[0]?.Schedule_Status === "Tasked"
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Scheduled" ||
+              formdata[0]?.Schedule_Status === "Tasked"
             }
           >
             ShortClose
@@ -548,14 +609,26 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickCancel}
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" ||  formdata[0]?.Schedule_Status === "Created" || formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
-              formdata[0]?.Schedule_Status === "Production" 
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Completed" ||
+              formdata[0]?.Schedule_Status === "Inspected" ||
+              formdata[0]?.Schedule_Status === "Ready" ||
+              formdata[0]?.Schedule_Status === "Programmed" ||
+              formdata[0]?.Schedule_Status === "Production"
             }
           >
             Cancel
           </button>
 
-          <Link to="/Orders/Service/ScheduleCreationForm">
+          <Link
+            to={"/Orders/Service/ScheduleCreationForm"}
+            state={formdata[0]?.Order_No}
+          >
             <button className="button-style">Close</button>
           </Link>
         </div>
@@ -567,8 +640,18 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickScheduled}
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Scheduled"  || formdata[0]?.Schedule_Status === "Tasked" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
-              formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected"
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Scheduled" ||
+              formdata[0]?.Schedule_Status === "Tasked" ||
+              formdata[0]?.Schedule_Status === "Ready" ||
+              formdata[0]?.Schedule_Status === "Programmed" ||
+              formdata[0]?.Schedule_Status === "Production" ||
+              formdata[0]?.Schedule_Status === "Completed" ||
+              formdata[0]?.Schedule_Status === "Inspected"
             }
           >
             Schedule
@@ -587,9 +670,15 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-2 col-sm-3">
           {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
-          <button className="button-style " onClick={onClickNCProgram}
-           disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended"
+          <button
+            className="button-style "
+            onClick={onClickNCProgram}
+            disabled={
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended"
             }
           >
             NC Program
@@ -598,12 +687,22 @@ function ServiceOpenSchedule() {
         </div>
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={onClickTasked} 
-           disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" || 
-               formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Created" || 
-               formdata[0]?.Schedule_Status === "Tasked" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
-              formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected"
+          <button
+            className="button-style"
+            onClick={onClickTasked}
+            disabled={
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Tasked" ||
+              formdata[0]?.Schedule_Status === "Ready" ||
+              formdata[0]?.Schedule_Status === "Programmed" ||
+              formdata[0]?.Schedule_Status === "Production" ||
+              formdata[0]?.Schedule_Status === "Completed" ||
+              formdata[0]?.Schedule_Status === "Inspected"
             }
           >
             Task
@@ -622,8 +721,13 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={onClickSave}
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended"
-            }          >
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended"
+            }
+          >
             Save
           </button>
           {formdata[0]?.Schedule_Status === "Dispatched" && (
@@ -643,7 +747,11 @@ function ServiceOpenSchedule() {
             className="button-style"
             onClick={checkstatus}
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended"
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended"
             }
           >
             Check Status
@@ -654,8 +762,17 @@ function ServiceOpenSchedule() {
           <button
             className="button-style "
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" || formdata[0]?.Schedule_Status === "Ready" ||  formdata[0]?.Schedule_Status === "Programmed"  ||
-              formdata[0]?.Schedule_Status === "Production" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Inspected" ||  formdata[0]?.Schedule_Status === "Created" 
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Ready" ||
+              formdata[0]?.Schedule_Status === "Programmed" ||
+              formdata[0]?.Schedule_Status === "Production" ||
+              formdata[0]?.Schedule_Status === "Completed" ||
+              formdata[0]?.Schedule_Status === "Inspected" ||
+              formdata[0]?.Schedule_Status === "Created"
             }
           >
             Print Schedule
@@ -669,9 +786,18 @@ function ServiceOpenSchedule() {
         </div> */}
 
         <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={fixtureOrderOpen1}
+          <button
+            className="button-style"
+            onClick={fixtureOrderOpen1}
             disabled={
-              formdata[0]?.Schedule_Status === "Dispatched"||  formdata[0]?.Schedule_Status === "Cancelled" ||  formdata[0]?.Schedule_Status === "Closed" ||  formdata[0]?.Schedule_Status === "ShortClosed" || formdata[0]?.Schedule_Status === "Suspended" ||  formdata[0]?.Schedule_Status === "Created" ||  formdata[0]?.Schedule_Status === "Completed" || formdata[0]?.Schedule_Status === "Ready"
+              formdata[0]?.Schedule_Status === "Dispatched" ||
+              formdata[0]?.Schedule_Status === "Cancelled" ||
+              formdata[0]?.Schedule_Status === "Closed" ||
+              formdata[0]?.Schedule_Status === "ShortClosed" ||
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Created" ||
+              formdata[0]?.Schedule_Status === "Completed" ||
+              formdata[0]?.Schedule_Status === "Ready"
             }
           >
             Fixture Order
@@ -843,12 +969,12 @@ function ServiceOpenSchedule() {
                 <div style={{ height: "300px", overflow: "auto" }}>
                   <Table
                     striped
-                    className="table-data border mt-2"
+                    className="table-data border mt-2 table-space"
                     style={{
                       border: "1px",
                     }}
                   >
-                    <thead className="tableHeaderBGColor table-space">
+                    <thead className="tableHeaderBGColor">
                       <tr>
                         <th>Dwg Part Name</th>
                         <th>Quantity</th>
@@ -858,7 +984,7 @@ function ServiceOpenSchedule() {
                       </tr>
                     </thead>
                     <tbody className="tablebody">
-                      {newState.map((item, key) => {
+                      {tmDwgList.map((item, key) => {
                         return (
                           <tr>
                             <td>{item.DwgName}</td>
@@ -1111,23 +1237,30 @@ function ServiceOpenSchedule() {
         secondbuttontext="No"
       />
 
-      <AlertModal
-        show={fixtureOrder2}
-        onHide={(e) => setFixtureOrder2(e)}
-        firstbutton={fixtureOrderClose2}
+{/* Schedule Button */}
+    <AlertModal
+        show={openScheduleModal}
+        onHide={(e) => setOpenScheduleModal(e)}
+        firstbutton={onClickScheduleYes}
+        secondbutton={onClickScheduleNo}
         title="magod_Order"
-        message="Order Created"
-        firstbuttontext="Ok"
+        message={responseSchedule}
+        firstbuttontext="Yes"
+        secondbuttontext="No"
       />
 
+      {/* delete Modal */}
       <AlertModal
-        show={schedule}
-        onHide={(e) => setSchedule(e)}
-        firstbutton={closeSchedule}
+        show={delelteAskModal}
+        onHide={(e) => setDeleteAskModal(e)}
+        firstbutton={onclickYes}
+        secondbutton={(e) => setDeleteAskModal(e)}
         title="magod_Order"
-        message="Scheduled"
-        firstbuttontext="Ok"
+        message={deleteResponse}
+        firstbuttontext="Yes"
+        secondbuttontext="No"
       />
+
     </div>
   );
 }

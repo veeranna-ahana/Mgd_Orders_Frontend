@@ -48,7 +48,7 @@ function ServiceNCProgram() {
     getPartsData();
   }, [NCprogramForm]);
 
-  console.log("partsData is", partsData);
+  // console.log("partsData is", partsData);
 
   //row select
   const [selectedNCprogram, setSelectedNCProgram] = useState({});
@@ -64,7 +64,7 @@ function ServiceNCProgram() {
     }
   }, [NCProramData, selectedNCprogram, onClickSelectedNCprogram]);
 
-  console.log("selectedNCprogram", selectedNCprogram);
+  console.log("NCprogramForm", NCprogramForm);
 
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
@@ -269,7 +269,9 @@ function ServiceNCProgram() {
           </div>
 
           <div className="col-md-3">
-            <Link to="/Orders/Service/OrderSchedule">
+            <Link to={"/Orders/Service/OrderSchedule"}
+            state={NCprogramForm}
+            >
               <button className="button-style">Close</button>
             </Link>
           </div>
