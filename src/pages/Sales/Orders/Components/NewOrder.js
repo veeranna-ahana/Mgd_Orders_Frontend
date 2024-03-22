@@ -4,15 +4,12 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { useOrderContext } from "../../../../context/OrderContext";
-import { BsChevronCompactLeft } from "react-icons/bs";
-import YesNoModal from "./Components/YesNoModal";
 import AlertModal from "./Components/Alert";
 
 const { getRequest, postRequest } = require("../../../api/apiinstance");
 const { endpoints } = require("../../../api/constants");
 
 function NewOrder(props) {
-  //console.log("props", props.Type);
   // const [searchParams] = useSearchParams();
 
   let navigate = useNavigate();
@@ -47,7 +44,6 @@ function NewOrder(props) {
   const [SmShow, setSmShow] = useState(false);
   // let Oformat = searchParams.get("OrdType");
 
-  // console.log(" Order Type : " + Oformat);
   // Alert Modals
   const [alertModal, setAlertModal] = useState(false);
   useEffect(() => {
@@ -95,8 +91,6 @@ function NewOrder(props) {
   };
 
   let selectQtns = (selectedqtnno) => {
-    //console.log(selectedqtnno);
-    //console.log(selectedqtnno[0].QtnNo);
     setQuotationNo(selectedqtnno[0].QtnNo);
     setFormQuotationNo(selectedqtnno[0].QtnNo);
     if (selectedqtnno.length == 0 || selectedqtnno[0].QtnID == undefined)
@@ -105,11 +99,8 @@ function NewOrder(props) {
     setFormQuotationNo(selectedqtnno[0].QtnNo);
   };
 
-  // console.log("first", quotationNo);
-  // console.log("second", formquotationNo);
   let handleInputChange = (input) => {
     selectedqtnno = input;
-    // console.log(input.target.value);
   };
 
   let selectCust = async (e) => {
@@ -120,7 +111,6 @@ function NewOrder(props) {
         break;
       }
     }
-    //Console.log(cust);
     setCustCode(cust.Cust_Code);
     setCustomerContact(
       cust.PurchaseContact1
@@ -134,7 +124,7 @@ function NewOrder(props) {
     setFormBillingAddress(cust.Address);
     setFormBillingState(cust.State);
     setFormGSTTaxState(cust.State);
-    ////Console.log(CustomerName);
+
     //setCustCode(e.target.value);
     //  setCustomerName(e.target.elements.Cust_name.value);
     for (let i = 0; i < custdata.length; i++) {
@@ -159,15 +149,11 @@ function NewOrder(props) {
       return;
     }
     e.preventDefault();
-    //console.log("entering into save order");
     let ordertype = props.Type;
-    //console.log("ordertype", ordertype);
     let purchaseorder = e.target.elements?.formPurchaseOrderNo.value;
 
     let qtnno = formquotationNo;
-    //console.log("qtnno", qtnno);
     let deldate = e.target.elements?.formDeliveryDate.value;
-    //Console.log(deldate);
     let deliverydate = deldate;
 
     let paymentterms = e.target.elements?.formPaymentTerms.value;
@@ -202,9 +188,7 @@ function NewOrder(props) {
     let GSTTaxState = e.target.elements?.formGSTTaxState.value;
     let Transportcharges = e.target.elements?.formTransportCharges.value;
 
-    //console.log("qtnno", qtnno);
     console.log("MagodDelivery", MagodDelivery);
-    //Console.log("Entering API Call");
     await postRequest(
       endpoints.saveCreateOrder,
       {
@@ -230,14 +214,11 @@ function NewOrder(props) {
         Transportcharges,
       },
       async (resp) => {
-        //Console.log(resp);
         setOrderno(resp.orderno);
         // postRequest(endpoints.getCustomerDets, { CustCode }, (custdata) => {
         //   //Console.log(custdata[0]["Cust_name"]
         //   setCustomerName(custdata[0]["Cust_name"]);
         // })
-        //Console.log(CustCode);
-        //Console.log(CustomerName);
         let orders = {
           orderno: resp.orderno,
           ordertype: ordertype,
@@ -291,11 +272,9 @@ function NewOrder(props) {
 
   const POInputChange = (e) => {
     e.preventDefault();
-    //console.log(e.target.value);
     setPurchaseorder(e.target.value);
   };
   const handleCheckboxChange = () => {
-    // Toggle the value when the checkbox changes
     const newCheckedValue = !isChecked;
     setChecked(newCheckedValue);
     setFormMagodDelivery(newCheckedValue);
@@ -304,11 +283,7 @@ function NewOrder(props) {
     } else {
       setFormShippingAddress("");
     }
-
-    // Log the updated value to the console
-    //console.log("Checkbox is now:", newCheckedValue);
   };
-  // console.log("...............", formMagodDelivery);
   // const TransportChargesInpChnage = (e) => {
   //   e.preventDefault();
   ////console.log(e.target.value);
@@ -319,38 +294,17 @@ function NewOrder(props) {
   };
   return (
     <div>
-      {/* <YesNoModal
-        SmShow={SmShow}
-        setSmShow={setSmShow}
-        SaveOrder={SaveOrder}
-        onHide={() => setSmShow(false)}
-      /> */}
       <div className="col-md-12">
         <div className="row">
-          {/* <h4 className="title">Sales Department</h4> */}
           <h4 className="title">New Order Entry Form: {props.Type}</h4>
         </div>
       </div>
-      {/* <h5 className="mt-2"> */}
-      {/* <b>Sales Manager - </b> */}
-      {/* <b>New Order Entry Form: {props.Type}</b> */}
-      {/* </h5> */}
 
-      {/* <hr
-        style={{
-          backgroundColor: "black",
-          height: "3px",
-        }} o
-      /> */}
       <Form className="form mt-0" onSubmit={SaveOrder}>
         <div
           className="col-md-12 justify-content-end mb-2"
           style={{ display: "flex" }}
         >
-          {/* <h9 className="mt-2" style={{ flex: 1 }}>
-            <b>New Order</b>
-          </h9> */}
-
           <button
             className={
               purchaseorder ? "button-style" : "button-style button-disabled"
@@ -515,7 +469,6 @@ function NewOrder(props) {
                   <label className="form-label">Customer Name</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  {/* <input className="ip-select" type="text" id="customername" onChange={(e) => setCustomerName(e.target.value)} value={CustomerName} /> */}
                   {custdata.length > 0 ? (
                     <Typeahead
                       id="basic-example"
@@ -807,8 +760,8 @@ function NewOrder(props) {
           show={alertModal}
           onHide={() => setAlertModal(false)}
           firstbutton={(e) => {
-            SaveOrder(e); // Invoke SaveOrder with the event object when the button is clicked
-            setAlertModal(false); // Close the modal after invoking SaveOrder
+            SaveOrder(e);
+            setAlertModal(false);
           }}
           title="magod_Order"
           message="Order Created"

@@ -100,7 +100,7 @@ function OrdrDtls(props) {
     setQuantity(event.target.value);
     // Your other logic if needed
   };
-  console.log("setQuantity", quantity);
+  // console.log("setQuantity", quantity);
   return (
     <div>
       <AddNewSrlModal

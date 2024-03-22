@@ -55,7 +55,7 @@ function BulkChangeModal(props) {
     LastSlctedRow,
     setLastSlctedRow,
     selectedItems,
-    updateOrdrData,
+    updateblkcngOrdrData,
     handleblkCngCheckBox,
     blkCngCheckBox,
     setBlkCngCheckBox,
@@ -63,17 +63,12 @@ function BulkChangeModal(props) {
     blkChange,
     handleChange,
   } = props;
-  console.log("blkCngCheckBox", blkCngCheckBox);
 
-  console.log("blkCngCheckBox", blkCngCheckBox[0]);
-  console.log("blkCngCheckBox", blkCngCheckBox[1]);
   const [isChecked, setChecked] = useState(false);
 
   const handleCheckboxChange = () => {
     const newCheckedValue = !isChecked;
     setChecked(newCheckedValue);
-
-    console.log("Checkbox is now:", newCheckedValue);
   };
   return (
     <div className="row mt-1">
@@ -443,7 +438,7 @@ function BulkChangeModal(props) {
               className="button-style"
               type="submit"
               style={{ width: "100px" }}
-              onClick={updateOrdrData}
+              onClick={updateblkcngOrdrData}
             >
               Save
             </button>

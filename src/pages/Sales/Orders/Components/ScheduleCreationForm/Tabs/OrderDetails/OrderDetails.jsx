@@ -115,11 +115,11 @@ export default function OrderDetails(props) {
     false,
     false,
   ]);
-  // console.log("first", quantity);
-  // console.log("second", jwRate);
-  // console.log("third", materialRate);
-  // console.log("fourth", unitPrice);
-  console.log("blkCngCheckBox", blkCngCheckBox);
+  // //console.log("first", quantity);
+  // //console.log("second", jwRate);
+  // //console.log("third", materialRate);
+  // //console.log("fourth", unitPrice);
+  //console.log("blkCngCheckBox", blkCngCheckBox);
 
   const [NewSrlFormData, setNewSrlFormData] = useState({
     DrawingName: "",
@@ -148,7 +148,7 @@ export default function OrderDetails(props) {
       //   endpoints.PostNewSrlData,
       //   { custcode: Cust_Code, OrderNo: OrderNo },
       //   (srldata) => {
-      //     ////////console.log("srl data", srldata);
+      //     //////////console.log("srl data", srldata);
       //     setSerailData(srldata);
       //   }
       // );
@@ -160,7 +160,7 @@ export default function OrderDetails(props) {
         endpoints.getSalesIndiExecLists,
         { salesContact: SalesContact },
         (sdata) => {
-          //console.log(sdata[0]["Name"]);
+          ////console.log(sdata[0]["Name"]);
           // setSalesExecContact(sdata[0]["Name"]);
         }
       );
@@ -243,7 +243,7 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
       },
       (InsertedNewSrlData) => {
-        ////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        //////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           fetchData();
           toast.success("Added serial successfully");
@@ -256,16 +256,13 @@ export default function OrderDetails(props) {
     );
   };
 
-  console.log(
-    "blkChange.Operation .......................",
-    blkChange.Operation
-  );
   let blkCngCheckBoxx = blkCngCheckBox;
 
-  let updateOrdrData = () => {
+  let updateblkcngOrdrData = () => {
     postRequest(
       endpoints.bulkChangeUpdate,
       {
+        selectedItems: selectedItems,
         OrderNo: OrderNo,
         custcode: Cust_Code,
         OrderSrl: selectedSrl,
@@ -283,7 +280,7 @@ export default function OrderDetails(props) {
         //blkCngCheckBox: blkCngCheckBox,
       },
       (blkChngData) => {
-        console.log("RES", blkChngData);
+        //console.log("RES", blkChngData);
         if (blkChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -307,7 +304,7 @@ export default function OrderDetails(props) {
         mtrlcost: materialRate,
       },
       (singleChngData) => {
-        //console.log(" blkChngData", blkChngData);
+        ////console.log(" blkChngData", blkChngData);
         if (singleChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -362,7 +359,7 @@ export default function OrderDetails(props) {
       ...NewSrlFormData,
       Operation: e.target.value,
     });
-    ////////console.log(e.target.value);
+    //////////console.log(e.target.value);
   };
   const selectInsp = async (e) => {
     e.preventDefault();
@@ -390,7 +387,7 @@ export default function OrderDetails(props) {
       }
     }
     setStrTolerance(e.target.value);
-    ////////console.log(e.target.value);
+    //////////console.log(e.target.value);
   };
   const selectMtrlSrc = async (e) => {
     e.preventDefault();
@@ -409,8 +406,19 @@ export default function OrderDetails(props) {
     setImportDwgShow(false);
     setNewSerial((prevState) => ({
       ...prevState,
-      DwgName: " ", // Parse float if necessary
+      DwgName: "",
+      material: "",
+      strmtrlcode: "",
+      Operation: "",
+      InspLvl: "",
+      PkngLvl: "",
+      MtrlSrc: "",
+      quantity: 0.0,
+      jwRate: 0.0,
+      materialRate: 0.0,
+      unitPrice: 0.0,
     }));
+    //console.log("closeddddd");
   };
 
   // IMPORT DWG MODAL
@@ -441,8 +449,30 @@ export default function OrderDetails(props) {
     setBulkChnangMdl(false);
     setBlkChange((prevState) => ({
       ...prevState,
-      DwgName: " ", // Parse float if necessary
+      DwgName: "",
+      material: "",
+      strmtrlcode: "",
+      Operation: "",
+      InspLvl: "",
+      PkngLvl: "",
+      MtrlSrc: "",
+      quantity: 0.0,
+      jwRate: 0.0,
+      materialRate: 0.0,
+      unitPrice: 0.0,
     }));
+    setBlkCngCheckBox([
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+    ]);
   };
 
   function deleteRowsByOrderNoFunc() {
@@ -698,7 +728,6 @@ export default function OrderDetails(props) {
         LastSlctedRow={LastSlctedRow}
         setLastSlctedRow={setLastSlctedRow}
         selectedItems={selectedItems}
-        updateOrdrData={updateOrdrData}
         handleblkCngCheckBox={handleblkCngCheckBox}
         blkCngCheckBox={blkCngCheckBox}
         setBlkCngCheckBox={setBlkCngCheckBox}
@@ -709,6 +738,7 @@ export default function OrderDetails(props) {
         imprtDwgObj={imprtDwgObj}
         setImprtDwgObj={setImprtDwgObj}
         handleChange={handleChange}
+        updateblkcngOrdrData={updateblkcngOrdrData}
       />
       <div>
         <div className="row justify-content-left m-3">
