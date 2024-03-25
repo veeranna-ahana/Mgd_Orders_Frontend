@@ -297,7 +297,10 @@ export const endpoints = {
   onClickTask: `${API}/ScheduleList/taskOnclick`,
   onClickPerformance: `${API}/ScheduleList/onClickPerformce`,
   onClickFixtureOrder: `${API}/ScheduleList/fixtureOrder`,
+  onClickProfileOrder: `${API}/ScheduleList/createProfileOrder`,
   deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
+  pdfdata:`${API}/ScheduleList/PrintPdf`,
+  getCustName:`${API}/ScheduleList/getCustomerName`,
 
   //NCProgram Button
   onClickNCProgram: `${API}/NCProgram/getFormData`,
@@ -346,14 +349,14 @@ export const endpoints = {
   getSalesContact: `${API}/ScheduleList/getSalesContact`,
   onClickTask: `${API}/ScheduleList/taskOnclick`,
 
-  //NCProgram Button
-  onClickNCProgram: `${API}/NCProgram/getFormData`,
-  getMachineList: `${API}/NCProgram/getMachines`,
-  addNCProgram: `${API}/NCProgram/addProgram`,
-  sendMtrlIssue: `${API}/NCProgram/sendMTrlIssue`,
-  DeleteNCProgram: `${API}/NCProgram/DeleteNCProgram`,
-  SaveButton: `${API}/NCProgram/ButtonSave`,
-  getNCPrograms: `${API}/NCProgram/getPrograms`,
+  // //NCProgram Button
+  // onClickNCProgram: `${API}/NCProgram/getFormData`,
+  // getMachineList: `${API}/NCProgram/getMachines`,
+  // addNCProgram: `${API}/NCProgram/addProgram`,
+  // sendMtrlIssue: `${API}/NCProgram/sendMTrlIssue`,
+  // DeleteNCProgram: `${API}/NCProgram/DeleteNCProgram`,
+  // SaveButton: `${API}/NCProgram/ButtonSave`,
+  // getNCPrograms: `${API}/NCProgram/getPrograms`,
 
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
