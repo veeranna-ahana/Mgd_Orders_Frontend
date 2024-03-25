@@ -7,6 +7,7 @@ import { endpoints } from "../../../../../../../api/constants";
 import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create } from "@mui/icons-material";
+import ServiceModal from "./Service/ServiceModal";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
@@ -37,10 +38,10 @@ function ServiceOpenSchedule() {
     setProfileOrder1(false);
   };
 
-  let profileOrderOpen2 = () => {
-    setProfileOrder1(false);
-    setProfileOrder2(true);
-  };
+  // let profileOrderOpen2 = () => {
+  //   setProfileOrder1(false);
+  //   setProfileOrder2(true);
+  // };
 
   let profileOrderClose2 = () => {
     setProfileOrder2(false);
@@ -122,11 +123,12 @@ function ServiceOpenSchedule() {
   //   }
   // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  console.log(scheduleDetailsRow);
+  // console.log(scheduleDetailsRow);
 
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
+    // console.log("scheduleDetailsRow",scheduleDetailsRow);
     postRequest(
       endpoints.getScheduleListTaskandMaterial,
       { scheduleDetailsRow },
@@ -174,7 +176,6 @@ function ServiceOpenSchedule() {
     }
   }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  ////  console.log(scheduleDetailsRow);
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -450,8 +451,24 @@ function ServiceOpenSchedule() {
     });
   };
 
-  // console.log("fixturedata is",fixturedata);
 
+//onClick of Profile Orders
+const[profileOrders,setProfileOrders]=useState([]);
+const onClickYesProfileOrders = () => {
+  postRequest(endpoints.onClickProfileOrder, { formdata }, (response) => {
+    toast.success("Order Created", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    setProfileOrders(response);
+    setProfileOrder1(false);
+    navigate("/Orders/Profile/ScheduleCreationForm", {
+      state: response[0].Order_No,
+    });
+  });
+};
+
+
+//set OrderSchNo
   const ScheduleNo = formdata[0]?.ScheduleNo;
   const Orsch =
     formdata[0]?.Order_No +
@@ -459,6 +476,7 @@ function ServiceOpenSchedule() {
     (ScheduleNo != null && ScheduleNo !== "null" && ScheduleNo !== undefined
       ? ScheduleNo
       : "");
+
 
   //CHECK STATUS
   const checkstatus = () => {
@@ -476,7 +494,11 @@ function ServiceOpenSchedule() {
 
   console.log("formdata is",formdata)
 
-
+// Onclick MPdf Open
+const[serviceOpen,setServiceOpen]=useState(false);
+const OnclickPdfOpen=()=>{
+  setServiceOpen(true);
+}
 
   return (
     <div>
@@ -760,6 +782,7 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-2 col-sm-3">
           <button
+          onClick={OnclickPdfOpen}
             className="button-style "
             disabled={
               formdata[0]?.Schedule_Status === "Dispatched" ||
@@ -778,6 +801,17 @@ function ServiceOpenSchedule() {
             Print Schedule
           </button>
         </div>
+        
+        {formdata.Type === 'Profile' && (
+        <div className="col-md-2 col-sm-3">
+          <button className="button-style" onClick={profileOrderOpen1}
+          disabled={formdata[0]?.Schedule_Status !== "Scheduled" || formdata[0]?.Schedule_Status !== "Tasked" }
+
+          >
+            Profile Order
+          </button>
+        </div>
+      )}
 
         {/* <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={profileOrderOpen1}>
@@ -1209,7 +1243,7 @@ function ServiceOpenSchedule() {
       <AlertModal
         show={profileOrder1}
         onHide={(e) => setProfileOrder1(e)}
-        firstbutton={profileOrderOpen2}
+        firstbutton={onClickYesProfileOrders}
         secondbutton={profileOrderClose1}
         title="magod_Order"
         message="Do you wish to create or use internal order for this schedule."
@@ -1259,6 +1293,12 @@ function ServiceOpenSchedule() {
         message={deleteResponse}
         firstbuttontext="Yes"
         secondbuttontext="No"
+      />
+
+      <ServiceModal
+      serviceOpen={serviceOpen}
+      setServiceOpen={setServiceOpen}
+      formdata={formdata}
       />
 
     </div>

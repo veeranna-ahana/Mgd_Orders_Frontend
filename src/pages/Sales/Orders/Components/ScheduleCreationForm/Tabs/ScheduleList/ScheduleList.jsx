@@ -16,9 +16,9 @@ export default function ScheduleList({
   setScheduleListData,
   scheduleListData,
 }) {
-  // console.log(OrderCustData);
 
-  // console.log(OrderData);
+
+  console.log("OrderData",OrderData);
 
   //date format
   const formatDate = (dateString) => {
