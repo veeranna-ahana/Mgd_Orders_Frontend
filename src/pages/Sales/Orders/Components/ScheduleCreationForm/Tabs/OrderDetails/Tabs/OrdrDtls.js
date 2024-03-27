@@ -311,19 +311,25 @@ function OrdrDtls(props) {
             <div className="row">
               <div className="col-md-6 col-sm-12">
                 <div className="row">
-                  <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
-                      Material Source
-                    </label>
-                    <input
-                      className="in-fields"
-                      type="text"
+                  <div className="md-col-4">
+                    <label className="form-label">Material Source</label>
+                    {console.log(
+                      "ordrDetailsChange.MtrlSrc",
+                      ordrDetailsChange.MtrlSrc
+                    )}
+                    <select
+                      className="ip-select in-fields"
+                      id="strsource"
                       name="odrDtlMtrlSrc"
-                      value={LastSlctedRow?.Mtrl_Source || " "}
-                    />
+                      value={ordrDetailsChange.MtrlSrc}
+                      onChange={handleChange}
+                    >
+                      <option value="" selected>
+                        ** Select **
+                      </option>
+                      <option value={"Customer"}>Customer</option>
+                      <option value={"Magod"}>Magod</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -476,16 +482,16 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    {/* <label className="form-label">Quantity</label> */}
-                    {/* <input
+                    <label className="form-label">Quantity</label>
+                    <input
                       className="ip-select in-fields"
                       id="Qty"
-                      name="AddNwSrlQty"
-                      value={quantity}
-                      onChange={(e) => handleChange(e, "AddNwSrlQty")}
+                      name="odrDtlQuantity"
+                      onChange={handleChange}
+                      value={ordrDetailsChange.quantity}
                       required
-                    /> */}
-                    <InputField
+                    />
+                    {/* <InputField
                       className="ip-select in-fields"
                       label="Quantity"
                       id="Qty"
@@ -493,7 +499,7 @@ function OrdrDtls(props) {
                       value={quantity}
                       onChangeCallback={setQuantity}
                       required
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -649,7 +655,14 @@ function OrdrDtls(props) {
                       placeholder="Select ..."
                       onChange={handleSelectChange}
                     />
-                  ) : null}
+                  ) : (
+                    <Typeahead
+                      className="in-fields"
+                      labelKey="label"
+                      placeholder="No PartId for this Customer"
+                      disabled
+                    />
+                  )}
                   <button
                     className="button-style"
                     style={{ width: "195px", marginTop: "26%" }}
@@ -772,7 +785,14 @@ function OrdrDtls(props) {
                       placeholder="Select ..."
                       onChange={handleSelectChange}
                     />
-                  ) : null}
+                  ) : (
+                    <Typeahead
+                      className="in-fields"
+                      labelKey="label"
+                      placeholder="No PartId's"
+                      disabled
+                    />
+                  )}
                 </div>
                 <div className="col-md-6">
                   {mtrldata.length > 0 || mtrldata != null ? (
@@ -785,6 +805,7 @@ function OrdrDtls(props) {
                       options={mtrldata}
                       placeholder="Choose a Material..."
                       required
+                      disabled={BomData.length === 0}
                     ></Typeahead>
                   ) : (
                     ""
@@ -798,6 +819,7 @@ function OrdrDtls(props) {
                         className="ip-select in-fields"
                         id="strprocess"
                         onChange={selectProc}
+                        disabled={BomData.length === 0}
                       >
                         <option value="" disabled selected>
                           ** Select **
@@ -852,6 +874,7 @@ function OrdrDtls(props) {
                       className="in-fields"
                       type="text"
                       value={BomArry[0]?.JobWorkCost}
+                      disabled={BomData.length === 0}
                     />
                   </div>
 
@@ -861,6 +884,7 @@ function OrdrDtls(props) {
                       className="in-fields"
                       type="text"
                       value={BomArry[0]?.MtrlCost}
+                      disabled={BomData.length === 0}
                     />
                   </div>
                 </div>

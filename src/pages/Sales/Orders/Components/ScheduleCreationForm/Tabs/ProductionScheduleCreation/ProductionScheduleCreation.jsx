@@ -73,18 +73,35 @@ export default function ProductionScheduleCreation({
 
   //Onclick Create Schedule
   const createSchedule = () => {
-    // console.log(selectedItems.length,scheduleOption);
     if (selectedItems.length === 0 && scheduleOption === "Partial Order") {
       toast.warning("Select Parts to add to Schedule", {
         position: toast.POSITION.TOP_CENTER,
       });
     } else {
+      // Filter selectedItems based on scheduleType
+      console.log(selectedItems);
+      let filteredItems;
+      if (scheduleType === "Job Work") {
+        filteredItems = selectedItems.filter(item => item.Mtrl_Source === 'Customer');
+      } else if (scheduleType === "Sales") {
+        filteredItems = selectedItems.filter(item => item.Mtrl_Source === 'Magod');
+      }
+      console.log("filtered item",filteredItems);
+  
+      // Check if filteredItems is empty
+      if (filteredItems.length === 0) {
+        toast.warning("No items to schedule", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return; // Exit the function without making the API request
+      }
+  
       postRequest(
         endpoints.CreateSchedule,
         {
           OrderData,
           scheduleType: scheduleType,
-          selectedItems,
+          selectedItems: filteredItems,
           scheduleOption: scheduleOption,
         },
         (response) => {
@@ -109,6 +126,7 @@ export default function ProductionScheduleCreation({
       );
     }
   };
+  
 
   //Onclick of ShortClose
   const [openShortClose, setOpenShortClose] = useState(false);

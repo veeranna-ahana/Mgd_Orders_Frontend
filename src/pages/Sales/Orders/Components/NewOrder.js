@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, useToastContainer } from "react-toastify";
 import { useOrderContext } from "../../../../context/OrderContext";
 import AlertModal from "./Components/Alert";
 
@@ -29,6 +29,7 @@ function NewOrder(props) {
   let [CustomerName, setCustomerName] = useState("");
   let [CustCode, setCustCode] = useState("");
   let [formOrderDate, setFormOrderDate] = useState("");
+  const [formDeliveryDate, setformDeliveryDate] = useState("");
   let [CustomerContact, setCustomerContact] = useState("");
   let [GSTIN, setGSTIN] = useState("");
   let [formBillingAddress, setFormBillingAddress] = useState("");
@@ -46,8 +47,25 @@ function NewOrder(props) {
 
   // Alert Modals
   const [alertModal, setAlertModal] = useState(false);
+
+  //login user name
+  const [userName, setuserName] = useState("");
+
   useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("LazerUser"));
+    setuserName(data.data[0].Name);
+
+    var currentDate = new Date();
+    // console.log("curr date", currentDate);
+
+    currentDate.setDate(currentDate.getDate() + 2);
+    var formattedDate = currentDate.toISOString().slice(0, 10);
+    setformDeliveryDate(formattedDate);
+
+    // console.log("second", formattedDate);
+
     setFormOrderDate(new Date().toISOString().slice(0, 10));
+    // console.log("first", new Date().toISOString().slice(0, 10));
 
     async function fetchData() {
       await postRequest(endpoints.getCustomers, {}, (cdata) => {
@@ -80,6 +98,9 @@ function NewOrder(props) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    toggleSelectDisabled();
+  }, [isChecked]);
   // alert modals for register and save
   const openModal = (e) => {
     e.preventDefault();
@@ -189,6 +210,9 @@ function NewOrder(props) {
     let Transportcharges = e.target.elements?.formTransportCharges.value;
 
     console.log("MagodDelivery", MagodDelivery);
+    if (!isChecked) {
+      deliveryModeSelectRef?.current.reportValidity();
+    }
     await postRequest(
       endpoints.saveCreateOrder,
       {
@@ -292,6 +316,23 @@ function NewOrder(props) {
   const handleSaveButtonClick = () => {
     setSmShow(true);
   };
+
+  // Ref for the select element
+  const deliveryModeSelectRef = useRef(null);
+
+  // Function to toggle the disabled attribute of the select field
+  const toggleSelectDisabled = () => {
+    const select = deliveryModeSelectRef.current;
+    if (isChecked && select.disabled) {
+      select.disabled = false;
+      select.required = true; // Make it required
+      select.classList.add("required"); // Add class to indicate required field
+    } else if (!isChecked && !select.disabled) {
+      select.disabled = true;
+      select.required = false; // Remove required attribute
+      select.classList.remove("required"); // Remove class
+    }
+  };
   return (
     <div>
       <div className="col-md-12">
@@ -348,6 +389,8 @@ function NewOrder(props) {
                     className="in-fields"
                     type="text"
                     onChange={POInputChange}
+                    required
+                    placeholder="Please ented PO No with DC No"
                   />
                 </div>
               </div>
@@ -365,13 +408,15 @@ function NewOrder(props) {
                     id="formOrderDate"
                     className="in-fields"
                     type="date"
+                    disabled
                     value={formOrderDate}
                   />
                 </div>
               </div>
             </div>
+
             <div className="col-md-6 col-sm-12">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Quotation No</label>
                 </div>
@@ -390,6 +435,20 @@ function NewOrder(props) {
                     ""
                   )}
                 </div>
+              </div> */}
+              <div className="row">
+                <div className="col-md-4  mb-2 col-sm-12">
+                  <label className="form-label">Delivery Date</label>
+                </div>
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <input
+                    id="formDeliveryDate"
+                    className="in-fields"
+                    defaultValue={formDeliveryDate}
+                    min={formOrderDate}
+                    type="date"
+                  />{" "}
+                </div>
               </div>
             </div>
           </div>
@@ -402,8 +461,9 @@ function NewOrder(props) {
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
                   <select id="formOrderType" className="ip-select in-fields">
-                    <option value="">Select Order Type</option>
-                    <option value="Complete">Complete</option>
+                    {/* <option value="">Select Order Type</option> */}
+                    <option value="">Complete</option>
+                    {/* <option value="Complete">Complete</option> */}
                     <option value="Scheduled">Scheduled</option>
                     <option value="Open">Open</option>
                   </select>
@@ -411,7 +471,7 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Delivery Date</label>
                 </div>
@@ -421,6 +481,26 @@ function NewOrder(props) {
                     className="in-fields"
                     type="date"
                   />{" "}
+                </div>
+              </div> */}
+              <div className="row">
+                <div className="col-md-4  mb-2 col-sm-12">
+                  <label className="form-label">Sales Contact</label>
+                </div>
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <select
+                    className="ip-select in-fields"
+                    id="formSalesContact"
+                    defaultValue={userName}
+                    required
+                  >
+                    <option>{userName}</option>
+                    {salesExecdata.map((sdata) => {
+                      return (
+                        <option value={sdata["Name"]}>{sdata["Name"]}</option>
+                      );
+                    })}
+                  </select>
                 </div>
               </div>
             </div>
@@ -444,13 +524,37 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Sales Contact</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formSalesContact">
-                    <option>*** Select ***</option>
+                  <select
+                    className="ip-select in-fields"
+                    id="formSalesContact"
+                    defaultValue={userName}
+                  >
+                    <option>{userName}</option>
+                    {salesExecdata.map((sdata) => {
+                      return (
+                        <option value={sdata["Name"]}>{sdata["Name"]}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div> */}
+              <div className="row">
+                <div className="col-md-4  mb-2 col-sm-12">
+                  <label className="form-label">Received By</label>
+                </div>
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <select
+                    className="ip-select in-fields"
+                    id="formReceivedBy"
+                    required
+                  >
+                    {/* <option>*** Select ***</option>  */}
+                    <option>{userName}</option>
                     {salesExecdata.map((sdata) => {
                       return (
                         <option value={sdata["Name"]}>{sdata["Name"]}</option>
@@ -468,19 +572,23 @@ function NewOrder(props) {
                 <div className="col-md-4 mb-2 col-sm-12">
                   <label className="form-label">Customer Name</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8  mb-2 col-sm-12 ">
                   {custdata.length > 0 ? (
                     <Typeahead
                       id="basic-example"
-                      className="in-fields"
+                      className="in-fields "
                       labelKey="Cust_name"
                       onChange={selectCust}
                       options={custdata}
                       placeholder="Choose a Customer..."
+                      required
                     ></Typeahead>
                   ) : (
                     ""
                   )}
+                  {/* {custdata.length > 0 && (
+                    <div className="dropdown-indicator"></div>
+                  )} */}
 
                   {/* <select className='ip-select' type="text" id="formCustomerName" onChange={selectCust}>
                     <option>Select Customer</option>
@@ -496,11 +604,16 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Received By</label>
+                  <label className="form-label">Recorded By</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formReceivedBy">
-                    <option>*** Select ***</option>
+                  <select
+                    className="ip-select in-fields"
+                    id="formRecordedBy"
+                    required
+                  >
+                    {/* <option>*** Select ***</option> */}
+                    <option>{userName}</option>
                     {salesExecdata.map((sdata) => {
                       return (
                         <option value={sdata["Name"]}>{sdata["Name"]}</option>
@@ -531,13 +644,18 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Recorded By</label>
+                  <label className="form-label">Dealing Engineer</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formRecordedBy">
-                    <option>*** Select ***</option>
+                  <select
+                    className="ip-select in-fields"
+                    id="formDealingEngineer"
+                    required
+                  >
+                    <option>{userName}</option>
                     {salesExecdata.map((sdata) => {
                       return (
                         <option value={sdata["Name"]}>{sdata["Name"]}</option>
@@ -567,22 +685,27 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Dealing Engineer</label>
+                  <label className="form-label">GST Tax State</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select
-                    className="ip-select in-fields"
-                    id="formDealingEngineer"
-                  >
-                    <option>*** Select ***</option>
-                    {salesExecdata.map((sdata) => {
+                  {/* <select className="ip-select in-fields" id="formGSTTaxState">
+                    <option>Select State</option>
+                    {statesdata.map((stat) => {
                       return (
-                        <option value={sdata["Name"]}>{sdata["Name"]}</option>
+                        <option value={stat["Id"]}>{stat["State"]}</option>
                       );
                     })}
-                  </select>
+                  </select> */}
+                  <input
+                    id="formGSTTaxState"
+                    className="in-fields"
+                    disabled
+                    type="text"
+                    value={formGSTTaxState}
+                  />
                 </div>
               </div>
             </div>
@@ -606,11 +729,13 @@ function NewOrder(props) {
                       height: "80px",
                       width: "387px",
                     }}
+                    disabled
                   />
                 </div>
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Special Instructions</label>
@@ -662,18 +787,24 @@ function NewOrder(props) {
             </div>
 
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">GST Tax State</label>
+                  <label className="form-label">Delivery Mode</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formGSTTaxState">
-                    <option>Select State</option>
-                    {statesdata.map((stat) => {
-                      return (
-                        <option value={stat["Id"]}>{stat["State"]}</option>
-                      );
-                    })}
+                  <select
+                    id="formDeliveryMode"
+                    className="ip-select in-fields"
+                    required
+                    disabled={!isChecked}
+                    ref={deliveryModeSelectRef}
+                  >
+                    <option value="">Select Delivery Mode</option>
+                    <option value="By Lorry">By Lorry</option>
+                    <option value="By Courier">By Courier</option>
+                    <option value="By Air Cargo">By Air Cargo</option>
+                    <option value="By Ship">By Ship</option>
                   </select>
                 </div>
               </div>
@@ -705,26 +836,14 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Delivery Mode</label>
-                </div>
-                <div className="col-md-8  mb-2 col-sm-12">
-                  <select id="formDeliveryMode" className="ip-select in-fields">
-                    <option value="">Select Delivery Mode</option>
-                    <option value="By Lorry">By Lorry</option>
-                    <option value="By Courier">By Courier</option>
-                    <option value="By Air Cargo">By Air Cargo</option>
-                    <option value="By Ship">By Ship</option>
-                  </select>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Transport Charges</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
                   <select
                     id="formTransportCharges"
                     className="ip-select in-fields"
+                    required
+                    disabled={!isChecked}
                   >
                     <option value=""> Select </option>
                     <option value="Customer Account">Customer Account</option>

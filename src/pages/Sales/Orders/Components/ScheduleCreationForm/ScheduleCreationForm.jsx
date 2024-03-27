@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Profiler } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 import FindOldPart from "./Tabs/FindOldPart/FindOldPart";
@@ -84,7 +84,7 @@ const InputField = ({
 };
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  // //console.log("props", props);
+  // //console.log("props", props.OrersData);
   //console.log("ocation.state", location.state);
 
   const [mtrldata, setMtrldata] = useState([]);
@@ -143,7 +143,18 @@ export default function ScheduleCreationForm(props) {
     materialRate: 0.0,
     unitPrice: 0.0,
   });
-
+  // const [blkCngCheckBox, setBlkCngCheckBox] = useState([
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  //   false,
+  // ]);
   const [blkChange, setBlkChange] = useState({
     custcode: props.OrderCustData?.Cust_Code,
     DwgName: "",
@@ -158,6 +169,7 @@ export default function ScheduleCreationForm(props) {
     jwRate: 0.0,
     materialRate: 0.0,
     unitPrice: 0.0,
+    blkCngCheckBox: false,
   });
   const [imprtDwgObj, setImprtDwgObj] = useState({
     custcode: props.OrderCustData?.Cust_Code,
@@ -413,6 +425,7 @@ export default function ScheduleCreationForm(props) {
       setBlkChange((prevState) => ({
         ...prevState,
         DwgName: value,
+        blkCngCheckBox: true,
       }));
     } else if (name === "odrDtlDwgName") {
       setordrDetailsChange((prevState) => ({
@@ -719,6 +732,7 @@ export default function ScheduleCreationForm(props) {
     }
   };
 
+  console.log("ordrDetailsChange.MtrlSrc", ordrDetailsChange.MtrlSrc);
   let updateOrdrData = () => {
     postRequest(
       endpoints.singleChangeUpdate,
@@ -726,6 +740,7 @@ export default function ScheduleCreationForm(props) {
         OrderNo: Orderno,
         custcode: props.OrderCustData?.Cust_Code,
         DwgName: ordrDetailsChange.DwgName,
+        MtrlSrc: ordrDetailsChange.MtrlSrc,
         quantity: ordrDetailsChange.quantity,
         OrderSrl: selectedSrl,
         JwCost: ordrDetailsChange.jwRate,
@@ -888,11 +903,12 @@ export default function ScheduleCreationForm(props) {
       setSelectedSrl(selectedOrderSrl);
       const lastSelectedRow =
         updatedSelectedItems[updatedSelectedItems.length - 1];
-      // //console.log("Last Selected Row:", lastSelectedRow);
+      console.log("Last Selected Row:", lastSelectedRow);
       setLastSlctedRow(lastSelectedRow);
       setordrDetailsChange((prevState) => ({
         ...prevState,
         DwgName: lastSelectedRow?.DwgName || "",
+        MtrlSrc: lastSelectedRow?.Mtrl_Source || "",
         jwRate: lastSelectedRow?.JWCost || "",
         quantity: lastSelectedRow?.Qty_Ordered || "",
         materialRate: lastSelectedRow?.MtrlCost || "",

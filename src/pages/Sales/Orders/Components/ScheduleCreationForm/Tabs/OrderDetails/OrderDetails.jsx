@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 import BulkChangeModal from "./Modals/BulkChangeModal";
 import ConfirmationModal from "../../../../Modal/ConfirmationModal";
+import { Profiler } from "react";
 // import { propTypes } from "react-bootstrap/esm/Image";
 // import { Link, useNavigate } from "react-router-dom";
 const {
@@ -413,11 +414,14 @@ export default function OrderDetails(props) {
       InspLvl: "",
       PkngLvl: "",
       MtrlSrc: "",
-      quantity: 0.0,
-      jwRate: 0.0,
-      materialRate: 0.0,
-      unitPrice: 0.0,
     }));
+    setNewSrlFormData({
+      ...NewSrlFormData,
+      Quantity: 0.0,
+      JW_Rate: 0.0,
+      Mtrl_Rate: 0.0,
+      UnitPrice: 0.0,
+    });
     //console.log("closeddddd");
   };
 
@@ -808,13 +812,13 @@ export default function OrderDetails(props) {
               Edit DXF
             </button>
           ) : null}
-          <button
+          {/* <button
             className="button-style"
             style={{ width: "100px", marginLeft: "4px" }}
             onClick={singleupdateOrdrData}
           >
             Update
-          </button>
+          </button> */}
         </div>
         <div className="row mt-4">
           <div className="col-md-6">
