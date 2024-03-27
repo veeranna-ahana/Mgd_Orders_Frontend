@@ -1251,7 +1251,7 @@ const ServicePDF = ({ formdata }) => {
 
               <View style={styles.footer}>
                 <View style={{ marginLeft: "40px", marginTop: "10px" }}>
-                  <Text style={styles.globalfontwithbold}>Lingaraj</Text>
+                  <Text style={styles.globalfontwithbold}>{formdata[0].SalesContact}</Text>
                 </View>
               </View>
             </View>
