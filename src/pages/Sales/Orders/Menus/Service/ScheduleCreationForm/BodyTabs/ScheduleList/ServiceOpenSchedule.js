@@ -20,8 +20,14 @@ function ServiceOpenSchedule() {
   const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
 
   useEffect(() => {
-    setNewState(DwgNameList);
-  }, [DwgNameList]); // Dependency array containing DwgNameList
+    postRequest(
+      endpoints.getScheduleListDwgData,
+      { ScheduleId: DwgNameList[0].ScheduleId },
+      (response) => {
+        setNewState(response);
+      }
+    );
+  }, []); 
 
   let [profileOrder1, setProfileOrder1] = useState(false);
   let [profileOrder2, setProfileOrder2] = useState(false);
@@ -128,16 +134,17 @@ function ServiceOpenSchedule() {
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
-    // console.log("scheduleDetailsRow",scheduleDetailsRow);
-    postRequest(
-      endpoints.getScheduleListTaskandMaterial,
-      { scheduleDetailsRow },
-      (response) => {
-        // console.log("response is", response);
-        setTaskMaterialData(response);
-      }
-    );
-  }, [scheduleDetailsRow]); // Watch for changes in OrderData
+    if (scheduleDetailsRow) {
+      postRequest(
+        endpoints.getScheduleListTaskandMaterial,
+        { scheduleDetailsRow },
+        (response) => {
+          setTaskMaterialData(response);
+        }
+      );
+    }
+  }, [scheduleDetailsRow]); // Watch for changes in scheduleDetailsRow
+  
 
 
   //row onClick of Task Material First Table
@@ -150,7 +157,7 @@ function ServiceOpenSchedule() {
       endpoints.getDwgListData,
       { list },
       (response) => {
-        console.log("response is", response);
+        // console.log("response is", response);
         setTmDwgList(response);
       }
     );
@@ -167,14 +174,21 @@ function ServiceOpenSchedule() {
   const onClickofScheduleDtails = (item, index) => {
     let list = { ...item, index: index };
     setScheduleDetailsRow(list);
+    postRequest(
+      endpoints.getScheduleListTaskandMaterial,
+      { scheduleDetailsRow:list },
+      (response) => {
+        setTaskMaterialData(response);
+      }
+    );
   };
 
   //Default first row select
-  useEffect(() => {
-    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-      onClickofScheduleDtails(newState[0], 0); // Select the first row
-    }
-  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
 
   //Onclick of ShortClose
@@ -331,14 +345,25 @@ function ServiceOpenSchedule() {
           toast.success(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
+  
+          // Introducing a delay of 1000 milliseconds (1 second)
+          setTimeout(() => {
+            postRequest(
+              endpoints.getScheduleListDwgData,
+              { ScheduleId: DwgNameList[0].ScheduleId },
+              (response) => {
+                setNewState(response);
+              }
+            );
+          }, 3000);
         } else if (response.message.startsWith("Cannot Schedule Zero Quantity For")) {
           setDeleteAskModal(true);
           setDeleteResponse(response.message);
-          console.log(response.scheduleDetails);
-          } else {
+        } else {
           setOpenScheduleModal(true);
           setResponseSchedule(response.message);
         }
+  
         postRequest(
           endpoints.getScheduleListgetFormDetails,
           {
@@ -352,6 +377,7 @@ function ServiceOpenSchedule() {
       }
     );
   };
+  
   
 
   //onClick of yes Payment ALert Modal
@@ -427,12 +453,12 @@ function ServiceOpenSchedule() {
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
     postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-      // console.log("response of Scheduled is",response);
       toast.success("Order Created", {
         position: toast.POSITION.TOP_CENTER,
       });
       setFixtureData(response);
       setFixtureOrder1(false);
+      // console.log("response",response);
        if(response[0].Type==='Service'){
         navigate("/Orders/Service/ScheduleCreationForm", {
           state: response[0].Order_No,
@@ -492,7 +518,6 @@ const onClickYesProfileOrders = () => {
     );
   };
 
-  console.log("formdata is",formdata)
 
 // Onclick MPdf Open
 const[serviceOpen,setServiceOpen]=useState(false);
@@ -500,6 +525,7 @@ const OnclickPdfOpen=()=>{
   setServiceOpen(true);
 }
 
+console.log("formdata is",formdata);
   return (
     <div>
       <div className="row">

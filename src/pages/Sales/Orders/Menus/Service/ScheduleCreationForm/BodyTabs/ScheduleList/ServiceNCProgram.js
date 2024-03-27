@@ -64,7 +64,6 @@ function ServiceNCProgram() {
     }
   }, [NCProramData, selectedNCprogram, onClickSelectedNCprogram]);
 
-  console.log("NCprogramForm", NCprogramForm);
 
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
