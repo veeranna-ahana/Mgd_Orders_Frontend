@@ -57,7 +57,6 @@ export default function ScheduleList({
       endpoints.getScheduleListDwgData,
       { ScheduleId: list.ScheduleId },
       (response) => {
-        // console.log("orderData.....", response);
         setDwgNameList(response);
       }
     );
@@ -89,7 +88,7 @@ export default function ScheduleList({
     );
   };
 
-  console.log("rowScheduleList.Created", rowScheduleList.Schedule_Status);
+  // console.log("rowScheduleList.Created", rowScheduleList.Schedule_Status);
 
   return (
     <>
