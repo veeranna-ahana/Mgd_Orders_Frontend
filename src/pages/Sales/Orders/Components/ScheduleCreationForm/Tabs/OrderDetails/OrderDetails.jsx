@@ -8,7 +8,7 @@ import OrdrDtls from "./Tabs/OrdrDtls";
 import { Tab, Tabs } from "react-bootstrap";
 import { propTypes } from "react-bootstrap/esm/Image";
 import ImportDwgModal from "./Modals/ImportDwgModal";
-import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
+import ImportOldOrderModal from "./Modals/ImportOldOrderModal/ImportOldOrderModal";
 import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
 import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
@@ -67,6 +67,9 @@ export default function OrderDetails(props) {
     handleReverseSelection,
   } = props;
 
+  // console.log("OrdrDetailsData", OrdrDetailsData);
+
+  const [buttonClicked, setButtonClicked] = useState("");
   // confirmation modal
   const [ConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
@@ -563,8 +566,11 @@ export default function OrderDetails(props) {
   const [importOldOrdrMdl, setImportOldOrdrMdl] = useState(false);
 
   const handleImportOldOrdrMdl = () => {
-    // ////console.log("modal opend ");
-    setImportOldOrdrMdl(true);
+    if (props.OrdrDetailsData.length > 0) {
+      setConfirmationModalOpen(true);
+    } else {
+      setImportOldOrdrMdl(true);
+    }
   };
   const handleCloseImportOldOrdrMdl = () => {
     setImportOldOrdrMdl(false);
@@ -576,11 +582,17 @@ export default function OrderDetails(props) {
       endpoints.postDeleteDetailsByOrderNo,
       { Order_No: props.OrderData.Order_No },
       (deleteData) => {
-        if (deleteData.affectedRows > 0) {
+        if (deleteData.flag > 0) {
           setOrdrDetailsData([]);
           toast.success("Delete the serials sucessfully");
           setConfirmationModalOpen(false);
-          setImportQtnMdl(true);
+
+          if (buttonClicked === "Import Qtn") {
+            setImportQtnMdl(true);
+          } else if (buttonClicked === "Import Old Order") {
+            setImportOldOrdrMdl(true);
+          } else {
+          }
         } else {
           toast.warning(deleteData);
         }
@@ -762,8 +774,15 @@ export default function OrderDetails(props) {
       <ImportOldOrderModal
         importOldOrdrMdl={importOldOrdrMdl}
         setImportOldOrdrMdl={setImportOldOrdrMdl}
-        handleImportOldOrdrMdl={handleImportOldOrdrMdl}
-        handleCloseImportOldOrdrMdl={handleCloseImportOldOrdrMdl}
+        //
+        oldOrderListData={props.oldOrderListData}
+        oldOrderDetailsData={props.oldOrderDetailsData}
+        OrderData={props.OrderData}
+        // table data
+        OrdrDetailsData={props.OrdrDetailsData}
+        setOrdrDetailsData={props.setOrdrDetailsData}
+        // handleImportOldOrdrMdl={handleImportOldOrdrMdl}
+        // handleCloseImportOldOrdrMdl={handleCloseImportOldOrdrMdl}
       />
       <ImportQtnModal
         importQtnMdl={importQtnMdl}
@@ -805,14 +824,20 @@ export default function OrderDetails(props) {
           <button
             className="button-style"
             style={{ width: "130px", marginLeft: "4px" }}
-            onClick={handleImportQtnMdl}
+            onClick={(e) => {
+              setButtonClicked("Import Qtn");
+              handleImportQtnMdl();
+            }}
           >
             Import Qtn
           </button>
           <button
             className="button-style"
             style={{ width: "170px", marginLeft: "4px" }}
-            onClick={handleImportOldOrdrMdl}
+            onClick={(e) => {
+              setButtonClicked("Import Old Order");
+              handleImportOldOrdrMdl();
+            }}
           >
             Import Old Order
           </button>

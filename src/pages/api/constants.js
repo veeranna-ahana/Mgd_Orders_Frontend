@@ -286,7 +286,6 @@ export const endpoints = {
   getDwgListData: `${API}/ScheduleList/getDwgDataListTMTab`,
   ShiftDetails: `${API}/ScheduleList/shiftDetails`,
 
-
   //OpenSchedule Srvice
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
   onClickShortClose: `${API}/ScheduleList/shortClose`,
@@ -300,8 +299,8 @@ export const endpoints = {
   onClickFixtureOrder: `${API}/ScheduleList/fixtureOrder`,
   onClickProfileOrder: `${API}/ScheduleList/createProfileOrder`,
   deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
-  pdfdata:`${API}/ScheduleList/PrintPdf`,
-  getCustName:`${API}/ScheduleList/getCustomerName`,
+  pdfdata: `${API}/ScheduleList/PrintPdf`,
+  getCustName: `${API}/ScheduleList/getCustomerName`,
 
   //NCProgram Button
   onClickNCProgram: `${API}/NCProgram/getFormData`,
@@ -330,7 +329,7 @@ export const endpoints = {
   onClickSuspend: `${API}/ScheduleList/suspendButton`,
   onClickCancel: `${API}/ScheduleList/onClickCancel`,
   onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
-  releaseSuspended:`${API}/ScheduleList/releaseClick`,
+  releaseSuspended: `${API}/ScheduleList/releaseClick`,
 
   // packingNote and Invoice
   getAllPNAndInvRegisterbyOrderNo: `${API}/orderPackingNoteAndInvoice/getAllPNAndInvRegisterbyOrderNo`,
@@ -367,6 +366,7 @@ export const endpoints = {
   // import qtn
   getQtnList: `${API}/orderDetails/getQtnList`,
   getQtnDataByQtnID: `${API}/orderDetails/getQtnDataByQtnID`,
+  getOldOrderByCustCodeAndOrderNo: `${API}/orderDetails/getOldOrderByCustCodeAndOrderNo`,
   postDeleteDetailsByOrderNo: `${API}/orderDetails/postDeleteDetailsByOrderNo`,
   postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
 };

@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-   console.log("props", props.OrersData);
+  console.log("props", props.OrersData);
 
   // //////console.log("location...", location?.state);
 
@@ -34,6 +34,8 @@ export default function ScheduleCreationForm(props) {
 
   //getScheduleList Table Data
   const [scheduleListData, setScheduleListData] = useState([]);
+  const [oldOrderListData, setOldOrderListData] = useState([]);
+  const [oldOrderDetailsData, setOldOrderDetailsData] = useState([]);
 
   const fetchData = () => {
     postRequest(
@@ -69,6 +71,20 @@ export default function ScheduleCreationForm(props) {
             setOrdrDetailsData(ordrdtlsdata);
           }
         );
+
+        postRequest(
+          endpoints.getOldOrderByCustCodeAndOrderNo,
+          {
+            Cust_Code: orderData?.orderData[0].Cust_Code,
+            Order_No: orderData?.orderData[0].Order_No,
+          },
+
+          (oldOrderData) => {
+            // console.log("dataqwqw...", oldOrderData);
+            setOldOrderListData(oldOrderData.orderListData);
+            setOldOrderDetailsData(oldOrderData.orderDetailsData);
+          }
+        );
       }
     );
     postRequest(
@@ -96,7 +112,6 @@ export default function ScheduleCreationForm(props) {
 
     setSelectedItems([]);
   };
-
 
   useEffect(() => {
     fetchData();
@@ -173,8 +188,7 @@ export default function ScheduleCreationForm(props) {
   //   setorderNo(props.OrersData[0].Order_No);
   // },[props.OrersData]);
 
-  console.log("location.state is",location.state);
-
+  // console.log("location.state is",location.state);
 
   return (
     <>
@@ -228,6 +242,8 @@ export default function ScheduleCreationForm(props) {
                 handleSelectAll={handleSelectAll}
                 handleReverseSelection={handleReverseSelection}
                 // insertnewsrldata={insertnewsrldata}
+                oldOrderListData={oldOrderListData}
+                oldOrderDetailsData={oldOrderDetailsData}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
