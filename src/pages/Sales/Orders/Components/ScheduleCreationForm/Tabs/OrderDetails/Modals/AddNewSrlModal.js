@@ -294,9 +294,13 @@ function AddNewSrlModal(props) {
                         label="UnitPrice"
                         name="newSrlUnitPrice"
                         id="Qty"
-                        value={unitPrice}
-                        onChangeCallback={setUnitPrice}
-                        required
+                        // value={unitPrice}
+                        // value={jwRate + materialRate}
+
+                        value={parseFloat(jwRate) + parseFloat(materialRate)}
+                        // onChangeCallback={setUnitPrice}
+                        disabled
+                        defaultvalue={0.0}
                       />
                     </Form.Group>
                     {/* <label className="form-label">UnitPrice</label>

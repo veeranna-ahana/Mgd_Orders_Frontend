@@ -34,9 +34,10 @@ function Login() {
       { username: username, password: formPassword },
       (data) => {
         if (data.accessToken) {
+          console.log("first", data);
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("LazerUser", JSON.stringify(data));
-          window.location.href = "/home";
+          // window.location.href = "/home";
         } else {
           alert("Invalid Username/Password");
         }
@@ -54,9 +55,10 @@ function Login() {
         { username: username, password: formPassword },
         (data) => {
           if (data.accessToken) {
+            console.log("first", data.accessToken.data[0].Current);
             localStorage.setItem("token", data.accessToken);
             localStorage.setItem("LazerUser", JSON.stringify(data));
-            window.location.href = "/home";
+            // window.location.href = "/home";
           } else {
             alert("Invalid Username/Password");
           }
@@ -64,6 +66,8 @@ function Login() {
       );
     }
   };
+
+  console.log("asdfghjk");
   return (
     <>
       <div

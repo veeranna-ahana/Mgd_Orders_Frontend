@@ -540,13 +540,14 @@ export default function ScheduleCreationForm(props) {
       );
     }
     // MATERIAL CODE [ Feild name is material]
-    if (name === "newSrlMaterial") {
-      // const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
-      //   const selectedValue =
-      //     selectedOptions.length > 0 ? selectedOptions[0] : null;
-      //   setStrMtrlCode(selectedValue?.Mtrl_Code);
-      // };
 
+    const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+      const selectedValue =
+        selectedOptions.length > 0 ? selectedOptions[0] : null;
+      setStrMtrlCode(selectedValue?.Mtrl_Code);
+    };
+
+    if (name === "newSrlMaterial") {
       setNewSerial((prevState) => ({
         ...prevState,
         strmtrlcode: value,
@@ -567,6 +568,7 @@ export default function ScheduleCreationForm(props) {
         strmtrlcode: value,
       }));
     }
+
     // PROCESS OR OPERATION
     if (name === "newSrlOperation") {
       setNewSerial((prevState) => ({
@@ -745,7 +747,11 @@ export default function ScheduleCreationForm(props) {
         OrderSrl: selectedSrl,
         JwCost: ordrDetailsChange.jwRate,
         mtrlcost: ordrDetailsChange.materialRate,
-        unitPrice: ordrDetailsChange.unitPrice,
+        // unitPrice: ordrDetailsChange.unitPrice,
+
+        unitPrice:
+          parseFloat(ordrDetailsChange.jwRate) +
+          parseFloat(ordrDetailsChange.materialRate),
         Operation: ordrDetailsChange.Operation,
         InspLvl: ordrDetailsChange.InspLvl,
         PkngLvl: ordrDetailsChange.PkngLvl,

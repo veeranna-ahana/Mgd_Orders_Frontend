@@ -267,13 +267,13 @@ function BulkChangeModal(props) {
 
                 <div className="row mt-1">
                   <div className="col-md-6">
-                    <InputField
+                    {/* <InputField
                       className="ip-select in-fields"
                       label="Quantity"
                       id="Qty"
                       name="blkCngQty"
-                      // value={quantity}
-                      // onChangeCallback={setQuantity}
+                      value={quantity}
+                      onChangeCallback={setQuantity}
                       value={blkChange.quantity}
                       onChange={handleChange}
                       required
@@ -282,10 +282,27 @@ function BulkChangeModal(props) {
                       isChecked={blkCngCheckBox[4]}
                       checkboxIndex={4}
                       showCheckbox={true}
+                    /> */}
+                    <label className="form-label">Quantity</label>
+                    <div className="col-md-2 mt-3">
+                      <input
+                        type="checkbox"
+                        onChange={() => handleblkCngCheckBox(4)}
+                        checked={blkCngCheckBox[4]}
+                      />
+                    </div>
+                    <input
+                      className="ip-select in-fields"
+                      id="Qty"
+                      name="blkCngQty"
+                      value={blkChange.quantity}
+                      onChange={handleChange}
+                      required
+                      disabled={!blkCngCheckBox[4]}
                     />
                   </div>
                   <div className="col-md-6">
-                    <Form.Group controlId="rates">
+                    {/* <Form.Group controlId="rates">
                       <InputField
                         className="ip-select in-fields"
                         label="JW Rate"
@@ -300,14 +317,31 @@ function BulkChangeModal(props) {
                         isChecked={blkCngCheckBox[5]}
                         checkboxIndex={5}
                         showCheckbox={true}
+                      /> */}
+                    {/* </Form.Group> */}
+                    <label className="form-label">JW Rate</label>
+                    <div className="col-md-2 mt-3">
+                      <input
+                        type="checkbox"
+                        onChange={() => handleblkCngCheckBox(5)}
+                        checked={blkCngCheckBox[5]}
                       />
-                    </Form.Group>
+                    </div>
+                    <input
+                      className="ip-select in-fields"
+                      id="Qty"
+                      name="blkCngJWRate"
+                      value={blkChange.jwRate}
+                      onChange={handleChange}
+                      required
+                      disabled={!blkCngCheckBox[5]}
+                    />
                   </div>
                 </div>
 
                 <div className="row">
                   <div className="col-md-6">
-                    <Form.Group controlId="rates">
+                    {/* <Form.Group controlId="rates">
                       <InputField
                         className="ip-select in-fields"
                         label="UnitPrice"
@@ -323,11 +357,32 @@ function BulkChangeModal(props) {
                         checkboxIndex={6}
                         showCheckbox={true}
                       />
-                    </Form.Group>
+                    </Form.Group> */}
+                    <label className="form-label">UnitPrice</label>
+                    <div className="col-md-2 mt-3">
+                      <input
+                        type="checkbox"
+                        onChange={() => handleblkCngCheckBox(6)}
+                        checked={blkCngCheckBox[6]}
+                      />
+                    </div>
+                    <input
+                      className="ip-select in-fields"
+                      id="Qty"
+                      name="blkCngUnitPrice"
+                      value={
+                        parseFloat(blkChange.jwRate) +
+                        parseFloat(blkChange.materialRate)
+                      }
+                      onChange={handleChange}
+                      required
+                      // disabled={!blkCngCheckBox[6]}
+                      disabled
+                    />
                   </div>
                   <div className="col-md-6">
                     {" "}
-                    <Form.Group controlId="rates">
+                    {/* <Form.Group controlId="rates">
                       <InputField
                         className="ip-select in-fields"
                         label="Material Rate"
@@ -343,7 +398,24 @@ function BulkChangeModal(props) {
                         checkboxIndex={7}
                         showCheckbox={true}
                       />
-                    </Form.Group>
+                    </Form.Group> */}
+                    <label className="form-label">Material Rate</label>
+                    <div className="col-md-2 mt-3">
+                      <input
+                        type="checkbox"
+                        onChange={() => handleblkCngCheckBox(7)}
+                        checked={blkCngCheckBox[7]}
+                      />
+                    </div>
+                    <input
+                      className="ip-select in-fields"
+                      id="Qty"
+                      name="blkCngMrate"
+                      value={blkChange.materialRate}
+                      onChange={handleChange}
+                      required
+                      disabled={!blkCngCheckBox[7]}
+                    />
                   </div>
                 </div>
 
@@ -368,7 +440,7 @@ function BulkChangeModal(props) {
                         // onChange={selectInsp}
                         name="blkCngInspLvl"
                         disabled={!blkCngCheckBox[8]}
-                        value={blkChange.PkngLvl}
+                        value={blkChange.InspLvl}
                         onChange={handleChange}
                       >
                         <option value="" selected>

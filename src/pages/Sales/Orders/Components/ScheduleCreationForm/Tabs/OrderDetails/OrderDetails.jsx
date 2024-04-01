@@ -38,6 +38,7 @@ export default function OrderDetails(props) {
     handleBulkCngBtn,
     selectedSrl,
     //---NEW ---------
+    // handleMtrlCodeTypeaheadChange,
     newSerial,
     setNewSerial,
     ordrDetailsChange,
@@ -94,10 +95,10 @@ export default function OrderDetails(props) {
   const [strmtrlcode, setStrMtrlCode] = useState("");
   const [material, setMaterial] = useState("");
   const [DwgName, setDwgName] = useState("");
-  const [quantity, setQuantity] = useState("");
-  const [jwRate, setJwRate] = useState("");
-  const [materialRate, setMaterialRate] = useState("");
-  const [unitPrice, setUnitPrice] = useState("");
+  const [quantity, setQuantity] = useState(0.0);
+  const [jwRate, setJwRate] = useState(0.0);
+  const [materialRate, setMaterialRate] = useState(0.0);
+  const [unitPrice, setUnitPrice] = useState(0.0);
   const [Operation, setOperation] = useState("");
   const [thickness, setThickness] = useState("");
   const [specificwt, setSpecificWt] = useState(0);
@@ -268,10 +269,14 @@ export default function OrderDetails(props) {
         custcode: Cust_Code,
         OrderSrl: selectedSrl,
         DwgName: blkChange.DwgName,
+        // strmtrlcode: blkChange.strmtrlcode,
+        // MtrlSrc: blkChange.MtrlSrc,
         quantity: blkChange.quantity,
         JwCost: blkChange.jwRate,
         mtrlcost: blkChange.materialRate,
-        unitPrice: blkChange.unitPrice,
+        // unitPrice: blkChange.unitPrice,
+        unitPrice:
+          parseFloat(blkChange.jwRate) + parseFloat(blkChange.materialRate),
         Operation: blkChange.Operation,
         InspLvl: blkChange.InspLvl,
         PkngLvl: blkChange.PkngLvl,
@@ -532,15 +537,17 @@ export default function OrderDetails(props) {
         DwgName: newSerial.DwgName,
         Dwg_Code: "",
         dwg: Dwg,
-        tolerance: "",
         HasBOM: HasBOM,
         Qty_Ordered: quantity,
         JwCost: jwRate,
         mtrlcost: materialRate,
+        // UnitPrice: unitPrice,
+        UnitPrice: parseFloat(jwRate) + parseFloat(materialRate),
         strmtrlcode: strmtrlcode,
         material: material,
         Operation: Operation,
         NewSrlFormData: NewSrlFormData,
+        tolerance: "Standard(+/-0.1mm)- 100 Microns",
       };
     } else if (flag === 2) {
       // if (props.OrderData?.Order_Status === "Recorded") {
@@ -574,16 +581,17 @@ export default function OrderDetails(props) {
         DwgName: selectedPartId[0].label,
         Dwg_Code: "",
         dwg: Dwg,
-        tolerance: "",
+        tolerance: "Standard(+/-0.1mm)- 100 Microns",
         HasBOM: 1,
         Qty_Ordered: 0,
         JwCost: BomArry[0]?.JobWorkCost,
         mtrlcost: BomArry[0]?.MtrlCost,
+        UnitPrice: parseFloat(jwRate) + parseFloat(materialRate),
         strmtrlcode: strmtrlcode,
         material: material,
         Operation: Operation,
-        insplevel: "",
-        packinglevel: "",
+        insplevel: "Insp1",
+        packinglevel: "Pkng1",
         delivery_date: "",
         NewSrlFormData: NewSrlFormData,
       };

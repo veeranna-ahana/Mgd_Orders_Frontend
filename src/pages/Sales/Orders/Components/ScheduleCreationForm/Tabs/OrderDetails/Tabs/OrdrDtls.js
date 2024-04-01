@@ -349,9 +349,13 @@ function OrdrDtls(props) {
                       id="Qty"
                       // value={unitPrice}
                       // onChangeCallback={setUnitPrice}
-                      onChange={handleChange}
-                      value={ordrDetailsChange.unitPrice}
-                      required
+                      // onChange={handleChange}
+                      // value={ordrDetailsChange.unitPrice}
+                      value={
+                        parseFloat(ordrDetailsChange.jwRate) +
+                        parseFloat(ordrDetailsChange.materialRate)
+                      }
+                      disabled
                     />
                     {/* <InputField
                       className="ip-select in-fields"

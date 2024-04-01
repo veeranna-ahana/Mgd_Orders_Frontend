@@ -10,6 +10,7 @@ function OrdrTable(props) {
     selectItem,
   } = props;
 
+  console.log("OrderData", OrderData);
   return (
     <div style={{ overflow: "auto", height: "480px" }}>
       <Table striped className="table-data border" style={{ border: "1px" }}>
