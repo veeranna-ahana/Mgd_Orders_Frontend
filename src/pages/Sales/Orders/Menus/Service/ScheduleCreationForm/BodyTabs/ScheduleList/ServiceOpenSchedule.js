@@ -7,6 +7,7 @@ import { endpoints } from "../../../../../../../api/constants";
 import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create } from "@mui/icons-material";
+import ServiceModal from "./Service/ServiceModal";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
@@ -19,8 +20,14 @@ function ServiceOpenSchedule() {
   const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
 
   useEffect(() => {
-    setNewState(DwgNameList);
-  }, [DwgNameList]); // Dependency array containing DwgNameList
+    postRequest(
+      endpoints.getScheduleListDwgData,
+      { ScheduleId: DwgNameList[0].ScheduleId },
+      (response) => {
+        setNewState(response);
+      }
+    );
+  }, []); 
 
   let [profileOrder1, setProfileOrder1] = useState(false);
   let [profileOrder2, setProfileOrder2] = useState(false);
@@ -37,10 +44,10 @@ function ServiceOpenSchedule() {
     setProfileOrder1(false);
   };
 
-  let profileOrderOpen2 = () => {
-    setProfileOrder1(false);
-    setProfileOrder2(true);
-  };
+  // let profileOrderOpen2 = () => {
+  //   setProfileOrder1(false);
+  //   setProfileOrder2(true);
+  // };
 
   let profileOrderClose2 = () => {
     setProfileOrder2(false);
@@ -122,20 +129,22 @@ function ServiceOpenSchedule() {
   //   }
   // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  console.log(scheduleDetailsRow);
+  // console.log(scheduleDetailsRow);
 
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
-    postRequest(
-      endpoints.getScheduleListTaskandMaterial,
-      { scheduleDetailsRow },
-      (response) => {
-        // console.log("response is", response);
-        setTaskMaterialData(response);
-      }
-    );
-  }, [scheduleDetailsRow]); // Watch for changes in OrderData
+    if (scheduleDetailsRow) {
+      postRequest(
+        endpoints.getScheduleListTaskandMaterial,
+        { scheduleDetailsRow },
+        (response) => {
+          setTaskMaterialData(response);
+        }
+      );
+    }
+  }, [scheduleDetailsRow]); // Watch for changes in scheduleDetailsRow
+  
 
 
   //row onClick of Task Material First Table
@@ -148,7 +157,7 @@ function ServiceOpenSchedule() {
       endpoints.getDwgListData,
       { list },
       (response) => {
-        console.log("response is", response);
+        // console.log("response is", response);
         setTmDwgList(response);
       }
     );
@@ -165,16 +174,22 @@ function ServiceOpenSchedule() {
   const onClickofScheduleDtails = (item, index) => {
     let list = { ...item, index: index };
     setScheduleDetailsRow(list);
+    postRequest(
+      endpoints.getScheduleListTaskandMaterial,
+      { scheduleDetailsRow:list },
+      (response) => {
+        setTaskMaterialData(response);
+      }
+    );
   };
 
   //Default first row select
-  useEffect(() => {
-    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-      onClickofScheduleDtails(newState[0], 0); // Select the first row
-    }
-  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-  ////  console.log(scheduleDetailsRow);
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -330,14 +345,25 @@ function ServiceOpenSchedule() {
           toast.success(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
+  
+          // Introducing a delay of 1000 milliseconds (1 second)
+          setTimeout(() => {
+            postRequest(
+              endpoints.getScheduleListDwgData,
+              { ScheduleId: DwgNameList[0].ScheduleId },
+              (response) => {
+                setNewState(response);
+              }
+            );
+          }, 3000);
         } else if (response.message.startsWith("Cannot Schedule Zero Quantity For")) {
           setDeleteAskModal(true);
           setDeleteResponse(response.message);
-          console.log(response.scheduleDetails);
-          } else {
+        } else {
           setOpenScheduleModal(true);
           setResponseSchedule(response.message);
         }
+  
         postRequest(
           endpoints.getScheduleListgetFormDetails,
           {
@@ -351,6 +377,7 @@ function ServiceOpenSchedule() {
       }
     );
   };
+  
   
 
   //onClick of yes Payment ALert Modal
@@ -426,12 +453,12 @@ function ServiceOpenSchedule() {
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
     postRequest(endpoints.onClickFixtureOrder, { formdata }, (response) => {
-      // console.log("response of Scheduled is",response);
       toast.success("Order Created", {
         position: toast.POSITION.TOP_CENTER,
       });
       setFixtureData(response);
       setFixtureOrder1(false);
+      // console.log("response",response);
        if(response[0].Type==='Service'){
         navigate("/Orders/Service/ScheduleCreationForm", {
           state: response[0].Order_No,
@@ -450,8 +477,24 @@ function ServiceOpenSchedule() {
     });
   };
 
-  // console.log("fixturedata is",fixturedata);
 
+//onClick of Profile Orders
+const[profileOrders,setProfileOrders]=useState([]);
+const onClickYesProfileOrders = () => {
+  postRequest(endpoints.onClickProfileOrder, { formdata }, (response) => {
+    toast.success("Order Created", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    setProfileOrders(response);
+    setProfileOrder1(false);
+    navigate("/Orders/Profile/ScheduleCreationForm", {
+      state: response[0].Order_No,
+    });
+  });
+};
+
+
+//set OrderSchNo
   const ScheduleNo = formdata[0]?.ScheduleNo;
   const Orsch =
     formdata[0]?.Order_No +
@@ -459,6 +502,7 @@ function ServiceOpenSchedule() {
     (ScheduleNo != null && ScheduleNo !== "null" && ScheduleNo !== undefined
       ? ScheduleNo
       : "");
+
 
   //CHECK STATUS
   const checkstatus = () => {
@@ -474,10 +518,14 @@ function ServiceOpenSchedule() {
     );
   };
 
-  console.log("formdata is",formdata)
 
+// Onclick MPdf Open
+const[serviceOpen,setServiceOpen]=useState(false);
+const OnclickPdfOpen=()=>{
+  setServiceOpen(true);
+}
 
-
+console.log("formdata is",formdata);
   return (
     <div>
       <div className="row">
@@ -760,6 +808,7 @@ function ServiceOpenSchedule() {
 
         <div className="col-md-2 col-sm-3">
           <button
+          onClick={OnclickPdfOpen}
             className="button-style "
             disabled={
               formdata[0]?.Schedule_Status === "Dispatched" ||
@@ -778,6 +827,17 @@ function ServiceOpenSchedule() {
             Print Schedule
           </button>
         </div>
+        
+        {formdata.Type === 'Profile' && (
+        <div className="col-md-2 col-sm-3">
+          <button className="button-style" onClick={profileOrderOpen1}
+          disabled={formdata[0]?.Schedule_Status !== "Scheduled" || formdata[0]?.Schedule_Status !== "Tasked" }
+
+          >
+            Profile Order
+          </button>
+        </div>
+      )}
 
         {/* <div className="col-md-2 col-sm-3">
           <button className="button-style" onClick={profileOrderOpen1}>
@@ -1209,7 +1269,7 @@ function ServiceOpenSchedule() {
       <AlertModal
         show={profileOrder1}
         onHide={(e) => setProfileOrder1(e)}
-        firstbutton={profileOrderOpen2}
+        firstbutton={onClickYesProfileOrders}
         secondbutton={profileOrderClose1}
         title="magod_Order"
         message="Do you wish to create or use internal order for this schedule."
@@ -1259,6 +1319,12 @@ function ServiceOpenSchedule() {
         message={deleteResponse}
         firstbuttontext="Yes"
         secondbuttontext="No"
+      />
+
+      <ServiceModal
+      serviceOpen={serviceOpen}
+      setServiceOpen={setServiceOpen}
+      formdata={formdata}
       />
 
     </div>
