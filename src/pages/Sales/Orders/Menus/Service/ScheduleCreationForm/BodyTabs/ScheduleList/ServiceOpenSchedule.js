@@ -964,6 +964,7 @@ console.log("newState is",newState);
                         <td>
                           <input
                           className="table-cell-editor"
+                          style={{backgroundColor:"transparent",border:"none"}}
                           value={item.QtyScheduled}
                           onChange={(e) =>
                             handleSchedulelist(key, "QtyScheduled", e.target.value)
