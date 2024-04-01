@@ -628,6 +628,7 @@ const ServicePDF = ({ formdata }) => {
       endpoints.pdfdata,
       { formdata },
       (response) => {
+        // console.log("response is",response);
         setTabledata(response);
       }
     );

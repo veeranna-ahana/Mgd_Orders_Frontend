@@ -21,7 +21,7 @@ function ServiceOpenSchedule() {
 
   useEffect(() => {
     postRequest(
-      endpoints.getScheduleListDwgData,
+      endpoints.ShiftDetails,
       { ScheduleId: DwgNameList[0].ScheduleId },
       (response) => {
         setNewState(response);
@@ -271,23 +271,14 @@ function ServiceOpenSchedule() {
 
   //Onclick Suspend
   const OnClickSuspend = () => {
-    postRequest(
-      endpoints.onClickSuspend,
-      { scheduleDetailsRow },
-      (response) => {
-        // console.log("response",response.message)
-        if (
-          response.message ===
-          "Clear Order Suspension of the order before trying to clear it for schedule"
-        ) {
-          toast.warning(
-            "Clear Order Suspension of the order before trying to clear it for schedule",
-            {
-              position: toast.POSITION.TOP_CENTER,
-            }
-          );
-        } else {
-          toast.success("Suspended", {
+    if(formdata[0]?.Schedule_Status === "Suspended" ){
+      postRequest(
+        endpoints.releaseSuspended,
+        {
+          formdata
+        },
+        (response) => {
+          toast.success("Success", {
             position: toast.POSITION.TOP_CENTER,
           });
           postRequest(
@@ -301,8 +292,42 @@ function ServiceOpenSchedule() {
             }
           );
         }
-      }
-    );
+      );
+    }
+    else{
+      postRequest(
+        endpoints.onClickSuspend,
+        { formdata },
+        (response) => {
+          if (
+            response.message ===
+            "Clear Order Suspension of the order before trying to clear it for schedule"
+          ) {
+            toast.warning(
+              "Clear Order Suspension of the order before trying to clear it for schedule",
+              {
+                position: toast.POSITION.TOP_CENTER,
+              }
+            );
+          } else {
+            toast.success("Suspended", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+            postRequest(
+              endpoints.getScheduleListgetFormDetails,
+              {
+                Cust_Code: DwgNameList[0]?.Cust_Code,
+                ScheduleId: DwgNameList[0]?.ScheduleId,
+              },
+              (response) => {
+                setFormdata(response);
+              }
+            );
+          }
+        }
+      );
+
+    }
   };
 
   //Onclick of Cancel
@@ -314,7 +339,7 @@ function ServiceOpenSchedule() {
           position: toast.POSITION.TOP_CENTER,
         });
       } else {
-        toast.error("Schedules cancelled successfully", {
+        toast.success("Schedules cancelled successfully", {
           position: toast.POSITION.TOP_CENTER,
         });
         postRequest(
@@ -339,7 +364,7 @@ function ServiceOpenSchedule() {
   const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
-      { scheduleDetailsRow, formdata },
+      { scheduleDetailsRow, formdata,newState},
       (response) => {
         if (response.message === "Scheduled") {
           toast.success(response.message, {
@@ -349,7 +374,7 @@ function ServiceOpenSchedule() {
           // Introducing a delay of 1000 milliseconds (1 second)
           setTimeout(() => {
             postRequest(
-              endpoints.getScheduleListDwgData,
+              endpoints.ShiftDetails,
               { ScheduleId: DwgNameList[0].ScheduleId },
               (response) => {
                 setNewState(response);
@@ -525,7 +550,23 @@ const OnclickPdfOpen=()=>{
   setServiceOpen(true);
 }
 
-console.log("formdata is",formdata);
+// console.log("formdata is",formdata);
+
+// 
+const handleSchedulelist = (index, field, value) => {
+  // console.log("value is",value);
+  const updatedDwgdata = [...newState]; // Create a copy of the array
+  // Update the specific item's field with the new value
+  // console.log("updatedDwgdata",updatedDwgdata);
+  updatedDwgdata[index] = {
+    ...updatedDwgdata[index],
+    [field]: value,
+  };
+  setNewState(updatedDwgdata);
+};
+
+console.log("newState is",newState);
+
   return (
     <div>
       <div className="row">
@@ -633,8 +674,8 @@ console.log("formdata is",formdata);
               formdata[0]?.Schedule_Status === "Cancelled"
             }
           >
-            Suspend
-          </button>
+            {formdata[0]?.Schedule_Status === "Suspended" ? "Release" : "Suspend"}          
+            </button>
 
           <button
             className="button-style"
@@ -885,6 +926,10 @@ console.log("formdata is",formdata);
                     <th>Material</th>
                     <th>Source</th>
                     <th>Process</th>
+                    {formdata[0]?.Schedule_Status==='Created' ?
+                    <th>To Schedule</th>
+                      : null
+                    }
                     <th>Scheduled</th>
                     <th>Programmed</th>
                     <th>Produced</th>
@@ -912,7 +957,20 @@ console.log("formdata is",formdata);
                         <td>{item.Mtrl_Code}</td>
                         <td>{item.Mtrl_Source}</td>
                         <td>{item.Operation}</td>
-                        <td>{item.QtyScheduled}</td>
+                        {formdata[0]?.Schedule_Status==='Created' ?
+                        <td>{item.QtyToSchedule}</td>
+                        : null
+                    }
+                        <td>
+                          <input
+                          className="table-cell-editor"
+                          style={{backgroundColor:"transparent",border:"none"}}
+                          value={item.QtyScheduled}
+                          onChange={(e) =>
+                            handleSchedulelist(key, "QtyScheduled", e.target.value)
+                          }
+                        />
+                        </td>
                         <td>{item.QtyProgrammed}</td>
                         <td>{item.QtyProduced}</td>
                         <td>{item.QtyCleared}</td>

@@ -286,6 +286,7 @@ export const endpoints = {
   getScheduleListDwgData: `${API}/ScheduleList/getDwgTableData`,
   getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
   getDwgListData: `${API}/ScheduleList/getDwgDataListTMTab`,
+  ShiftDetails: `${API}/ScheduleList/shiftDetails`,
 
 
   //OpenSchedule Srvice
@@ -331,6 +332,7 @@ export const endpoints = {
   onClickSuspend: `${API}/ScheduleList/suspendButton`,
   onClickCancel: `${API}/ScheduleList/onClickCancel`,
   onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
+  releaseSuspended:`${API}/ScheduleList/releaseClick`,
 
   // packingNote and Invoice
   getAllPNAndInvRegisterbyOrderNo: `${API}/orderPackingNoteAndInvoice/getAllPNAndInvRegisterbyOrderNo`,

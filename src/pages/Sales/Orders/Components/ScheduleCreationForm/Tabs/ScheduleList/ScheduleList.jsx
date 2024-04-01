@@ -16,9 +16,7 @@ export default function ScheduleList({
   setScheduleListData,
   scheduleListData,
 }) {
-
-
-  console.log("OrderData",OrderData);
+  // console.log("OrderData", OrderData.Type);
 
   //date format
   const formatDate = (dateString) => {
@@ -57,7 +55,6 @@ export default function ScheduleList({
       endpoints.getScheduleListDwgData,
       { ScheduleId: list.ScheduleId },
       (response) => {
-        // console.log("orderData.....", response);
         setDwgNameList(response);
       }
     );
@@ -89,7 +86,7 @@ export default function ScheduleList({
     );
   };
 
-  console.log("rowScheduleList.Created", rowScheduleList.Schedule_Status);
+  // console.log("rowScheduleList.Created", rowScheduleList.Schedule_Status);
 
   return (
     <>
@@ -120,10 +117,23 @@ export default function ScheduleList({
           </div>
 
           <div className="col-md-2">
-            <Link
+            {/* <Link
               to={"/Orders/Service/ServiceOpenSchedule"}
               state={DwgNameList}
-            >
+            > */}
+              <Link
+             
+             to={
+              OrderData?.Type === "Profile"
+                 ? `/Orders/Profile/ProfileOpenSchedule`
+                 : OrderData?.Type === "Service"
+                 ? `/Orders/Service/ServiceOpenSchedule`
+                 : OrderData?.Type === "Fabrication"
+                 ? `/Orders/Fabrication/FabricationOpenSchedule`
+                 : null
+             }
+             state={DwgNameList}
+           >
               <button
                 className="button-style"
                 disabled={Object.keys(rowScheduleList).length === 0}
