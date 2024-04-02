@@ -641,7 +641,6 @@ const ServicePDF = ({ formdata }) => {
       endpoints.getCustName,
       { formdata },
       (response) => {
-        console.log("Response from API:", response[0].Cust_name);
           setCustname(response[0].Cust_name);
       }
     );
@@ -793,7 +792,7 @@ const ServicePDF = ({ formdata }) => {
                           </View>
                           <View style={styles.targerdatedata}>
                             <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp; {formatDate(formdata[0].schTgtDate)}
+                              :&nbsp;&nbsp; {formatDate(formdata[0].Delivery_Date)}
                             </Text>
                           </View>
                         </View>
@@ -806,7 +805,7 @@ const ServicePDF = ({ formdata }) => {
                           </View>
                           <View style={styles.targerdatedata}>
                             <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp;{formatDate(formdata[0].TgtDelDate)}
+                              :&nbsp;&nbsp;{formatDate(formdata[0].schTgtDate)}
                             </Text>
                           </View>
                         </View>
@@ -855,6 +854,7 @@ const ServicePDF = ({ formdata }) => {
               </View>
             ))}
             <View style={styles.maintableview}>
+
               {Tabledata.slice(
                 pageIndex * recordsPerPage,
                 (pageIndex + 1) * recordsPerPage
@@ -868,10 +868,10 @@ const ServicePDF = ({ formdata }) => {
                           { fontSize: "12px", paddingBottom: "5px" },
                         ]}
                       >
-                        Task No : {item.TaskNo}
+                        Task No : {item.taskNo}
                       </Text>
                     </View>
-
+                  
                     <View style={styles.sheetDetails}>
                       <Text
                         style={[
@@ -952,40 +952,46 @@ const ServicePDF = ({ formdata }) => {
                     </View>
                   </View>
 
+            {item.otherdetails.map((detail, subIndex) => (
                   <View style={styles.row}>
                     <View style={styles.srldata}>
-                      <Text style={styles.tabletext}>{index + 1}</Text>
+                      <Text style={styles.tabletext}>{subIndex + 1}</Text>
                     </View>
 
                     <View style={styles.drawingnamedata}>
-                      <Text style={styles.tabletext}>{item.DwgName}</Text>
+                      <Text style={styles.tabletext}>{detail.DwgName}</Text>
                     </View>
 
                     <View style={styles.Inspectiondata}>
-                      <Text style={styles.tabletext}>{item.InspLevel}</Text>
+                      <Text style={styles.tabletext}>{detail.InspLevel}</Text>
                     </View>
 
                     <View style={styles.Packingdata}>
-                      <Text style={styles.tabletext}>{item.PackingLevel}</Text>
+                      <Text style={styles.tabletext}>{detail.PackingLevel}</Text>
                     </View>
 
                     <View style={styles.Scheduleddata}>
-                      <Text style={styles.tabletext}>{item.QtyScheduled}</Text>
+                      <Text style={styles.tabletext}>{detail.QtyScheduled}</Text>
                     </View>
+
                     <View style={styles.Produceddata}>
-                      <Text style={styles.tabletext}>{item.QtyProduced}</Text>
+                      <Text style={styles.tabletext}>{detail.QtyProduced}</Text>
                     </View>
+
                     <View style={styles.Delivereddata}>
-                      <Text style={styles.tabletext}>{item.QtyDelivered}</Text>
+                      <Text style={styles.tabletext}>{detail.QtyDelivered}</Text>
                     </View>
 
                     <View style={styles.scheduleNotabledata}>
                       <Text style={styles.tabletext}></Text>
                     </View>
                   </View>
+                   ))}
                 </View>
               ))}
 
+
+            
               <View style={styles.mainsidetableview}>
                 <View style={styles.column}>
                   <View>

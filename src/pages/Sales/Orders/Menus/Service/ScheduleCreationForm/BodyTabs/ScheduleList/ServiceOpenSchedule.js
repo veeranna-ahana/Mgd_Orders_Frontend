@@ -102,10 +102,6 @@ function ServiceOpenSchedule() {
   }, [DwgNameList[0]]);
   
 
-  ////  console.log("formdata......", formdata);
-
-  // console.log("PNAndInvRegisterData", PNAndInvRegisterData);
-  // console.log("PNAndInvDetailsData", PNAndInvDetailsData);
   //get Sales Contact
   const [ProgramEngineer, setProgramEngineer] = useState([]);
   useEffect(() => {
@@ -163,12 +159,21 @@ function ServiceOpenSchedule() {
     );
   };
 
+
   //Default first row select
-  useEffect(() => {
-    if (TaskMaterialData.length > 0 && !rowselectTaskMaterial.TaskNo) {
-      onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
-    }
-  }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
+  // useEffect(() => {
+  //   // Check if TaskMaterialData is available and rowselectTaskMaterial is empty
+  //   if (TaskMaterialData.length > 0 && Object.keys(rowselectTaskMaterial).length === 0) {
+  //     onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
+  //     console.log("rowselectTaskMaterial",rowselectTaskMaterial);
+  //   }
+  // }, [TaskMaterialData, rowselectTaskMaterial]); // Remove onRowSelectTaskMaterialTable from dependency array as it's a function
+  
+  // console.log("rowselectTaskMaterial",rowselectTaskMaterial);
+
+
+
+
 
   //Onclick of Table
   const onClickofScheduleDtails = (item, index) => {
@@ -184,11 +189,11 @@ function ServiceOpenSchedule() {
   };
 
   //Default first row select
-  // useEffect(() => {
-  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
-  //   }
-  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  useEffect(() => {
+    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+      onClickofScheduleDtails(newState[0], 0); // Select the first row
+    }
+  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
 
   //Onclick of ShortClose
@@ -565,7 +570,7 @@ const handleSchedulelist = (index, field, value) => {
   setNewState(updatedDwgdata);
 };
 
-console.log("newState is",newState);
+// console.log("newState is",newState);
 
   return (
     <div>
@@ -588,7 +593,16 @@ console.log("newState is",newState);
 
         <div className="col-md-4 sm-12">
           <label className="form-label">Schedule No</label>
-          <input type="text" value={Orsch} disabled />
+          <input
+             type="text"
+           value={
+          formdata[0]?.Schedule_Status === 'Created'
+             ? Orsch
+            : formdata[0]?.OrdSchNo
+            }
+           disabled
+           />
+
         </div>
       </div>
 
