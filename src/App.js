@@ -127,6 +127,11 @@ function App() {
                     path="ScheduleCreationForm"
                     element={<ProfileScheduleCreationForm />}
                   />
+
+               <Route
+                    path="ProfileOpenSchedule"
+                    element={<ServiceOpenSchedule />}
+                  />
                   <Route
                     path="FindOrder/ImportExcelForm"
                     element={<ImportExcelForm />}
@@ -248,6 +253,11 @@ function App() {
                     path="OrderList/Processing"
                     element={<FabProcessing />}
                   />
+
+                   <Route
+                    path="FabricationOpenSchedule"
+                    element={<ServiceOpenSchedule />}
+                  />  
                   <Route
                     path="OrderList/Completed"
                     element={<FabCompleted />}
