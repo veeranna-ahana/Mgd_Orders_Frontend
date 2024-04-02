@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import Logo from "../Auth/Magod Laser Logo - Default [2500].png";
 import { useNavigate } from "react-router-dom";
-
+import { toast, ToastContainer } from "react-toastify";
 const apiKey = process.env.REACT_APP_API_KEY;
 
 function Login() {
@@ -37,9 +37,12 @@ function Login() {
           console.log("first", data);
           localStorage.setItem("token", data.accessToken);
           localStorage.setItem("LazerUser", JSON.stringify(data));
-          // window.location.href = "/home";
+          window.location.href = "/home";
         } else {
-          alert("Invalid Username/Password");
+          toast.error("Invalid Username/Password", { autoClose: 1500 });
+          setTimeout(() => {
+            toast.dismiss();
+          }, 1500);
         }
       }
     );
@@ -58,9 +61,12 @@ function Login() {
             console.log("first", data.accessToken.data[0].Current);
             localStorage.setItem("token", data.accessToken);
             localStorage.setItem("LazerUser", JSON.stringify(data));
-            // window.location.href = "/home";
+            window.location.href = "/home";
           } else {
-            alert("Invalid Username/Password");
+            toast.error("Invalid Username/Password", { autoClose: 1500 });
+            setTimeout(() => {
+              toast.dismiss();
+            }, 1500);
           }
         }
       );

@@ -850,6 +850,7 @@ export default function ScheduleCreationForm(props) {
     setSelectedItems([]);
   };
 
+  console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
   useEffect(() => {
     fetchData();
   }, []);

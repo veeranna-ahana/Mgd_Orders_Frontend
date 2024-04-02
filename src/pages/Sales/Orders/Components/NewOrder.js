@@ -166,7 +166,12 @@ function NewOrder(props) {
       // toast.error("Event", e);
     } else {
       console.error("Event object is undefined in SaveOrder function.");
-      toast.error("Event object is undefined in SaveOrder function.");
+      toast.error("Event object is undefined in SaveOrder function.", {
+        autoClose: 1500,
+      });
+      setTimeout(() => {
+        toast.dismiss();
+      }, 1500);
       return;
     }
     e.preventDefault();
@@ -266,7 +271,7 @@ function NewOrder(props) {
         //   localStorage.setItem("LazerOrder", JSON.stringify(orderno,customer))
         let Ordno = resp.orderno;
 
-        toast.success("Order Created with " + Ordno, { autoClose: 800 });
+        toast.success("Order Created with " + Ordno, { autoClose: 2100 });
         setTimeout(() => {
           if (Ordno != null) {
             if (props.Type === "Profile") {

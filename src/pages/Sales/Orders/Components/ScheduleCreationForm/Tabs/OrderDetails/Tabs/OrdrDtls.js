@@ -257,21 +257,36 @@ function OrdrDtls(props) {
                       type="text"
                       value={selectedItems[0]?.Mtrl_Code || " "}
                     /> */}
-                    {mtrldata.length > 0 || mtrldata != null ? (
+                    {/* {mtrldata.length > 0 || mtrldata != null ? (
                       <Typeahead
                         className="ip-select in-fields"
                         id="basic-example"
                         name="odrDtlMaterial"
                         labelKey="Mtrl_Code"
                         onChange={handleMtrlCodeTypeaheadChange}
-                        selected={selectedItems}
+                        // selected={selectedItems}
+                        value={selectedItems[0]?.Mtrl_Code}
                         options={mtrldata}
                         placeholder="Choose a Material..."
                         required
                       ></Typeahead>
                     ) : (
                       ""
-                    )}
+                    )} */}
+                    {/* {mtrldata.length > 0 || mtrldata != null ? ( */}
+                    <Typeahead
+                      id="basic-example"
+                      labelKey="Mtrl_Code"
+                      name="newSrlMaterial"
+                      onChange={handleMtrlCodeTypeaheadChange}
+                      options={mtrldata}
+                      // placeholder="Choose a Material..."
+                      required
+                      value={selectedItems[0]?.Mtrl_Code}
+                    />
+                    {/* ) : (
+                      "" */}
+                    {/* )} */}
                   </div>
                 </div>
               </div>
