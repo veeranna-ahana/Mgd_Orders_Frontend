@@ -136,12 +136,12 @@ export default function ScheduleList({
            >
               <button
                 className="button-style"
-                disabled={Object.keys(rowScheduleList).length === 0}
+                disabled={Object.keys(DwgNameList).length === 0}
               >
                 Open Schedule
               </button>
             </Link>
-            {Object.keys(rowScheduleList).length === 0 && (
+            {Object.keys(DwgNameList).length === 0 && (
               <style>
                 {`
             .button-style[disabled] {
