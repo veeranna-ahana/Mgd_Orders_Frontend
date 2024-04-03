@@ -13,11 +13,7 @@ function Open() {
         <div className="col-md-3 mt-3">
           <button
             className="button-style"
-            onClick={() =>
-              navigate(
-                "/Orders/CombinedSchedules/JobWork/ScheduleList/ScheduleDetails"
-              )
-            }
+            onClick={() => navigate("/orders/CombinedScheduleDetails")}
           >
             Go
           </button>

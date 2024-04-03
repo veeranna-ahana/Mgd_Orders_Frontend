@@ -369,4 +369,25 @@ export const endpoints = {
   getQtnDataByQtnID: `${API}/orderDetails/getQtnDataByQtnID`,
   postDeleteDetailsByOrderNo: `${API}/orderDetails/postDeleteDetailsByOrderNo`,
   postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
+
+  //Combined Schedule
+  //Job Work
+  getSalesContact: `${API}/jobworkCreate/getSalesContactList`,
+  allcustomerdata:`${API}/jobworkCreate/allcustomersData`,
+  rightTabledata:`${API}/jobworkCreate/getRightTableData`,
+  prepareSchedule:`${API}/jobworkCreate/prepareSchedule`,
+  CreateSchedule:`${API}/jobworkCreate/createSchedule`,
+  afterCombinedSchedule:`${API}/jobworkCreate/afterCombineSchedule`,
+  getSchedudleDetails:`${API}/scheduleList/scheduleListDetails`,
+  CombinedTasksTaskTable:`${API}/scheduleList/combinedTaksTaskTable`,
+  CombinedTasksShowDwg:`${API}/scheduleList/combinedTaksShowDwgName`,
+  OriginalTable:`${API}/scheduleList/OriginalTable1`,
+  OriginalTable2:`${API}/scheduleList/OriginalTable2`,
+  updateToOriganalSchedule:`${API}/scheduleList/updateToOriganalSchedule`,
+  updateTask:`${API}/scheduleList/updateTask`,
+  distributeParts:`${API}/scheduleList/distributeParts`,
+  save:`${API}/scheduleList/save`,
+  ScheduleListOrdered:`${API}/scheduleList/ScheduleListOrdered`,
+  scheduleListDetails:`${API}/scheduleList/scheduleListDetails`,
+  ScheduleListClosed:`${API}/scheduleList/ScheduleListClosed`,
 };
