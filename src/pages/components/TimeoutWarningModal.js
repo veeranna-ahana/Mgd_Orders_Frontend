@@ -1,24 +1,6 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-    maxWidth: "500px",
-    width: "100%",
-    padding: "50px",
-    fontSize: "20px",
-    backgroundColor: "lightblue",
-  },
-};
-
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
-
 export const TimeoutWarningModal = ({ isOpen, onRequestClose }) => {
   const onLogOffCall = () => {
     localStorage.clear();
@@ -26,20 +8,46 @@ export const TimeoutWarningModal = ({ isOpen, onRequestClose }) => {
   };
 
   return (
-    <div>
-      <Modal show={isOpen} style={customStyles} contentLabel="Example Modal">
-        <h2>Session Timeout</h2>
-        <div>
+    <div className="row mt-1">
+      <Modal show={isOpen} size="sm">
+        <Modal.Header
+          className="justify-content-md-center"
+          style={{
+            paddingTop: "10px",
+            backgroundColor: "#283E81",
+            color: "#ffffff",
+          }}
+        >
+          <Modal.Title> Session Timeout</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body className="justify-content-md-center">
           You're being timed out due to inactivity. Please choose to stay signed
           in or to logoff. Otherwise, you will be logged off automatically
-        </div>
-        <br />
-        <button className="secondary" onClick={onLogOffCall}>
-          Log off
-        </button>
-        <button className="primary" onClick={onRequestClose}>
-          Stay Logged In
-        </button>
+        </Modal.Body>
+
+        <Modal.Footer>
+          {" "}
+          <div className="row justify-content-md-center ">
+            <button
+              className="button-style"
+              type="submit"
+              style={{ width: "100px" }}
+              onClick={onRequestClose}
+            >
+              StayIn
+            </button>
+
+            <button
+              className="button-style"
+              style={{ width: "100px", backgroundColor: "gray" }}
+              variant="secondary"
+              onClick={onLogOffCall}
+            >
+              logout
+            </button>
+          </div>
+        </Modal.Footer>
       </Modal>
     </div>
   );

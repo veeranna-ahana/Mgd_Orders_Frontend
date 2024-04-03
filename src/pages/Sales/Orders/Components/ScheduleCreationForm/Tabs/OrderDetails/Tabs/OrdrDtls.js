@@ -257,24 +257,24 @@ function OrdrDtls(props) {
                       type="text"
                       value={selectedItems[0]?.Mtrl_Code || " "}
                     /> */}
-                    {/* {mtrldata.length > 0 || mtrldata != null ? (
+                    {mtrldata.length > 0 || mtrldata != null ? (
                       <Typeahead
                         className="ip-select in-fields"
                         id="basic-example"
                         name="odrDtlMaterial"
                         labelKey="Mtrl_Code"
                         onChange={handleMtrlCodeTypeaheadChange}
-                        // selected={selectedItems}
-                        value={selectedItems[0]?.Mtrl_Code}
+                        selected={selectedItems}
+                        // value={selectedItems[0]?.Mtrl_Code}
                         options={mtrldata}
                         placeholder="Choose a Material..."
                         required
                       ></Typeahead>
                     ) : (
                       ""
-                    )} */}
+                    )}
                     {/* {mtrldata.length > 0 || mtrldata != null ? ( */}
-                    <Typeahead
+                    {/* <Typeahead
                       id="basic-example"
                       labelKey="Mtrl_Code"
                       name="newSrlMaterial"
@@ -283,7 +283,7 @@ function OrdrDtls(props) {
                       // placeholder="Choose a Material..."
                       required
                       value={selectedItems[0]?.Mtrl_Code}
-                    />
+                    /> */}
                     {/* ) : (
                       "" */}
                     {/* )} */}
@@ -396,62 +396,62 @@ function OrdrDtls(props) {
                       type="text"
                       value={LastSlctedRow?.Operation || " "}
                     /> */}
-                    {procdata.length > 0 ? (
-                      <select
-                        className="ip-select in-fields"
-                        id="strprocess"
-                        name="odrDtlOperation"
-                        value={ordrDetailsChange.Operation}
-                        // onChange={selectProc}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          ** Select **
-                        </option>
-                        {procdata.map((proc) => {
-                          // Check if "Service" column has non-zero values
-                          if (props.OrderData?.Type === "Service") {
-                            if (proc["Service"] !== 0) {
-                              return (
-                                <option
-                                  key={proc["ProcessDescription"]}
-                                  value={proc["ProcessDescription"]}
-                                >
-                                  {proc["ProcessDescription"]}
-                                </option>
-                              );
-                            }
-                          } else if (props.OrderData?.Type === "Fabrication") {
-                            if (proc["MultiOperation"] !== 0) {
-                              return (
-                                <option
-                                  key={proc["ProcessDescription"]}
-                                  value={proc["ProcessDescription"]}
-                                  required
-                                >
-                                  {proc["ProcessDescription"]}
-                                </option>
-                              );
-                            }
-                          } else {
-                            if (proc["Profile"] !== 0) {
-                              return (
-                                <option
-                                  key={proc["ProcessDescription"]}
-                                  value={proc["ProcessDescription"]}
-                                >
-                                  {proc["ProcessDescription"]}
-                                </option>
-                              );
-                            }
+                    {/* {procdata.length > 0 ? ( */}
+                    <select
+                      className="ip-select in-fields"
+                      id="strprocess"
+                      name="odrDtlOperation"
+                      value={ordrDetailsChange.Operation}
+                      // onChange={selectProc}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled selected>
+                        ** Select **
+                      </option>
+                      {procdata.map((proc) => {
+                        // Check if "Service" column has non-zero values
+                        if (props.OrderData?.Type === "Service") {
+                          if (proc["Service"] !== 0) {
+                            return (
+                              <option
+                                key={proc["ProcessDescription"]}
+                                value={proc["ProcessDescription"]}
+                              >
+                                {proc["ProcessDescription"]}
+                              </option>
+                            );
                           }
+                        } else if (props.OrderData?.Type === "Fabrication") {
+                          if (proc["MultiOperation"] !== 0) {
+                            return (
+                              <option
+                                key={proc["ProcessDescription"]}
+                                value={proc["ProcessDescription"]}
+                                required
+                              >
+                                {proc["ProcessDescription"]}
+                              </option>
+                            );
+                          }
+                        } else {
+                          if (proc["Profile"] !== 0) {
+                            return (
+                              <option
+                                key={proc["ProcessDescription"]}
+                                value={proc["ProcessDescription"]}
+                              >
+                                {proc["ProcessDescription"]}
+                              </option>
+                            );
+                          }
+                        }
 
-                          return null; // Exclude options with zero values in "Service" column
-                        })}
-                      </select>
-                    ) : (
+                        return null; // Exclude options with zero values in "Service" column
+                      })}
+                    </select>
+                    {/* ) : (
                       ""
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
@@ -833,59 +833,59 @@ function OrdrDtls(props) {
                 <div className="row mt-2 mb-3">
                   <div className="col-md-4">
                     <label className="form-label">Operation</label>
-                    {procdata.length > 0 ? (
-                      <select
-                        className="ip-select in-fields"
-                        id="strprocess"
-                        onChange={selectProc}
-                        disabled={BomData.length === 0}
-                      >
-                        <option value="" disabled selected>
-                          ** Select **
-                        </option>
-                        {procdata.map((proc) => {
-                          // Check if "Service" column has non-zero values
-                          if (props.OrderData?.Type === "Service") {
-                            if (proc["Service"] !== 0) {
-                              return (
-                                <option
-                                  key={proc["ProcessDescription"]}
-                                  value={proc["ProcessDescription"]}
-                                >
-                                  {proc["ProcessDescription"]}
-                                </option>
-                              );
-                            }
-                          } else if (props.OrderData?.Type === "Fabrication") {
-                            if (proc["MultiOperation"] !== 0) {
-                              return (
-                                <option
-                                  key={proc["ProcessDescription"]}
-                                  value={proc["ProcessDescription"]}
-                                >
-                                  {proc["ProcessDescription"]}
-                                </option>
-                              );
-                            }
-                          } else {
-                            if (proc["Profile"] !== 0) {
-                              return (
-                                <option
-                                  key={proc["ProcessDescription"]}
-                                  value={proc["ProcessDescription"]}
-                                >
-                                  {proc["ProcessDescription"]}
-                                </option>
-                              );
-                            }
+                    {/* {procdata.length > 0 ? ( */}
+                    <select
+                      className="ip-select in-fields"
+                      id="strprocess"
+                      onChange={selectProc}
+                      disabled={BomData.length === 0}
+                    >
+                      <option value="" disabled selected>
+                        ** Select **
+                      </option>
+                      {procdata.map((proc) => {
+                        // Check if "Service" column has non-zero values
+                        if (props.OrderData?.Type === "Service") {
+                          if (proc["Service"] !== 0) {
+                            return (
+                              <option
+                                key={proc["ProcessDescription"]}
+                                value={proc["ProcessDescription"]}
+                              >
+                                {proc["ProcessDescription"]}
+                              </option>
+                            );
                           }
+                        } else if (props.OrderData?.Type === "Fabrication") {
+                          if (proc["MultiOperation"] !== 0) {
+                            return (
+                              <option
+                                key={proc["ProcessDescription"]}
+                                value={proc["ProcessDescription"]}
+                              >
+                                {proc["ProcessDescription"]}
+                              </option>
+                            );
+                          }
+                        } else {
+                          if (proc["Profile"] !== 0) {
+                            return (
+                              <option
+                                key={proc["ProcessDescription"]}
+                                value={proc["ProcessDescription"]}
+                              >
+                                {proc["ProcessDescription"]}
+                              </option>
+                            );
+                          }
+                        }
 
-                          return null; // Exclude options with zero values in "Service" column
-                        })}
-                      </select>
-                    ) : (
+                        return null; // Exclude options with zero values in "Service" column
+                      })}
+                    </select>
+                    {/* ) : (
                       ""
-                    )}
+                    )} */}
                   </div>
                   <div className="col-md-4">
                     <label className="form-label ">J W Cost</label>

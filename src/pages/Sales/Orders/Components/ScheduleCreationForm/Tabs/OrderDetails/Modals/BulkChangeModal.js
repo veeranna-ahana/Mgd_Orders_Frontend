@@ -200,67 +200,65 @@ function BulkChangeModal(props) {
                           checked={blkCngCheckBox[3]}
                         />
                       </div>
-                      {procdata?.length > 0 ? (
-                        <select
-                          className="ip-select in-fields"
-                          id="strprocess"
-                          name="blkCngOperation"
-                          // onChange={selectProc}
-                          disabled={!blkCngCheckBox[3]}
-                          value={blkChange.Operation}
-                          onChange={handleChange}
+                      {/* {procdata?.length > 0 ? ( */}
+                      <select
+                        className="ip-select in-fields"
+                        id="strprocess"
+                        name="blkCngOperation"
+                        // onChange={selectProc}
+                        disabled={!blkCngCheckBox[3]}
+                        value={blkChange.Operation}
+                        onChange={handleChange}
+                      >
+                        <option
+                          value=""
+                          // disabled={!blkCngCheckBox[3]}
+                          selected
                         >
-                          <option
-                            value=""
-                            // disabled={!blkCngCheckBox[3]}
-                            selected
-                          >
-                            ** Select **
-                          </option>
-                          {procdata.map((proc) => {
-                            // Check if "Service" column has non-zero values
-                            if (props.OrderData?.Type === "Service") {
-                              if (proc["Service"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
-                            } else if (
-                              props.OrderData?.Type === "Fabrication"
-                            ) {
-                              if (proc["MultiOperation"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
-                            } else {
-                              if (proc["Profile"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
+                          ** Select **
+                        </option>
+                        {procdata.map((proc) => {
+                          // Check if "Service" column has non-zero values
+                          if (props.OrderData?.Type === "Service") {
+                            if (proc["Service"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
                             }
-                            return null;
-                          })}
-                        </select>
-                      ) : (
+                          } else if (props.OrderData?.Type === "Fabrication") {
+                            if (proc["MultiOperation"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else {
+                            if (proc["Profile"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          }
+                          return null;
+                        })}
+                      </select>
+                      {/* ) : (
                         ""
-                      )}
+                      )} */}
                     </div>
                   </Form.Group>
                 </div>

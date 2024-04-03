@@ -161,62 +161,60 @@ function AddNewSrlModal(props) {
                     </div> */}
                     <div className="md-col-4">
                       <label className="form-label">Operation</label>
-                      {procdata.length > 0 ? (
-                        <select
-                          className="ip-select"
-                          id="strprocess"
-                          name="newSrlOperation"
-                          onChange={selectProc}
-                        >
-                          <option value="" disabled selected>
-                            ** Select **
-                          </option>
-                          {procdata.map((proc) => {
-                            // Check if "Service" column has non-zero values
-                            if (props.OrderData?.Type === "Service") {
-                              if (proc["Service"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
-                            } else if (
-                              props.OrderData?.Type === "Fabrication"
-                            ) {
-                              if (proc["MultiOperation"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                    required
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
-                            } else {
-                              if (proc["Profile"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
+                      {/* {procdata.length > 0 ? ( */}
+                      <select
+                        className="ip-select"
+                        id="strprocess"
+                        name="newSrlOperation"
+                        onChange={selectProc}
+                      >
+                        <option value="" disabled selected>
+                          ** Select **
+                        </option>
+                        {procdata.map((proc) => {
+                          // Check if "Service" column has non-zero values
+                          if (props.OrderData?.Type === "Service") {
+                            if (proc["Service"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
                             }
+                          } else if (props.OrderData?.Type === "Fabrication") {
+                            if (proc["MultiOperation"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                  required
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else {
+                            if (proc["Profile"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          }
 
-                            return null; // Exclude options with zero values in "Service" column
-                          })}
-                        </select>
-                      ) : (
+                          return null; // Exclude options with zero values in "Service" column
+                        })}
+                      </select>
+                      {/* ) : (
                         ""
-                      )}
+                      )} */}
                     </div>
                   </Form.Group>
                 </div>

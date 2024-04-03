@@ -13,16 +13,16 @@ export const TimeoutLogic = () => {
       setTimeout(() => {
         console.log("modal openeddddddd");
         setWarningModalOpen(true);
-      }, 10000);
+      }, 900000);
+
+    // 15 min we fixed the timout so, 900000 ms
 
     const createTimeout2 = () =>
       setTimeout(() => {
-        // Implement a sign out function here
-
         localStorage.clear();
 
         window.location.href = "/";
-      }, 10000);
+      }, 900000);
 
     const listener = () => {
       if (!isWarningModalOpen) {
