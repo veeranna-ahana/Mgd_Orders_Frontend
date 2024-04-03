@@ -4,6 +4,8 @@ import IETable from "./elements/IETable";
 import IEFormHeader from "./elements/IEFormHeader";
 
 export default function ImportExcelModal(props) {
+  const [importedExcelData, setImportedExcelData] = useState([]);
+
   const closeModal = () => {
     props.setImportExcelModal(false);
   };
@@ -20,24 +22,27 @@ export default function ImportExcelModal(props) {
           <Modal.Title>Import from Excel</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <IEFormHeader />
-          <IETable />
+          <IEFormHeader
+            setImportedExcelData={setImportedExcelData}
+            importedExcelData={importedExcelData}
+          />
+          <IETable importedExcelData={importedExcelData} />
         </Modal.Body>
         <Modal.Footer className="d-flex flex-row justify-content-end">
-          <button
+          {/* <button
             className="button-style m-0 me-3"
             style={{ width: "60px" }}
             //   onClick={yesClicked}
           >
             Yes
-          </button>
+          </button> */}
 
           <button
             className="button-style m-0"
             style={{ width: "60px", background: "rgb(173, 173, 173)" }}
             onClick={closeModal}
           >
-            No
+            Exit
           </button>
         </Modal.Footer>
       </Modal>

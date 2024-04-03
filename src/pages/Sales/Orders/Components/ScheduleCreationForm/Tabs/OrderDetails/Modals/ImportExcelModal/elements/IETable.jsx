@@ -19,50 +19,25 @@ export default function IETable(props) {
           </tr>
         </thead>
         <tbody className="tablebody">
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>{" "}
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>{" "}
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>{" "}
-          <tr>
-            <td>SL No</td>
-            <td>Drawing Name</td>
-            <td>Material Code</td>
-            <td>Source</td>
-            <td>Operation</td>
-            <td>Order Qty</td>
-            <td>JW Cost</td>
-            <td>Material Cost</td>
-            <td>Unit Price</td>
-          </tr>
+          {props.importedExcelData?.map((val, key) => (
+            <>
+              <tr>
+                <td>{key + 1}</td>
+                <td>{val.Dwg_Name}</td>
+                <td>{val.Mtrl_Code}</td>
+                <td>{val.Source}</td>
+                <td>{val.Operation}</td>
+                <td>{val.Order_Qty}</td>
+                <td>{val.JW_Cost}</td>
+                <td>{val.Mtrl_Cost}</td>
+                <td>
+                  {(
+                    parseFloat(val.JW_Cost) + parseFloat(val.Mtrl_Cost)
+                  ).toFixed(2)}
+                </td>
+              </tr>
+            </>
+          ))}
         </tbody>
       </Table>
     </>
