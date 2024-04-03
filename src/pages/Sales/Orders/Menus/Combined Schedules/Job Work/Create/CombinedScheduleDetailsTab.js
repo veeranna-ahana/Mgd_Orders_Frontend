@@ -1,8 +1,11 @@
 import React from "react";
 import { Form, Table } from "react-bootstrap";
-import Popup from "../../Components/Popup";
 
-export default function CombinedScheduleDetailsTab() {
+export default function CombinedScheduleDetailsTab({
+  beforecombine,
+  preapreScheduleData,
+  salesContactList,
+}) {
   return (
     <div>
       <Form className="form mt-2">
@@ -10,7 +13,12 @@ export default function CombinedScheduleDetailsTab() {
           <div className="row">
             <div className="col-md-4 mb-2 col-sm-12">
               <label className="form-label">No</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.OrdSchNo}
+              />
             </div>
             <div className="col-md-4  mb-2 col-sm-12">
               <label className="form-label">Customer</label>
@@ -18,46 +26,85 @@ export default function CombinedScheduleDetailsTab() {
             </div>
             <div className="col-md-4  mb-2 col-sm-12">
               <label className="form-label"> Sales Contact</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.SalesContact}
+              />
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-2 col-sm-12">
               <label className="form-label">Type</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.ScheduleType}
+              />
             </div>
             <div className="col-md-4  mb-2 col-sm-12">
               <label className="form-label">PO No</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.PO}
+              />
             </div>
             <div className="col-md-4  mb-2 col-sm-12">
-              <label className="form-label"> Target Name</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <label className="form-label"> Target Date</label>
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.schTgtDate}
+              />
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-2 col-sm-12">
               <label className="form-label">Status</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.Schedule_Status}
+              />
             </div>
+
             <div className="col-md-4  mb-2 col-sm-12">
               <label className="form-label">Instruction</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input
+                class=""
+                type="text"
+                style={{ borderRadius: "0" }}
+                value={beforecombine[0]?.Special_Instructions || null}
+              />
             </div>
             <div className="col-md-4  mb-2 col-sm-12">
               <label className="form-label"> Delivery Date</label>
-              <input className="mt-1" name="UnistallDate" type="date" />
+              <input
+                className="mt-1"
+                type="text"
+                value={beforecombine[0]?.Delivery_Date}
+              />
             </div>
           </div>
           <div className="row">
             <div className="col-md-4 mb-2 col-sm-12">
               <label className="form-label"> Dealing Engineer</label>
-              <select id="gstpan" className="ip-select">
-                <option value="Select">option 1</option>
-
-                <option value="GST">option 2</option>
-
-                <option value="PAN">option 3</option>
+              <select
+                id="gstpan"
+                className="ip-select"
+                value={beforecombine[0]?.Dealing_Engineer}
+              >
+                {salesContactList.map((item, key) => (
+                  <option key={key} value={item.Name}>
+                    {item.Name}
+                  </option>
+                ))}
               </select>
             </div>
           </div>
@@ -69,14 +116,30 @@ export default function CombinedScheduleDetailsTab() {
             <tr>
               <th>Dwg Name</th>
               <th>Mtrl_Code</th>
-              <th>M Process</th>
+              <th>MProcess</th>
               <th>Operation</th>
               <th>Mtrl_Source</th>
               <th>Insp Level</th>
               <th>Quantity Scheduled</th>
             </tr>
           </thead>
-          <tbody className="tablebody"></tbody>
+          <tbody className="tablebody">
+            {preapreScheduleData.map((item, key) => {
+              return (
+                <>
+                  <tr>
+                    <td>{item.DwgName}</td>
+                    <td>{item.Mtrl_Code}</td>
+                    <td>{item.MProcess}</td>
+                    <td>{item.Operation}</td>
+                    <td>{item.Mtrl_Source}</td>
+                    <td>{item.InspLevel}</td>
+                    <td>{item.QtyScheduled}</td>
+                  </tr>
+                </>
+              );
+            })}
+          </tbody>
         </Table>
       </div>
     </div>
