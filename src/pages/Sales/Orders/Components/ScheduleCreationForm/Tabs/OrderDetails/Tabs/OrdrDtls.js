@@ -265,8 +265,10 @@ function OrdrDtls(props) {
                         labelKey="Mtrl_Code"
                         onChange={handleMtrlCodeTypeaheadChange}
                         selected={selectedItems}
-                        // value={selectedItems[0]?.Mtrl_Code}
                         options={mtrldata}
+                        // onChange={(selected) =>
+                        //   changeMtrl("mtrlCode", selected[0]?.Mtrl_Code)
+                        // }
                         placeholder="Choose a Material..."
                         required
                       ></Typeahead>
@@ -470,28 +472,28 @@ function OrdrDtls(props) {
                       type="text"
                       value={LastSlctedRow?.InspLevel || " "}
                     /> */}
-                    {inspdata.length > 0 ? (
-                      <select
-                        id="strinsp"
-                        className="ip-select in-fields"
-                        name="odrDtlInspLvl"
-                        value={ordrDetailsChange.InspLvl}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          ** Select **
-                        </option>
-                        {inspdata.map((insplvl) => {
-                          return (
-                            <option value={insplvl["InspLevel"]}>
-                              {insplvl["InspLevel"]}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    ) : (
+                    {/* {inspdata.length > 0 ? ( */}
+                    <select
+                      id="strinsp"
+                      className="ip-select in-fields"
+                      name="odrDtlInspLvl"
+                      value={ordrDetailsChange.InspLvl}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled selected>
+                        ** Select **
+                      </option>
+                      {inspdata.map((insplvl) => {
+                        return (
+                          <option value={insplvl["InspLevel"]}>
+                            {insplvl["InspLevel"]}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {/* ) : (
                       ""
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
@@ -537,28 +539,28 @@ function OrdrDtls(props) {
                       type="text"
                       value={LastSlctedRow?.PackingLevel || " "}
                     /> */}
-                    {packdata.length > 0 ? (
-                      <select
-                        id="strpkng"
-                        className="ip-select in-fields"
-                        name="odrDtlPkngLvl"
-                        value={ordrDetailsChange.PkngLvl}
-                        onChange={handleChange}
-                      >
-                        <option value="" disabled selected>
-                          ** Select **
-                        </option>
-                        {packdata.map((packlvl) => {
-                          return (
-                            <option value={packlvl["PkngLevel"]}>
-                              {packlvl["PkngLevel"]}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    ) : (
+                    {/* {packdata.length > 0 ? ( */}
+                    <select
+                      id="strpkng"
+                      className="ip-select in-fields"
+                      name="odrDtlPkngLvl"
+                      value={ordrDetailsChange.PkngLvl}
+                      onChange={handleChange}
+                    >
+                      <option value="" disabled selected>
+                        ** Select **
+                      </option>
+                      {packdata.map((packlvl) => {
+                        return (
+                          <option value={packlvl["PkngLevel"]}>
+                            {packlvl["PkngLevel"]}
+                          </option>
+                        );
+                      })}
+                    </select>
+                    {/* ) : (
                       ""
-                    )}
+                    )} */}
                   </div>
                 </div>
               </div>
