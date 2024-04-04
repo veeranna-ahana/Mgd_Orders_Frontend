@@ -165,131 +165,129 @@ export const ordersSidebar = [
       // },
     ],
   },
-//Combined Schedule
-// {
-//   title: "Combined Schedule",
-//   icon: <SiRedhatopenshift />,
-//   iconClosed: <RiIcons.RiArrowDownSFill />,
-//   iconOpened: <RiIcons.RiArrowUpSFill />,
-//   subNav: [
-//     {
-//       title: "Job Work",
-//       path: "/Orders/combinedSchedules/JobWork",
-//       icon: <BsServer />,
-//       subNav: [
-//         {
-//           title: "Create",
-//           path: "/Orders/combinedSchedules/JobWork/Create",
-//           icon: <AiIcons.AiOutlineArrowRight />,
-//         },
-//         {
-//           title: "Open",
-//           path: "/Orders/combinedSchedules/JobWork/Open",
-//           icon: <AiIcons.AiOutlineArrowRight />,
-//         },
-//         {
-//           title: "ScheduleList",
-//           path: "/Orders/combinedSchedules/JobWork/ScheduleList",
-//           icon: <AiIcons.AiOutlineArrowRight />,
-//           subNav: [
-//             {
-//               title: "Order",
-//               path: "/Orders/combinedSchedules/JobWork/ScheduleList/Order",
-//               icon: <AiIcons.AiOutlineArrowRight />,
-//             },
-//             {
-//               title: "Closed",
-//               path: "/Orders/combinedSchedules/JobWork/ScheduleList/Closed",
-//               icon: <AiIcons.AiOutlineArrowRight />,
-//             },
-//           ]
-//         },
-//       ],
-//     },
 
-//     {
-//       title: "Sales",
-//       path: "/JobWork",
-//       icon: <VscServerProcess />,
-//     },
+  // {
+  //   title: "Combined Schedules",
+  //   icon: <AiFillCreditCard />,
+  //   iconClosed: <RiIcons.RiArrowDownSFill />,
+  //   iconOpened: <RiIcons.RiArrowUpSFill />,
 
-//   ],
-// },
+  //   subNav: [
+  //     {
+  //       title: "Job Work",
+  //       icon: <VscTypeHierarchySub />,
+  //       subNav: [
+  //         {
+  //           title: "Create",
+  //           path: "/Orders/CombinedSchedules/JobWork/Create",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
+
+  //         {
+  //           title: "Open",
+  //           path: "/Orders/CombinedSchedules/JobWork/Open",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
+
+  //         {
+  //           title: "SheduleList",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //           subNav: [
+  //             {
+  //               title: "Order",
+  //               path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Order",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+
+  //             {
+  //               title: "Closed",
+  //               path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Closed",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+
+  //     {
+  //       title: "Sales",
+  //       icon: <VscTypeHierarchySub />,
+  //       subNav: [
+  //         {
+  //           title: "Create",
+  //           path: "/Orders/CombinedSchedules/Sales/Create",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
+
+  //         {
+  //           title: "Open",
+  //           path: "/Orders/CombinedSchedules/Sales/Open",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //         },
+  //         {
+  //           title: "SheduleList",
+  //           icon: <AiIcons.AiOutlineArrowRight />,
+  //           subNav: [
+  //             {
+  //               title: "Order",
+  //               path: "/Orders/CombinedSchedules/Sales/ScheduleList/Order",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+  //             {
+  //               title: "Closed",
+  //               path: "/Orders/CombinedSchedules/Sales/ScheduleList/Closed",
+  //               icon: <AiIcons.AiOutlineArrowRight />,
+  //             },
+  //           ],
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
   {
-    title: "Combined Schedules",
-    icon: <AiFillCreditCard />,
+    title: "Combined Schedule",
+    icon: <SiRedhatopenshift />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
-
     subNav: [
       {
         title: "Job Work",
-        icon: <VscTypeHierarchySub />,
+        path: "/Orders/JobWork",
+        icon: <BsServer />,
         subNav: [
           {
             title: "Create",
-            path: "/Orders/CombinedSchedules/JobWork/Create",
+            path: "/Orders/JobWork",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
-
           {
             title: "Open",
-            path: "/Orders/CombinedSchedules/JobWork/Open",
+            path: "/Orders/JobWork/Open",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
-
           {
-            title: "SheduleList",
+            title: "ScheduleList",
+            path: "/Orders/JobWork/ScheduleList",
             icon: <AiIcons.AiOutlineArrowRight />,
             subNav: [
               {
                 title: "Order",
-                path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Order",
+                path: "/Orders/JobWork/ScheduleList/Order",
                 icon: <AiIcons.AiOutlineArrowRight />,
               },
-
               {
                 title: "Closed",
-                path: "/Orders/CombinedSchedules/JobWork/ScheduleList/Closed",
+                path: "/Orders/JobWork/ScheduleList/Closed",
                 icon: <AiIcons.AiOutlineArrowRight />,
               },
             ],
           },
         ],
       },
-
       {
         title: "Sales",
-        icon: <VscTypeHierarchySub />,
-        subNav: [
-          {
-            title: "Create",
-            path: "/Orders/CombinedSchedules/Sales/Create",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
-
-          {
-            title: "Open",
-            path: "/Orders/CombinedSchedules/Sales/Open",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
-          {
-            title: "SheduleList",
-            icon: <AiIcons.AiOutlineArrowRight />,
-            subNav: [
-              {
-                title: "Order",
-                path: "/Orders/CombinedSchedules/Sales/ScheduleList/Order",
-                icon: <AiIcons.AiOutlineArrowRight />,
-              },
-              {
-                title: "Closed",
-                path: "/Orders/CombinedSchedules/Sales/ScheduleList/Closed",
-                icon: <AiIcons.AiOutlineArrowRight />,
-              },
-            ],
-          },
-        ],
+        path: "/Orders/JobWork",
+        icon: <VscServerProcess />,
       },
     ],
   },
@@ -441,10 +439,6 @@ export const ordersSidebar = [
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
   },
-
-  
-
-  
 ];
 
 export const adminSidebar = [

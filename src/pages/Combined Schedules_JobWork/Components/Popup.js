@@ -1,21 +1,15 @@
 import React from "react";
-
 import {
   // Container,
-
   // Row,
-
   // Col,
-
   // Form,
-
   Button,
-
   // Card,
   Modal,
 } from "react-bootstrap";
 
-function AlertModal(props) {
+function Popup(props) {
   // const [show, setShow] = useState(props.show);
 
   return (
@@ -31,27 +25,23 @@ function AlertModal(props) {
       <Modal.Footer>
         <Button
           style={{ backgroundColor: "#2b3a55", border: "#2b3a55" }}
-          onClick={(e) => {
-            props.firstbutton(e);
+          onClick={() => {
+            props.firstbutton();
           }}
         >
           {props.firstbuttontext}
         </Button>
-        {props.secondbuttontext ? (
-          <Button
-            variant="secondary"
-            onClick={() => {
-              props.secondbutton();
-            }}
-          >
-            {props.secondbuttontext}
-          </Button>
-        ) : (
-          ""
-        )}
+        {/* <Button
+          variant="secondary"
+          onClick={() => {
+            props.secondbutton();
+          }}
+        >
+          {props.secondbuttontext}
+        </Button> */}
       </Modal.Footer>
     </Modal>
   );
 }
 
-export default AlertModal;
+export default Popup;

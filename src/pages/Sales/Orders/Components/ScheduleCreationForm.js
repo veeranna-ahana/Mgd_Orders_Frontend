@@ -56,6 +56,7 @@ export default function ScheduleCreationForm(props) {
   let [specificwt, setSpecificWt] = useState(0);
   let [grade, setGrade] = useState("");
   let [material, setMaterial] = useState("");
+  //0-----
   let [lengthOfCut, setLengthOfCut] = useState(0);
   let [noOfPierces, setNoofPierces] = useState(0);
   let [partNetArea, setPartNetArea] = useState(0);
@@ -463,8 +464,7 @@ export default function ScheduleCreationForm(props) {
     setShow(false);
   };
 
-  console.log("ordDwgtskDetsData is",ordDwgtskDetsData);
-
+  console.log("ordDwgtskDetsData is", ordDwgtskDetsData);
 
   return (
     <div>
@@ -633,7 +633,12 @@ export default function ScheduleCreationForm(props) {
               <div className="col-md-2 col-sm-12">
                 <button className="button-style  ">Suspended Order</button>
                 <button className="button-style mt-2 ">Cancel Order</button>
-                <button className="button-style mt-2 " onClick={onClickShortClose}>Short Close</button>
+                <button
+                  className="button-style mt-2 "
+                  onClick={onClickShortClose}
+                >
+                  Short Close
+                </button>
               </div>
               <div className="col-md-4 col-sm-12">
                 <h5 className="mt-2">
@@ -1278,7 +1283,8 @@ export default function ScheduleCreationForm(props) {
                                     <div className="row">
                                       <div>
                                         <label
-                                          className="form-label"ordDwgtskDetsData
+                                          className="form-label"
+                                          ordDwgtskDetsData
                                           style={{ whiteSpace: "nowrap" }}
                                         >
                                           Inspection Level
@@ -2212,9 +2218,6 @@ export default function ScheduleCreationForm(props) {
           </Modal.Body>
         </Modal>
       </div>
-
-   
-
     </div>
   );
 }

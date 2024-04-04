@@ -5,6 +5,7 @@ import { FiLogOut } from "react-icons/fi";
 import { BiDownArrow } from "react-icons/bi";
 import { AiFillCaretDown } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
+import { TimeoutLogic } from "./Auth/TimeoutLogic";
 
 function Header({ user }) {
   let getUser = () => {
@@ -60,6 +61,7 @@ function Header({ user }) {
         </div>
       </nav>
       <div>&nbsp;</div>
+      <TimeoutLogic />
     </>
   );
 }

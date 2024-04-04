@@ -45,11 +45,20 @@ function AddNewSrlModal(props) {
     insertnewsrldata,
     handleMtrlCodeTypeaheadChange,
     PostOrderDetails,
+    //---NEW ---------
+    newSerial,
+    setNewSerial,
+    handleChange,
   } = props;
 
   return (
     <div className="row mt-1">
-      <Modal show={importdwgshow}>
+      <Modal
+        name="SrlModal"
+        show={importdwgshow}
+        onHide={handleCloseImportDwg}
+        // backdrop="static"
+      >
         <Modal.Header
           className="justify-content-md-center"
           style={{
@@ -72,8 +81,11 @@ function AddNewSrlModal(props) {
                         Dwg / Part Name
                       </Form.Label>
                       <input
-                        value={DwgName}
-                        onChange={handleDwgInputChange}
+                        name="newSrlDwgname"
+                        // value={DwgName}
+                        value={newSerial.DwgName}
+                        // onChange={handleDwgInputChange}
+                        onChange={handleChange}
                         required
                       />
                     </div>
@@ -87,7 +99,9 @@ function AddNewSrlModal(props) {
                         <Typeahead
                           id="basic-example"
                           labelKey="Mtrl_Code"
+                          name="newSrlMaterial"
                           onChange={handleMtrlCodeTypeaheadChange}
+                          // onChange={handleChange}
                           // selected={Material}
                           options={mtrldata}
                           placeholder="Choose a Material..."
@@ -107,6 +121,7 @@ function AddNewSrlModal(props) {
                       <select
                         className="ip-select"
                         id="strsource"
+                        name="newSrlMtrlSrc"
                         onChange={selectMtrlSrc}
                       >
                         <option value="" disabled selected>
@@ -146,60 +161,60 @@ function AddNewSrlModal(props) {
                     </div> */}
                     <div className="md-col-4">
                       <label className="form-label">Operation</label>
-                      {procdata.length > 0 ? (
-                        <select
-                          className="ip-select"
-                          id="strprocess"
-                          onChange={selectProc}
-                        >
-                          <option value="" disabled selected>
-                            ** Select **
-                          </option>
-                          {procdata.map((proc) => {
-                            // Check if "Service" column has non-zero values
-                            if (props.OrderData?.Type === "Service") {
-                              if (proc["Service"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
-                            } else if (
-                              props.OrderData?.Type === "Fabrication"
-                            ) {
-                              if (proc["MultiOperation"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
-                            } else {
-                              if (proc["Profile"] !== 0) {
-                                return (
-                                  <option
-                                    key={proc["ProcessDescription"]}
-                                    value={proc["ProcessDescription"]}
-                                  >
-                                    {proc["ProcessDescription"]}
-                                  </option>
-                                );
-                              }
+                      {/* {procdata.length > 0 ? ( */}
+                      <select
+                        className="ip-select"
+                        id="strprocess"
+                        name="newSrlOperation"
+                        onChange={selectProc}
+                      >
+                        <option value="" disabled selected>
+                          ** Select **
+                        </option>
+                        {procdata.map((proc) => {
+                          // Check if "Service" column has non-zero values
+                          if (props.OrderData?.Type === "Service") {
+                            if (proc["Service"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
                             }
+                          } else if (props.OrderData?.Type === "Fabrication") {
+                            if (proc["MultiOperation"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                  required
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          } else {
+                            if (proc["Profile"] !== 0) {
+                              return (
+                                <option
+                                  key={proc["ProcessDescription"]}
+                                  value={proc["ProcessDescription"]}
+                                >
+                                  {proc["ProcessDescription"]}
+                                </option>
+                              );
+                            }
+                          }
 
-                            return null; // Exclude options with zero values in "Service" column
-                          })}
-                        </select>
-                      ) : (
+                          return null; // Exclude options with zero values in "Service" column
+                        })}
+                      </select>
+                      {/* ) : (
                         ""
-                      )}
+                      )} */}
                     </div>
                   </Form.Group>
                 </div>
@@ -233,21 +248,40 @@ function AddNewSrlModal(props) {
                   <div className="col-md-6">
                     <InputField
                       label="Quantity"
+                      name="newSrlQty"
                       id="Qty"
                       value={quantity}
                       onChangeCallback={setQuantity}
                       required
                     />
+                    {/* <label className="form-label">Quantity</label>
+                    <input
+                      name="newSrlQty"
+                      id="Qty"
+                      value={quantity}
+                      onChangeCallback={setQuantity}
+                      required
+                    /> */}
                   </div>
                   <div className="col-md-6">
                     <Form.Group controlId="rates">
                       <InputField
                         label="JW Rate"
+                        name="newSrlJWRate"
                         id="Qty"
                         value={jwRate}
                         onChangeCallback={setJwRate}
+                        required
                       />
                     </Form.Group>
+                    {/* <label className="form-label">JW Rate</label>
+                    <input
+                      name="newSrlJWRate"
+                      id="JWrate"
+                      value={jwRate}
+                      onChangeCallback={setJwRate}
+                      required
+                    /> */}
                   </div>
                 </div>
 
@@ -256,11 +290,25 @@ function AddNewSrlModal(props) {
                     <Form.Group controlId="rates">
                       <InputField
                         label="UnitPrice"
+                        name="newSrlUnitPrice"
                         id="Qty"
-                        value={unitPrice}
-                        onChangeCallback={setUnitPrice}
+                        // value={unitPrice}
+                        // value={jwRate + materialRate}
+
+                        value={parseFloat(jwRate) + parseFloat(materialRate)}
+                        // onChangeCallback={setUnitPrice}
+                        disabled
+                        defaultvalue={0.0}
                       />
                     </Form.Group>
+                    {/* <label className="form-label">UnitPrice</label>
+                    <input
+                      name="newSrlUnitPrice"
+                      id="UnitPrice"
+                      defaultValue={unitPrice}
+                      onChangeCallback={setUnitPrice}
+                      required
+                    /> */}
                   </div>
                   <div className="col-md-6">
                     {" "}
@@ -268,10 +316,20 @@ function AddNewSrlModal(props) {
                       <InputField
                         label="MaterialRate"
                         id="Qty"
+                        name="newSrlMaterialRate"
                         value={materialRate}
                         onChangeCallback={setMaterialRate}
+                        required
                       />
                     </Form.Group>
+                    {/* <label className="form-label">MaterialRate</label>
+                    <input
+                      id="MaterialRate"
+                      name="newSrlMaterialRate"
+                      value={materialRate}
+                      onChangeCallback={setMaterialRate}
+                      required
+                    /> */}
                   </div>
                 </div>
 
@@ -282,6 +340,7 @@ function AddNewSrlModal(props) {
                       <select
                         id="strinsp"
                         className="ip-select"
+                        name="newSrlInspLvl"
                         onChange={selectInsp}
                       >
                         <option value="" disabled selected>
@@ -305,6 +364,7 @@ function AddNewSrlModal(props) {
                       <select
                         id="strpkng"
                         className="ip-select"
+                        name="newSrlPkngLvl"
                         onChange={selectPack}
                       >
                         <option value="" disabled selected>

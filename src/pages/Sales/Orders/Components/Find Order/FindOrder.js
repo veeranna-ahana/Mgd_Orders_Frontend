@@ -55,7 +55,6 @@ export default function FindOrder(props) {
           </div>
           <div className="col-md-2 sm-12 mt-3">
             <Link
-              // to={`/Orders/Service/ScheduleCreationForm`}
               to={
                 props.Type === "Profile"
                   ? `/Orders/Profile/ScheduleCreationForm`

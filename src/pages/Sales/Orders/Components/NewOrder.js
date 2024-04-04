@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Form } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer, toast, useToastContainer } from "react-toastify";
 import { useOrderContext } from "../../../../context/OrderContext";
-import { BsChevronCompactLeft } from "react-icons/bs";
-import YesNoModal from "./Components/YesNoModal";
+import AlertModal from "./Components/Alert";
 
 const { getRequest, postRequest } = require("../../../api/apiinstance");
 const { endpoints } = require("../../../api/constants");
 
 function NewOrder(props) {
-  //console.log("props", props.Type);
   // const [searchParams] = useSearchParams();
 
   let navigate = useNavigate();
@@ -31,6 +29,7 @@ function NewOrder(props) {
   let [CustomerName, setCustomerName] = useState("");
   let [CustCode, setCustCode] = useState("");
   let [formOrderDate, setFormOrderDate] = useState("");
+  const [formDeliveryDate, setformDeliveryDate] = useState("");
   let [CustomerContact, setCustomerContact] = useState("");
   let [GSTIN, setGSTIN] = useState("");
   let [formBillingAddress, setFormBillingAddress] = useState("");
@@ -46,10 +45,27 @@ function NewOrder(props) {
   const [SmShow, setSmShow] = useState(false);
   // let Oformat = searchParams.get("OrdType");
 
-  // console.log(" Order Type : " + Oformat);
+  // Alert Modals
+  const [alertModal, setAlertModal] = useState(false);
+
+  //login user name
+  const [userName, setuserName] = useState("");
 
   useEffect(() => {
+    let data = JSON.parse(localStorage.getItem("LazerUser"));
+    setuserName(data.data[0].Name);
+
+    var currentDate = new Date();
+    // console.log("curr date", currentDate);
+
+    currentDate.setDate(currentDate.getDate() + 2);
+    var formattedDate = currentDate.toISOString().slice(0, 10);
+    setformDeliveryDate(formattedDate);
+
+    // console.log("second", formattedDate);
+
     setFormOrderDate(new Date().toISOString().slice(0, 10));
+    // console.log("first", new Date().toISOString().slice(0, 10));
 
     async function fetchData() {
       await postRequest(endpoints.getCustomers, {}, (cdata) => {
@@ -82,9 +98,20 @@ function NewOrder(props) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    toggleSelectDisabled();
+  }, [isChecked]);
+  // alert modals for register and save
+  const openModal = (e) => {
+    e.preventDefault();
+    setAlertModal(true);
+    // SaveOrder(e);
+  };
+  const closeModal = () => {
+    setAlertModal(false);
+  };
+
   let selectQtns = (selectedqtnno) => {
-    //console.log(selectedqtnno);
-    //console.log(selectedqtnno[0].QtnNo);
     setQuotationNo(selectedqtnno[0].QtnNo);
     setFormQuotationNo(selectedqtnno[0].QtnNo);
     if (selectedqtnno.length == 0 || selectedqtnno[0].QtnID == undefined)
@@ -93,11 +120,8 @@ function NewOrder(props) {
     setFormQuotationNo(selectedqtnno[0].QtnNo);
   };
 
-  // console.log("first", quotationNo);
-  // console.log("second", formquotationNo);
   let handleInputChange = (input) => {
     selectedqtnno = input;
-    // console.log(input.target.value);
   };
 
   let selectCust = async (e) => {
@@ -108,7 +132,6 @@ function NewOrder(props) {
         break;
       }
     }
-    //Console.log(cust);
     setCustCode(cust.Cust_Code);
     setCustomerContact(
       cust.PurchaseContact1
@@ -122,7 +145,7 @@ function NewOrder(props) {
     setFormBillingAddress(cust.Address);
     setFormBillingState(cust.State);
     setFormGSTTaxState(cust.State);
-    ////Console.log(CustomerName);
+
     //setCustCode(e.target.value);
     //  setCustomerName(e.target.elements.Cust_name.value);
     for (let i = 0; i < custdata.length; i++) {
@@ -130,7 +153,7 @@ function NewOrder(props) {
         document.getElementById("formPaymentTerms").value = cust.CreditTerms;
         document.getElementById("formBillingAddress").value = cust.Address;
         document.getElementById("formGSTNNo").value = cust.GSTNo;
-        document.getElementById("formBillingState").value = cust.State;
+        document.getElementById("formBillingState").value = cust?.State;
         document.getElementById("formGSTTaxState").value = cust.State;
         break;
       }
@@ -138,20 +161,29 @@ function NewOrder(props) {
   };
 
   async function SaveOrder(e) {
+    if (e) {
+      e.preventDefault();
+      // toast.error("Event", e);
+    } else {
+      console.error("Event object is undefined in SaveOrder function.");
+      toast.error("Event object is undefined in SaveOrder function.", {
+        autoClose: 1500,
+      });
+      setTimeout(() => {
+        toast.dismiss();
+      }, 1500);
+      return;
+    }
     e.preventDefault();
-    //console.log("entering into save order");
     let ordertype = props.Type;
-    //console.log("ordertype", ordertype);
-    let purchaseorder = e.target.elements.formPurchaseOrderNo.value;
+    let purchaseorder = e.target.elements?.formPurchaseOrderNo.value;
 
     let qtnno = formquotationNo;
-    //console.log("qtnno", qtnno);
-    let deldate = e.target.elements.formDeliveryDate.value;
-    //Console.log(deldate);
+    let deldate = e.target.elements?.formDeliveryDate.value;
     let deliverydate = deldate;
 
-    let paymentterms = e.target.elements.formPaymentTerms.value;
-    let salesContact = e.target.elements.formSalesContact.value;
+    let paymentterms = e.target.elements?.formPaymentTerms.value;
+    let salesContact = e.target.elements?.formSalesContact.value;
     console.log("asdfghjkl...", salesContact);
     //let customername = e.target.elements.CustomerName.value;
     // postRequest(endpoints.getCustomerDets, { CustomerName }, (data) => {
@@ -167,24 +199,25 @@ function NewOrder(props) {
     // })
     ////Console.log(customer);
     //  let CustomerContact = e.target.elements.formCustomerContact.value;
-    let receivedby = e.target.elements.formReceivedBy.value;
-    let RecordedBy = e.target.elements.formRecordedBy.value;
+    let receivedby = e.target.elements?.formReceivedBy.value;
+    let RecordedBy = e.target.elements?.formRecordedBy.value;
     // let gstin = e.target.elements.formGSTNNo.value;
-    let DealingEngineer = e.target.elements.formDealingEngineer.value;
-    let DeliveryMode = e.target.elements.formDeliveryMode.value;
-    let billingAddress = e.target.elements.formBillingAddress.value;
-    let SpecialInstructions = e.target.elements.formSpecialInstructions.value;
-    let BillingState = e.target.elements.formBillingState.value;
+    let DealingEngineer = e.target.elements?.formDealingEngineer.value;
+    let DeliveryMode = e.target.elements?.formDeliveryMode.value;
+    let billingAddress = e.target.elements?.formBillingAddress.value;
+    let SpecialInstructions = e.target.elements?.formSpecialInstructions.value;
+    let BillingState = e.target.elements?.formBillingState?.value;
     // let MagodDelivery = e.target.elements.formMagodDelivery.value;
     let MagodDelivery = formMagodDelivery;
     //console.log("MagodDelivery", MagodDelivery);
-    let shippingAddress = e.target.elements.formShippingAddress.value;
-    let GSTTaxState = e.target.elements.formGSTTaxState.value;
-    let Transportcharges = e.target.elements.formTransportCharges.value;
+    let shippingAddress = e.target.elements?.formShippingAddress.value;
+    let GSTTaxState = e.target.elements?.formGSTTaxState.value;
+    let Transportcharges = e.target.elements?.formTransportCharges.value;
 
-    //console.log("qtnno", qtnno);
     console.log("MagodDelivery", MagodDelivery);
-    //Console.log("Entering API Call");
+    if (!isChecked) {
+      deliveryModeSelectRef?.current.reportValidity();
+    }
     await postRequest(
       endpoints.saveCreateOrder,
       {
@@ -210,14 +243,11 @@ function NewOrder(props) {
         Transportcharges,
       },
       async (resp) => {
-        //Console.log(resp);
         setOrderno(resp.orderno);
         // postRequest(endpoints.getCustomerDets, { CustCode }, (custdata) => {
         //   //Console.log(custdata[0]["Cust_name"]
         //   setCustomerName(custdata[0]["Cust_name"]);
         // })
-        //Console.log(CustCode);
-        //Console.log(CustomerName);
         let orders = {
           orderno: resp.orderno,
           ordertype: ordertype,
@@ -240,46 +270,40 @@ function NewOrder(props) {
         await setOrderState(orders);
         //   localStorage.setItem("LazerOrder", JSON.stringify(orderno,customer))
         let Ordno = resp.orderno;
-        //Console.log(resp.orderno);
-        //Console.log(orders.ordertype);
-        toast.success(
-          "Order Created with " + Ordno,
-          { autoClose: 1000 },
-          { position: toast.POSITION.TOP_CENTER }
-        );
 
-        if (Ordno != null) {
-          if (props.Type === "Profile") {
-            navigate("/Orders/Profile/ScheduleCreationForm", {
-              state: Ordno,
-            });
-          } else if (props.Type === "Fabrication") {
-            navigate("/Orders/Fabrication/ScheduleCreationForm", {
-              state: Ordno,
-            });
-          } else if (props.Type === "Service") {
-            navigate("/Orders/Service/ScheduleCreationForm", {
-              state: Ordno,
-            });
+        toast.success("Order Created with " + Ordno, { autoClose: 2100 });
+        setTimeout(() => {
+          if (Ordno != null) {
+            if (props.Type === "Profile") {
+              navigate("/Orders/Profile/ScheduleCreationForm", {
+                state: Ordno,
+              });
+            } else if (props.Type === "Fabrication") {
+              navigate("/Orders/Fabrication/ScheduleCreationForm", {
+                state: Ordno,
+              });
+            } else if (props.Type === "Service") {
+              navigate("/Orders/Service/ScheduleCreationForm", {
+                state: Ordno,
+              });
+            }
+          } else {
+            toast.error(
+              "Order Not Created",
+              { autoClose: 1000 },
+              { position: toast.POSITION.TOP_CENTER }
+            );
           }
-        } else {
-          toast.error(
-            "Order Not Created",
-            { autoClose: 1000 },
-            { position: toast.POSITION.TOP_CENTER }
-          );
-        }
+        }, 1700);
       }
     );
   }
 
   const POInputChange = (e) => {
     e.preventDefault();
-    //console.log(e.target.value);
     setPurchaseorder(e.target.value);
   };
   const handleCheckboxChange = () => {
-    // Toggle the value when the checkbox changes
     const newCheckedValue = !isChecked;
     setChecked(newCheckedValue);
     setFormMagodDelivery(newCheckedValue);
@@ -288,11 +312,7 @@ function NewOrder(props) {
     } else {
       setFormShippingAddress("");
     }
-
-    // Log the updated value to the console
-    //console.log("Checkbox is now:", newCheckedValue);
   };
-  // console.log("...............", formMagodDelivery);
   // const TransportChargesInpChnage = (e) => {
   //   e.preventDefault();
   ////console.log(e.target.value);
@@ -301,45 +321,43 @@ function NewOrder(props) {
   const handleSaveButtonClick = () => {
     setSmShow(true);
   };
+
+  // Ref for the select element
+  const deliveryModeSelectRef = useRef(null);
+
+  // Function to toggle the disabled attribute of the select field
+  const toggleSelectDisabled = () => {
+    const select = deliveryModeSelectRef.current;
+    if (isChecked && select.disabled) {
+      select.disabled = false;
+      select.required = true; // Make it required
+      select.classList.add("required"); // Add class to indicate required field
+    } else if (!isChecked && !select.disabled) {
+      select.disabled = true;
+      select.required = false; // Remove required attribute
+      select.classList.remove("required"); // Remove class
+    }
+  };
   return (
     <div>
-      <YesNoModal
-        SmShow={SmShow}
-        setSmShow={setSmShow}
-        SaveOrder={SaveOrder}
-        onHide={() => setSmShow(false)}
-      />
       <div className="col-md-12">
         <div className="row">
-          {/* <h4 className="title">Sales Department</h4> */}
           <h4 className="title">New Order Entry Form: {props.Type}</h4>
         </div>
       </div>
-      {/* <h5 className="mt-2"> */}
-      {/* <b>Sales Manager - </b> */}
-      {/* <b>New Order Entry Form: {props.Type}</b> */}
-      {/* </h5> */}
 
-      {/* <hr
-        style={{
-          backgroundColor: "black",
-          height: "3px",
-        }} o
-      /> */}
       <Form className="form mt-0" onSubmit={SaveOrder}>
         <div
           className="col-md-12 justify-content-end mb-2"
           style={{ display: "flex" }}
         >
-          {/* <h9 className="mt-2" style={{ flex: 1 }}>
-            <b>New Order</b>
-          </h9> */}
-
           <button
             className={
               purchaseorder ? "button-style" : "button-style button-disabled"
             }
             // className="button-style button-disabled"
+            // onClick={openModal}
+            // onClick={(e) => openModal(e)}
             disabled={!purchaseorder}
             style={{ width: "120px" }}
           >
@@ -376,6 +394,8 @@ function NewOrder(props) {
                     className="in-fields"
                     type="text"
                     onChange={POInputChange}
+                    required
+                    placeholder="Please ented PO No with DC No"
                   />
                 </div>
               </div>
@@ -393,13 +413,15 @@ function NewOrder(props) {
                     id="formOrderDate"
                     className="in-fields"
                     type="date"
+                    disabled
                     value={formOrderDate}
                   />
                 </div>
               </div>
             </div>
+
             <div className="col-md-6 col-sm-12">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Quotation No</label>
                 </div>
@@ -418,6 +440,20 @@ function NewOrder(props) {
                     ""
                   )}
                 </div>
+              </div> */}
+              <div className="row">
+                <div className="col-md-4  mb-2 col-sm-12">
+                  <label className="form-label">Delivery Date</label>
+                </div>
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <input
+                    id="formDeliveryDate"
+                    className="in-fields"
+                    defaultValue={formDeliveryDate}
+                    min={formOrderDate}
+                    type="date"
+                  />{" "}
+                </div>
               </div>
             </div>
           </div>
@@ -430,8 +466,9 @@ function NewOrder(props) {
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
                   <select id="formOrderType" className="ip-select in-fields">
-                    <option value="">Select Order Type</option>
-                    <option value="Complete">Complete</option>
+                    {/* <option value="">Select Order Type</option> */}
+                    <option value="">Complete</option>
+                    {/* <option value="Complete">Complete</option> */}
                     <option value="Scheduled">Scheduled</option>
                     <option value="Open">Open</option>
                   </select>
@@ -439,7 +476,7 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Delivery Date</label>
                 </div>
@@ -449,6 +486,26 @@ function NewOrder(props) {
                     className="in-fields"
                     type="date"
                   />{" "}
+                </div>
+              </div> */}
+              <div className="row">
+                <div className="col-md-4  mb-2 col-sm-12">
+                  <label className="form-label">Sales Contact</label>
+                </div>
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <select
+                    className="ip-select in-fields"
+                    id="formSalesContact"
+                    defaultValue={userName}
+                    required
+                  >
+                    <option>{userName}</option>
+                    {salesExecdata.map((sdata) => {
+                      return (
+                        <option value={sdata["Name"]}>{sdata["Name"]}</option>
+                      );
+                    })}
+                  </select>
                 </div>
               </div>
             </div>
@@ -472,13 +529,37 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
-              <div className="row">
+              {/* <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Sales Contact</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formSalesContact">
-                    <option>*** Select ***</option>
+                  <select
+                    className="ip-select in-fields"
+                    id="formSalesContact"
+                    defaultValue={userName}
+                  >
+                    <option>{userName}</option>
+                    {salesExecdata.map((sdata) => {
+                      return (
+                        <option value={sdata["Name"]}>{sdata["Name"]}</option>
+                      );
+                    })}
+                  </select>
+                </div>
+              </div> */}
+              <div className="row">
+                <div className="col-md-4  mb-2 col-sm-12">
+                  <label className="form-label">Received By</label>
+                </div>
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <select
+                    className="ip-select in-fields"
+                    id="formReceivedBy"
+                    required
+                  >
+                    {/* <option>*** Select ***</option>  */}
+                    <option>{userName}</option>
                     {salesExecdata.map((sdata) => {
                       return (
                         <option value={sdata["Name"]}>{sdata["Name"]}</option>
@@ -496,20 +577,23 @@ function NewOrder(props) {
                 <div className="col-md-4 mb-2 col-sm-12">
                   <label className="form-label">Customer Name</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
-                  {/* <input className="ip-select" type="text" id="customername" onChange={(e) => setCustomerName(e.target.value)} value={CustomerName} /> */}
+                <div className="col-md-8  mb-2 col-sm-12 ">
                   {custdata.length > 0 ? (
                     <Typeahead
                       id="basic-example"
-                      className="in-fields"
+                      className="in-fields "
                       labelKey="Cust_name"
                       onChange={selectCust}
                       options={custdata}
                       placeholder="Choose a Customer..."
+                      required
                     ></Typeahead>
                   ) : (
                     ""
                   )}
+                  {/* {custdata.length > 0 && (
+                    <div className="dropdown-indicator"></div>
+                  )} */}
 
                   {/* <select className='ip-select' type="text" id="formCustomerName" onChange={selectCust}>
                     <option>Select Customer</option>
@@ -525,11 +609,16 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Received By</label>
+                  <label className="form-label">Recorded By</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formReceivedBy">
-                    <option>*** Select ***</option>
+                  <select
+                    className="ip-select in-fields"
+                    id="formRecordedBy"
+                    required
+                  >
+                    {/* <option>*** Select ***</option> */}
+                    <option>{userName}</option>
                     {salesExecdata.map((sdata) => {
                       return (
                         <option value={sdata["Name"]}>{sdata["Name"]}</option>
@@ -554,18 +643,24 @@ function NewOrder(props) {
                     type="text"
                     onChange={(e) => setCustomerContact(e.target.value)}
                     value={CustomerContact}
+                    required
                   />
                 </div>
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Recorded By</label>
+                  <label className="form-label">Dealing Engineer</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formRecordedBy">
-                    <option>*** Select ***</option>
+                  <select
+                    className="ip-select in-fields"
+                    id="formDealingEngineer"
+                    required
+                  >
+                    <option>{userName}</option>
                     {salesExecdata.map((sdata) => {
                       return (
                         <option value={sdata["Name"]}>{sdata["Name"]}</option>
@@ -595,22 +690,27 @@ function NewOrder(props) {
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Dealing Engineer</label>
+                  <label className="form-label">GST Tax State</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select
-                    className="ip-select in-fields"
-                    id="formDealingEngineer"
-                  >
-                    <option>*** Select ***</option>
-                    {salesExecdata.map((sdata) => {
+                  {/* <select className="ip-select in-fields" id="formGSTTaxState">
+                    <option>Select State</option>
+                    {statesdata.map((stat) => {
                       return (
-                        <option value={sdata["Name"]}>{sdata["Name"]}</option>
+                        <option value={stat["Id"]}>{stat["State"]}</option>
                       );
                     })}
-                  </select>
+                  </select> */}
+                  <input
+                    id="formGSTTaxState"
+                    className="in-fields"
+                    disabled
+                    type="text"
+                    value={formGSTTaxState}
+                  />
                 </div>
               </div>
             </div>
@@ -634,11 +734,13 @@ function NewOrder(props) {
                       height: "80px",
                       width: "387px",
                     }}
+                    disabled
                   />
                 </div>
               </div>
             </div>
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Special Instructions</label>
@@ -667,7 +769,7 @@ function NewOrder(props) {
                 <div className="col-md-4 mb-2 col-sm-12">
                   <label className="form-label">Billing State</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                {/* <div className="col-md-8  mb-2 col-sm-12">
                   <select className="ip-select in-fields" id="formBillingState">
                     <option>Select State</option>
                     {statesdata.map((stat) => {
@@ -676,23 +778,38 @@ function NewOrder(props) {
                       );
                     })}
                   </select>
+                </div> */}
+                <div className="col-md-8  mb-2 col-sm-12">
+                  <input
+                    id=""
+                    className="in-fields"
+                    disabled
+                    type="text"
+                    value={formBillingState}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="col-md-6 col-sm-12">
+              {" "}
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">GST Tax State</label>
+                  <label className="form-label">Delivery Mode</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
-                  <select className="ip-select in-fields" id="formGSTTaxState">
-                    <option>Select State</option>
-                    {statesdata.map((stat) => {
-                      return (
-                        <option value={stat["Id"]}>{stat["State"]}</option>
-                      );
-                    })}
+                  <select
+                    id="formDeliveryMode"
+                    className="ip-select in-fields"
+                    required
+                    disabled={!isChecked}
+                    ref={deliveryModeSelectRef}
+                  >
+                    <option value="">Select Delivery Mode</option>
+                    <option value="By Lorry">By Lorry</option>
+                    <option value="By Courier">By Courier</option>
+                    <option value="By Air Cargo">By Air Cargo</option>
+                    <option value="By Ship">By Ship</option>
                   </select>
                 </div>
               </div>
@@ -724,26 +841,14 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               <div className="row">
                 <div className="col-md-4  mb-2 col-sm-12">
-                  <label className="form-label">Delivery Mode</label>
-                </div>
-                <div className="col-md-8  mb-2 col-sm-12">
-                  <select id="formDeliveryMode" className="ip-select in-fields">
-                    <option value="">Select Delivery Mode</option>
-                    <option value="By Lorry">By Lorry</option>
-                    <option value="By Courier">By Courier</option>
-                    <option value="By Air Cargo">By Air Cargo</option>
-                    <option value="By Ship">By Ship</option>
-                  </select>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
                   <label className="form-label">Transport Charges</label>
                 </div>
                 <div className="col-md-8  mb-2 col-sm-12">
                   <select
                     id="formTransportCharges"
                     className="ip-select in-fields"
+                    required
+                    disabled={!isChecked}
                   >
                     <option value=""> Select </option>
                     <option value="Customer Account">Customer Account</option>
@@ -775,7 +880,30 @@ function NewOrder(props) {
             </div>
           </div>
         </div>
+        <AlertModal
+          show={alertModal}
+          onHide={() => setAlertModal(false)}
+          firstbutton={(e) => {
+            SaveOrder(e);
+            setAlertModal(false);
+          }}
+          title="magod_Order"
+          message="Order Created"
+          firstbuttontext="Ok"
+        />
       </Form>
+      {/* <AlertModal
+        show={alertModal}
+        onHide={(e) => setAlertModal(e)}
+        firstbutton={(e) => {
+          SaveOrder(e); // Invoke SaveOrder with the event object when the button is clicked
+          setAlertModal(false); // Close the modal after invoking SaveOrder
+        }}
+        titl
+        title="magod_Order"
+        message="Order Created"
+        firstbuttontext="Ok"
+      /> */}
     </div>
   );
 }
