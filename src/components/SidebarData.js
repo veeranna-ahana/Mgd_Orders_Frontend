@@ -244,6 +244,53 @@ export const ordersSidebar = [
   //     },
   //   ],
   // },
+  {
+    title: "Combined Schedule",
+    icon: <SiRedhatopenshift />,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+    subNav: [
+      {
+        title: "Job Work",
+        path: "/Orders/JobWork",
+        icon: <BsServer />,
+        subNav: [
+          {
+            title: "Create",
+            path: "/Orders/JobWork",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "Open",
+            path: "/Orders/JobWork/Open",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "ScheduleList",
+            path: "/Orders/JobWork/ScheduleList",
+            icon: <AiIcons.AiOutlineArrowRight />,
+            subNav: [
+              {
+                title: "Order",
+                path: "/Orders/JobWork/ScheduleList/Order",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+              {
+                title: "Closed",
+                path: "/Orders/JobWork/ScheduleList/Closed",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Sales",
+        path: "/Orders/JobWork",
+        icon: <VscServerProcess />,
+      },
+    ],
+  },
 
   {
     title: "Fabrication",

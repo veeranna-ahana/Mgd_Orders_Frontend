@@ -103,6 +103,12 @@ import ServiceOpenSchedule from "./pages/Sales/Orders/Menus/Service/ScheduleCrea
 import PackingNoteAndInvoiceDetails from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/Tabs/Details/PackingNoteAndInvoiceDetails";
 
 import FindProOrder from "./pages/Sales/Orders/Menus/Profile/Find Order/FindOrder";
+
+// prakruthis
+import ScheduleList from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/ScheduleList";
+import CombinedScheduleListClosed from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleListClosed";
+import CombinedScheduleDetailsFormClosed from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleDetailsFormClosed";
+
 function App() {
   return (
     <BrowserRouter>
@@ -118,6 +124,36 @@ function App() {
             <Route element={<RequireAuth />}>
               <Route element={<WithNav />}>
                 <Route path="/Orders" element={<Parentroute />}>
+                  {/* Prakruthis */}
+                  <Route path="/Orders/JobWork" element={<Create />} />
+                  <Route path="/Orders/JobWork/Create" element={<Create />} />
+                  <Route path="/Orders/JobWork/Open" element={<Open />} />
+
+                  <Route
+                    path="/Orders/JobWork/ScheduleList"
+                    element={<ScheduleList />}
+                  />
+
+                  <Route
+                    path="/Orders/JobWork/ScheduleList/Order"
+                    element={<CombinedScheduleList />}
+                  />
+                  <Route
+                    path="/Orders/JobWork/ScheduleList/Order/OpenDetailForm"
+                    element={<CombinedScheduleDetailsForm />}
+                  />
+
+                  {/* closed */}
+
+                  <Route
+                    path="/Orders/JobWork/ScheduleList/Closed"
+                    element={<CombinedScheduleListClosed />}
+                  />
+                  <Route
+                    path="/Orders/JobWork/ScheduleList/Closed/OpenDetailForm"
+                    element={<CombinedScheduleDetailsFormClosed />}
+                  />
+                  {/* Prakruthis */}
                   <Route index={true} />
 
                   <Route path="Profile">
