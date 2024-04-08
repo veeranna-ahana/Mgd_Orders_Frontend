@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import Popup from "../../Components/Popup";
-import { baseURL } from "../../../../api/baseUrl";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { postRequest } from "../../../api/apiinstance";
+import { endpoints } from "../../../api/constants";
 
 export default function PrepareScheduleTab({
   oderSchedule,
@@ -143,32 +144,26 @@ export default function PrepareScheduleTab({
     if (rowselectleft.length <= 1) {
       validationModal();
     } else {
-      axios
-        .post(baseURL + "/jobworkCreate/createSchedule", {
-          rowselectleft,
-          custCode: custCode,
-          selectedSalesContact: selectedSalesContact,
-          Date: storedDate,
-          ScheduleDate: ScheduleDate,
-        })
-        .then((response) => {
-          setDisableButton(true);
-          console.log(response.data.combinedScheduleNos[0]);
-          setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
-          openCombineScheduleModal();
-        });
+      postRequest(endpoints.CreateSchedule, {
+        rowselectleft,
+        custCode: custCode,
+        selectedSalesContact: selectedSalesContact,
+        Date: storedDate,
+        ScheduleDate: ScheduleDate,
+      }).then((response) => {
+        setDisableButton(true);
+        setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
+        openCombineScheduleModal();
+      });
     }
   };
 
   const getAlldataAfterCombineSchedule = () => {
-    axios
-      .post(baseURL + "/jobworkCreate/afterCombineSchedule", {
-        combinedScheduleNo,
-      })
-      .then((response) => {
-        console.log(response.data[0]);
-        setBeforeCombine(response.data);
-      });
+    postRequest(endpoints.afterCombinedSchedule, {
+      combinedScheduleNo,
+    }).then((response) => {
+      setBeforeCombine(response.data);
+    });
   };
 
   useEffect(() => {

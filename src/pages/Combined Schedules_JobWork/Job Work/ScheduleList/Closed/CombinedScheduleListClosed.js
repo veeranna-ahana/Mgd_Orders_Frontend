@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { baseURL } from "../../../../../api/baseUrl";
+import { endpoints } from "../../../../../../src/pages/api/constants";
+import { postRequest } from "../../../../../../src/pages/api/apiinstance";
 
 export default function CombinedScheduleListClosed() {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ export default function CombinedScheduleListClosed() {
   //ScheduleList Orders
   const [scheduleListClosed, setScheduleListClosed] = useState([]);
   const getScheduleListData = () => {
-    axios.post(baseURL + "/scheduleList/ScheduleListClosed").then((resp) => {
+    postRequest(endpoints.ScheduleListClosed).then((resp) => {
       // console.log(resp.data);
       setScheduleListClosed(resp.data);
     });

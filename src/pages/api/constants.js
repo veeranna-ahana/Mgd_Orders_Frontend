@@ -288,7 +288,6 @@ export const endpoints = {
   getDwgListData: `${API}/ScheduleList/getDwgDataListTMTab`,
   ShiftDetails: `${API}/ScheduleList/shiftDetails`,
 
-
   //OpenSchedule Srvice
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
   onClickShortClose: `${API}/ScheduleList/shortClose`,
@@ -302,8 +301,8 @@ export const endpoints = {
   onClickFixtureOrder: `${API}/ScheduleList/fixtureOrder`,
   onClickProfileOrder: `${API}/ScheduleList/createProfileOrder`,
   deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
-  pdfdata:`${API}/ScheduleList/PrintPdf`,
-  getCustName:`${API}/ScheduleList/getCustomerName`,
+  pdfdata: `${API}/ScheduleList/PrintPdf`,
+  getCustName: `${API}/ScheduleList/getCustomerName`,
 
   //NCProgram Button
   onClickNCProgram: `${API}/NCProgram/getFormData`,
@@ -332,7 +331,7 @@ export const endpoints = {
   onClickSuspend: `${API}/ScheduleList/suspendButton`,
   onClickCancel: `${API}/ScheduleList/onClickCancel`,
   onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
-  releaseSuspended:`${API}/ScheduleList/releaseClick`,
+  releaseSuspended: `${API}/ScheduleList/releaseClick`,
 
   // packingNote and Invoice
   getAllPNAndInvRegisterbyOrderNo: `${API}/orderPackingNoteAndInvoice/getAllPNAndInvRegisterbyOrderNo`,
@@ -375,21 +374,21 @@ export const endpoints = {
   //Combined Schedule
   //Job Work
   getSalesContact: `${API}/jobworkCreate/getSalesContactList`,
-  allcustomerdata:`${API}/jobworkCreate/allcustomersData`,
-  rightTabledata:`${API}/jobworkCreate/getRightTableData`,
-  prepareSchedule:`${API}/jobworkCreate/prepareSchedule`,
-  CreateSchedule:`${API}/jobworkCreate/createSchedule`,
-  afterCombinedSchedule:`${API}/jobworkCreate/afterCombineSchedule`,
-  getSchedudleDetails:`${API}/scheduleList/scheduleListDetails`,
-  CombinedTasksTaskTable:`${API}/scheduleList/combinedTaksTaskTable`,
-  CombinedTasksShowDwg:`${API}/scheduleList/combinedTaksShowDwgName`,
-  OriginalTable:`${API}/scheduleList/OriginalTable1`,
-  OriginalTable2:`${API}/scheduleList/OriginalTable2`,
-  updateToOriganalSchedule:`${API}/scheduleList/updateToOriganalSchedule`,
-  updateTask:`${API}/scheduleList/updateTask`,
-  distributeParts:`${API}/scheduleList/distributeParts`,
-  save:`${API}/scheduleList/save`,
-  ScheduleListOrdered:`${API}/scheduleList/ScheduleListOrdered`,
-  scheduleListDetails:`${API}/scheduleList/scheduleListDetails`,
-  ScheduleListClosed:`${API}/scheduleList/ScheduleListClosed`,
+  allcustomerdata: `${API}/jobworkCreate/allcustomersData`,
+  rightTabledata: `${API}/jobworkCreate/getRightTableData`,
+  prepareSchedule: `${API}/jobworkCreate/prepareSchedule`,
+  CreateSchedule: `${API}/jobworkCreate/createSchedule`,
+  afterCombinedSchedule: `${API}/jobworkCreate/afterCombineSchedule`,
+  getSchedudleDetails: `${API}/scheduleListJW/scheduleListDetails`,
+  CombinedTasksTaskTable: `${API}/scheduleListJW/combinedTaksTaskTable`,
+  CombinedTasksShowDwg: `${API}/scheduleListJW/combinedTaksShowDwgName`,
+  OriginalTable: `${API}/scheduleListJW/OriginalTable1`,
+  OriginalTable2: `${API}/scheduleListJW/OriginalTable2`,
+  updateToOriganalSchedule: `${API}/scheduleListJW/updateToOriganalSchedule`,
+  updateTask: `${API}/scheduleListJW/updateTask`,
+  distributeParts: `${API}/scheduleListJW/distributeParts`,
+  save: `${API}/scheduleListJW/save`,
+  ScheduleListOrdered: `${API}/scheduleListJW/ScheduleListOrdered`,
+  scheduleListDetails: `${API}/scheduleListJW/scheduleListDetails`,
+  ScheduleListClosed: `${API}/scheduleListJW/ScheduleListClosed`,
 };
