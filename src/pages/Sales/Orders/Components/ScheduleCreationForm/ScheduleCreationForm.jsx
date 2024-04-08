@@ -116,11 +116,9 @@ export default function ScheduleCreationForm(props) {
     InspLvl: "",
     PkngLvl: "",
     MtrlSrc: "",
-
     custcode: props.OrderCustData?.Cust_Code,
     OrderNo: 0,
     newOrderSrl: 0,
-
     quantity: 0.0,
     jwRate: 0.0,
     materialRate: 0.0,
@@ -173,18 +171,14 @@ export default function ScheduleCreationForm(props) {
   });
   const [imprtDwgObj, setImprtDwgObj] = useState({
     custcode: props.OrderCustData?.Cust_Code,
-    DwgName: "",
     material: "",
     strmtrlcode: "",
     Operation: "",
+    MtrlSrc: "",
     StrTolerance: "",
     InspLvl: "",
     PkngLvl: "",
-    MtrlSrc: "", // NOT USED
     quantity: 0.0,
-    jwRate: 0.0, // NOT USED
-    materialRate: 0.0, // NOT USED
-    unitPrice: 0.0, // NOT USED
   });
   let [orderdetailsdata, setOrderDetailsData] = useState([]);
   let [Orderno, setOrderno] = useState(location.state);

@@ -538,3 +538,9 @@ input::-webkit-inner-spin-button {
   width: 13px;
   height: 13px;
 }
+
+.ModalHeader {
+  padding-top: "10px";
+  background-color: "#283E81";
+  color: "#ffffff";
+}
