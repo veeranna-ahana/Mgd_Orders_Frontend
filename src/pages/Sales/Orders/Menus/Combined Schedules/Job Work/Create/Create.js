@@ -5,7 +5,7 @@ import { Form, Tab, Tabs } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import Popup from "../../Components/Popup";
 import axios from "axios";
-import { getRequest } from "../../../../../../api/apiinstance";
+import { getRequest, postRequest } from "../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../api/constants";
 
 export default function Create() {
@@ -63,18 +63,18 @@ export default function Create() {
 
   //set Customer
   const [custdata, setCustdata] = useState([]);
-  const postRequest = async (url, body, callback) => {
-    let response = await fetch(url, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    let content = await response.json();
-    callback(content);
-  };
+  // const postRequest = async (url, body, callback) => {
+  //   let response = await fetch(url, {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(body),
+  //   });
+  //   let content = await response.json();
+  //   callback(content);
+  // };
 
   useEffect(() => {
     async function fetchData() {
