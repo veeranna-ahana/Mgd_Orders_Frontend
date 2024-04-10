@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import { baseURL } from "../../../../../api/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { endpoints } from "../../../../api/constants";
+import { getRequest, postRequest } from "../../../../api/apiinstance";
 
 export default function CombinedScheduleDetailsFormClosed() {
   const location = useLocation();
@@ -14,26 +15,22 @@ export default function CombinedScheduleDetailsFormClosed() {
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
-    axios
-      .get(baseURL + "/jobworkCreate/getSalesContactList")
-      .then((response) => {
-        //  console.log(response.data);
-        setSalesContactList(response.data);
-      });
+    getRequest(endpoints.getSalesContact).then((response) => {
+      //  console.log(response.data);
+      setSalesContactList(response.data);
+    });
   };
 
   //SchedueleList Details
   const [scheduleListDetailsData, setScheduleListDetailsData] = useState([]);
   const getScheduleListDetails = () => {
     // console.log(selectedRow.ScheduleId);
-    axios
-      .post(baseURL + "/scheduleList/scheduleListDetails", {
-        selectedRow,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setScheduleListDetailsData(response.data);
-      });
+    postRequest(endpoints.postRequest, {
+      selectedRow,
+    }).then((response) => {
+      // console.log(response.data);
+      setScheduleListDetailsData(response.data);
+    });
   };
 
   const getBackgroundColor = (item) => {
@@ -101,14 +98,12 @@ export default function CombinedScheduleDetailsFormClosed() {
   //Combined Tasks Table 1
   const [TaskNoTableData, setTaskNoTableData] = useState([]);
   const getTaskNoTabledata = () => {
-    axios
-      .post(baseURL + "/scheduleList/combinedTaksTaskTable", {
-        ScheduleId: selectedRow?.ScheduleId,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setTaskNoTableData(response.data);
-      });
+    postRequest(endpoints.CombinedTasksTaskTable, {
+      ScheduleId: selectedRow?.ScheduleId,
+    }).then((response) => {
+      // console.log(response.data);
+      setTaskNoTableData(response.data);
+    });
   };
 
   //const row select TaskNo Table
@@ -117,27 +112,23 @@ export default function CombinedScheduleDetailsFormClosed() {
   const rowSelectFuncTaskNo = (item, index) => {
     let list = { ...item, index: index };
     setSelectedTaskNo(list);
-    axios
-      .post(baseURL + "/scheduleList/combinedTaksShowDwgName", {
-        TaskNo: list?.TaskNo,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setDwgNameTableData(response.data);
-      });
+    postRequest(endpoints.CombinedTasksShowDwg, {
+      TaskNo: list?.TaskNo,
+    }).then((response) => {
+      // console.log(response.data);
+      setDwgNameTableData(response.data);
+    });
   };
 
   ///Original Schedules Table 1
   const [orinalScheudledata, setOrinalScheduledata] = useState([]);
   const getOriginalTable1 = () => {
-    axios
-      .post(baseURL + "/scheduleList/OriginalTable1", {
-        selectedRow,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setOrinalScheduledata(response.data);
-      });
+    postRequest(endpoints.OriginalTable, {
+      selectedRow,
+    }).then((response) => {
+      // console.log(response.data);
+      setOrinalScheduledata(response.data);
+    });
   };
 
   //table row select
@@ -147,14 +138,12 @@ export default function CombinedScheduleDetailsFormClosed() {
     let list = { ...item, index: index };
     // console.log(list);
     setSelectedOrignalSchedule(list);
-    axios
-      .post(baseURL + "/scheduleList/OriginalTable2", {
-        list,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setOrinalScheduleTable2(response.data);
-      });
+    postRequest(endpoints.OriginalTable2, {
+      list,
+    }).then((response) => {
+      // console.log(response.data);
+      setOrinalScheduleTable2(response.data);
+    });
   };
 
   useEffect(() => {
@@ -166,7 +155,7 @@ export default function CombinedScheduleDetailsFormClosed() {
 
   //Update To Original Schedule
   const updateToOriganSchedule = () => {
-    axios.post(baseURL + "/scheduleList/updateToOriganalSchedule", {
+    postRequest(endpoints.updateToOriganalSchedule, {
       selectedRow,
     });
     toast
@@ -189,31 +178,27 @@ export default function CombinedScheduleDetailsFormClosed() {
   // console.log(selectedTaskNo);
 
   const updateTask = () => {
-    axios
-      .post(baseURL + "/scheduleList/updateTask", {
-        DwgSelect,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        if (response.data === "Success") {
-          toast.success(response.data, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        } else {
-          toast.error(response.data, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        }
-      });
+    postRequest(endpoints.updateTask, {
+      DwgSelect,
+    }).then((response) => {
+      // console.log(response.data);
+      if (response.data === "Success") {
+        toast.success(response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else {
+        toast.error(response.data, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
+    });
   };
 
   //Distribute Parts
   const distributeParts = () => {
-    axios
-      .post(baseURL + "/scheduleList/distributeParts", { selectedRow })
-      .then((response) => {
-        console.log(response.data);
-      });
+    postRequest(endpoints.distributeParts, { selectedRow }).then((response) => {
+      console.log(response.data);
+    });
   };
 
   ///
@@ -269,18 +254,13 @@ export default function CombinedScheduleDetailsFormClosed() {
       Special_Instructions: instruction, // Set Special_Instructions to "instruction"
       Dealing_Engineer: selectedSalesContact, // Set Dealing_Engineer to selectedSalesContact
     };
-    console.log(updatedSelectedRow);
 
-    axios
-      .post(baseURL + "/scheduleList/save", { updatedSelectedRow })
-      .then((response) => {
-        toast.success("Saved", {
-          position: toast.POSITION.TOP_CENTER,
-        });
+    postRequest(endpoints.save, { updatedSelectedRow }).then((response) => {
+      toast.success("Saved", {
+        position: toast.POSITION.TOP_CENTER,
       });
+    });
   };
-
-  console.log(selectedRow);
 
   return (
     <div>
@@ -737,4 +717,3 @@ export default function CombinedScheduleDetailsFormClosed() {
     </div>
   );
 }
-

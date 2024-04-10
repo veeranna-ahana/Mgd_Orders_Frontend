@@ -48,10 +48,11 @@ import InternalReady from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/
 import InternalHandedOver from "./pages/Sales/Orders/Menus/Profile/InternalOrderList/InternalHandedOver";
 
 // Combined Schedule
-import Create from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/Create/Create";
-import CombinedScheduleList from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/ScheduleList/CombinedScheduleList";
-import CombinedScheduleDetailsForm from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/ScheduleList/CombinedScheduleDetailsForm";
-import Open from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/Open/Open";
+// import Create from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/Create/Create";
+import Create from "./pages/Combined Schedules_JobWork/Job Work/Create/Create";
+import CombinedScheduleList from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/CombinedScheduleList";
+import CombinedScheduleDetailsForm from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/CombinedScheduleDetailsForm";
+import Open from "./pages/Combined Schedules_JobWork/Job Work/Open/Open";
 
 import SalesCreate from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/Create/SalesCreate";
 import SalesOpen from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/Open/SalesOpen";

@@ -78,7 +78,7 @@ export default function Create() {
 
   useEffect(() => {
     async function fetchData() {
-      postRequest(
+      getRequest(
         endpoints.allcustomerdata,
         (custdetdata) => {
           for (let i = 0; i < custdetdata.length; i++) {
@@ -96,7 +96,6 @@ export default function Create() {
   const selectCust = async (event) => {
     // Update custCode using the setCustCode function from useState
     setCustCode(event[0]?.Cust_Code);
-    console.log(event[0]?.Cust_Code);
     postRequest(
       endpoints.rightTabledata, {
         custCode: event[0]?.Cust_Code,

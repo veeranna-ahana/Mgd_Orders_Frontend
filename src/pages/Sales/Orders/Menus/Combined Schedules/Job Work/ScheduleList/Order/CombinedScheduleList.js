@@ -4,7 +4,7 @@ import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../../../../api/baseUrl";
 import { endpoints } from "../../../../../../../api/constants";
-import { postRequest } from "../../../../../../../api/apiinstance";
+import { getRequest, postRequest } from "../../../../../../../api/apiinstance";
 
 export default function CombinedScheduleList() {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ export default function CombinedScheduleList() {
   //ScheduleList Orders
   const [scheduleListOrders, setScheduleListOrder] = useState([]);
   const getScheduleListData = () => {
-    postRequest(endpoints.ScheduleListOrdered).then((resp) => {
+    getRequest(endpoints.ScheduleListOrdered).then((resp) => {
       // console.log(resp.data);
       setScheduleListOrder(resp.data);
     });

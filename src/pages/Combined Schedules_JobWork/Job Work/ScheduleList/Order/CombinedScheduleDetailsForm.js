@@ -2,20 +2,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
-import { baseURL } from "../../../../../api/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { endpoints } from "../../../../../../../api/constants";
+import { postRequest } from "../../../../../../../api/apiinstance";
 
 function CombinedScheduleDetailsForm() {
   const location = useLocation();
   const { selectedRow } = location?.state || {};
-  console.log("selectedRow", selectedRow);
 
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
     axios
-      .get(baseURL + "/jobworkCreate/getSalesContactList")
+    getRequest(endpoints.getSalesContact)
       .then((response) => {
         //  console.log(response.data);
         setSalesContactList(response.data);
@@ -26,8 +26,7 @@ function CombinedScheduleDetailsForm() {
   const [scheduleListDetailsData, setScheduleListDetailsData] = useState([]);
   const getScheduleListDetails = () => {
     // console.log(selectedRow.ScheduleId);
-    axios
-      .post(baseURL + "/scheduleList/scheduleListDetails", {
+    postRequest(endpoints.getSchedudleDetails, {
         selectedRow,
       })
       .then((response) => {
@@ -101,8 +100,7 @@ function CombinedScheduleDetailsForm() {
   //Combined Tasks Table 1
   const [TaskNoTableData, setTaskNoTableData] = useState([]);
   const getTaskNoTabledata = () => {
-    axios
-      .post(baseURL + "/scheduleList/combinedTaksTaskTable", {
+    postRequest(endpoints.CombinedTasksTaskTable, {
         ScheduleId: selectedRow?.ScheduleId,
       })
       .then((response) => {
@@ -117,8 +115,7 @@ function CombinedScheduleDetailsForm() {
   const rowSelectFuncTaskNo = (item, index) => {
     let list = { ...item, index: index };
     setSelectedTaskNo(list);
-    axios
-      .post(baseURL + "/scheduleList/combinedTaksShowDwgName", {
+    postRequest(endpoints.CombinedTasksShowDwg, {
         TaskNo: list?.TaskNo,
       })
       .then((response) => {
@@ -130,8 +127,7 @@ function CombinedScheduleDetailsForm() {
   ///Original Schedules Table 1
   const [orinalScheudledata, setOrinalScheduledata] = useState([]);
   const getOriginalTable1 = () => {
-    axios
-      .post(baseURL + "/scheduleList/OriginalTable1", {
+    postRequest(endpoints.OriginalTable, {
         selectedRow,
       })
       .then((response) => {
@@ -147,8 +143,7 @@ function CombinedScheduleDetailsForm() {
     let list = { ...item, index: index };
     // console.log(list);
     setSelectedOrignalSchedule(list);
-    axios
-      .post(baseURL + "/scheduleList/OriginalTable2", {
+    postRequest(endpoints.OriginalTable2, {
         list,
       })
       .then((response) => {
@@ -166,7 +161,7 @@ function CombinedScheduleDetailsForm() {
 
   //Update To Original Schedule
   const updateToOriganSchedule = () => {
-    axios.post(baseURL + "/scheduleList/updateToOriganalSchedule", {
+    postRequest(endpoints.updateToOriganalSchedule, {
       selectedRow,
     });
     toast
@@ -189,8 +184,7 @@ function CombinedScheduleDetailsForm() {
   // console.log(selectedTaskNo);
 
   const updateTask = () => {
-    axios
-      .post(baseURL + "/scheduleList/updateTask", {
+    postRequest(endpoints.updateTask, {
         DwgSelect,
       })
       .then((response) => {
@@ -209,8 +203,7 @@ function CombinedScheduleDetailsForm() {
 
   //Distribute Parts
   const distributeParts = () => {
-    axios
-      .post(baseURL + "/scheduleList/distributeParts", { selectedRow })
+    postRequest(endpoints.distributeParts, { selectedRow })
       .then((response) => {
         console.log(response.data);
       });
@@ -269,10 +262,8 @@ function CombinedScheduleDetailsForm() {
       Special_Instructions: instruction, // Set Special_Instructions to "instruction"
       Dealing_Engineer: selectedSalesContact, // Set Dealing_Engineer to selectedSalesContact
     };
-    console.log(updatedSelectedRow);
 
-    axios
-      .post(baseURL + "/scheduleList/save", { updatedSelectedRow })
+    postRequest(endpoints.save, { updatedSelectedRow })
       .then((response) => {
         toast.success("Saved", {
           position: toast.POSITION.TOP_CENTER,

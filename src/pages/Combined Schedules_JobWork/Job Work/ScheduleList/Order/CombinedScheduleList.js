@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { baseURL } from "../../../../../api/baseUrl";
+import { endpoints } from "../../../../../../../api/constants";
+import { postRequest } from "../../../../../../../api/apiinstance";
 
 export default function CombinedScheduleList() {
   const navigate = useNavigate();
@@ -10,8 +12,8 @@ export default function CombinedScheduleList() {
   //ScheduleList Orders
   const [scheduleListOrders, setScheduleListOrder] = useState([]);
   const getScheduleListData = () => {
-    axios.post(baseURL + "/scheduleList/ScheduleListOrdered").then((resp) => {
-      // console.log(resp.data);
+    postRequest(endpoints.ScheduleListOrdered).then((resp) => {
+      console.log(resp.data);
       setScheduleListOrder(resp.data);
     });
   };

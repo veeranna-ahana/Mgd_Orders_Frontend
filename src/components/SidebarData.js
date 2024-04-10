@@ -257,12 +257,12 @@ export const ordersSidebar = [
         subNav: [
           {
             title: "Create",
-            path: "/Orders/JobWork",
+            path: "/Orders/JobWork/CREATE",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
           {
             title: "Open",
-            path: "/Orders/JobWork/Open",
+            path: "/Orders/JobWork/OPEN",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
           {
@@ -272,7 +272,7 @@ export const ordersSidebar = [
             subNav: [
               {
                 title: "Order",
-                path: "/Orders/JobWork/ScheduleList/Order",
+                path: "/Orders/JobWork/ScheduleList/ORDER",
                 icon: <AiIcons.AiOutlineArrowRight />,
               },
               {
