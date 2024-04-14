@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import * as XLSX from "xlsx";
+
 import Modal from "react-bootstrap/Modal";
 import IETable from "./elements/IETable";
 import IEFormHeader from "./elements/IEFormHeader";
+import { toast } from "react-toastify";
 
 export default function ImportExcelModal(props) {
   const [importedExcelData, setImportedExcelData] = useState([]);
@@ -9,6 +12,32 @@ export default function ImportExcelModal(props) {
   const closeModal = () => {
     props.setImportExcelModal(false);
   };
+
+  function exportModifiedExcel() {
+    let excelTemplateArray = [];
+
+    for (let i = 0; i < importedExcelData.length; i++) {
+      const element = importedExcelData[i];
+      let obj = {
+        Dwg_Name: element.Dwg_Name,
+        Mtrl_Code: element.Mtrl_Code,
+        Source: element.Source,
+        Operation: element.Operation,
+        Order_Qty: element.Order_Qty,
+        JW_Cost: element.JW_Cost,
+        Mtrl_Cost: element.Mtrl_Cost,
+      };
+
+      excelTemplateArray.push(obj);
+    }
+
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(excelTemplateArray);
+
+    XLSX.utils.book_append_sheet(wb, ws, "MySheet1");
+    XLSX.writeFile(wb, "Modified Customer Order Template.xlsx");
+    toast.success("Export modified excel successful");
+  }
 
   const materialSource = [
     {
@@ -46,7 +75,7 @@ export default function ImportExcelModal(props) {
             materialSource={materialSource}
           />
         </Modal.Body>
-        <Modal.Footer className="d-flex flex-row justify-content-end">
+        <Modal.Footer className="d-flex flex-row justify-content-between">
           {/* <button
             className="button-style m-0 me-3"
             style={{ width: "60px" }}
@@ -54,7 +83,14 @@ export default function ImportExcelModal(props) {
           >
             Yes
           </button> */}
-
+          <button
+            className="button-style m-0"
+            style={{ width: "auto" }}
+            onClick={exportModifiedExcel}
+            disabled={importedExcelData.length < 1}
+          >
+            Export Modified Excel
+          </button>
           <button
             className="button-style m-0"
             style={{ width: "60px", background: "rgb(173, 173, 173)" }}
