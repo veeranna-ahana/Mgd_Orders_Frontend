@@ -10,6 +10,15 @@ export default function ImportExcelModal(props) {
     props.setImportExcelModal(false);
   };
 
+  const materialSource = [
+    {
+      label: "Magod",
+    },
+    {
+      label: "Customer",
+    },
+  ];
+
   return (
     <>
       <Modal
@@ -25,8 +34,17 @@ export default function ImportExcelModal(props) {
           <IEFormHeader
             setImportedExcelData={setImportedExcelData}
             importedExcelData={importedExcelData}
+            OrderData={props.OrderData}
+            mtrldata={props.mtrldata}
+            procdata={props.procdata}
           />
-          <IETable importedExcelData={importedExcelData} />
+          <IETable
+            importedExcelData={importedExcelData}
+            setImportedExcelData={setImportedExcelData}
+            mtrldata={props.mtrldata}
+            procdata={props.procdata}
+            materialSource={materialSource}
+          />
         </Modal.Body>
         <Modal.Footer className="d-flex flex-row justify-content-end">
           {/* <button

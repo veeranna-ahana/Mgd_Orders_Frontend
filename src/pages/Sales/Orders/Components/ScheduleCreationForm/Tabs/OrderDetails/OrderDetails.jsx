@@ -302,79 +302,90 @@ export default function OrderDetails(props) {
   ////console.log("mtrldata", mtrldata);
 
   useEffect(() => {
-    async function fetchData() {
-      //console.log("Cust_Code....", Cust_Code);
-      postRequest(
-        endpoints.getCustomerDets,
-        { custcode: Cust_Code },
-        (custdata) => {
-          // setCustomer(custdata[0]["Cust_name"]);
-          // setCustdata(custdata);
-        }
-      );
-      // await postRequest(
-      //   endpoints.PostNewSrlData,
-      //   { custcode: Cust_Code, OrderNo: OrderNo },
-      //   (srldata) => {
-      //     //////console.log("srl data", srldata);
-      //     setSerailData(srldata);
-      //   }
-      // );
+    //console.log("Cust_Code....", Cust_Code);
+    postRequest(
+      endpoints.getCustomerDets,
+      { custcode: Cust_Code },
+      (custdata) => {
+        // setCustomer(custdata[0]["Cust_name"]);
+        // setCustdata(custdata);
+      }
+    );
+    // await postRequest(
+    //   endpoints.PostNewSrlData,
+    //   { custcode: Cust_Code, OrderNo: OrderNo },
+    //   (srldata) => {
+    //     //////console.log("srl data", srldata);
+    //     setSerailData(srldata);
+    //   }
+    // );
 
-      await postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
-        ////////console.log(sdata);
-        setSalesExecdata(sdata);
-      });
-      await postRequest(
-        endpoints.getSalesIndiExecLists,
-        { salesContact: SalesContact },
-        (sdata) => {
-          ////////console.log(sdata[0]["Name"]);
-          // setSalesExecContact(sdata[0]["Name"]);
-        }
-      );
-      // await postRequest(endpoints.getSalesIndiExecLists, { salesContact: order.DealingEngineer }, (ddata) => {
-      //     setDealingEngineer(ddata[0]["Name"]);
-      // });
-      // await postRequest(
-      //   endpoints.getSalesIndiExecLists,
-      //   { salesContact: RecordedBy },
-      //   (recdata) => {
-      //     setRecordedby(recdata[0]["Name"]);
-      //   }
-      // );
-      await postRequest(
-        endpoints.getSalesIndiExecLists,
-        { salesContact: Order_Received_By },
-        (rcvddata) => {
-          // setReceivedBy(rcvddata[0]["Name"]);
-        }
-      );
-      getRequest(endpoints.getMaterials, (mtrldata) => {
-        ////console.log(mtrldata);
-        setMtrldata(mtrldata);
-      });
-      getRequest(endpoints.getProcessLists, (pdata) => {
-        setProcdata(pdata);
-      });
+    postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
+      ////////console.log(sdata);
+      setSalesExecdata(sdata);
+    });
+    postRequest(
+      endpoints.getSalesIndiExecLists,
+      { salesContact: SalesContact },
+      (sdata) => {
+        ////////console.log(sdata[0]["Name"]);
+        // setSalesExecContact(sdata[0]["Name"]);
+      }
+    );
+    // await postRequest(endpoints.getSalesIndiExecLists, { salesContact: order.DealingEngineer }, (ddata) => {
+    //     setDealingEngineer(ddata[0]["Name"]);
+    // });
+    // await postRequest(
+    //   endpoints.getSalesIndiExecLists,
+    //   { salesContact: RecordedBy },
+    //   (recdata) => {
+    //     setRecordedby(recdata[0]["Name"]);
+    //   }
+    // );
+    postRequest(
+      endpoints.getSalesIndiExecLists,
+      { salesContact: Order_Received_By },
+      (rcvddata) => {
+        // setReceivedBy(rcvddata[0]["Name"]);
+      }
+    );
+    getRequest(endpoints.getMaterials, (mtrldata) => {
+      ////console.log(mtrldata);
+      let arr = [];
+      for (let i = 0; i < mtrldata.length; i++) {
+        mtrldata[i].label = mtrldata[i].Mtrl_Code;
+        arr.push(mtrldata[i]);
+      }
 
-      getRequest(endpoints.getToleranceTypes, (ttdata) => {
-        setTolerancedata(ttdata);
-      });
-      getRequest(endpoints.getInspectionLevels, (ildata) => {
-        setInspdata(ildata);
-      });
-      getRequest(endpoints.getPackingLevels, (pckdata) => {
-        setPackdata(pckdata);
-      });
+      setMtrldata(arr);
+    });
+    getRequest(endpoints.getProcessLists, (pdata) => {
+      let arr = [];
+      for (let i = 0; i < pdata.length; i++) {
+        pdata[i].label = pdata[i].ProcessDescription;
+        arr.push(pdata[i]);
+      }
 
-      //console.log("custcode:", Cust_Code);
-      // postRequest(endpoints.GetBomData, { custcode: Cust_Code }, (bomdata) => {
-      //   //console.log("bomdata......", bomdata);
-      //   setBomData(bomdata);
-      // });
-    }
-    fetchData();
+      setProcdata(arr);
+
+      // console.log("pdata", pdata);
+    });
+
+    getRequest(endpoints.getToleranceTypes, (ttdata) => {
+      setTolerancedata(ttdata);
+    });
+    getRequest(endpoints.getInspectionLevels, (ildata) => {
+      setInspdata(ildata);
+    });
+    getRequest(endpoints.getPackingLevels, (pckdata) => {
+      setPackdata(pckdata);
+    });
+
+    //console.log("custcode:", Cust_Code);
+    // postRequest(endpoints.GetBomData, { custcode: Cust_Code }, (bomdata) => {
+    //   //console.log("bomdata......", bomdata);
+    //   setBomData(bomdata);
+    // });
   }, []);
 
   const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
@@ -799,6 +810,9 @@ export default function OrderDetails(props) {
       <ImportExcelModal
         setImportExcelModal={setImportExcelModal}
         importExcelModal={importExcelModal}
+        OrderData={OrderData}
+        mtrldata={mtrldata}
+        procdata={procdata}
       />
       <div>
         {/* {console.log(".....", props)} */}

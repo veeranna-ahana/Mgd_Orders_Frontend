@@ -28,7 +28,7 @@ export default function IEFormHeader(props) {
 
     XLSX.utils.book_append_sheet(wb, ws, "MySheet1");
     XLSX.writeFile(wb, "Import Customer Order Template.xlsx");
-    toast.success("Import customer order template success.");
+    toast.success("Export excel template successful");
   }
 
   const noFileFoundFun = (e) => {
@@ -39,6 +39,10 @@ export default function IEFormHeader(props) {
     exportExcelTemplate();
   };
 
+  // console.log("mtrldata", props.mtrldata);
+
+  // console.log("props in excel", props.procdata);
+  // console.log("procdata", props.procdata);
   const handleChange = (e) => {
     const reader = new FileReader();
 
@@ -71,10 +75,86 @@ export default function IEFormHeader(props) {
             parsedData[0].JW_Cost &&
             parsedData[0].Mtrl_Cost
           ) {
+            let procData = props.procdata?.filter((obj) =>
+              props.OrderData.Type === "Service"
+                ? obj.Service !== 0
+                : props.OrderData.Type === "Fabrication"
+                ? obj.MultiOperation !== 0
+                : obj.Profile !== 0
+            );
+
+            // console.log("procData", procData);
+
+            let matArray = [];
+            let processArray = [];
+            let finalArray = [];
+
+            // making array for material
+            for (let i = 0; i < props.mtrldata.length; i++) {
+              const element = props.mtrldata[i];
+              matArray.push(element.Mtrl_Code);
+            }
+
+            // making array for process data
+            for (let i = 0; i < procData.length; i++) {
+              const element = procData[i];
+              processArray.push(element.ProcessDescription);
+            }
+
+            for (let i = 0; i < parsedData.length; i++) {
+              let element = parsedData[i];
+
+              // check for material
+              if (matArray.includes(element.Mtrl_Code)) {
+                element.materialError = false;
+              } else {
+                element.materialError = true;
+              }
+
+              // check for source
+              if (
+                element.Source === "Magod" ||
+                element.Source === "magod" ||
+                element.Source === "Customer" ||
+                element.Source === "customer"
+              ) {
+                element.sourceError = false;
+              } else {
+                element.sourceError = true;
+              }
+
+              // check for operation
+              if (processArray.includes(element.Operation)) {
+                element.operationError = false;
+              } else {
+                element.operationError = true;
+              }
+
+              // console.log("processArray", processArray);
+              // console.log("element.Operation", element.Operation);
+              finalArray.push(element);
+            }
+
+            // console.log("finalArray", finalArray);
+
+            // for (let i = 0; i < parsedData.length; i++) {
+            //   const element0 = parsedData[i];
+            //   for (let i = 0; i < props.mtrldata.length; i++) {
+            //     const element1 = props.mtrldata[i];
+
+            //     if (element0.Mtrl_Code === element1.Mtrl_Code) {
+            //       newArray.push(element0);
+
+            //       // console.log("element0.Mtrl_Code", element0.Mtrl_Code);
+            //       // console.log("element1.Mtrl_Code", element1.Mtrl_Code);
+            //     }
+            //   }
+            // }
+
             props.setImportedExcelData(parsedData);
             toast.success("All order details correctly loaded.");
           } else {
-            toast.error("Tempalate error.");
+            toast.error("Template error.");
             props.setImportedExcelData([]);
           }
         } else {
@@ -103,13 +183,9 @@ export default function IEFormHeader(props) {
   //   }
   // };
 
-  console.log("importedExcelData", props.importedExcelData);
+  // console.log("importedExcelData", props.importedExcelData);
   return (
     <>
-      <div className="row">
-        <b>Order Total</b>
-        <input disabled />
-      </div>
       <div className="row">
         <div className="col-md-3">
           <b>Load Excel</b>
@@ -123,8 +199,24 @@ export default function IEFormHeader(props) {
             // className="button-style m-1"
           />
         </div>
+        <div className="col-md-6">
+          <b>Order Total</b>
+          <input disabled />
+        </div>
       </div>
+      {/* <div className="row">
+       
+      </div> */}
       <div className="d-flex justify-content-center">
+        <button
+          className="button-style m-1"
+          onClick={() => {
+            exportExcelTemplate();
+          }}
+          style={{ width: "auto" }}
+        >
+          Export Excel Template
+        </button>
         <button className="button-style m-1">Update Para</button>
         <button className="button-style m-1">Set Material</button>
         <button className="button-style m-1">Set Operation</button>
