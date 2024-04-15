@@ -186,7 +186,7 @@ export default function IEFormHeader(props) {
   // console.log("importedExcelData", props.importedExcelData);
   return (
     <>
-      <div className="row">
+      <div className="row d-flex justify-content-between">
         <div className="col-md-3">
           <b>Load Excel</b>
           <input
@@ -199,9 +199,9 @@ export default function IEFormHeader(props) {
             // className="button-style m-1"
           />
         </div>
-        <div className="col-md-6">
+        <div className="col-md-3">
           <b>Order Total</b>
-          <input disabled />
+          <input disabled value={props.orderTotal} />
         </div>
       </div>
       {/* <div className="row">

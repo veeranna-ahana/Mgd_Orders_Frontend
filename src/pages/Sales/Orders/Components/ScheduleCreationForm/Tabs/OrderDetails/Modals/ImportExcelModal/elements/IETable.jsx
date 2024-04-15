@@ -163,6 +163,7 @@ export default function IETable(props) {
                 <td>
                   <input
                     type="number"
+                    min="0"
                     value={val.Order_Qty}
                     name="Order_Qty"
                     style={{ background: "transparent", border: "none" }}
@@ -181,6 +182,7 @@ export default function IETable(props) {
                 <td>
                   <input
                     type="number"
+                    min="0"
                     // value={val.JW_Cost}
                     value={val.JW_Cost}
                     name="JW_Cost"
@@ -200,6 +202,7 @@ export default function IETable(props) {
                 <td>
                   <input
                     type="number"
+                    min="0"
                     // value={val.Mtrl_Cost}
                     value={val.Mtrl_Cost}
                     name="Mtrl_Cost"

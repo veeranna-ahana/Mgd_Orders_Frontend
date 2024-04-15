@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 export default function ImportExcelModal(props) {
   const [importedExcelData, setImportedExcelData] = useState([]);
 
+  const [orderTotal, setOrderTotal] = useState(0);
+
   const closeModal = () => {
     props.setImportExcelModal(false);
   };
@@ -48,6 +50,21 @@ export default function ImportExcelModal(props) {
     },
   ];
 
+  useEffect(() => {
+    let total = 0;
+    for (let i = 0; i < importedExcelData.length; i++) {
+      const element = importedExcelData[i];
+
+      total = (
+        parseFloat(total) +
+        parseFloat(element.Order_Qty || 0) *
+          (parseFloat(element.JW_Cost || 0) +
+            parseFloat(element.Mtrl_Cost || 0))
+      ).toFixed(2);
+    }
+    setOrderTotal(total);
+  }, [importedExcelData]);
+
   return (
     <>
       <Modal
@@ -63,6 +80,7 @@ export default function ImportExcelModal(props) {
           <IEFormHeader
             setImportedExcelData={setImportedExcelData}
             importedExcelData={importedExcelData}
+            orderTotal={orderTotal}
             OrderData={props.OrderData}
             mtrldata={props.mtrldata}
             procdata={props.procdata}
