@@ -5,11 +5,14 @@ import Modal from "react-bootstrap/Modal";
 import IETable from "./elements/IETable";
 import IEFormHeader from "./elements/IEFormHeader";
 import { toast } from "react-toastify";
+import Set from "./Modals/Set";
 
 export default function ImportExcelModal(props) {
   const [importedExcelData, setImportedExcelData] = useState([]);
   const [orderTotal, setOrderTotal] = useState(0);
   const [selectedRows, setSelectedRows] = useState([]);
+
+  const [settingModal, setSettingModal] = useState(false);
 
   const closeModal = () => {
     props.setImportExcelModal(false);
@@ -84,6 +87,8 @@ export default function ImportExcelModal(props) {
             OrderData={props.OrderData}
             mtrldata={props.mtrldata}
             procdata={props.procdata}
+            setSettingModal={setSettingModal}
+            selectedRows={selectedRows}
           />
           <IETable
             importedExcelData={importedExcelData}
@@ -120,6 +125,16 @@ export default function ImportExcelModal(props) {
           </button>
         </Modal.Footer>
       </Modal>
+      <Set
+        settingModal={settingModal}
+        setSettingModal={setSettingModal}
+        mtrldata={props.mtrldata}
+        procdata={props.procdata}
+        importedExcelData={importedExcelData}
+        setImportedExcelData={setImportedExcelData}
+        setSelectedRows={setSelectedRows}
+        selectedRows={selectedRows}
+      />
     </>
   );
 }

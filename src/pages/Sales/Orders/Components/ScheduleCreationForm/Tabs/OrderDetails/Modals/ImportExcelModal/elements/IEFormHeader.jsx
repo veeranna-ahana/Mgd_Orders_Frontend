@@ -218,8 +218,17 @@ export default function IEFormHeader(props) {
           Export Excel Template
         </button>
         <button className="button-style m-1">Update Para</button>
-        <button className="button-style m-1">Set Material</button>
-        <button className="button-style m-1">Set Operation</button>
+        <button
+          className="button-style m-1"
+          style={{ width: "auto" }}
+          onClick={(e) => {
+            props.setSettingModal(true);
+          }}
+          disabled={props.selectedRows.length < 1}
+        >
+          Set Material and Operation
+        </button>
+        {/* <button className="button-style m-1">Set Operation</button> */}
         {/* <button className="button-style m-1">Load Excel</button> */}
         <button className="button-style m-1">Compare</button>
         <button className="button-style m-1">Load to Order</button>

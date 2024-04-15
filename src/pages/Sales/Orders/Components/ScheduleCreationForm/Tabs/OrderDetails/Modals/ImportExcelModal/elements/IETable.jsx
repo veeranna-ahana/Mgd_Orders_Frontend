@@ -113,7 +113,7 @@ export default function IETable(props) {
                       );
                     }}
                     options={props.mtrldata}
-                    defaultSelected={[{ label: val.Mtrl_Code }]}
+                    selected={[{ label: val.Mtrl_Code }]}
                     placeholder="Choose a Material..."
                   />
                 </td>
@@ -142,7 +142,7 @@ export default function IETable(props) {
                       );
                     }}
                     options={props.materialSource}
-                    defaultSelected={[{ label: val.Source }]}
+                    selected={[{ label: val.Source }]}
                     placeholder="Choose a Source..."
                   />
                 </td>
@@ -171,7 +171,7 @@ export default function IETable(props) {
                       );
                     }}
                     options={props.procdata}
-                    defaultSelected={[{ label: val.Operation }]}
+                    selected={[{ label: val.Operation }]}
                     placeholder="Choose a Operation..."
                   />
                 </td>
