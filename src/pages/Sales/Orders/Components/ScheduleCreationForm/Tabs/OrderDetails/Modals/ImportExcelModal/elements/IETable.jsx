@@ -36,6 +36,8 @@ export default function IETable(props) {
     props.setImportedExcelData(arr);
     // console.log("importedExcelData", importedExcelData);
   };
+
+  console.log("props.selectedRows", props.selectedRows);
   return (
     <>
       <Table striped className="table-data border" style={{ border: "1px" }}>
@@ -55,7 +57,20 @@ export default function IETable(props) {
         <tbody className="tablebody">
           {props.importedExcelData?.map((val, key) => (
             <>
-              <tr>
+              <tr
+                className={
+                  props.selectedRows.includes(key) ? "selected-row" : ""
+                }
+                onClick={(e) => {
+                  if (props.selectedRows.includes(key)) {
+                    props.setSelectedRows(
+                      props.selectedRows.filter((obj) => obj != key)
+                    );
+                  } else {
+                    props.setSelectedRows([...props.selectedRows, key]);
+                  }
+                }}
+              >
                 <td>{key + 1}</td>
                 <td>
                   <input

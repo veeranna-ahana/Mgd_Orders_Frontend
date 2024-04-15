@@ -8,8 +8,8 @@ import { toast } from "react-toastify";
 
 export default function ImportExcelModal(props) {
   const [importedExcelData, setImportedExcelData] = useState([]);
-
   const [orderTotal, setOrderTotal] = useState(0);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const closeModal = () => {
     props.setImportExcelModal(false);
@@ -91,6 +91,8 @@ export default function ImportExcelModal(props) {
             mtrldata={props.mtrldata}
             procdata={props.procdata}
             materialSource={materialSource}
+            setSelectedRows={setSelectedRows}
+            selectedRows={selectedRows}
           />
         </Modal.Body>
         <Modal.Footer className="d-flex flex-row justify-content-between">
