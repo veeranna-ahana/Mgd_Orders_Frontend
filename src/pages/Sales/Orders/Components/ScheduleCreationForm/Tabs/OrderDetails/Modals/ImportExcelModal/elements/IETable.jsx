@@ -63,7 +63,9 @@ export default function IETable(props) {
 
                   <Typeahead
                     className={
-                      val.materialError ? "border border-1 border-danger" : ""
+                      val.materialError
+                        ? "border rounded border-1 border-danger typeaheadClass"
+                        : "typeaheadClass"
                     }
                     // className="ip-select"
                     id="Mtrl_Code"
@@ -89,7 +91,9 @@ export default function IETable(props) {
 
                   <Typeahead
                     className={
-                      val.sourceError ? "border border-1 border-danger" : ""
+                      val.sourceError
+                        ? "border rounded border-1 border-danger typeaheadClass"
+                        : "typeaheadClass"
                     }
                     // className="ip-select"
                     id="Source"
@@ -116,7 +120,9 @@ export default function IETable(props) {
 
                   <Typeahead
                     className={
-                      val.operationError ? "border border-1 border-danger" : ""
+                      val.operationError
+                        ? "border rounded border-1 border-danger typeaheadClass"
+                        : "typeaheadClass"
                     }
                     // className="ip-select border-0"
                     id="Operation"

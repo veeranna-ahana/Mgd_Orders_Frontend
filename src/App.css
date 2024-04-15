@@ -532,3 +532,8 @@ input::-webkit-inner-spin-button {
 .rowSelectedClass {
   background-color: #98a8f8 !important;
 }
+
+.typeaheadClass .rbt-input-main {
+  background-color: transparent !important;
+  border: none !important;
+}
