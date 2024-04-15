@@ -4,8 +4,8 @@ import { Table, Tab, Tabs } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { endpoints } from "../../../../../../../api/constants";
-import { postRequest } from "../../../../../../../api/apiinstance";
+import { getRequest, postRequest } from "../../../../api/apiinstance";
+import { endpoints } from "../../../../api/constants";
 
 function CombinedScheduleDetailsForm() {
   const location = useLocation();
@@ -14,24 +14,20 @@ function CombinedScheduleDetailsForm() {
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
-    axios
-    getRequest(endpoints.getSalesContact)
-      .then((response) => {
+    getRequest(endpoints.getSalesContact,(response) => {
         //  console.log(response.data);
-        setSalesContactList(response.data);
+        setSalesContactList(response);
       });
   };
 
   //SchedueleList Details
   const [scheduleListDetailsData, setScheduleListDetailsData] = useState([]);
   const getScheduleListDetails = () => {
-    // console.log(selectedRow.ScheduleId);
     postRequest(endpoints.getSchedudleDetails, {
         selectedRow,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setScheduleListDetailsData(response.data);
+      },(response) => {
+        console.log(response);
+        setScheduleListDetailsData(response);
       });
   };
 
@@ -92,7 +88,7 @@ function CombinedScheduleDetailsForm() {
 
   //Default first row select for First Table Schedule Details
   useEffect(() => {
-    if (scheduleListDetailsData.length > 0 && !selected.DwgName) {
+    if (scheduleListDetailsData?.length > 0 && !selected?.DwgName) {
       rowSelectFunc1(scheduleListDetailsData[0], 0); // Select the first row
     }
   }, [scheduleListDetailsData, selected, rowSelectFunc1]);
@@ -102,10 +98,9 @@ function CombinedScheduleDetailsForm() {
   const getTaskNoTabledata = () => {
     postRequest(endpoints.CombinedTasksTaskTable, {
         ScheduleId: selectedRow?.ScheduleId,
-      })
-      .then((response) => {
+      },(response) => {
         // console.log(response.data);
-        setTaskNoTableData(response.data);
+        setTaskNoTableData(response);
       });
   };
 
@@ -117,10 +112,9 @@ function CombinedScheduleDetailsForm() {
     setSelectedTaskNo(list);
     postRequest(endpoints.CombinedTasksShowDwg, {
         TaskNo: list?.TaskNo,
-      })
-      .then((response) => {
+      },(response) => {
         // console.log(response.data);
-        setDwgNameTableData(response.data);
+        setDwgNameTableData(response);
       });
   };
 
@@ -129,10 +123,9 @@ function CombinedScheduleDetailsForm() {
   const getOriginalTable1 = () => {
     postRequest(endpoints.OriginalTable, {
         selectedRow,
-      })
-      .then((response) => {
+      },(response) => {
         // console.log(response.data);
-        setOrinalScheduledata(response.data);
+        setOrinalScheduledata(response);
       });
   };
 
@@ -145,10 +138,9 @@ function CombinedScheduleDetailsForm() {
     setSelectedOrignalSchedule(list);
     postRequest(endpoints.OriginalTable2, {
         list,
-      })
-      .then((response) => {
+      },(response) => {
         // console.log(response.data);
-        setOrinalScheduleTable2(response.data);
+        setOrinalScheduleTable2(response);
       });
   };
 
@@ -167,8 +159,7 @@ function CombinedScheduleDetailsForm() {
     toast
       .success("Sucessfully Updated", {
         position: toast.POSITION.TOP_CENTER,
-      })
-      .then((response) => {
+      },(response) => {
         // console.log(response.data);
       });
   };
@@ -186,8 +177,7 @@ function CombinedScheduleDetailsForm() {
   const updateTask = () => {
     postRequest(endpoints.updateTask, {
         DwgSelect,
-      })
-      .then((response) => {
+      },(response) => {
         // console.log(response.data);
         if (response.data === "Success") {
           toast.success(response.data, {
@@ -203,8 +193,7 @@ function CombinedScheduleDetailsForm() {
 
   //Distribute Parts
   const distributeParts = () => {
-    postRequest(endpoints.distributeParts, { selectedRow })
-      .then((response) => {
+    postRequest(endpoints.distributeParts, { selectedRow },(response) => {
         console.log(response.data);
       });
   };
@@ -263,8 +252,7 @@ function CombinedScheduleDetailsForm() {
       Dealing_Engineer: selectedSalesContact, // Set Dealing_Engineer to selectedSalesContact
     };
 
-    postRequest(endpoints.save, { updatedSelectedRow })
-      .then((response) => {
+    postRequest(endpoints.save, { updatedSelectedRow },(response) => {
         toast.success("Saved", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -280,29 +268,29 @@ function CombinedScheduleDetailsForm() {
         <div className="row">
           <div className="col-md-4 mb-2 col-sm-12">
             <label className="form-label">No</label>
-            <input class="" type="text" value={selectedRow.OrdSchNo} />
+            <input class="" type="text" value={selectedRow?.OrdSchNo} />
           </div>
 
           <div className="col-md-4  mb-2 col-sm-12">
             <label className="form-label">Customer</label>
-            <input class="" type="text" value={selectedRow.Cust_name} />
+            <input class="" type="text" value={selectedRow?.Cust_name} />
           </div>
 
           <div className="col-md-4  mb-2 col-sm-12">
             <label className="form-label"> Sales Contact</label>
-            <input class="" type="text" value={selectedRow.SalesContact} />
+            <input class="" type="text" value={selectedRow?.SalesContact} />
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-4 mb-2 col-sm-12">
             <label className="form-label">Type</label>
-            <input class="" type="text" value={selectedRow.ScheduleType} />
+            <input class="" type="text" value={selectedRow?.ScheduleType} />
           </div>
 
           <div className="col-md-4  mb-2 col-sm-12">
             <label className="form-label">PO No</label>
-            <input class="" type="text" value={selectedRow.PO} />
+            <input class="" type="text" value={selectedRow?.PO} />
           </div>
 
           <div className="col-md-4  mb-2 col-sm-12">
@@ -310,14 +298,14 @@ function CombinedScheduleDetailsForm() {
             <input
               class=""
               type="text"
-              value={formatDeliveryDate(selectedRow.schTgtDate)}
+              value={formatDeliveryDate(selectedRow?.schTgtDate)}
             />
           </div>
         </div>
         <div className="row">
           <div className="col-md-4 mb-2 col-sm-12">
             <label className="form-label">Status</label>
-            <input class="" type="text" value={selectedRow.Schedule_Status} />
+            <input class="" type="text" value={selectedRow?.Schedule_Status} />
           </div>
           <div className="col-md-4  mb-2 col-sm-12">
             <label className="form-label">Instruction</label>
@@ -325,7 +313,7 @@ function CombinedScheduleDetailsForm() {
               class=""
               type="text"
               onChange={onChangeInstruction}
-              value={selectedRow.Special_Instructions}
+              value={selectedRow?.Special_Instructions}
             />
           </div>
           <div className="col-md-4  mb-2 col-sm-12">
@@ -350,7 +338,7 @@ function CombinedScheduleDetailsForm() {
               <option value="" disabled>
                 Select Sales Contact
               </option>
-              {salesContactList.map((item, key) => (
+              {salesContactList?.map((item, key) => (
                 <option key={key} value={item.Name}>
                   {item.Name}
                 </option>
@@ -445,7 +433,7 @@ function CombinedScheduleDetailsForm() {
                   </thead>
 
                   <tbody className="tablebody">
-                    {scheduleListDetailsData.map((item, key) => {
+                    {scheduleListDetailsData?.map((item, key) => {
                       const backgroundColor = getBackgroundColor(item);
                       return (
                         <>
@@ -535,7 +523,7 @@ function CombinedScheduleDetailsForm() {
                     </tr>
                   </thead>
                   <tbody className="tablebody">
-                    {TaskNoTableData.map((item, key) => {
+                    {TaskNoTableData?.map((item, key) => {
                       return (
                         <>
                           <tr
@@ -606,7 +594,7 @@ function CombinedScheduleDetailsForm() {
                     </tr>
                   </thead>
                   <tbody className="tablebody table-space">
-                    {DwgNameTableData.map((item, key) => {
+                    {DwgNameTableData?.map((item, key) => {
                       return (
                         <>
                           <tr
@@ -651,7 +639,7 @@ function CombinedScheduleDetailsForm() {
                     </tr>
                   </thead>
                   <tbody className="tablebody table-space">
-                    {orinalScheudledata.map((item, key) => {
+                    {orinalScheudledata?.map((item, key) => {
                       return (
                         <>
                           <tr
@@ -702,7 +690,7 @@ function CombinedScheduleDetailsForm() {
                     </tr>
                   </thead>
                   <tbody className="tablebody table-space">
-                    {orinalScheudleTable2.map((item, map) => {
+                    {orinalScheudleTable2?.map((item, map) => {
                       return (
                         <>
                           <tr>

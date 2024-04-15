@@ -2,20 +2,29 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { baseURL } from "../../../../../api/baseUrl";
-import { endpoints } from "../../../../../../../api/constants";
-import { postRequest } from "../../../../../../../api/apiinstance";
+import { endpoints } from "../../../api/constants";
+import { getRequest } from "../../../api/apiinstance";
 
-export default function CombinedScheduleList() {
+export default function CombinedScheduleListClosed({type}) {
+
+  console.log("type closed form is",type);
   const navigate = useNavigate();
 
   //ScheduleList Orders
-  const [scheduleListOrders, setScheduleListOrder] = useState([]);
+  const [scheduleListClosed, setScheduleListClosed] = useState([]);
   const getScheduleListData = () => {
-    postRequest(endpoints.ScheduleListOrdered).then((resp) => {
-      // console.log(resp.data);
-      setScheduleListOrder(resp.data);
-    });
+    if(type==='JobWork'){
+      getRequest(endpoints.ScheduleListClosed, (response) => {
+        console.log(response);
+        setScheduleListClosed(response);
+  });
+    }
+    else{
+      getRequest(endpoints.ScheduleListClosedSales, (response) => {
+        console.log(response);
+        setScheduleListClosed(response);
+  }); 
+    }
   };
 
   useEffect(() => {
@@ -38,7 +47,7 @@ export default function CombinedScheduleList() {
         <button
           className="button-style"
           onClick={() =>
-            navigate("/Orders/JobWork/ScheduleList/Order/OpenDetailForm", {
+            navigate("/Orders/JobWork/ScheduleList/Closed/OpenDetailForm", {
               state: { selectedRow: selectedRow },
             })
           }
@@ -64,7 +73,7 @@ export default function CombinedScheduleList() {
             </tr>
           </thead>
           <tbody className="tablebody">
-            {scheduleListOrders.map((item, key) => {
+            {scheduleListClosed.map((item, key) => {
               return (
                 <>
                   <tr

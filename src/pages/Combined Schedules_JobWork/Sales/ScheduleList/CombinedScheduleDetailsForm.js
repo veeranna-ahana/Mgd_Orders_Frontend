@@ -1,6 +1,6 @@
 import React from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
-function SalesCombinedScheduleDetailsForm() {
+function CombinedScheduleDetailsForm() {
   return (
     <div>
       <h4 className="title">Combined Schedule Details Form</h4>
@@ -160,7 +160,7 @@ function SalesCombinedScheduleDetailsForm() {
           </button>
           <div className="row">
             <div className="col-md-8">
-              <div style={{ height: "300px", overflowY: "scroll" }}>
+              <div style={{ height: "400px", overflowY: "scroll" }}>
                 <Table
                   striped
                   className="table-data border mt-2"
@@ -170,7 +170,7 @@ function SalesCombinedScheduleDetailsForm() {
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor">
+                  <thead className="tableHeaderBGColor tablebody">
                     <tr>
                       <th>Task No</th>
                       <th>Matl_Code</th>
@@ -186,7 +186,7 @@ function SalesCombinedScheduleDetailsForm() {
                 </Table>
               </div>
               <div
-                style={{ height: "190px", width: "400px", overflowY: "scroll" }}
+                style={{ height: "250px", width: "400px", overflowY: "scroll" }}
               >
                 <Table
                   striped
@@ -197,7 +197,7 @@ function SalesCombinedScheduleDetailsForm() {
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor">
+                  <thead className="tableHeaderBGColor tablebody">
                     <tr>
                       <th>Length</th>
                       <th>Width</th>
@@ -210,7 +210,7 @@ function SalesCombinedScheduleDetailsForm() {
             </div>
             <div className="col-md-4">
               {" "}
-              <div style={{ height: "350px", overflowY: "scroll" }}>
+              <div style={{ height: "650px", overflowY: "scroll" }}>
                 <Table
                   striped
                   className="table-data border mt-2"
@@ -220,7 +220,7 @@ function SalesCombinedScheduleDetailsForm() {
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor">
+                  <thead className="tableHeaderBGColor tablebody">
                     <tr>
                       <th>Dwg Name</th>
                       <th>Qty To Nest</th>
@@ -248,7 +248,7 @@ function SalesCombinedScheduleDetailsForm() {
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor">
+                  <thead className="tableHeaderBGColor tablebody">
                     <tr>
                       <th>OrderSrcNo</th>
                       <th>Delivery Date</th>
@@ -272,7 +272,7 @@ function SalesCombinedScheduleDetailsForm() {
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor">
+                  <thead className="tableHeaderBGColor tablebody">
                     <tr>
                       <th>Dwg Name</th>
                       <th>Qty Scheduled</th>
@@ -295,4 +295,4 @@ function SalesCombinedScheduleDetailsForm() {
   );
 }
 
-export default SalesCombinedScheduleDetailsForm;
+export default CombinedScheduleDetailsForm;

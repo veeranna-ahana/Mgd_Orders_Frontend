@@ -3,17 +3,16 @@ import PrepareScheduleTab from "./PrepareScheduleTab";
 import CombinedScheduleDetailsTab from "./CombinedScheduleDetailsTab";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
-import Popup from "../../Components/Popup";
-import axios from "axios";
-import { postRequest, getRequest } from "../../../api/apiinstance";
-import { endpoints } from "../../../api/constants";
+import { getRequest, postRequest } from "../../api/apiinstance";
+import { endpoints } from "../../api/constants";
 
-export default function Create() {
+
+export default function Create({type}) {
+  console.log("type is",type);
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
     getRequest(endpoints.getSalesContact, (response) => {
-      console.log("response", response);
       setSalesContactList(response);
     });
   };
@@ -63,7 +62,7 @@ export default function Create() {
 
   useEffect(() => {
     getRequest(endpoints.allcustomerdata, (custdetdata) => {
-      console.log("custdetdata ..............", custdetdata);
+      // console.log("custdetdata is",custdetdata);
       for (let i = 0; i < custdetdata.length; i++) {
         custdetdata[i].label = custdetdata[i].Cust_name;
       }
@@ -246,6 +245,7 @@ export default function Create() {
             onclickpreapreScheduleButton={onclickpreapreScheduleButton}
             selectedSalesContact={selectedSalesContact}
             storedDate={storedDate}
+            type={type}
           />
         </Tab>
         <Tab
