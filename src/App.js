@@ -49,15 +49,11 @@ import InternalHandedOver from "./pages/Sales/Orders/Menus/Profile/InternalOrder
 
 // Combined Schedule
 // import Create from "./pages/Sales/Orders/Menus/Combined Schedules/Job Work/Create/Create";
-import Create from "./pages/Combined Schedules_JobWork/Job Work/Create/Create";
-import CombinedScheduleList from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/CombinedScheduleList";
-import CombinedScheduleDetailsForm from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/CombinedScheduleDetailsForm";
+import CreateJW from "./pages/Combined Schedules_JobWork/Job Work/Create/CreateJW";
+import CombinedScheduleList from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Order/CombinedScheduleListJW";
+import CombinedScheduleDetailsForm from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Order/CombinedScheduleDetailsForm";
 import Open from "./pages/Combined Schedules_JobWork/Job Work/Open/Open";
 
-import SalesCreate from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/Create/SalesCreate";
-import SalesOpen from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/Open/SalesOpen";
-import SalesCombinedScheduleList from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/ScheduleList/SalesCombinedScheduleList";
-import SalesCombinedScheduleDetailsForm from "./pages/Sales/Orders/Menus/Combined Schedules/Sales/ScheduleList/SalesCombinedScheduleDetailsForm";
 
 // Service
 import ServiceNewOrder from "./pages/Sales/Orders/Menus/Service/NewOrder/ServiceNewOrder";
@@ -107,8 +103,13 @@ import FindProOrder from "./pages/Sales/Orders/Menus/Profile/Find Order/FindOrde
 
 // prakruthis
 import ScheduleList from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/ScheduleList";
-import CombinedScheduleListClosed from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleListClosed";
+import CombinedScheduleListClosed from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleListClosedJW";
 import CombinedScheduleDetailsFormClosed from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleDetailsFormClosed";
+import SalesCreate from "./pages/Combined Schedules_JobWork/Sales/Create Sales/SalesCreate";
+import CombinedScheduleListJW from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Order/CombinedScheduleListJW";
+import CombinedScheduleListSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Order/CombinedScheduleListSales";
+import CombinedScheduleListClosedJW from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleListClosedJW";
+import CombinedScheduleListClosedSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Closed/CombinedScheduleListClosedSales";
 
 function App() {
   return (
@@ -126,8 +127,8 @@ function App() {
               <Route element={<WithNav />}>
                 <Route path="/Orders" element={<Parentroute />}>
                   {/* Prakruthis */}
-                  <Route path="/Orders/JobWork" element={<Create />} />
-                  <Route path="/Orders/JobWork/Create" element={<Create />} />
+                  <Route path="/Orders/JobWork" element={<CreateJW />} />
+                  <Route path="/Orders/JobWork/Create" element={<CreateJW />} />
                   <Route path="/Orders/JobWork/Open" element={<Open />} />
 
                   <Route
@@ -137,7 +138,7 @@ function App() {
 
                   <Route
                     path="/Orders/JobWork/ScheduleList/Order"
-                    element={<CombinedScheduleList />}
+                    element={<CombinedScheduleListJW />}
                   />
                   <Route
                     path="/Orders/JobWork/ScheduleList/Order/OpenDetailForm"
@@ -148,13 +149,44 @@ function App() {
 
                   <Route
                     path="/Orders/JobWork/ScheduleList/Closed"
-                    element={<CombinedScheduleListClosed />}
+                    element={<CombinedScheduleListClosedJW />}
                   />
                   <Route
                     path="/Orders/JobWork/ScheduleList/Closed/OpenDetailForm"
                     element={<CombinedScheduleDetailsFormClosed />}
                   />
+
+                  {/* SALES */}
+                  <Route path="/Orders/Sales" element={<SalesCreate />} />
+                  <Route path="/Orders/Sales/Create" element={<SalesCreate/>} />
+                  <Route path="/Orders/Sales/Open" element={<Open />} />
+
+                  <Route
+                    path="/Orders/Sales/ScheduleList"
+                    element={<ScheduleList />}
+                  />
+
+                  <Route
+                    path="/Orders/Sales/ScheduleList/Order"
+                    element={<CombinedScheduleListSales />}
+                  />
+                  <Route
+                    path="/Orders/Sales/ScheduleList/Order/OpenDetailForm"
+                    element={<CombinedScheduleDetailsForm />}
+                  />
+
+                  {/* closed */}
+
+                  <Route
+                    path="/Orders/Sales/ScheduleList/Closed"
+                    element={<CombinedScheduleListClosedSales />}
+                  />
+                  <Route
+                    path="/Orders/Sales/ScheduleList/Closed/OpenDetailForm"
+                    element={<CombinedScheduleDetailsFormClosed />}
+                  />
                   {/* Prakruthis */}
+                  
                   <Route index={true} />
 
                   <Route path="Profile">
@@ -354,57 +386,6 @@ function App() {
                       path="ProfarmaInvoiceForm"
                       element={<ProfarmaInvoiceForm />}
                     />
-                  </Route>
-
-                  <Route path="CombinedSchedules">
-                    {/* Jobwork route */}
-                    <Route path="JobWork">
-                      <Route path="Create" element={<Create />} />
-                      <Route path="Open" element={<Open />} />
-                      <Route path="ScheduleList">
-                        <Route
-                          path="Order"
-                          element={<CombinedScheduleList />}
-                        ></Route>
-                        <Route
-                          path="ScheduleDetails"
-                          element={<CombinedScheduleDetailsForm />}
-                        />
-                        <Route
-                          path="Closed"
-                          element={<CombinedScheduleList />}
-                        ></Route>
-                        <Route
-                          path="ScheduleDetails"
-                          element={<CombinedScheduleDetailsForm />}
-                        />
-                      </Route>
-                    </Route>
-
-                    {/* Sales route */}
-                    <Route path="Sales">
-                      <Route path="Create" element={<SalesCreate />} />
-                      <Route path="Open" element={<SalesOpen />} />
-                      <Route path="ScheduleList">
-                        <Route
-                          path="Order"
-                          element={<SalesCombinedScheduleList />}
-                        ></Route>
-                        <Route
-                          path="ScheduleDetails"
-                          element={<SalesCombinedScheduleDetailsForm />}
-                        />
-
-                        <Route
-                          path="Closed"
-                          element={<SalesCombinedScheduleList />}
-                        ></Route>
-                        <Route
-                          path="ScheduleDetails"
-                          element={<SalesCombinedScheduleDetailsForm />}
-                        />
-                      </Route>
-                    </Route>
                   </Route>
                 </Route>
               </Route>
