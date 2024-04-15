@@ -144,9 +144,6 @@ function App() {
                     path="/Orders/JobWork/ScheduleList/Order/OpenDetailForm"
                     element={<CombinedScheduleDetailsForm />}
                   />
-
-                  {/* closed */}
-
                   <Route
                     path="/Orders/JobWork/ScheduleList/Closed"
                     element={<CombinedScheduleListClosedJW />}
@@ -174,9 +171,6 @@ function App() {
                     path="/Orders/Sales/ScheduleList/Order/OpenDetailForm"
                     element={<CombinedScheduleDetailsForm />}
                   />
-
-                  {/* closed */}
-
                   <Route
                     path="/Orders/Sales/ScheduleList/Closed"
                     element={<CombinedScheduleListClosedSales />}
@@ -186,6 +180,7 @@ function App() {
                     element={<CombinedScheduleDetailsFormClosed />}
                   />
                   {/* Prakruthis */}
+
                   
                   <Route index={true} />
 
