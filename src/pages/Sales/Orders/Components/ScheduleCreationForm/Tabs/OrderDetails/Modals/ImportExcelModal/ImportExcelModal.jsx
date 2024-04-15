@@ -23,9 +23,9 @@ export default function ImportExcelModal(props) {
         Mtrl_Code: element.Mtrl_Code,
         Source: element.Source,
         Operation: element.Operation,
-        Order_Qty: element.Order_Qty,
-        JW_Cost: element.JW_Cost,
-        Mtrl_Cost: element.Mtrl_Cost,
+        Order_Qty: parseFloat(element.Order_Qty || 0).toFixed(2),
+        JW_Cost: parseFloat(element.JW_Cost || 0).toFixed(2),
+        Mtrl_Cost: parseFloat(element.Mtrl_Cost || 0).toFixed(2),
       };
 
       excelTemplateArray.push(obj);

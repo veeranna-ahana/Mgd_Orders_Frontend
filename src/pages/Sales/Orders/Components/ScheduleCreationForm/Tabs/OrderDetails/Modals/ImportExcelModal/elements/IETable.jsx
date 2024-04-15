@@ -57,7 +57,23 @@ export default function IETable(props) {
             <>
               <tr>
                 <td>{key + 1}</td>
-                <td>{val.Dwg_Name}</td>
+                <td>
+                  <input
+                    value={val.Dwg_Name}
+                    name="Dwg_Name"
+                    style={{ background: "transparent", border: "none" }}
+                    onChange={(e) => {
+                      handleChange(
+                        key,
+                        e.target.name,
+                        e.target.value || "",
+                        val.materialError,
+                        val.sourceError,
+                        val.operationError
+                      );
+                    }}
+                  />
+                </td>
                 <td>
                   {/* {val.Mtrl_Code} */}
 
@@ -144,12 +160,66 @@ export default function IETable(props) {
                     placeholder="Choose a Operation..."
                   />
                 </td>
-                <td>{val.Order_Qty}</td>
-                <td>{val.JW_Cost}</td>
-                <td>{val.Mtrl_Cost}</td>
+                <td>
+                  <input
+                    type="number"
+                    value={val.Order_Qty}
+                    name="Order_Qty"
+                    style={{ background: "transparent", border: "none" }}
+                    onChange={(e) => {
+                      handleChange(
+                        key,
+                        e.target.name,
+                        e.target.value,
+                        val.materialError,
+                        val.sourceError,
+                        val.operationError
+                      );
+                    }}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    // value={val.JW_Cost}
+                    value={val.JW_Cost}
+                    name="JW_Cost"
+                    style={{ background: "transparent", border: "none" }}
+                    onChange={(e) => {
+                      handleChange(
+                        key,
+                        e.target.name,
+                        e.target.value,
+                        val.materialError,
+                        val.sourceError,
+                        val.operationError
+                      );
+                    }}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    // value={val.Mtrl_Cost}
+                    value={val.Mtrl_Cost}
+                    name="Mtrl_Cost"
+                    style={{ background: "transparent", border: "none" }}
+                    onChange={(e) => {
+                      handleChange(
+                        key,
+                        e.target.name,
+                        e.target.value,
+                        val.materialError,
+                        val.sourceError,
+                        val.operationError
+                      );
+                    }}
+                  />
+                </td>
                 <td>
                   {(
-                    parseFloat(val.JW_Cost) + parseFloat(val.Mtrl_Cost)
+                    parseFloat(val.JW_Cost || 0) +
+                    parseFloat(val.Mtrl_Cost || 0)
                   ).toFixed(2)}
                 </td>
               </tr>
