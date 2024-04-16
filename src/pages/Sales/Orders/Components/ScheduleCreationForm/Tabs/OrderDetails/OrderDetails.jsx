@@ -583,6 +583,15 @@ export default function OrderDetails(props) {
       setImportOldOrdrMdl(true);
     }
   };
+
+  const handleImportFromExcelModal = () => {
+    if (props.OrdrDetailsData.length > 0) {
+      setConfirmationModalOpen(true);
+    } else {
+      setImportExcelModal(true);
+    }
+  };
+
   const handleCloseImportOldOrdrMdl = () => {
     setImportOldOrdrMdl(false);
   };
@@ -602,6 +611,8 @@ export default function OrderDetails(props) {
             setImportQtnMdl(true);
           } else if (buttonClicked === "Import Old Order") {
             setImportOldOrdrMdl(true);
+          } else if (buttonClicked === "Import From Excel") {
+            setImportExcelModal(true);
           } else {
           }
         } else {
@@ -832,10 +843,14 @@ export default function OrderDetails(props) {
 
           <button
             className="button-style"
-            style={{ width: "140px", marginLeft: "4px" }}
-            onClick={importExcelFunc}
+            style={{ width: "auto", marginLeft: "4px" }}
+            onClick={(e) => {
+              setButtonClicked("Import From Excel");
+              handleImportFromExcelModal();
+            }}
+            // onClick={importExcelFunc}
           >
-            Import EXCEL
+            Import From Excel
           </button>
           <button
             className="button-style"
