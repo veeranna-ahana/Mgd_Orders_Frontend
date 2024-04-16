@@ -60,7 +60,7 @@ export default function Set(props) {
 
   //   console.log("selectedData", selectedData);
 
-  console.log("importedExcelData", props.importedExcelData);
+  // console.log("importedExcelData", props.importedExcelData);
   return (
     <>
       <Modal

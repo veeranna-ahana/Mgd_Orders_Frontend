@@ -16,6 +16,10 @@ export default function ImportExcelModal(props) {
 
   const closeModal = () => {
     props.setImportExcelModal(false);
+    setImportedExcelData([]);
+    setOrderTotal(0);
+    setSelectedRows([]);
+    setSettingModal(false);
   };
 
   function exportModifiedExcel() {
@@ -61,8 +65,8 @@ export default function ImportExcelModal(props) {
       total = (
         parseFloat(total) +
         parseFloat(element.Order_Qty || 0) *
-          (parseFloat(element.JW_Cost || 0) +
-            parseFloat(element.Mtrl_Cost || 0))
+          (parseFloat(element.Source === "Magod" ? element.Mtrl_Cost || 0 : 0) +
+            parseFloat(element.JW_Cost || 0))
       ).toFixed(2);
     }
     setOrderTotal(total);
@@ -89,6 +93,8 @@ export default function ImportExcelModal(props) {
             procdata={props.procdata}
             setSettingModal={setSettingModal}
             selectedRows={selectedRows}
+            setOrdrDetailsData={props.setOrdrDetailsData}
+            closeModal={closeModal}
           />
           <IETable
             importedExcelData={importedExcelData}
@@ -98,6 +104,8 @@ export default function ImportExcelModal(props) {
             materialSource={materialSource}
             setSelectedRows={setSelectedRows}
             selectedRows={selectedRows}
+            OrdrDetailsData={props.OrdrDetailsData}
+            // setOrdrDetailsData={props.setOrdrDetailsData}
           />
         </Modal.Body>
         <Modal.Footer className="d-flex flex-row justify-content-between">

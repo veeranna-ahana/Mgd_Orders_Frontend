@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 export default function IEFormHeader(props) {
   // const [importedExcelData, setImportedExcelData] = useState([]);
 
+  const [buttonClickedFor, setButtonClickedFor] = useState("");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   function exportExcelTemplate() {
@@ -33,6 +34,7 @@ export default function IEFormHeader(props) {
 
   const noFileFoundFun = (e) => {
     // console.log("download the file.......");
+    setButtonClickedFor("");
     setConfirmModalOpen(false);
     props.setImportedExcelData([]);
 
@@ -166,24 +168,54 @@ export default function IEFormHeader(props) {
       };
     } else {
       props.setImportedExcelData([]);
-
+      setButtonClickedFor("Import Excel");
       setConfirmModalOpen(true);
     }
   };
 
-  // const handleOnFocus = (e) => {
-  //   console.log("eeee", e.target.files.length);
+  const loadToOrderFunc = () => {
+    let arr = [];
 
-  //   if (e.target.files.length === 0) {
-  //     console.log("no files");
-  //     setConfirmModalOpen(true);
-  //   } else {
-  //     console.log("files");
-  //     setConfirmModalOpen(false);
-  //   }
-  // };
+    for (let i = 0; i < props.importedExcelData.length; i++) {
+      const element = props.importedExcelData[i];
 
-  // console.log("importedExcelData", props.importedExcelData);
+      let obj = {
+        DwgName: element.Dwg_Name || "",
+        Mtrl_Code: element.Mtrl_Code || "",
+        Operation: element.Operation || "",
+        Mtrl_Source: element.Source || "",
+        InspLevel: "Insp1",
+        tolerance: "Standard(+/-0.1mm)- 100 Microns",
+        PackingLevel: "Pkng1",
+        JWCost: parseFloat(element.JW_Cost || 0).toFixed(2),
+        MtrlCost: parseFloat(element.Mtrl_Cost || 0).toFixed(2),
+        UnitPrice: (
+          parseFloat(element.Source === "Magod" ? element.Mtrl_Cost || 0 : 0) +
+          parseFloat(element.JW_Cost || 0)
+        ).toFixed(2),
+        Qty_Ordered: element.Order_Qty || 0,
+        Total: (
+          parseFloat(element.Order_Qty || 0) *
+          (parseFloat(element.Source === "Magod" ? element.Mtrl_Cost || 0 : 0) +
+            parseFloat(element.JW_Cost || 0))
+        ).toFixed(2),
+      };
+
+      arr.push(obj);
+    }
+
+    props.setOrdrDetailsData(arr);
+
+    toast.success("Srls loaded to order successfull.");
+    props.closeModal();
+  };
+
+  // console.log(
+  //   "dsdsdsdsd",
+  //   props.importedExcelData.filter(
+  //     (obj) => obj.materialError || obj.sourceError || obj.operationError
+  //   )
+  // );
   return (
     <>
       <div className="row d-flex justify-content-between">
@@ -231,15 +263,39 @@ export default function IEFormHeader(props) {
         {/* <button className="button-style m-1">Set Operation</button> */}
         {/* <button className="button-style m-1">Load Excel</button> */}
         <button className="button-style m-1">Compare</button>
-        <button className="button-style m-1">Load to Order</button>
+        <button
+          className="button-style m-1"
+          disabled={
+            props.importedExcelData.filter(
+              (obj) =>
+                obj.materialError || obj.sourceError || obj.operationError
+            ).length > 0
+          }
+          onClick={(e) => {
+            setButtonClickedFor("Load to Order");
+            setConfirmModalOpen(true);
+          }}
+        >
+          Load to Order
+        </button>
       </div>
 
       <ConfirmationModal
         setConfirmModalOpen={setConfirmModalOpen}
         confirmModalOpen={confirmModalOpen}
-        yesClickedFunc={noFileFoundFun}
+        yesClickedFunc={
+          buttonClickedFor === "Import Excel"
+            ? noFileFoundFun
+            : buttonClickedFor === "Load to Order"
+            ? loadToOrderFunc
+            : ""
+        }
         message={
-          "You need a excel template for importing. Do you wish to save the template?"
+          buttonClickedFor === "Import Excel"
+            ? "You need a excel template for importing. Do you wish to save the template?"
+            : buttonClickedFor === "Load to Order"
+            ? "Are you sure to add the srls to order?"
+            : ""
         }
       />
     </>

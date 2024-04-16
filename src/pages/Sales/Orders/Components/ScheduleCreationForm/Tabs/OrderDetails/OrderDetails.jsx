@@ -813,6 +813,8 @@ export default function OrderDetails(props) {
         OrderData={OrderData}
         mtrldata={mtrldata}
         procdata={procdata}
+        OrdrDetailsData={OrdrDetailsData}
+        setOrdrDetailsData={setOrdrDetailsData}
       />
       <div>
         {/* {console.log(".....", props)} */}

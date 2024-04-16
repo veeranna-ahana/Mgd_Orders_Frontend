@@ -37,7 +37,7 @@ export default function IETable(props) {
     // console.log("importedExcelData", importedExcelData);
   };
 
-  console.log("props.selectedRows", props.selectedRows);
+  // console.log("props.selectedRows", props.selectedRows);
   return (
     <>
       <Table striped className="table-data border" style={{ border: "1px" }}>
@@ -236,9 +236,15 @@ export default function IETable(props) {
                 </td>
                 <td>
                   {(
+                    parseFloat(
+                      val.Source === "Magod" ? val.Mtrl_Cost || 0 : 0
+                    ) + parseFloat(val.JW_Cost || 0)
+                  ).toFixed(2)}
+
+                  {/* {(
                     parseFloat(val.JW_Cost || 0) +
                     parseFloat(val.Mtrl_Cost || 0)
-                  ).toFixed(2)}
+                  ).toFixed(2)} */}
                 </td>
               </tr>
             </>
