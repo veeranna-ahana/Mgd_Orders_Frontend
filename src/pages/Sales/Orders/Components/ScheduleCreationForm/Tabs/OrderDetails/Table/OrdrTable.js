@@ -299,7 +299,7 @@ function OrdrTable(props) {
             {/* <th>LOC</th> */}
             {/* <th>Pierces</th> */}
             <th>JW Cost</th>
-            <th>Mtrl Cost</th>
+            <th th>Mtrl Cost</th>
             <th>Unit Rate</th>
             <th>Qty Ordered</th>
             <th>Total</th>
@@ -318,9 +318,8 @@ function OrdrTable(props) {
                     ? "#98a8f8"
                     : backgroundColor,
                 }}
-                // backgroundColor={backgroundColor}
-                // key={order.id}
-                className="order-details-row"
+                // className="order-details-row"
+
                 data-srlstatus={OrdrDetailsItem.SrlStatus}
               >
                 <td>{OrdrDetailsItem.DwgName}</td>
