@@ -3,8 +3,8 @@ import { Table } from "react-bootstrap";
 import Popup from "../../Components/Popup";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
-import { endpoints } from "../../../../../../api/constants";
-import { postRequest } from "../../../../../../api/apiinstance";
+import { postRequest } from "../../../api/apiinstance";
+import { endpoints } from "../../../api/constants";
 
 export default function PrepareScheduleTab({
   oderSchedule,
@@ -144,29 +144,26 @@ export default function PrepareScheduleTab({
     if (rowselectleft.length <= 1) {
       validationModal();
     } else {
-        postRequest(endpoints.CreateSchedule, {
-          rowselectleft,
-          custCode: custCode,
-          selectedSalesContact: selectedSalesContact,
-          Date: storedDate,
-          ScheduleDate: ScheduleDate,
-        })
-        .then((response) => {
-          setDisableButton(true);
-          setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
-          openCombineScheduleModal();
-        });
+      postRequest(endpoints.CreateSchedule, {
+        rowselectleft,
+        custCode: custCode,
+        selectedSalesContact: selectedSalesContact,
+        Date: storedDate,
+        ScheduleDate: ScheduleDate,
+      }).then((response) => {
+        setDisableButton(true);
+        setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
+        openCombineScheduleModal();
+      });
     }
   };
 
   const getAlldataAfterCombineSchedule = () => {
-    postRequest(endpoints.afterCombinedSchedule
-    , {
-        combinedScheduleNo,
-      })
-      .then((response) => {
-        setBeforeCombine(response.data);
-      });
+    postRequest(endpoints.afterCombinedSchedule, {
+      combinedScheduleNo,
+    }).then((response) => {
+      setBeforeCombine(response.data);
+    });
   };
 
   useEffect(() => {

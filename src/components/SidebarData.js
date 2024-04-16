@@ -257,12 +257,12 @@ export const ordersSidebar = [
         subNav: [
           {
             title: "Create",
-            path: "/Orders/JobWork",
+            path: "/Orders/JobWork/CREATE",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
           {
             title: "Open",
-            path: "/Orders/JobWork/Open",
+            path: "/Orders/JobWork/OPEN",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
           {
@@ -272,7 +272,7 @@ export const ordersSidebar = [
             subNav: [
               {
                 title: "Order",
-                path: "/Orders/JobWork/ScheduleList/Order",
+                path: "/Orders/JobWork/ScheduleList/ORDER",
                 icon: <AiIcons.AiOutlineArrowRight />,
               },
               {
@@ -286,8 +286,37 @@ export const ordersSidebar = [
       },
       {
         title: "Sales",
-        path: "/Orders/JobWork",
+        path: "/Orders/Sales",
         icon: <VscServerProcess />,
+        subNav: [
+          {
+            title: "Create",
+            path: "/Orders/Sales/Create",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "Open",
+            path: "/Orders/Sales/Open",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "ScheduleList",
+            path: "/Orders/Sales/ScheduleList",
+            icon: <AiIcons.AiOutlineArrowRight />,
+            subNav: [
+              {
+                title: "Order",
+                path: "/Orders/Sales/ScheduleList/Order",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+              {
+                title: "Closed",
+                path: "/Orders/Sales/ScheduleList/Closed",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+            ],
+          },
+        ],
       },
     ],
   },

@@ -2,20 +2,27 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { baseURL } from "../../../../../api/baseUrl";
-import { endpoints } from "../../../../../../../api/constants";
-import { postRequest } from "../../../../../../../api/apiinstance";
+import { getRequest } from "../../../api/apiinstance";
+import { endpoints } from "../../../api/constants";
 
-export default function CombinedScheduleList() {
+export default function CombinedScheduleList({ type }) {
+  console.log("type", type);
   const navigate = useNavigate();
 
   //ScheduleList Orders
   const [scheduleListOrders, setScheduleListOrder] = useState([]);
   const getScheduleListData = () => {
-    postRequest(endpoints.ScheduleListOrdered).then((resp) => {
-      // console.log(resp.data);
-      setScheduleListOrder(resp.data);
-    });
+    if (type === "JobWork") {
+      getRequest(endpoints.ScheduleListOrdered, (response) => {
+        console.log(response);
+        setScheduleListOrder(response);
+      });
+    } else {
+      getRequest(endpoints.ScheduleListOrderedSales, (response) => {
+        console.log(response);
+        setScheduleListOrder(response);
+      });
+    }
   };
 
   useEffect(() => {

@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import PrepareScheduleTab from "./PrepareScheduleTab";
-import CombinedScheduleDetailsTab from "./CombinedScheduleDetailsTab";
+import CombinedScheduleDetailsTab from "./CombinedScheduleDetailsTabSales";
 import { Form, Tab, Tabs } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import Popup from "../../Components/Popup";
 import axios from "axios";
-import { getRequest } from "../../../../../../api/apiinstance";
-import { endpoints } from "../../../../../../api/constants";
+import { postRequest, getRequest } from "../../../api/apiinstance";
+import { endpoints } from "../../../api/constants";
 
-export default function Create() {
+export default function CreateSales() {
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
-      getRequest(
-        endpoints.getSalesContactList,
-        (response) => {
-          setSalesContactList(response);
-        }
-      );
+    getRequest(endpoints.getSalesContact, (response) => {
+      setSalesContactList(response);
+    });
   };
 
   useEffect(() => {
@@ -60,35 +57,17 @@ export default function Create() {
     setDisplayDate(e.target.value);
   };
 
-
   //set Customer
   const [custdata, setCustdata] = useState([]);
-  const postRequest = async (url, body, callback) => {
-    let response = await fetch(url, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-    let content = await response.json();
-    callback(content);
-  };
 
   useEffect(() => {
-    async function fetchData() {
-      postRequest(
-        endpoints.allcustomerdata,
-        (custdetdata) => {
-          for (let i = 0; i < custdetdata.length; i++) {
-            custdetdata[i].label = custdetdata[i].Cust_name;
-          }
-          setCustdata(custdetdata);
-        }
-      );
-    }
-    fetchData();
+    getRequest(endpoints.allcustomerdata, (custdetdata) => {
+      // console.log("custdetdata is",custdetdata);
+      for (let i = 0; i < custdetdata.length; i++) {
+        custdetdata[i].label = custdetdata[i].Cust_name;
+      }
+      setCustdata(custdetdata);
+    });
   }, []);
 
   const [oderSchedule, setOrderSchedule] = useState([]);
@@ -97,28 +76,26 @@ export default function Create() {
     // Update custCode using the setCustCode function from useState
     setCustCode(event[0]?.Cust_Code);
     console.log(event[0]?.Cust_Code);
-    postRequest(
-      endpoints.rightTabledata, {
-        custCode: event[0]?.Cust_Code,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        for (let i = 0; i < response.data.length; i++) {
-          let datesplit = response.data[i].schTgtDate.split(" ");
-          let ScheduleDate = datesplit[0].split("-");
-          let finalDay =
-            ScheduleDate[2] + "/" + ScheduleDate[1] + "/" + ScheduleDate[0];
-          response.data[i].schTgtDate = finalDay;
-        }
-        for (let i = 0; i < response.data.length; i++) {
-          let datesplit1 = response.data[i].Delivery_Date.split(" ");
-          let Delivery_Date = datesplit1[0].split("-");
-          let finalDay1 =
-            Delivery_Date[2] + "/" + Delivery_Date[1] + "/" + Delivery_Date[0];
-          response.data[i].Delivery_Date = finalDay1;
-        }
-        setOrderSchedule(response.data);
-      });
+    postRequest(endpoints.rightTabledata, {
+      custCode: event[0]?.Cust_Code,
+    }).then((response) => {
+      // console.log(response.data);
+      for (let i = 0; i < response.data.length; i++) {
+        let datesplit = response.data[i].schTgtDate.split(" ");
+        let ScheduleDate = datesplit[0].split("-");
+        let finalDay =
+          ScheduleDate[2] + "/" + ScheduleDate[1] + "/" + ScheduleDate[0];
+        response.data[i].schTgtDate = finalDay;
+      }
+      for (let i = 0; i < response.data.length; i++) {
+        let datesplit1 = response.data[i].Delivery_Date.split(" ");
+        let Delivery_Date = datesplit1[0].split("-");
+        let finalDay1 =
+          Delivery_Date[2] + "/" + Delivery_Date[1] + "/" + Delivery_Date[0];
+        response.data[i].Delivery_Date = finalDay1;
+      }
+      setOrderSchedule(response.data);
+    });
   };
 
   useEffect(() => {}, [custCode]); // useEffect to log custCode when it changes
@@ -165,17 +142,15 @@ export default function Create() {
     setRowSelectLeft(updatedSelection1);
   };
 
-
   //ONCLICK PrepareSchedule Button
   const [preapreScheduleData, setPrepareScheduleData] = useState([]);
   const onclickpreapreScheduleButton = () => {
     postRequest(endpoints.prepareSchedule, {
-        scheduleid: rowselectleft[0].ScheduleId,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        setPrepareScheduleData(response.data);
-      });
+      scheduleid: rowselectleft[0].ScheduleId,
+    }).then((response) => {
+      // console.log(response.data);
+      setPrepareScheduleData(response.data);
+    });
   };
 
   const [selectedSalesContact, setSelectedSalesContact] = useState("");
@@ -186,6 +161,7 @@ export default function Create() {
     }
   }, [oderSchedule]);
 
+  console.log("selectedSalesContact", selectedSalesContact);
   return (
     <div>
       <h4 className="title">Combined Schedule Creator</h4>

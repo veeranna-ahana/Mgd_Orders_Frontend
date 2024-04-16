@@ -1,8 +1,9 @@
 import React from "react";
 import { Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-function SalesCombinedScheduleList() {
+function CombinedScheduleList() {
   const navigate = useNavigate();
+
   return (
     <div>
       <h4 className="title">Combined Schedule List</h4>{" "}
@@ -11,7 +12,7 @@ function SalesCombinedScheduleList() {
           className="button-style"
           onClick={() =>
             navigate(
-              "/Orders/CombinedSchedules/Sales/ScheduleList/ScheduleDetails"
+              "/Orders/CombinedSchedules/JobWork/ScheduleList/ScheduleDetails"
             )
           }
           style={{ width: "130px" }}
@@ -42,4 +43,4 @@ function SalesCombinedScheduleList() {
   );
 }
 
-export default SalesCombinedScheduleList;
+export default CombinedScheduleList;
