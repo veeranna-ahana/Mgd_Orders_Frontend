@@ -14,6 +14,21 @@ export default function ImportExcelModal(props) {
 
   const [settingModal, setSettingModal] = useState(false);
 
+  useEffect(() => {
+    let total = 0;
+    for (let i = 0; i < importedExcelData.length; i++) {
+      const element = importedExcelData[i];
+
+      total = (
+        parseFloat(total) +
+        parseFloat(element.Order_Qty || 0) *
+          (parseFloat(element.Source === "Magod" ? element.Mtrl_Cost || 0 : 0) +
+            parseFloat(element.JW_Cost || 0))
+      ).toFixed(2);
+    }
+    setOrderTotal(total);
+  }, [importedExcelData]);
+
   const closeModal = () => {
     props.setImportExcelModal(false);
     setImportedExcelData([]);
@@ -57,21 +72,26 @@ export default function ImportExcelModal(props) {
     },
   ];
 
-  useEffect(() => {
-    let total = 0;
-    for (let i = 0; i < importedExcelData.length; i++) {
-      const element = importedExcelData[i];
+  function exportExcelTemplate() {
+    const excelTemplateArray = [
+      {
+        Dwg_Name: "",
+        Mtrl_Code: "",
+        Source: "",
+        Operation: "",
+        Order_Qty: "",
+        JW_Cost: "",
+        Mtrl_Cost: "",
+      },
+    ];
 
-      total = (
-        parseFloat(total) +
-        parseFloat(element.Order_Qty || 0) *
-          (parseFloat(element.Source === "Magod" ? element.Mtrl_Cost || 0 : 0) +
-            parseFloat(element.JW_Cost || 0))
-      ).toFixed(2);
-    }
-    setOrderTotal(total);
-  }, [importedExcelData]);
+    var wb = XLSX.utils.book_new();
+    var ws = XLSX.utils.json_to_sheet(excelTemplateArray);
 
+    XLSX.utils.book_append_sheet(wb, ws, "MySheet1");
+    XLSX.writeFile(wb, "Import Customer Order Template.xlsx");
+    toast.success("Export excel template successful");
+  }
   return (
     <>
       <Modal
@@ -95,6 +115,7 @@ export default function ImportExcelModal(props) {
             selectedRows={selectedRows}
             setOrdrDetailsData={props.setOrdrDetailsData}
             closeModal={closeModal}
+            exportExcelTemplate={exportExcelTemplate}
           />
           <IETable
             importedExcelData={importedExcelData}
@@ -108,22 +129,29 @@ export default function ImportExcelModal(props) {
             // setOrdrDetailsData={props.setOrdrDetailsData}
           />
         </Modal.Body>
-        <Modal.Footer className="d-flex flex-row justify-content-between">
-          {/* <button
-            className="button-style m-0 me-3"
-            style={{ width: "60px" }}
-            //   onClick={yesClicked}
+        <Modal.Footer className="d-flex justify-content-between">
+          <div
+            className="d-flex justify-content-between"
+            style={{ width: "30%" }}
           >
-            Yes
-          </button> */}
-          <button
-            className="button-style m-0"
-            style={{ width: "auto" }}
-            onClick={exportModifiedExcel}
-            disabled={importedExcelData.length < 1}
-          >
-            Export Modified Excel
-          </button>
+            <button
+              className="button-style m-0"
+              style={{ width: "auto" }}
+              onClick={() => {
+                exportExcelTemplate();
+              }}
+            >
+              Export Excel Template
+            </button>
+            <button
+              className="button-style m-0"
+              style={{ width: "auto" }}
+              onClick={exportModifiedExcel}
+              disabled={importedExcelData.length < 1}
+            >
+              Export Modified Excel
+            </button>
+          </div>
           <button
             className="button-style m-0"
             style={{ width: "60px", background: "rgb(173, 173, 173)" }}

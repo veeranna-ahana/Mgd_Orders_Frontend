@@ -11,34 +11,12 @@ export default function IEFormHeader(props) {
   const [buttonClickedFor, setButtonClickedFor] = useState("");
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
-  function exportExcelTemplate() {
-    const excelTemplateArray = [
-      {
-        Dwg_Name: "",
-        Mtrl_Code: "",
-        Source: "",
-        Operation: "",
-        Order_Qty: "",
-        JW_Cost: "",
-        Mtrl_Cost: "",
-      },
-    ];
-
-    var wb = XLSX.utils.book_new();
-    var ws = XLSX.utils.json_to_sheet(excelTemplateArray);
-
-    XLSX.utils.book_append_sheet(wb, ws, "MySheet1");
-    XLSX.writeFile(wb, "Import Customer Order Template.xlsx");
-    toast.success("Export excel template successful");
-  }
-
   const noFileFoundFun = (e) => {
     // console.log("download the file.......");
     setButtonClickedFor("");
     setConfirmModalOpen(false);
     props.setImportedExcelData([]);
-
-    exportExcelTemplate();
+    props.exportExcelTemplate();
   };
 
   // console.log("mtrldata", props.mtrldata);
@@ -240,15 +218,6 @@ export default function IEFormHeader(props) {
        
       </div> */}
       <div className="d-flex justify-content-center">
-        <button
-          className="button-style m-1"
-          onClick={() => {
-            exportExcelTemplate();
-          }}
-          style={{ width: "auto" }}
-        >
-          Export Excel Template
-        </button>
         <button className="button-style m-1">Update Para</button>
         <button
           className="button-style m-1"
