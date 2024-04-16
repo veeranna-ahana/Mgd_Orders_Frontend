@@ -50,6 +50,7 @@ function AddNewSrlModal(props) {
     setNewSerial,
     handleChange,
   } = props;
+  console.log(props.OrderData?.Order_Type);
 
   return (
     <div className="row mt-1">

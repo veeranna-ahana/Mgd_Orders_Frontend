@@ -86,6 +86,8 @@ export default function ScheduleCreationForm(props) {
   const location = useLocation();
   // //console.log("props", props.OrersData);
   //console.log("ocation.state", location.state);
+  // state for order_status change
+  const [intSchStatus, setIntSchStatus] = useState(0);
 
   const [mtrldata, setMtrldata] = useState([]);
   const [procdata, setProcdata] = useState([]);
@@ -169,6 +171,7 @@ export default function ScheduleCreationForm(props) {
     unitPrice: 0.0,
     blkCngCheckBox: false,
   });
+
   const [imprtDwgObj, setImprtDwgObj] = useState({
     custcode: props.OrderCustData?.Cust_Code,
     material: "",
@@ -787,7 +790,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.getOrderDetailsByOrdrNoAndType,
       { orderNo: orderNo, orderType: props.Type },
       (orderData) => {
-        //console.log("orderDetails.....", orderData);
+        console.log("orderDetails.....", orderData);
         setOrderData(orderData?.orderData[0]);
         setOrderCustData(orderData?.custData[0]);
 
@@ -843,10 +846,229 @@ export default function ScheduleCreationForm(props) {
 
     setSelectedItems([]);
   };
+  const calculateMinSrlStatus = () => {
+    if (OrdrDetailsData.length === 0) return 0;
 
-  console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
+    return Math.min(
+      ...OrdrDetailsData.map((order) => {
+        if (order.Qty_Ordered === 0) return 0;
+        else if (order.QtyDelivered >= order.Qty_Ordered) return 8;
+        else if (order.QtyDelivered > 0 && order.QtyPacked >= order.Qty_Ordered)
+          return 7;
+        else if (order.QtyPacked >= order.Qty_Ordered) return 6;
+        else if (order.QtyPacked > 0 && order.QtyProduced >= order.Qty_Ordered)
+          return 5;
+        else if (order.QtyProduced >= order.Qty_Ordered) return 4;
+        else if (
+          order.QtyProduced > 0 &&
+          order.QtyScheduled >= order.Qty_Ordered
+        )
+          return 5;
+        else if (order.QtyScheduled >= order.Qty_Ordered) {
+          return 3;
+        } else if (order.QtyScheduled > 0) return 2;
+        else return 1;
+      })
+    );
+  };
+
+  const updateOrderStatus = () => {
+    const status = getStatusText(intSchStatus);
+    // Update order status here
+    console.log("Order Status:", status);
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 8:
+        return "Dispatched";
+      case 7:
+        return "Packed";
+      case 6:
+        return "Packed";
+      case 5:
+        return "Produced";
+      case 4:
+        return "Produced";
+      case 3:
+        return "Processing";
+      case 2:
+        return "Recorded";
+      case 1:
+        return "Recorded";
+      case 0:
+        return "Recorded";
+      default:
+        return "Confused";
+    }
+  };
+
+  const setDetailsColour = () => {
+    console.log("entering into the setDetailsColour");
+    const rows = document.querySelectorAll(".order-details-row");
+    rows.forEach((row) => {
+      const srlStatus = parseInt(row.getAttribute("data-srlstatus"));
+      console.log("srlStatus..........", srlStatus);
+      let backgroundColor = ""; // Define backgroundColor here
+      switch (srlStatus) {
+        case 0:
+          backgroundColor = "lavender";
+          break;
+        case 1:
+          backgroundColor = "lightblue";
+          break;
+        case 2:
+          backgroundColor = "lightcoral";
+          break;
+        case 3:
+          console.log("entering into case 3, light yellow");
+          backgroundColor = "lightyellow";
+          break;
+        case 4:
+          backgroundColor = "yellow";
+          break;
+        case 5:
+          backgroundColor = "greenyellow";
+          break;
+        case 6:
+          backgroundColor = "lightgreen";
+          break;
+        case 7:
+          backgroundColor = "orange";
+          break;
+        case 8:
+          backgroundColor = "lightgreen";
+          break;
+        case 9:
+          backgroundColor = "olivedrab";
+          break;
+        case 10:
+          backgroundColor = "green";
+          break;
+        default:
+          backgroundColor = "";
+      }
+      row.style.backgroundColor = backgroundColor; // Use backgroundColor here
+      console.log(
+        `Row with srlStatus ${srlStatus} has background color: ${backgroundColor}`
+      );
+    });
+  };
+
+  // console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
+  // console.log("Ordr_Status", OrdrDetailsData[0]?.Order_Status);
+  // console.log("Order_Type", OrderData.Order_Type);
+
+  // let orderType = OrderData.Order_Type;
+
+  // const setOrderDetails = (setDetails) => {
+  //   console.log("setDetails", setDetails);
+  //   switch (setDetails) {
+  //     case "Created":
+  //       // Enable order details editing
+  //       // Assuming you have state variables to manage these conditions
+  //       setOrderDetailsEnabled(true);
+  //       setBulkChangeEnabled(true);
+  //       setAddSrlVisible(true);
+  //       // Set specific columns as readOnly
+  //       // You may need to manage column states in the component's state
+  //       setColumnsReadOnly({
+  //         Dwg: true,
+  //         Operation: false,
+  //         QtyOrdered: false,
+  //         JWCost: false,
+  //         MtrlCost: false,
+  //       });
+  //       break;
+  //     case "Processing":
+  //       // Disable bulk change and hide Add Srl
+  //       setBulkChangeEnabled(false);
+  //       setAddSrlVisible(false);
+  //       // Set columns readOnly based on orderType
+  //       // Assuming orderType is managed by state
+  //       switch (orderType) {
+  //         case "Complete":
+  //           // Set specific columns as readOnly
+  //           setColumnsReadOnly({
+  //             Dwg: true,
+  //             MtrlSource: true,
+  //             MtrlCode: true,
+  //             Operation: true,
+  //             QtyOrdered: true,
+  //             JWCost: true,
+  //             MtrlCost: true,
+  //             InspLevel: true,
+  //             PackingLevel: true,
+  //             Tolerance: true,
+  //           });
+  //           break;
+  //         case "Scheduled":
+  //           // Set specific columns as readOnly
+  //           setColumnsReadOnly({
+  //             Dwg: true,
+  //             MtrlSource: true,
+  //             MtrlCode: true,
+  //             Operation: true,
+  //             QtyOrdered: false,
+  //             JWCost: true,
+  //             MtrlCost: true,
+  //             InspLevel: true,
+  //             PackingLevel: true,
+  //             Tolerance: true,
+  //           });
+  //           break;
+  //         case "Open":
+  //           // Set specific columns as readOnly
+  //           setColumnsReadOnly({
+  //             QtyOrdered: false,
+  //             JWCost: false,
+  //             MtrlCost: false,
+  //           });
+  //           break;
+  //         default:
+  //           break;
+  //       }
+  //       break;
+  //     case "Nochange":
+  //       // Disable bulk change, hide Add Srl, set all columns as readOnly
+  //       setBulkChangeVisible(false);
+  //       setAddSrlVisible(false);
+  //       setColumnsReadOnly({
+  //         Dwg: true,
+  //         MtrlSource: true,
+  //         MtrlCode: true,
+  //         Operation: true,
+  //         QtyOrdered: false,
+  //         JWCost: true,
+  //         MtrlCost: true,
+  //         InspLevel: true,
+  //         PackingLevel: true,
+  //         Tolerance: true,
+  //       });
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  // Assuming you have state variables and setters for the conditions below
+  const [orderDetailsEnabled, setOrderDetailsEnabled] = useState(false);
+  const [bulkChangeEnabled, setBulkChangeEnabled] = useState(false);
+  const [addSrlVisible, setAddSrlVisible] = useState(false);
+  const [bulkChangeVisible, setBulkChangeVisible] = useState(false);
+  const [columnsReadOnly, setColumnsReadOnly] = useState({
+    Dwg: true,
+    Operation: false,
+    QtyOrdered: false,
+    JWCost: false,
+    MtrlCost: false,
+  });
   useEffect(() => {
     fetchData();
+    setIntSchStatus(calculateMinSrlStatus());
+    updateOrderStatus();
+    setDetailsColour();
+    // setOrderDetails();
   }, []);
 
   useEffect(() => {
@@ -1053,6 +1275,10 @@ export default function ScheduleCreationForm(props) {
                 setImprtDwgObj={setImprtDwgObj}
                 handleChange={handleChange}
                 InputField={InputField}
+                setDetailsColour={setDetailsColour}
+                calculateMinSrlStatus={calculateMinSrlStatus}
+                updateOrderStatus={updateOrderStatus}
+                getStatusText={getStatusText}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">

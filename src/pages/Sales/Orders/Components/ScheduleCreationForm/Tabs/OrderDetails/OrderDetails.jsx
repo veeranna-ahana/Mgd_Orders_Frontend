@@ -49,8 +49,26 @@ export default function OrderDetails(props) {
     setImprtDwgObj,
     handleChange,
     InputField,
+    setDetailsColour,
+    calculateMinSrlStatus,
+    updateOrderStatus,
+    getStatusText,
   } = props;
 
+  // console.log("type", OrderData.Order_Type);
+  // console.log("status", OrderData.Order_Status);
+
+  // const [orderType, setOrderType] = useState("");
+  // const [status, setStatus] = useState("");
+
+  // useEffect(() => {
+  //   if (OrderData) {
+  //     setOrderType(OrderData.Order_Type);
+  //     setStatus(OrderData.Order_Status);
+  //   }
+  // }, [OrderData]); // Run the effect whenever OrderData changes
+
+  const [groupBoxAddSrlVisible, setGroupBoxAddSrlVisible] = useState(true);
   const [ConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   // import from excel
   const [importExcelModal, setImportExcelModal] = useState(false);
@@ -117,11 +135,11 @@ export default function OrderDetails(props) {
     false,
     false,
   ]);
-  // //console.log("first", quantity);
-  // //console.log("second", jwRate);
-  // //console.log("third", materialRate);
-  // //console.log("fourth", unitPrice);
-  //console.log("blkCngCheckBox", blkCngCheckBox);
+  // //// console.log("first", quantity);
+  // //// console.log("second", jwRate);
+  // //// console.log("third", materialRate);
+  // //// console.log("fourth", unitPrice);
+  //// console.log("blkCngCheckBox", blkCngCheckBox);
 
   const [NewSrlFormData, setNewSrlFormData] = useState({
     DrawingName: "",
@@ -150,7 +168,7 @@ export default function OrderDetails(props) {
       //   endpoints.PostNewSrlData,
       //   { custcode: Cust_Code, OrderNo: OrderNo },
       //   (srldata) => {
-      //     //////////console.log("srl data", srldata);
+      //     //////////// console.log("srl data", srldata);
       //     setSerailData(srldata);
       //   }
       // );
@@ -162,7 +180,7 @@ export default function OrderDetails(props) {
         endpoints.getSalesIndiExecLists,
         { salesContact: SalesContact },
         (sdata) => {
-          ////console.log(sdata[0]["Name"]);
+          ////// console.log(sdata[0]["Name"]);
           // setSalesExecContact(sdata[0]["Name"]);
         }
       );
@@ -207,6 +225,7 @@ export default function OrderDetails(props) {
     fetchData();
   }, []);
 
+  // Handle button enabl and disable
   const handleDwgInputChange = (event) => {
     const newValue = event.target.value;
     setDwgName(newValue);
@@ -245,7 +264,7 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
       },
       (InsertedNewSrlData) => {
-        //////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        //////// console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           fetchData();
           toast.success("Added serial successfully");
@@ -286,7 +305,7 @@ export default function OrderDetails(props) {
         //blkCngCheckBox: blkCngCheckBox,
       },
       (blkChngData) => {
-        //console.log("RES", blkChngData);
+        //// console.log("RES", blkChngData);
         if (blkChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -310,7 +329,7 @@ export default function OrderDetails(props) {
         mtrlcost: materialRate,
       },
       (singleChngData) => {
-        ////console.log(" blkChngData", blkChngData);
+        ////// console.log(" blkChngData", blkChngData);
         if (singleChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -365,7 +384,7 @@ export default function OrderDetails(props) {
       ...NewSrlFormData,
       Operation: e.target.value,
     });
-    //////////console.log(e.target.value);
+    //////////// console.log(e.target.value);
   };
   const selectInsp = async (e) => {
     e.preventDefault();
@@ -393,7 +412,7 @@ export default function OrderDetails(props) {
       }
     }
     setStrTolerance(e.target.value);
-    //////////console.log(e.target.value);
+    //////////// console.log(e.target.value);
   };
   const selectMtrlSrc = async (e) => {
     e.preventDefault();
@@ -427,7 +446,7 @@ export default function OrderDetails(props) {
       Mtrl_Rate: 0.0,
       UnitPrice: 0.0,
     });
-    //console.log("closeddddd");
+    //// console.log("closeddddd");
   };
 
   // IMPORT DWG MODAL
@@ -602,7 +621,7 @@ export default function OrderDetails(props) {
       { requestData: requestData },
       (InsertedNewSrlData) => {
         if (InsertedNewSrlData.affectedRows != 0) {
-          toast.success("Added serial successfully");
+          // toast.success("Added serial successfully");
           fetchData();
           handleCloseImportDwg();
         } else {
@@ -615,6 +634,59 @@ export default function OrderDetails(props) {
 
   const PostSrlData = () => {};
   const locCalc = () => {};
+
+  // const [addsrlBtn, setAddsrlBtn] = useState(false);
+  // const [bulkchangeBtn, setBulkchangeBtn] = useState(false);
+  // const [ImpDwgBtn, setImpDwgBtn] = useState(false);
+  // const [ImtExlBtn, setImtExlBtn] = useState(false);
+  // const [ImtOldOrderBtn, setImtOldOrderBtn] = useState(false);
+  // const [ImtQtnBtn, setQtnBtn] = useState(false);
+  // const [SelectAllBtn, setSelectAllBtn] = useState(false);
+  // const [ReverseBtn, setReverseBtn] = useState(false);
+  // const [AddDwgOrderBtn, setAddDwgOrderBtn] = useState(false);
+
+  // var status = OrderData.Order_Status;
+  // var orderType = OrderData.Order_Type;
+
+  // const setOrderDetails = (status, orderType) => {
+  //   console.log(status);
+  //   console.log(orderType);
+  //   switch (status) {
+  //     case "Created":
+  //       setBulkchangeBtn(true);
+  //       setAddsrlBtn(true);
+  //       break;
+  //     case "Processing":
+  //       setBulkchangeBtn(false);
+  //       setAddsrlBtn(false);
+  //       switch (orderType) {
+  //         case "Complete":
+  //           setAddsrlBtn(false);
+  //           setBulkchangeBtn(false);
+  //           break;
+  //         case "Scheduled":
+  //           setAddsrlBtn(false);
+  //           break;
+  //         case "Open":
+  //           setAddsrlBtn(true);
+  //           break;
+  //         default:
+  //           // Default case if no matching order type
+  //           break;
+  //       }
+  //       break;
+  //     case "Nochange":
+  //       setBulkchangeBtn(false);
+  //       break;
+  //     default:
+  //       // Default case if no matching status
+  //       break;
+  //   }
+  // };
+  // useEffect(() => {
+  //   setOrderDetails(status, orderType);
+  //   setBulkchangeBtn(false);
+  // }, []);
 
   return (
     <>
@@ -757,6 +829,7 @@ export default function OrderDetails(props) {
               className="button-style"
               style={{ width: "130px", marginLeft: "4px" }}
               onClick={() => handleImportDwgmdl()}
+              disabled={props.OrderData?.Order_Status === "Processing"}
             >
               Import Dwg
             </button>
@@ -766,6 +839,7 @@ export default function OrderDetails(props) {
             className="button-style"
             style={{ width: "140px", marginLeft: "4px" }}
             onClick={importExcelFunc}
+            disabled={props.OrderData?.Order_Status === "Processing"}
           >
             Import EXCEL
           </button>
@@ -773,6 +847,7 @@ export default function OrderDetails(props) {
             className="button-style"
             style={{ width: "130px", marginLeft: "4px" }}
             onClick={handleImportQtnMdl}
+            disabled={props.OrderData?.Order_Status === "Processing"}
           >
             Import Qtn
           </button>
@@ -780,12 +855,14 @@ export default function OrderDetails(props) {
             className="button-style"
             style={{ width: "170px", marginLeft: "4px" }}
             onClick={handleImportOldOrdrMdl}
+            disabled={props.OrderData?.Order_Status === "Processing"}
           >
             Import Old Order
           </button>
           <button
             className="button-style"
             style={{ width: "100px", marginLeft: "4px" }}
+            disabled={props.OrderData?.Order_Status === "Processing"}
           >
             Delete
           </button>
@@ -793,6 +870,11 @@ export default function OrderDetails(props) {
             className="button-style"
             style={{ width: "130px", marginLeft: "4px" }}
             onClick={handlebulkChnangMdl}
+            disabled={
+              props.OrderData?.Order_Status === "Processing" ||
+              props.OrderData?.Order_Type === "Complete" ||
+              props.OrderData?.Order_Type === "Scheduled"
+            }
           >
             Bulk Change
           </button>
@@ -800,6 +882,7 @@ export default function OrderDetails(props) {
             className="button-style"
             onClick={handleSelectAll}
             style={{ width: "120px", marginLeft: "4px" }}
+            disabled={props.OrderData?.Order_Status === "Processing"}
           >
             Select All
           </button>
@@ -807,6 +890,7 @@ export default function OrderDetails(props) {
             className="button-style"
             onClick={handleReverseSelection}
             style={{ width: "100px", marginLeft: "4px" }}
+            disabled={props.OrderData?.Order_Status === "Processing"}
           >
             Reverse
           </button>
@@ -834,6 +918,10 @@ export default function OrderDetails(props) {
               OrdrDetailsData={OrdrDetailsData}
               selectedItems={selectedItems}
               selectItem={selectItem}
+              setDetailsColour={setDetailsColour}
+              calculateMinSrlStatus={calculateMinSrlStatus}
+              updateOrderStatus={updateOrderStatus}
+              getStatusText={getStatusText}
             />
           </div>
           <div className="col-md-6">

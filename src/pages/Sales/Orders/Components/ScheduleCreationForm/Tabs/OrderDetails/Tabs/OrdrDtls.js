@@ -175,6 +175,11 @@ function OrdrDtls(props) {
                   style={{ width: "135px" }}
                   onClick={handleImportDwg}
                   // onClick={() => PostOrderDetails(1)}
+                  disabled={
+                    props.OrderData?.Order_Status === "Processing" ||
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Schedule"
+                  }
                 >
                   Add New Serial
                 </button>
@@ -201,6 +206,11 @@ function OrdrDtls(props) {
                       // }
                       value={ordrDetailsChange.DwgName}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Status === "Created" ||
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     />
                   </div>
                 </div>
@@ -222,6 +232,10 @@ function OrdrDtls(props) {
                       required
                       onChange={handleChange}
                       value={ordrDetailsChange.jwRate}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                       // value={LastSlctedRow?.JWCost || " "}
                     />
                     {/* <InputField
@@ -271,6 +285,10 @@ function OrdrDtls(props) {
                         // }
                         placeholder="Choose a Material..."
                         required
+                        disabled={
+                          props.OrderData?.Order_Type === "Complete" ||
+                          props.OrderData?.Order_Type === "Scheduled"
+                        }
                       ></Typeahead>
                     ) : (
                       ""
@@ -309,6 +327,10 @@ function OrdrDtls(props) {
                       onChange={handleChange}
                       value={ordrDetailsChange.materialRate}
                       required
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     />
 
                     {/* <InputField
@@ -340,6 +362,10 @@ function OrdrDtls(props) {
                       name="odrDtlMtrlSrc"
                       value={ordrDetailsChange.MtrlSrc}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     >
                       <option value="" selected>
                         ** Select **
@@ -479,6 +505,10 @@ function OrdrDtls(props) {
                       name="odrDtlInspLvl"
                       value={ordrDetailsChange.InspLvl}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     >
                       <option value="" disabled selected>
                         ** Select **
@@ -511,6 +541,7 @@ function OrdrDtls(props) {
                       onChange={handleChange}
                       value={ordrDetailsChange.quantity}
                       required
+                      disabled={props.OrderData?.Order_Type === "Complete"}
                     />
                     {/* <InputField
                       className="ip-select in-fields"
@@ -546,6 +577,10 @@ function OrdrDtls(props) {
                       name="odrDtlPkngLvl"
                       value={ordrDetailsChange.PkngLvl}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     >
                       <option value="" disabled selected>
                         ** Select **
@@ -688,12 +723,22 @@ function OrdrDtls(props) {
                     className="button-style"
                     style={{ width: "195px", marginTop: "26%" }}
                     onClick={() => PostOrderDetails(3)}
+                    disabled={
+                      props.OrderData?.Order_Status === "Processing" ||
+                      props.OrderData?.Order_Type === "Complete" ||
+                      props.OrderData?.Order_Type === "Scheduled"
+                    }
                   >
                     Add Drawing to Order
                   </button>
                   <button
                     className="button-style "
                     style={{ width: "195px", marginTop: "23%" }}
+                    disabled={
+                      props.OrderData?.Order_Status === "Processing" ||
+                      props.OrderData?.Order_Type === "Complete" ||
+                      props.OrderData?.Order_Type === "Scheduled"
+                    }
                   >
                     Save to Customer Dwg
                   </button>
@@ -784,6 +829,11 @@ function OrdrDtls(props) {
                     className="button-style"
                     style={{ width: "195px" }}
                     onClick={() => PostOrderDetails(3)}
+                    disabled={
+                      props.OrderData?.Order_Status === "Processing" ||
+                      props.OrderData?.Order_Type === "Complete" ||
+                      props.OrderData?.Order_Type === "Scheduled"
+                    }
                   >
                     Add Drawing to Order
                   </button>
