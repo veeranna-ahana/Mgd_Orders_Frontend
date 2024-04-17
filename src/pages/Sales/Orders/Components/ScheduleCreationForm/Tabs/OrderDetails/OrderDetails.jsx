@@ -5,7 +5,7 @@ import Drawings from "./Tabs/Drawings";
 import OrdrDtls from "./Tabs/OrdrDtls";
 import { Tab, Tabs } from "react-bootstrap";
 import ImportDwgModal from "./Modals/ImportDwgModal";
-import ImportOldOrderModal from "./Modals/ImportOldOrderModal";
+import ImportOldOrderModal from "./Modals/ImportOldOrderModal/ImportOldOrderModal";
 import ImportQtnModal from "./Modals/ImportQtnModal/ImportQtnModal";
 import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
@@ -51,6 +51,10 @@ export default function OrderDetails(props) {
     InputField,
   } = props;
 
+  // console.log("OrdrDetailsData", OrdrDetailsData);
+
+  const [buttonClicked, setButtonClicked] = useState("");
+  // confirmation modal
   const [ConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
   // import from excel
   const [importExcelModal, setImportExcelModal] = useState(false);
@@ -137,6 +141,90 @@ export default function OrderDetails(props) {
   });
 
   useEffect(() => {
+    //console.log("Cust_Code....", Cust_Code);
+    postRequest(
+      endpoints.getCustomerDets,
+      { custcode: Cust_Code },
+      (custdata) => {
+        // setCustomer(custdata[0]["Cust_name"]);
+        // setCustdata(custdata);
+      }
+    );
+    // await postRequest(
+    //   endpoints.PostNewSrlData,
+    //   { custcode: Cust_Code, OrderNo: OrderNo },
+    //   (srldata) => {
+    //     //////console.log("srl data", srldata);
+    //     setSerailData(srldata);
+    //   }
+    // );
+
+    postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
+      ////////console.log(sdata);
+      setSalesExecdata(sdata);
+    });
+    postRequest(
+      endpoints.getSalesIndiExecLists,
+      { salesContact: SalesContact },
+      (sdata) => {
+        ////////console.log(sdata[0]["Name"]);
+        // setSalesExecContact(sdata[0]["Name"]);
+      }
+    );
+    // await postRequest(endpoints.getSalesIndiExecLists, { salesContact: order.DealingEngineer }, (ddata) => {
+    //     setDealingEngineer(ddata[0]["Name"]);
+    // });
+    // await postRequest(
+    //   endpoints.getSalesIndiExecLists,
+    //   { salesContact: RecordedBy },
+    //   (recdata) => {
+    //     setRecordedby(recdata[0]["Name"]);
+    //   }
+    // );
+    postRequest(
+      endpoints.getSalesIndiExecLists,
+      { salesContact: Order_Received_By },
+      (rcvddata) => {
+        // setReceivedBy(rcvddata[0]["Name"]);
+      }
+    );
+    getRequest(endpoints.getMaterials, (mtrldata) => {
+      ////console.log(mtrldata);
+      let arr = [];
+      for (let i = 0; i < mtrldata.length; i++) {
+        mtrldata[i].label = mtrldata[i].Mtrl_Code;
+        arr.push(mtrldata[i]);
+      }
+
+      setMtrldata(arr);
+    });
+    getRequest(endpoints.getProcessLists, (pdata) => {
+      let arr = [];
+      for (let i = 0; i < pdata.length; i++) {
+        pdata[i].label = pdata[i].ProcessDescription;
+        arr.push(pdata[i]);
+      }
+
+      setProcdata(arr);
+
+      // console.log("pdata", pdata);
+    });
+
+    getRequest(endpoints.getToleranceTypes, (ttdata) => {
+      setTolerancedata(ttdata);
+    });
+    getRequest(endpoints.getInspectionLevels, (ildata) => {
+      setInspdata(ildata);
+    });
+    getRequest(endpoints.getPackingLevels, (pckdata) => {
+      setPackdata(pckdata);
+    });
+
+    //console.log("custcode:", Cust_Code);
+    // postRequest(endpoints.GetBomData, { custcode: Cust_Code }, (bomdata) => {
+    //   //console.log("bomdata......", bomdata);
+    //   setBomData(bomdata);
+    // });
     async function fetchData() {
       postRequest(
         endpoints.getCustomerDets,
@@ -443,8 +531,21 @@ export default function OrderDetails(props) {
   const [importOldOrdrMdl, setImportOldOrdrMdl] = useState(false);
 
   const handleImportOldOrdrMdl = () => {
-    setImportOldOrdrMdl(true);
+    if (props.OrdrDetailsData.length > 0) {
+      setConfirmationModalOpen(true);
+    } else {
+      setImportOldOrdrMdl(true);
+    }
   };
+
+  const handleImportFromExcelModal = () => {
+    if (props.OrdrDetailsData.length > 0) {
+      setConfirmationModalOpen(true);
+    } else {
+      setImportExcelModal(true);
+    }
+  };
+
   const handleCloseImportOldOrdrMdl = () => {
     setImportOldOrdrMdl(false);
   };
@@ -489,11 +590,19 @@ export default function OrderDetails(props) {
       endpoints.postDeleteDetailsByOrderNo,
       { Order_No: props.OrderData.Order_No },
       (deleteData) => {
-        if (deleteData.affectedRows > 0) {
+        if (deleteData.flag > 0) {
           setOrdrDetailsData([]);
           toast.success("Delete the serials sucessfully");
           setConfirmationModalOpen(false);
-          setImportQtnMdl(true);
+
+          if (buttonClicked === "Import Qtn") {
+            setImportQtnMdl(true);
+          } else if (buttonClicked === "Import Old Order") {
+            setImportOldOrdrMdl(true);
+          } else if (buttonClicked === "Import From Excel") {
+            setImportExcelModal(true);
+          } else {
+          }
         } else {
           toast.warning(deleteData);
         }
@@ -668,8 +777,15 @@ export default function OrderDetails(props) {
       <ImportOldOrderModal
         importOldOrdrMdl={importOldOrdrMdl}
         setImportOldOrdrMdl={setImportOldOrdrMdl}
-        handleImportOldOrdrMdl={handleImportOldOrdrMdl}
-        handleCloseImportOldOrdrMdl={handleCloseImportOldOrdrMdl}
+        //
+        oldOrderListData={props.oldOrderListData}
+        oldOrderDetailsData={props.oldOrderDetailsData}
+        OrderData={props.OrderData}
+        // table data
+        OrdrDetailsData={props.OrdrDetailsData}
+        setOrdrDetailsData={props.setOrdrDetailsData}
+        // handleImportOldOrdrMdl={handleImportOldOrdrMdl}
+        // handleCloseImportOldOrdrMdl={handleCloseImportOldOrdrMdl}
       />
       <ImportQtnModal
         importQtnMdl={importQtnMdl}
@@ -685,6 +801,11 @@ export default function OrderDetails(props) {
       <ImportExcelModal
         setImportExcelModal={setImportExcelModal}
         importExcelModal={importExcelModal}
+        OrderData={OrderData}
+        mtrldata={mtrldata}
+        procdata={procdata}
+        OrdrDetailsData={OrdrDetailsData}
+        setOrdrDetailsData={setOrdrDetailsData}
       />
       <BulkChangeModal
         bulkChnangMdl={bulkChnangMdl}
@@ -764,22 +885,32 @@ export default function OrderDetails(props) {
 
           <button
             className="button-style"
-            style={{ width: "140px", marginLeft: "4px" }}
-            onClick={importExcelFunc}
+            style={{ width: "auto", marginLeft: "4px" }}
+            onClick={(e) => {
+              setButtonClicked("Import From Excel");
+              handleImportFromExcelModal();
+            }}
+            // onClick={importExcelFunc}
           >
-            Import EXCEL
+            Import From Excel
           </button>
           <button
             className="button-style"
             style={{ width: "130px", marginLeft: "4px" }}
-            onClick={handleImportQtnMdl}
+            onClick={(e) => {
+              setButtonClicked("Import Qtn");
+              handleImportQtnMdl();
+            }}
           >
             Import Qtn
           </button>
           <button
             className="button-style"
             style={{ width: "170px", marginLeft: "4px" }}
-            onClick={handleImportOldOrdrMdl}
+            onClick={(e) => {
+              setButtonClicked("Import Old Order");
+              handleImportOldOrdrMdl();
+            }}
           >
             Import Old Order
           </button>

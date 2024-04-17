@@ -364,10 +364,12 @@ export const endpoints = {
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
   updateRunningNoBySrlType: `${API}/runningNo/updateRunningNoBySrlType`,
+  insertAndGetRunningNo: `${API}/runningNo/insertAndGetRunningNo`,
 
   // import qtn
   getQtnList: `${API}/orderDetails/getQtnList`,
   getQtnDataByQtnID: `${API}/orderDetails/getQtnDataByQtnID`,
+  getOldOrderByCustCodeAndOrderNo: `${API}/orderDetails/getOldOrderByCustCodeAndOrderNo`,
   postDeleteDetailsByOrderNo: `${API}/orderDetails/postDeleteDetailsByOrderNo`,
   postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
 
