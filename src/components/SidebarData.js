@@ -244,6 +244,82 @@ export const ordersSidebar = [
   //     },
   //   ],
   // },
+  {
+    title: "Combined Schedule",
+    icon: <SiRedhatopenshift />,
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+    subNav: [
+      {
+        title: "Job Work",
+        path: "/Orders/JobWork",
+        icon: <BsServer />,
+        subNav: [
+          {
+            title: "Create",
+            path: "/Orders/JobWork/CREATE",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "Open",
+            path: "/Orders/JobWork/OPEN",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "ScheduleList",
+            path: "/Orders/JobWork/ScheduleList",
+            icon: <AiIcons.AiOutlineArrowRight />,
+            subNav: [
+              {
+                title: "Order",
+                path: "/Orders/JobWork/ScheduleList/ORDER",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+              {
+                title: "Closed",
+                path: "/Orders/JobWork/ScheduleList/Closed",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Sales",
+        path: "/Orders/Sales",
+        icon: <VscServerProcess />,
+        subNav: [
+          {
+            title: "Create",
+            path: "/Orders/Sales/Create",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "Open",
+            path: "/Orders/Sales/Open",
+            icon: <AiIcons.AiOutlineArrowRight />,
+          },
+          {
+            title: "ScheduleList",
+            path: "/Orders/Sales/ScheduleList",
+            icon: <AiIcons.AiOutlineArrowRight />,
+            subNav: [
+              {
+                title: "Order",
+                path: "/Orders/Sales/ScheduleList/Order",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+              {
+                title: "Closed",
+                path: "/Orders/Sales/ScheduleList/Closed",
+                icon: <AiIcons.AiOutlineArrowRight />,
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
 
   {
     title: "Fabrication",

@@ -39,13 +39,16 @@ function ImportDwgModal(props) {
     handleImportDwgmdl,
     handleCloseImportDwgmdl,
     handleMtrlCodeTypeaheadChange,
+    PostOrderDetails,
+    // NEW
+    imprtDwgObj,
+    setImprtDwgObj,
+    handleChange,
   } = props;
-  // console.log("mtrldata...", mtrldata);
-  // console.log("strmtrlcode...", strmtrlcode);
 
   return (
     <div className="row mt-1" style={{ maxHeight: "600px" }}>
-      <Modal show={importdwgmdlshow}>
+      <Modal show={importdwgmdlshow} onHide={handleCloseImportDwgmdl}>
         <Modal.Header
           className="justify-content-md-center"
           style={{
@@ -71,7 +74,9 @@ function ImportDwgModal(props) {
                         <Typeahead
                           id="basic-example"
                           labelKey="Mtrl_Code"
+                          name="impDwgMaterial"
                           onChange={handleMtrlCodeTypeaheadChange}
+                          // onChange={handleChange}
                           required
                           options={mtrldata}
                           placeholder="Choose a Material..."
@@ -90,6 +95,7 @@ function ImportDwgModal(props) {
                         <select
                           className="ip-select"
                           id="strprocess"
+                          name="impDwgProcess"
                           onChange={selectProc}
                         >
                           <option value="" disabled selected>
@@ -116,6 +122,7 @@ function ImportDwgModal(props) {
                       <select
                         className="ip-select"
                         id="strsource"
+                        name="impDwgSource"
                         onChange={selectMtrlSrc}
                       >
                         <option value="" disabled selected>
@@ -135,6 +142,7 @@ function ImportDwgModal(props) {
                       <select
                         className="ip-select"
                         id="strtolerance"
+                        name="impDwgTolerance"
                         onChange={selectTolerance}
                       >
                         <option value="" disabled selected>
@@ -161,6 +169,7 @@ function ImportDwgModal(props) {
                       <select
                         id="strinsp"
                         className="ip-select"
+                        name="impDwgInspLvl"
                         onChange={selectInsp}
                       >
                         <option value="" disabled selected>
@@ -184,6 +193,7 @@ function ImportDwgModal(props) {
                       <select
                         id="strpkng"
                         className="ip-select"
+                        name="impDwgPkngLvl"
                         onChange={selectPack}
                       >
                         <option value="" disabled selected>
@@ -209,6 +219,7 @@ function ImportDwgModal(props) {
                   <InputField
                     label="Quantity"
                     id="Qty"
+                    name="impDwgQty"
                     value={quantity}
                     onChangeCallback={setQuantity}
                     required
@@ -221,13 +232,13 @@ function ImportDwgModal(props) {
                     <div className="row">
                       <div className="col-md-6">
                         <Form.Label className="form-label">Cutting </Form.Label>
-                        <input type="text" id="dblCuttingRate" />
+                        <input type="text" id="dblCuttingRate" name="Cutting" />
                       </div>
                       <div className="col-md-6">
                         <Form.Label className="form-label">
                           Piercing{" "}
                         </Form.Label>
-                        <input type="text" id="dblPierceRate" />
+                        <input type="text" id="dblPierceRate" name="Piercing" />
                       </div>
                     </div>
                   </Form.Group>
@@ -258,9 +269,10 @@ function ImportDwgModal(props) {
               className="button-style"
               type="submit"
               style={{ width: "100px" }}
-              onClick={insertnewsrldata}
+              // onClick={insertnewsrldata}
+              onClick={() => PostOrderDetails(2)}
             >
-              Ok
+              Save
             </button>
 
             <button

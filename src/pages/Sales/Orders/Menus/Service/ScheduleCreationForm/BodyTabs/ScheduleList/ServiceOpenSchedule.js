@@ -15,6 +15,10 @@ function ServiceOpenSchedule() {
 
   //  console.log("DwgNameList is", DwgNameList[0]);
 
+   
+    // Standardize the case of the property name
+    const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
+
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
   const [scheduleDetailsRow, setScheduleDetailsRow] = useState({});
@@ -22,7 +26,7 @@ function ServiceOpenSchedule() {
   useEffect(() => {
     postRequest(
       endpoints.ShiftDetails,
-      { ScheduleId: DwgNameList[0].ScheduleId },
+      { ScheduleId: scheduleId },
       (response) => {
         setNewState(response);
       }
@@ -77,9 +81,7 @@ function ServiceOpenSchedule() {
 
   useEffect(() => {
     if (DwgNameList.length === 0) return; // Ensure DwgNameList is not empty
-    
-    // Standardize the case of the property name
-    const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
+   
   
     postRequest(
       endpoints.getScheduleListgetFormDetails,
@@ -130,12 +132,14 @@ function ServiceOpenSchedule() {
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
+    console.log("scheduleDetailsRow",scheduleDetailsRow);
     if (scheduleDetailsRow) {
       postRequest(
         endpoints.getScheduleListTaskandMaterial,
         { scheduleDetailsRow },
         (response) => {
           setTaskMaterialData(response);
+          setRowSelectTaskMaterial({ ...response[0], index: 0 });
         }
       );
     }
@@ -149,29 +153,37 @@ function ServiceOpenSchedule() {
   const onRowSelectTaskMaterialTable = (item, index) => {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
-    postRequest(
-      endpoints.getDwgListData,
-      { list },
-      (response) => {
-        // console.log("response is", response);
-        setTmDwgList(response);
-      }
-    );
+    console.log("list is",list);
+    // Check if list is present before making the request
+    if (list) {
+      postRequest(
+        endpoints.getDwgListData,
+        { list },
+        (response) => {
+          // console.log("response is", response);
+          setTmDwgList(response);
+        }
+      );
+    }else{
+      postRequest(
+        endpoints.getDwgListData,
+        { list:rowselectTaskMaterial },
+        (response) => {
+          // console.log("response is", response);
+          setTmDwgList(response);
+        }
+      );
+    }
   };
-
-
-  //Default first row select
-  // useEffect(() => {
-  //   // Check if TaskMaterialData is available and rowselectTaskMaterial is empty
-  //   if (TaskMaterialData.length > 0 && Object.keys(rowselectTaskMaterial).length === 0) {
-  //     onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
-  //     console.log("rowselectTaskMaterial",rowselectTaskMaterial);
-  //   }
-  // }, [TaskMaterialData, rowselectTaskMaterial]); // Remove onRowSelectTaskMaterialTable from dependency array as it's a function
+  
+ //Default first row select for Task and Mterial
+ useEffect(() => {
+  if (TaskMaterialData.length > 0 && !rowselectTaskMaterial.TaskNo) {
+    onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
+  }
+}, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
   
   // console.log("rowselectTaskMaterial",rowselectTaskMaterial);
-
-
 
 
 
@@ -184,6 +196,7 @@ function ServiceOpenSchedule() {
       { scheduleDetailsRow:list },
       (response) => {
         setTaskMaterialData(response);
+        setRowSelectTaskMaterial({ ...response[0], index: 0 });
       }
     );
   };

@@ -36,6 +36,8 @@ export const endpoints = {
   LoadArrival: `${API}/OrderDetails/LoadArrival`,
   LoadArrival2: `${API}/OrderDetails/LoadArrival2`,
   registerOrder: `${API}/order/registerOrder`,
+  bulkChangeUpdate: `${API}/OrderDetails/bulkChangeUpdate`,
+  singleChangeUpdate: `${API}/OrderDetails/singleChangeUpdate`,
 
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
@@ -370,4 +372,28 @@ export const endpoints = {
   getOldOrderByCustCodeAndOrderNo: `${API}/orderDetails/getOldOrderByCustCodeAndOrderNo`,
   postDeleteDetailsByOrderNo: `${API}/orderDetails/postDeleteDetailsByOrderNo`,
   postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
+
+  //Combined Schedule
+  //Job Work
+  getSalesContact: `${API}/CombinedScheduleCreate/getSalesContactList`,
+  allcustomerdata: `${API}/CombinedScheduleCreate/allcustomersData`,
+  rightTabledata: `${API}/CombinedScheduleCreate/getRightTableData`,
+  prepareSchedule: `${API}/CombinedScheduleCreate/prepareSchedule`,
+  CreateSchedule: `${API}/CombinedScheduleCreate/createSchedule`,
+  CreateScheduleforSales: `${API}/CombinedScheduleCreate/createScheduleforSales`,
+  afterCombinedSchedule: `${API}/CombinedScheduleCreate/afterCombineSchedule`,
+  getSchedudleDetails: `${API}/scheduleListCombined/scheduleListDetails`,
+  CombinedTasksTaskTable: `${API}/scheduleListCombined/combinedTaksTaskTable`,
+  CombinedTasksShowDwg: `${API}/scheduleListCombined/combinedTaksShowDwgName`,
+  OriginalTable: `${API}/scheduleListCombined/OriginalTable1`,
+  OriginalTable2: `${API}/scheduleListCombined/OriginalTable2`,
+  updateToOriganalSchedule: `${API}/scheduleListCombined/updateToOriganalSchedule`,
+  updateTask: `${API}/scheduleListCombined/updateTask`,
+  distributeParts: `${API}/scheduleListCombined/distributeParts`,
+  save: `${API}/scheduleListCombined/save`,
+  ScheduleListOrdered: `${API}/scheduleListCombined/ScheduleListOrdered`,
+  ScheduleListOrderedSales: `${API}/scheduleListCombined/ScheduleListOrderedSales`,
+  scheduleListDetails: `${API}/scheduleListCombined/scheduleListDetails`,
+  ScheduleListClosed: `${API}/scheduleListCombined/ScheduleListClosed`,
+  ScheduleListClosedSales: `${API}/scheduleListCombined/ScheduleListClosedSales`,
 };

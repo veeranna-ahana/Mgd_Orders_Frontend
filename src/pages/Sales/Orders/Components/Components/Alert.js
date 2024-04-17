@@ -31,8 +31,8 @@ function AlertModal(props) {
       <Modal.Footer>
         <Button
           style={{ backgroundColor: "#2b3a55", border: "#2b3a55" }}
-          onClick={() => {
-            props.firstbutton();
+          onClick={(e) => {
+            props.firstbutton(e);
           }}
         >
           {props.firstbuttontext}
