@@ -362,6 +362,7 @@ export const endpoints = {
   // running no
   getAndInsertRunningNo: `${API}/runningNo/getAndInsertRunningNo`,
   updateRunningNoBySrlType: `${API}/runningNo/updateRunningNoBySrlType`,
+  insertAndGetRunningNo: `${API}/runningNo/insertAndGetRunningNo`,
 
   // import qtn
   getQtnList: `${API}/orderDetails/getQtnList`,

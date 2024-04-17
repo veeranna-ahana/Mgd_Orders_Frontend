@@ -20,6 +20,10 @@ export default function ProfarmaInvoiceForm(props) {
   // console.log("profarmaID", ProfarmaID);
 
   const [runningNo, setRunningNo] = useState({});
+
+  const [formData, setFormData] = useState({
+    unitName: "Jigani",
+  });
   const [profarmaMainData, setProfarmaMainData] = useState({});
   const [profarmaDetailsData, setProfarmaDetailsData] = useState([]);
   const [profarmaTaxData, setProfarmaTaxData] = useState([]);
@@ -29,6 +33,8 @@ export default function ProfarmaInvoiceForm(props) {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   const [printInvoiceModal, setPrintInvoiceModal] = useState(false);
+
+  const [runningNoData, setRunningNoData] = useState({});
 
   const rowLimit = 20;
   const fetchData = () => {
@@ -231,45 +237,53 @@ export default function ProfarmaInvoiceForm(props) {
     document.getElementById("taxDropdown").value = "none";
   }
 
-  function getRunningNo() {
-    let SrlType = "ProformaInvoice";
-    let yyyy = todayDate.getFullYear();
-    let UnitName = "Jigani";
-    const insertRunningNoVal = {
-      UnitName: UnitName,
-      SrlType: SrlType,
-      ResetPeriod: "FinanceYear",
-      ResetValue: "0",
-      EffectiveFrom_date:
-        todayDate.getMonth() + 1 <= 3 ? `${yyyy - 1}-04-01` : `${yyyy}-04-01`,
-      Reset_date:
-        todayDate.getMonth() + 1 <= 3 ? `${yyyy}-04-01` : `${yyyy + 1}-04-01`,
-      Running_No: "0",
-      UnitIntial: "0",
-      Prefix: UnitName.slice(0, 1),
-      Suffix: "",
-      Length: "3",
-      Period:
-        todayDate.getMonth() + 1 <= 3
-          ? `${(yyyy - 1).toString().slice(-2)}/${yyyy.toString().slice(-2)}`
-          : `${yyyy.toString().slice(-2)}${(yyyy + 1).toString().slice(-2)}`,
-    };
+  const getDCNo = async () => {
+    // console.log("todayDate", todayDate);
 
-    // console.log("insertRunningNoVal", insertRunningNoVal);
+    let finYear = `${
+      (todayDate.getMonth() + 1 < 4
+        ? todayDate.getFullYear() - 1
+        : todayDate.getFullYear()
+      )
+        .toString()
+        .slice(-2) +
+      "/" +
+      (todayDate.getMonth() + 1 < 4
+        ? todayDate.getFullYear()
+        : todayDate.getFullYear() + 1
+      )
+        .toString()
+        .slice(-2)
+    }`;
+
+    // console.log("finYear", finYear);
+
+    const srlType = "ProformaInvoice";
+    const ResetPeriod = "FinanceYear";
+    const ResetValue = 0;
+    const Length = 4;
+    // const prefix = "";
+
     postRequest(
-      endpoints.getAndInsertRunningNo,
-      insertRunningNoVal,
-      (runningNo) => {
-        setRunningNo(runningNo[0]);
+      endpoints.insertAndGetRunningNo,
+      {
+        finYear: finYear,
+        unitName: formData.unitName,
+        srlType: srlType,
+        ResetPeriod: ResetPeriod,
+        ResetValue: ResetValue,
+        Length: Length,
+        // prefix: prefix,
+      },
+      (res) => {
+        console.log("getDCNo Response", res);
+        setRunningNoData(res.runningNoData);
       }
     );
-  }
-
-  // console.log("runningNo", runningNo);
-  // getRunningNo();
+  };
 
   function createInvoiceConfirmation() {
-    getRunningNo();
+    getDCNo();
     setConfirmModalOpen(true);
   }
 
@@ -277,45 +291,49 @@ export default function ProfarmaInvoiceForm(props) {
     saveInvoiceFunc();
     // console.log("create invoice");
 
-    let newRunningNo = parseInt(runningNo.Running_No) + 1;
+    // let newRunningNo = parseInt(runningNo.Running_No) + 1;
 
-    let series = newRunningNo.toString();
-    for (let i = 0; i < parseInt(runningNo["Length"]); i++) {
-      if (series.length < parseInt(runningNo["Length"])) {
-        series = "0" + series;
-      }
-    }
+    // let series = newRunningNo.toString();
+    // for (let i = 0; i < parseInt(runningNo["Length"]); i++) {
+    //   if (series.length < parseInt(runningNo["Length"])) {
+    //     series = "0" + series;
+    //   }
+    // }
 
-    series = runningNo.Period + "/" + runningNo.Prefix + series;
+    // series = runningNo.Period + "/" + runningNo.Prefix + series;
 
-    // console.log("seriesssss", series);
+    // // console.log("seriesssss", series);
 
     postRequest(
       endpoints.postInvFormCreateInvoice,
-      { series: series, ProfarmaID: profarmaMainData.ProfarmaID },
+      {
+        // series: series,
+        ProfarmaID: profarmaMainData.ProfarmaID,
+        runningNoData: runningNoData,
+      },
       (resp) => {
         // console.log("resp", resp);
 
-        if (resp.affectedRows > 0 || resp.changedRows > 0) {
-          toast.success("Proforma Invoice Created");
+        if (resp.flag) {
+          toast.success(resp.message || "Proforma Invoice Created");
           fetchData();
 
-          postRequest(
-            endpoints.updateRunningNoBySrlType,
-            {
-              SrlType: runningNo.SrlType,
-              Period: runningNo.Period,
-              RunningNo: newRunningNo,
-            },
-            (updateRunningNo) => {
-              if (resp.affectedRows > 0 || resp.changedRows > 0) {
-              } else {
-                toast.error("unable to update running no");
-              }
+          // postRequest(
+          //   endpoints.updateRunningNoBySrlType,
+          //   {
+          //     SrlType: runningNo.SrlType,
+          //     Period: runningNo.Period,
+          //     RunningNo: newRunningNo,
+          //   },
+          //   (updateRunningNo) => {
+          //     if (resp.affectedRows > 0 || resp.changedRows > 0) {
+          //     } else {
+          //       toast.error("unable to update running no");
+          //     }
 
-              // console.log("update running no", updateRunningNo);
-            }
-          );
+          //     // console.log("update running no", updateRunningNo);
+          //   }
+          // );
         } else {
           toast.error("uncaught error in backend");
         }
