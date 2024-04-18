@@ -5,9 +5,10 @@ export default function IQMFormHeader(props) {
   return (
     <>
       <div className="row">
-        <div className="col-md-3">
-          <label className="form-label">Quotation No</label>
+        <div className="d-flex field-gap col-md-3">
+          <label className="form-label label-space">Quotation No</label>
           <Typeahead
+            className="ip-select in-field"
             id=""
             options={props.qtnListData}
             placeholder="Select any option"
@@ -17,28 +18,28 @@ export default function IQMFormHeader(props) {
             }}
           />
         </div>
-        <div className="col-md-5">
-          <label className="form-label">Customer Name</label>
+        <div className="d-flex field-gap col-md-5">
+          <label className="form-label label-space">Customer Name</label>
           <input
             value={props.selectedQtn?.CustomerName}
             disabled
-            className="input-disabled"
+            className="in-field"
           />
         </div>
-        <div className="col-md-2">
-          <label className="form-label">Quotation Type</label>
+        <div className="d-flex field-gap col-md-2">
+          <label className="form-label label-space">Quotation Type</label>
           <input
             value={props.selectedQtn?.QtnType}
             disabled
-            className="input-disabled"
+            className="in-field"
           />
         </div>
-        <div className="col-md-2">
-          <label className="form-label">Valid UpTo</label>
+        <div className="d-flex field-gap col-md-2">
+          <label className="form-label label-space">Valid UpTo</label>
           <input
             value={props.selectedQtn?.Printable_ValidUpTo}
             disabled
-            className="input-disabled"
+            className="in-field"
           />
         </div>
       </div>

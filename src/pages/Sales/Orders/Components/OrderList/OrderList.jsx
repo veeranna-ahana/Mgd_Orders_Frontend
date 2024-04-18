@@ -206,11 +206,10 @@ export default function OrderList(props) {
   return (
     <>
       <div>
-        <div className="row">
-          <h4 className="title m-0">
-            Order List : {props.type} - {props.orderStatus}
-          </h4>
-        </div>
+        <h4 className="title m-0">
+          Order List : {props.type} - {props.orderStatus}
+        </h4>
+
         <div>
           <Header
             type={props.type}

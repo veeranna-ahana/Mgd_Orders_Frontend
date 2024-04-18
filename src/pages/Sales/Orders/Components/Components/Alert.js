@@ -21,31 +21,31 @@ function AlertModal(props) {
   return (
     <Modal show={props.show} onHide={props.onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
+        <Modal.Title style={{ fontSize: "14px" }}>{props.title}</Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body style={{ fontSize: "12px" }}>
         <p>{props.message}</p>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button
-          style={{ backgroundColor: "#2b3a55", border: "#2b3a55" }}
+        <button
+          className="button-style group-button"
           onClick={(e) => {
             props.firstbutton(e);
           }}
         >
           {props.firstbuttontext}
-        </Button>
+        </button>
         {props.secondbuttontext ? (
-          <Button
-            variant="secondary"
+          <button
+            className="button-style group-button"
             onClick={() => {
               props.secondbutton();
             }}
           >
             {props.secondbuttontext}
-          </Button>
+          </button>
         ) : (
           ""
         )}

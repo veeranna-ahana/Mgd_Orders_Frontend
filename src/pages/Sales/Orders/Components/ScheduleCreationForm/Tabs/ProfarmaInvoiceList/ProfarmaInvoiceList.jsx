@@ -197,7 +197,7 @@ export default function ProfarmaInvoiceList(props) {
         <div className="row">
           <div
             className="col-md-6"
-            style={{ height: "400px", overflow: "auto" }}
+            style={{ height: "300px", overflow: "auto" }}
           >
             <MainTable
               profarmaInvMain={props.profarmaInvMain}
@@ -208,12 +208,11 @@ export default function ProfarmaInvoiceList(props) {
           </div>
           <div
             className="col-md-6"
-            style={{ height: "400px", overflow: "auto" }}
+            style={{ height: "300px", overflow: "auto" }}
           >
             <DetailsTable filteredDetailsData={filteredDetailsData} />
           </div>
         </div>
-        <div className="p-3"></div>
       </div>
     </>
   );

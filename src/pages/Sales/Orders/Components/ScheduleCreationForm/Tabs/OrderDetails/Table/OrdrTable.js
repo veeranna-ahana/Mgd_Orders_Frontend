@@ -274,7 +274,7 @@ function OrdrTable(props) {
   };
 
   return (
-    <div style={{ overflow: "auto", height: "480px" }}>
+    <div style={{ overflow: "auto", height: "590px" }}>
       <Table bordered hover className="table-data border">
         <thead
           className="tableHeaderBGColor"

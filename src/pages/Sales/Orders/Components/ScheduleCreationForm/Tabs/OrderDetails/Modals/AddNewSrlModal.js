@@ -68,7 +68,9 @@ function AddNewSrlModal(props) {
             color: "#ffffff",
           }}
         >
-          <Modal.Title>MagodLaser : New Order Serial</Modal.Title>
+          <Modal.Title style={{ fontSize: "14px" }}>
+            MagodLaser : New Order Serial
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-style">
@@ -77,11 +79,10 @@ function AddNewSrlModal(props) {
               <div className="col">
                 <div className="row">
                   <Form.Group controlId="strmtrlcode">
-                    <div className="md-col-2">
-                      <Form.Label className="form-label">
-                        Dwg / Part Name
-                      </Form.Label>
+                    <div className="d-flex field-gap md-col-2">
+                      <label className="form-label label-space">Dwg / Part Name</label>
                       <input
+                        className="in-field"
                         name="newSrlDwgname"
                         // value={DwgName}
                         value={newSerial.DwgName}
@@ -94,10 +95,11 @@ function AddNewSrlModal(props) {
                 </div>
                 <div className="row">
                   <Form.Group controlId="strmtrlcode">
-                    <div className="md-col-2">
-                      <Form.Label className="form-label">Material</Form.Label>
+                    <div className="d-flex field-gap md-col-2" style={{gap:'60px'}}>
+                      <label className="form-label">Material</label>
                       {mtrldata.length > 0 || mtrldata != null ? (
                         <Typeahead
+                          className="ip-select"
                           id="basic-example"
                           labelKey="Mtrl_Code"
                           name="newSrlMaterial"
@@ -117,8 +119,8 @@ function AddNewSrlModal(props) {
 
                 <div className="row mt-1">
                   <Form.Group controlId="source">
-                    <div className="md-col-4">
-                      <label className="form-label">Material Source</label>
+                    <div className="d-flex field-gap md-col-4" style={{gap:'17px'}}>
+                      <label className="form-label label-space">Material Source</label>
                       <select
                         className="ip-select"
                         id="strsource"
@@ -160,7 +162,7 @@ function AddNewSrlModal(props) {
                         ""
                       )}
                     </div> */}
-                    <div className="md-col-4">
+                    <div className="d-flex field-gap md-col-4" style={{gap:'47px'}}>
                       <label className="form-label">Operation</label>
                       {/* {procdata.length > 0 ? ( */}
                       <select
@@ -246,26 +248,27 @@ function AddNewSrlModal(props) {
                   </div>
                 </div> */}
                 <div className="row mt-1">
-                  <div className="col-md-6">
-                    <InputField
+                  <div className="d-flex field-gap col-md-6" style={{gap:'19px'}}>
+                    {/* <InputField
                       label="Quantity"
                       name="newSrlQty"
                       id="Qty"
                       value={quantity}
                       onChangeCallback={setQuantity}
                       required
-                    />
-                    {/* <label className="form-label">Quantity</label>
+                    /> */}
+                    <label className="form-label">Quantity</label>
                     <input
+                      className="in-field"
                       name="newSrlQty"
                       id="Qty"
                       value={quantity}
                       onChangeCallback={setQuantity}
                       required
-                    /> */}
+                    />
                   </div>
-                  <div className="col-md-6">
-                    <Form.Group controlId="rates">
+                  <div className="d-flex field-gap col-md-6" style={{gap:'42px'}}>
+                    {/* <Form.Group controlId="rates">
                       <InputField
                         label="JW Rate"
                         name="newSrlJWRate"
@@ -274,21 +277,22 @@ function AddNewSrlModal(props) {
                         onChangeCallback={setJwRate}
                         required
                       />
-                    </Form.Group>
-                    {/* <label className="form-label">JW Rate</label>
+                    </Form.Group> */}
+                    <label className="form-label label-space">JW Rate</label>
                     <input
+                      className="in-field"
                       name="newSrlJWRate"
                       id="JWrate"
                       value={jwRate}
                       onChangeCallback={setJwRate}
                       required
-                    /> */}
+                    />
                   </div>
                 </div>
 
                 <div className="row">
-                  <div className="col-md-6">
-                    <Form.Group controlId="rates">
+                  <div className="d-flex field-gap col-md-6" style={{gap:'15px'}}>
+                    {/* <Form.Group controlId="rates">
                       <InputField
                         label="UnitPrice"
                         name="newSrlUnitPrice"
@@ -301,19 +305,20 @@ function AddNewSrlModal(props) {
                         disabled
                         defaultvalue={0.0}
                       />
-                    </Form.Group>
-                    {/* <label className="form-label">UnitPrice</label>
+                    </Form.Group> */}
+                    <label className="form-label">UnitPrice</label>
                     <input
+                      className="in-field"
                       name="newSrlUnitPrice"
                       id="UnitPrice"
                       defaultValue={unitPrice}
                       onChangeCallback={setUnitPrice}
                       required
-                    /> */}
+                    />
                   </div>
-                  <div className="col-md-6">
+                  <div className="d-flex field-gap col-md-6" style={{gap:'15px'}}>
                     {" "}
-                    <Form.Group controlId="rates">
+                    {/* <Form.Group controlId="rates">
                       <InputField
                         label="MaterialRate"
                         id="Qty"
@@ -322,21 +327,22 @@ function AddNewSrlModal(props) {
                         onChangeCallback={setMaterialRate}
                         required
                       />
-                    </Form.Group>
-                    {/* <label className="form-label">MaterialRate</label>
+                    </Form.Group> */}
+                    <label className="form-label">MaterialRate</label>
                     <input
+                      className="in-field"
                       id="MaterialRate"
                       name="newSrlMaterialRate"
                       value={materialRate}
                       onChangeCallback={setMaterialRate}
                       required
-                    /> */}
+                    />
                   </div>
                 </div>
 
                 <div className="row mt-1">
-                  <div className="col-md-6">
-                    <label className="form-label">Insp Level</label>
+                  <div className="d-flex col-md-6 field-gap">
+                    <label className="form-label label-space">Insp Level</label>
                     {inspdata.length > 0 ? (
                       <select
                         id="strinsp"
@@ -359,8 +365,10 @@ function AddNewSrlModal(props) {
                       ""
                     )}
                   </div>
-                  <div className="col-md-6">
-                    <label className="form-label">Packing Level</label>
+                  <div className="d-flex col-md-6 field-gap">
+                    <label className="form-label label-space">
+                      Packing Level
+                    </label>
                     {packdata.length > 0 ? (
                       <select
                         id="strpkng"
@@ -384,7 +392,6 @@ function AddNewSrlModal(props) {
                     )}
                   </div>
                 </div>
-                <div className="row mt-1"></div>
               </div>
             </div>
             {/* </Form> */}
@@ -392,11 +399,10 @@ function AddNewSrlModal(props) {
         </Modal.Body>
         <Modal.Footer>
           {" "}
-          <div className="row ">
+          <div className="">
             <button
               className="button-style"
               type="submit"
-              style={{ width: "100px" }}
               // onClick={insertnewsrldata}
               onClick={() => PostOrderDetails(1)}
             >
@@ -404,7 +410,7 @@ function AddNewSrlModal(props) {
             </button>
             <button
               className="button-style"
-              style={{ width: "100px", backgroundColor: "gray" }}
+              style={{ backgroundColor: "gray" }}
               variant="secondary"
               onClick={() => handleCloseImportDwg()}
             >
