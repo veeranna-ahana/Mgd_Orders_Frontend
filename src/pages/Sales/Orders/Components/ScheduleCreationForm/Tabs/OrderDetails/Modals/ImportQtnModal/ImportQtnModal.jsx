@@ -110,7 +110,7 @@ export default function ImportExcelModal(props) {
         fullscreen
       >
         <Modal.Header closeButton>
-          <Modal.Title>Import Quotation Form</Modal.Title>
+          <Modal.Title style={{fontSize:'14px'}}>Import Quotation Form</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <IQMFormHeader
@@ -131,7 +131,6 @@ export default function ImportExcelModal(props) {
         <Modal.Footer className="d-flex flex-row justify-content-end">
           <button
             className="button-style m-0 me-3"
-            style={{ width: "auto" }}
             onClick={loadQuotationFunc}
           >
             Load Quotation
@@ -139,7 +138,7 @@ export default function ImportExcelModal(props) {
 
           <button
             className="button-style m-0"
-            style={{ width: "60px", background: "rgb(173, 173, 173)" }}
+            style={{ background: "rgb(173, 173, 173)" }}
             onClick={closeModal}
           >
             Exit

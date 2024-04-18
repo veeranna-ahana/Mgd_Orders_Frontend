@@ -995,7 +995,7 @@ export default function ScheduleCreationForm(props) {
           updateOrdrData={updateOrdrData}
         />
 
-        <Tabs defaultActiveKey="orderinfo" id="uncontrolled-tab-example">
+        <Tabs className="nav-tabs tab_font">
           <Tab eventKey="orderinfo" title="Order Info">
             <OrderInfo OrderData={OrderData} />
           </Tab>
@@ -1020,8 +1020,8 @@ export default function ScheduleCreationForm(props) {
             <MaterialInfo OrderData={OrderData} />
           </Tab>
         </Tabs>
-        <div className="mt-5">
-          <Tabs>
+        <div className="mt-1">
+          <Tabs className="nav-tabs tab_font">
             <Tab eventKey="orderdetails" title="Order Details">
               <OrderDetails
                 OrderData={OrderData}

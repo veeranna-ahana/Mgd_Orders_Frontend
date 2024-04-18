@@ -751,82 +751,49 @@ export default function OrderDetails(props) {
         updateblkcngOrdrData={updateblkcngOrdrData}
       />
       <div>
-        <div className="row justify-content-left m-3">
-          {props.OrderData?.Type === "Profile" ? (
-            <button
-              className="button-style"
-              style={{ width: "130px", marginLeft: "4px" }}
-              onClick={() => handleImportDwgmdl()}
-            >
-              Import Dwg
-            </button>
-          ) : null}
+        <div className="row justify-content-left">
+          <div className="col-md-12">
+            {props.OrderData?.Type === "Profile" ? (
+              <button
+                className="button-style"
+                onClick={() => handleImportDwgmdl()}
+              >
+                Import Dwg
+              </button>
+            ) : null}
 
-          <button
-            className="button-style"
-            style={{ width: "140px", marginLeft: "4px" }}
-            onClick={importExcelFunc}
-          >
-            Import EXCEL
-          </button>
-          <button
-            className="button-style"
-            style={{ width: "130px", marginLeft: "4px" }}
-            onClick={handleImportQtnMdl}
-          >
-            Import Qtn
-          </button>
-          <button
-            className="button-style"
-            style={{ width: "170px", marginLeft: "4px" }}
-            onClick={handleImportOldOrdrMdl}
-          >
-            Import Old Order
-          </button>
-          <button
-            className="button-style"
-            style={{ width: "100px", marginLeft: "4px" }}
-          >
-            Delete
-          </button>
-          <button
-            className="button-style"
-            style={{ width: "130px", marginLeft: "4px" }}
-            onClick={handlebulkChnangMdl}
-          >
-            Bulk Change
-          </button>
-          <button
-            className="button-style"
-            onClick={handleSelectAll}
-            style={{ width: "120px", marginLeft: "4px" }}
-          >
-            Select All
-          </button>
-          <button
-            className="button-style"
-            onClick={handleReverseSelection}
-            style={{ width: "100px", marginLeft: "4px" }}
-          >
-            Reverse
-          </button>
-          {Type === "Profile" ? (
-            <button
-              className="button-style"
-              style={{ width: "100px", marginLeft: "4px" }}
-            >
-              Edit DXF
+            <button className="button-style" onClick={importExcelFunc}>
+              Import EXCEL
             </button>
-          ) : null}
-          {/* <button
+            <button className="button-style" onClick={handleImportQtnMdl}>
+              Import Qtn
+            </button>
+            <button className="button-style" onClick={handleImportOldOrdrMdl}>
+              Import Old Order
+            </button>
+            <button className="button-style">Delete</button>
+            <button className="button-style" onClick={handlebulkChnangMdl}>
+              Bulk Change
+            </button>
+            <button className="button-style" onClick={handleSelectAll}>
+              Select All
+            </button>
+            <button className="button-style" onClick={handleReverseSelection}>
+              Reverse
+            </button>
+            {Type === "Profile" ? (
+              <button className="button-style">Edit DXF</button>
+            ) : null}
+            {/* <button
             className="button-style"
             style={{ width: "100px", marginLeft: "4px" }}
             onClick={singleupdateOrdrData}
           >
             Update
           </button> */}
+          </div>
         </div>
-        <div className="row mt-4">
+        <div className="row mt-1">
           <div className="col-md-6">
             <OrdrTable
               OrderData={OrderData}
@@ -837,7 +804,7 @@ export default function OrderDetails(props) {
             />
           </div>
           <div className="col-md-6">
-            <Tabs>
+            <Tabs className="nav-tabs tab_font">
               {props.OrderData?.Type === "Profile" ? (
                 <Tab eventKey="drawing" title="Drawing">
                   <Drawings />

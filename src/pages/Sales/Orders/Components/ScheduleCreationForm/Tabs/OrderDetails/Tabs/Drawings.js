@@ -1,7 +1,7 @@
 import React from "react";
 
 function Drawings() {
-  return <div>Drawings Tab</div>;
+  return <div style={{fontSize:'12px'}}>Drawings Tab</div>;
 }
 
 export default Drawings;
