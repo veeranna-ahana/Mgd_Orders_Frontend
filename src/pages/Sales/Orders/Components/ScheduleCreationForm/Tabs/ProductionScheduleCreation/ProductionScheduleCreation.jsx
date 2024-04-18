@@ -82,12 +82,16 @@ export default function ProductionScheduleCreation({
       console.log(selectedItems);
       let filteredItems;
       if (scheduleType === "Job Work") {
-        filteredItems = selectedItems.filter(item => item.Mtrl_Source === 'Customer');
+        filteredItems = selectedItems.filter(
+          (item) => item.Mtrl_Source === "Customer"
+        );
       } else if (scheduleType === "Sales") {
-        filteredItems = selectedItems.filter(item => item.Mtrl_Source === 'Magod');
+        filteredItems = selectedItems.filter(
+          (item) => item.Mtrl_Source === "Magod"
+        );
       }
-      console.log("filtered item",filteredItems);
-  
+      console.log("filtered item", filteredItems);
+
       // Check if filteredItems is empty
       if (filteredItems.length === 0) {
         toast.warning("No items to schedule", {
@@ -95,7 +99,7 @@ export default function ProductionScheduleCreation({
         });
         return; // Exit the function without making the API request
       }
-  
+
       postRequest(
         endpoints.CreateSchedule,
         {
@@ -126,7 +130,6 @@ export default function ProductionScheduleCreation({
       );
     }
   };
-  
 
   //Onclick of ShortClose
   const [openShortClose, setOpenShortClose] = useState(false);
@@ -196,7 +199,7 @@ export default function ProductionScheduleCreation({
   return (
     <>
       <div className="">
-        <div className="row mt-2">
+        <div className="row">
           <div className="col-md-2 col-sm-12">
             <button
               className="button-style"
@@ -216,7 +219,7 @@ export default function ProductionScheduleCreation({
             </button>
 
             <button
-              className="button-style mt-2 "
+              className="button-style"
               onClick={onClickCancel}
               disabled={
                 OrderData?.Order_Status === "Closed" ||
@@ -233,7 +236,7 @@ export default function ProductionScheduleCreation({
             </button>
 
             <button
-              className="button-style mt-2 "
+              className="button-style"
               onClick={onClickShortClose}
               disabled={
                 OrderData?.Order_Status === "Closed" ||
@@ -251,13 +254,15 @@ export default function ProductionScheduleCreation({
           </div>
 
           <div className="col-md-4 col-sm-12">
-            <h5 className="mt-2">
-              <b>Schedule Type</b>
-            </h5>
+            <label className="form-label">Schedule Type</label>
+
             <div className="row">
               <div className="col-md-6 col-sm-12">
                 <div className="row">
-                  <div className="col-md-2 mt-2 col-sm-12">
+                  <div
+                    className="col-md-2 col-sm-12"
+                    style={{ marginLeft: "1px" }}
+                  >
                     <input
                       class="form-check-input"
                       type="radio"
@@ -266,14 +271,17 @@ export default function ProductionScheduleCreation({
                       onChange={handleScheduleTypeChange}
                     />
                   </div>
-                  <div className="col-md-2 col-sm-12">
+                  <div
+                    className="col-md-2 col-sm-12"
+                    style={{ marginTop: "-8px" }}
+                  >
                     <label className="form-label">Sales</label>
                   </div>
                 </div>
               </div>
               <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div className="col-md-2 mt-2 col-sm-12">
+                <div className="d-flex" style={{ marginLeft: "13px" }}>
+                  <div className="col-md-2 col-sm-12">
                     <input
                       class="form-check-input"
                       type="radio"
@@ -283,24 +291,22 @@ export default function ProductionScheduleCreation({
                       onChange={handleScheduleTypeChange}
                     />
                   </div>
-                  <div className="col-md-2 col-sm-12">
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
-                      Job Work
-                    </label>
+                  <div
+                    className="col-md-2 col-sm-12"
+                    style={{ marginTop: "-8px" }}
+                  >
+                    <label className="form-label label-space">Job Work</label>
                   </div>
                 </div>
               </div>
             </div>
-            <h5 className="mt-2">
-              <b>Schedule Option</b>
-            </h5>
+
+            <label className="form-label">Schedule Option</label>
+
             <div className="row">
               <div className="col-md-6 col-sm-12">
                 <div className="row">
-                  <div className="col-md-2 mt-2 col-sm-12">
+                  <div className="col-md-2 col-sm-12">
                     <input
                       class="form-check-input"
                       type="radio"
@@ -310,7 +316,10 @@ export default function ProductionScheduleCreation({
                       onChange={handleScheduleOptionChange}
                     />
                   </div>
-                  <div className="col-md-2 col-sm-12">
+                  <div
+                    className="col-md-2 col-sm-12"
+                    style={{ marginTop: "-8px" }}
+                  >
                     <label
                       className="form-label"
                       style={{ whiteSpace: "nowrap" }}
@@ -322,7 +331,7 @@ export default function ProductionScheduleCreation({
               </div>
               <div className="col-md-6 col-sm-12">
                 <div className="row">
-                  <div className="col-md-2 mt-2 col-sm-12">
+                  <div className="col-md-2 col-sm-12">
                     <input
                       type="radio"
                       class="form-check-input"
@@ -331,11 +340,11 @@ export default function ProductionScheduleCreation({
                       onChange={handleScheduleOptionChange}
                     />
                   </div>
-                  <div className="col-md-2 col-sm-12">
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                  <div
+                    className="col-md-2 col-sm-12"
+                    style={{ marginTop: "-8px" }}
+                  >
+                    <label className="form-label label-space">
                       Partial Order
                     </label>
                   </div>
@@ -348,10 +357,10 @@ export default function ProductionScheduleCreation({
               Refresh Status
             </button>
 
-            <button className="button-style mt-3 ">Clear Filter</button>
+            <button className="button-style">Clear Filter</button>
 
             <button
-              className="button-style mt-3 "
+              className="button-style"
               onClick={createSchedule}
               disabled={
                 OrderData?.Order_Status === "Closed" ||

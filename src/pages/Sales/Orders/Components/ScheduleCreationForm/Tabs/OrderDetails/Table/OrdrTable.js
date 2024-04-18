@@ -12,7 +12,7 @@ function OrdrTable(props) {
 
   console.log("OrderData", OrderData);
   return (
-    <div style={{ overflow: "auto", height: "480px" }}>
+    <div style={{ overflow: "auto", height: "590px" }}>
       <Table striped className="table-data border" style={{ border: "1px" }}>
         <thead
           className="tableHeaderBGColor"

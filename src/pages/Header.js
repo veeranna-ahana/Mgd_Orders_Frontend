@@ -34,10 +34,12 @@ function Header({ user }) {
   return (
     <>
       <nav className="header">
-        <div style={{ marginLeft: "10px", marginTop: "5px" }}>
-          <h3>Magod ERP</h3>
+        <div style={{ marginLeft: "10px" }}>
+          <h4 style={{ fontSize: "16px", fontWeight: "600" }}>Magod ERP</h4>
         </div>
-        <div style={{ marginRight: "30px" }}>
+        <div
+          style={{ marginRight: "30px", fontSize: "12px", fontWeight: "600" }}
+        >
           {getUser() !== undefined ? (
             <>
               {/* <>{console.log(getUser())}</> */}
@@ -47,8 +49,12 @@ function Header({ user }) {
               <button
                 style={{
                   backgroundColor: "transparent",
+
                   border: "none",
+
                   color: "black",
+                  fontSize: "12px",
+                  fontWeight: "600",
                 }}
                 onClick={logout}
               >
@@ -60,7 +66,7 @@ function Header({ user }) {
           )}
         </div>
       </nav>
-      <div>&nbsp;</div>
+      <div style={{ height: "1px" }}>&nbsp;</div>
       <TimeoutLogic />
     </>
   );

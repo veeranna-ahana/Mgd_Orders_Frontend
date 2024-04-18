@@ -100,37 +100,30 @@ export default function MaterialInfo(props) {
   return (
     <>
       <div>
-        <div className="row mt-3">
+        <div className="row">
           <div className="col-md-4 col-sm-12">
-            <h5>
-              {" "}
-              <b style={{ whiteSpace: "nowrap" }}>Stock Position</b>
-            </h5>
+            <label className="form-label">Stock Position</label>
+
             <div className="row">
               <div className="col-md-4 col-sm-12">
-                <button
-                  className="button-style"
-                  style={{ width: "100px" }}
-                  onClick={getStockData}
-                >
+                <button className="button-style" onClick={getStockData}>
                   Load
                 </button>
               </div>
               <div className="col-md-4 col-sm-12">
-                <div className="row">
-                  <div className="col-md-5 mt-3 col-sm-12">
+                <div className="row mt-2">
+                  <div className="col-md-5 col-sm-12">
                     <input
-                      style={{ width: "50px" }}
                       type="checkbox"
                       className="checkBoxStyle"
                       onChange={handleCheckboxChange}
                     />
                   </div>
-                  <div className="col-md-7 mt-1 col-sm-12">
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                  <div
+                    className="col-md-7 col-sm-12"
+                    style={{ marginTop: "-13px" }}
+                  >
+                    <label className="form-label label-space">
                       Magod Laser
                     </label>
                   </div>
@@ -138,7 +131,7 @@ export default function MaterialInfo(props) {
               </div>
             </div>
             <div
-              className="mt-3"
+              className="mt-1"
               style={{
                 overflowY: "scroll",
                 overflowX: "scroll",
@@ -184,20 +177,15 @@ export default function MaterialInfo(props) {
             </div>
           </div>
           <div className="col-md-4 col-sm-12">
-            <h5>
-              <b>Arrival</b>
-            </h5>
+            <label className="form-label">Arrival</label>
+
             <div>
-              <button
-                className="button-style"
-                style={{ width: "100px" }}
-                onClick={ArrivalData}
-              >
+              <button className="button-style" onClick={ArrivalData}>
                 Load
               </button>
             </div>
             <div
-              className="mt-3"
+              className="mt-1"
               style={{
                 overflowY: "scroll",
                 overflowX: "scroll",
@@ -253,8 +241,9 @@ export default function MaterialInfo(props) {
           <div className="col-md-4 col-sm-12">
             <br></br>
             <br></br>
+            <br></br>
             <div
-              className="mt-5"
+              className=""
               style={{
                 overflowX: "scroll",
                 overflowY: "scroll",

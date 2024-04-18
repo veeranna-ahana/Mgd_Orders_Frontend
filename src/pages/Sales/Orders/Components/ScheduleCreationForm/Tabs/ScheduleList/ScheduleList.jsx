@@ -121,19 +121,18 @@ export default function ScheduleList({
               to={"/Orders/Service/ServiceOpenSchedule"}
               state={DwgNameList}
             > */}
-              <Link
-             
-             to={
-              OrderData?.Type === "Profile"
-                 ? `/Orders/Profile/ProfileOpenSchedule`
-                 : OrderData?.Type === "Service"
-                 ? `/Orders/Service/ServiceOpenSchedule`
-                 : OrderData?.Type === "Fabrication"
-                 ? `/Orders/Fabrication/FabricationOpenSchedule`
-                 : null
-             }
-             state={DwgNameList}
-           >
+            <Link
+              to={
+                OrderData?.Type === "Profile"
+                  ? `/Orders/Profile/ProfileOpenSchedule`
+                  : OrderData?.Type === "Service"
+                  ? `/Orders/Service/ServiceOpenSchedule`
+                  : OrderData?.Type === "Fabrication"
+                  ? `/Orders/Fabrication/FabricationOpenSchedule`
+                  : null
+              }
+              state={DwgNameList}
+            >
               <button
                 className="button-style"
                 disabled={Object.keys(DwgNameList).length === 0}
@@ -157,7 +156,7 @@ export default function ScheduleList({
         <div className="row">
           <div
             className="col-md-6"
-            style={{ height: "400px", overflow: "auto" }}
+            style={{ height: "300px", overflow: "auto" }}
           >
             <FirstTable
               scheduleListData={scheduleListData}
@@ -168,7 +167,7 @@ export default function ScheduleList({
           </div>
           <div
             className="col-md-6"
-            style={{ height: "400px", overflow: "auto" }}
+            style={{ height: "300px", overflow: "auto" }}
           >
             <SecondTable DwgNameList={DwgNameList} />
           </div>

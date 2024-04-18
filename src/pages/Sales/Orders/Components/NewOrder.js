@@ -340,17 +340,12 @@ function NewOrder(props) {
   };
   return (
     <div>
-      <div className="col-md-12">
-        <div className="row">
-          <h4 className="title">New Order Entry Form: {props.Type}</h4>
-        </div>
+      <div className="row">
+        <h4 className="title">New Order Entry Form: {props.Type}</h4>
       </div>
 
-      <Form className="form mt-0" onSubmit={SaveOrder}>
-        <div
-          className="col-md-12 justify-content-end mb-2"
-          style={{ display: "flex" }}
-        >
+      <Form className="form" onSubmit={SaveOrder}>
+        <div className="d-flex col-md-12 justify-content-end mb-1">
           <button
             className={
               purchaseorder ? "button-style" : "button-style button-disabled"
@@ -359,23 +354,22 @@ function NewOrder(props) {
             // onClick={openModal}
             // onClick={(e) => openModal(e)}
             disabled={!purchaseorder}
-            style={{ width: "120px" }}
           >
             Save Order
           </button>
         </div>
 
-        <div className="ip-box form-bg">
+        <div className="form-bg">
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Order No</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     type="text"
-                    className="in-fields"
+                    className="input-field"
                     id="orderno"
                     disabled
                     value={orderno}
@@ -385,13 +379,13 @@ function NewOrder(props) {
             </div>
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">PO No</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id="formPurchaseOrderNo"
-                    className="in-fields"
+                    className="input-field"
                     type="text"
                     onChange={POInputChange}
                     required
@@ -405,13 +399,13 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Order Date</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id="formOrderDate"
-                    className="in-fields"
+                    className="input-field"
                     type="date"
                     disabled
                     value={formOrderDate}
@@ -442,13 +436,13 @@ function NewOrder(props) {
                 </div>
               </div> */}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Delivery Date</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id="formDeliveryDate"
-                    className="in-fields"
+                    className="input-field"
                     defaultValue={formDeliveryDate}
                     min={formOrderDate}
                     type="date"
@@ -461,11 +455,11 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Order Type</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
-                  <select id="formOrderType" className="ip-select in-fields">
+                <div className="col-md-8 col-sm-12">
+                  <select id="formOrderType" className="ip-select input-field">
                     {/* <option value="">Select Order Type</option> */}
                     <option value="">Complete</option>
                     {/* <option value="Complete">Complete</option> */}
@@ -489,12 +483,12 @@ function NewOrder(props) {
                 </div>
               </div> */}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Sales Contact</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <select
-                    className="ip-select in-fields"
+                    className="ip-select input-field"
                     id="formSalesContact"
                     defaultValue={userName}
                     required
@@ -514,13 +508,13 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Payment Terms</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id="formPaymentTerms"
-                    className="in-fields"
+                    className="input-field"
                     type="text"
                     disabled
                     value={formPaymentTerms}
@@ -549,12 +543,12 @@ function NewOrder(props) {
                 </div>
               </div> */}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Received By</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <select
-                    className="ip-select in-fields"
+                    className="ip-select input-field"
                     id="formReceivedBy"
                     required
                   >
@@ -574,14 +568,14 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Customer Name</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12 ">
+                <div className="col-md-8 col-sm-12 ">
                   {custdata.length > 0 ? (
                     <Typeahead
                       id="basic-example"
-                      className="in-fields "
+                      className="input-field"
                       labelKey="Cust_name"
                       onChange={selectCust}
                       options={custdata}
@@ -608,12 +602,12 @@ function NewOrder(props) {
             </div>
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Recorded By</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <select
-                    className="ip-select in-fields"
+                    className="ip-select input-field"
                     id="formRecordedBy"
                     required
                   >
@@ -633,13 +627,13 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Contact Name</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id="CustomerContact"
-                    className="in-fields"
+                    className="input-field"
                     type="text"
                     onChange={(e) => setCustomerContact(e.target.value)}
                     value={CustomerContact}
@@ -651,12 +645,12 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               {" "}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Dealing Engineer</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <select
-                    className="ip-select in-fields"
+                    className="ip-select input-field"
                     id="formDealingEngineer"
                     required
                   >
@@ -675,13 +669,13 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">GST No</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id="formGSTNNo"
-                    className="in-fields"
+                    className="input-field"
                     disabled
                     type="text"
                     value={GSTIN}
@@ -692,10 +686,10 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               {" "}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">GST Tax State</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   {/* <select className="ip-select in-fields" id="formGSTTaxState">
                     <option>Select State</option>
                     {statesdata.map((stat) => {
@@ -706,7 +700,7 @@ function NewOrder(props) {
                   </select> */}
                   <input
                     id="formGSTTaxState"
-                    className="in-fields"
+                    className="input-field"
                     disabled
                     type="text"
                     value={formGSTTaxState}
@@ -719,20 +713,20 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Billing Address</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <textarea
                     id="formBillingAddress"
-                    className="in-fields"
+                    className="input-field"
                     type="text"
                     onChange={(e) => setFormBillingAddress(e.target.value)}
                     value={formBillingAddress}
                     style={{
                       borderRadius: "0",
-                      height: "80px",
-                      width: "387px",
+                      height: "50px",
+                      width: "355px",
                     }}
                     disabled
                   />
@@ -742,20 +736,20 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               {" "}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Special Instructions</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <textarea
                     id="formSpecialInstructions"
-                    className="in-fields"
+                    className="input-field"
                     type="text"
                     onChange={(e) => setFormSpecialInstructions(e.target.value)}
                     value={formSpecialInstructions}
                     style={{
                       borderRadius: "0",
-                      height: "80px",
-                      width: "387px",
+                      height: "50px",
+                      width: "355px",
                     }}
                   />{" "}
                 </div>
@@ -766,7 +760,7 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-2 col-sm-12">
+                <div className="col-md-4  col-sm-12">
                   <label className="form-label">Billing State</label>
                 </div>
                 {/* <div className="col-md-8  mb-2 col-sm-12">
@@ -779,10 +773,10 @@ function NewOrder(props) {
                     })}
                   </select>
                 </div> */}
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <input
                     id=""
-                    className="in-fields"
+                    className="input-field"
                     disabled
                     type="text"
                     value={formBillingState}
@@ -794,13 +788,13 @@ function NewOrder(props) {
             <div className="col-md-6 col-sm-12">
               {" "}
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Delivery Mode</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <select
                     id="formDeliveryMode"
-                    className="ip-select in-fields"
+                    className="ip-select input-field"
                     required
                     disabled={!isChecked}
                     ref={deliveryModeSelectRef}
@@ -818,21 +812,21 @@ function NewOrder(props) {
           <div className="row">
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4 mb-4 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Shipping Address</label>
                 </div>
-                <div className="col-md-8  mb-4 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <textarea
                     id="formShippingAddress"
-                    className="in-fields"
+                    className="input-field"
                     type="text"
                     placeholder="EX Factory"
                     onChange={(e) => setFormShippingAddress(e.target.value)}
                     value={formShippingAddress}
                     style={{
                       borderRadius: "0",
-                      height: "80px",
-                      width: "387px",
+                      height: "50px",
+                      width: "355px",
                     }}
                   />
                 </div>
@@ -840,13 +834,13 @@ function NewOrder(props) {
             </div>
             <div className="col-md-6 col-sm-12">
               <div className="row">
-                <div className="col-md-4  mb-2 col-sm-12">
+                <div className="col-md-4 col-sm-12">
                   <label className="form-label">Transport Charges</label>
                 </div>
-                <div className="col-md-8  mb-2 col-sm-12">
+                <div className="col-md-8 col-sm-12">
                   <select
                     id="formTransportCharges"
-                    className="ip-select in-fields"
+                    className="ip-select input-field"
                     required
                     disabled={!isChecked}
                   >
@@ -863,10 +857,13 @@ function NewOrder(props) {
           <div className="row">
             {" "}
             <div className="row">
-              <div className="col-md-2 mb-4 col-sm-12">
+              <div
+                className="col-md-2 col-sm-12"
+                style={{ marginTop: "-10px" }}
+              >
                 <label className="form-label">Magod Delivery</label>
               </div>
-              <div className="col-md-1  mb-4 col-sm-12">
+              <div className="col-md-1 col-sm-12">
                 <input
                   class="form-check-input"
                   type="checkbox"

@@ -148,21 +148,15 @@ function OrdrDtls(props) {
         {/* {selectedItems.map((item, i) => ( */}
         <div className="col-md-8 col-sm-12">
           <div className="ip-box form-bg">
-            <div className="row mt-3">
+            <div className="row">
               <div className="col-md-6 col-sm-12">
-                <h5>
-                  <b>Order Details</b>
-                </h5>
+                <label className="form-label">Order Details</label>
+
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
-                      Srl No
-                    </label>
+                    <label className="form-label label-space">Srl No</label>
                     <input
-                      className="in-fields"
+                      className="in-field"
                       type="text"
                       value={LastSlctedRow?.Order_Srl || " "}
                     />
@@ -171,8 +165,7 @@ function OrdrDtls(props) {
               </div>
               <div className="col-md-6 mt-4 col-sm-12">
                 <button
-                  className="button-style "
-                  style={{ width: "135px" }}
+                  className="button-style"
                   onClick={handleImportDwg}
                   // onClick={() => PostOrderDetails(1)}
                 >
@@ -185,14 +178,11 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                    <label className="form-label label-space">
                       Drawing Name
                     </label>
                     <input
-                      className="in-fields"
+                      className="in-field"
                       type="text"
                       name="odrDtlDwgName"
                       // value={
@@ -208,14 +198,11 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                    <label className="form-label label-space">
                       Job Work Rate
                     </label>
                     <input
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       label="JW Rate"
                       id="jwrate"
                       name="odrDtljwrate"
@@ -259,7 +246,7 @@ function OrdrDtls(props) {
                     /> */}
                     {mtrldata.length > 0 || mtrldata != null ? (
                       <Typeahead
-                        className="ip-select in-fields"
+                        className="ip-select in-field"
                         id="basic-example"
                         name="odrDtlMaterial"
                         labelKey="Mtrl_Code"
@@ -295,14 +282,11 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                    <label className="form-label label-space">
                       Material Rate
                     </label>
                     <input
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       label="Mtrl Rate"
                       name="odrDtlMtrlRate"
                       id="mtrlRate"
@@ -335,7 +319,7 @@ function OrdrDtls(props) {
                       ordrDetailsChange.MtrlSrc
                     )}
                     <select
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       id="strsource"
                       name="odrDtlMtrlSrc"
                       value={ordrDetailsChange.MtrlSrc}
@@ -353,14 +337,9 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
-                      Unit Price
-                    </label>
+                    <label className="form-label label-space">Unit Price</label>
                     <input
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       label="UnitPrice"
                       name="odrDtlUnitPrice"
                       id="Qty"
@@ -400,7 +379,7 @@ function OrdrDtls(props) {
                     /> */}
                     {/* {procdata.length > 0 ? ( */}
                     <select
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       id="strprocess"
                       name="odrDtlOperation"
                       value={ordrDetailsChange.Operation}
@@ -460,10 +439,7 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12">
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                    <label className="form-label label-space">
                       Inspection Level
                     </label>
                     {/* <input
@@ -475,7 +451,7 @@ function OrdrDtls(props) {
                     {/* {inspdata.length > 0 ? ( */}
                     <select
                       id="strinsp"
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       name="odrDtlInspLvl"
                       value={ordrDetailsChange.InspLvl}
                       onChange={handleChange}
@@ -505,7 +481,7 @@ function OrdrDtls(props) {
                   <div>
                     <label className="form-label">Quantity</label>
                     <input
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       id="Qty"
                       name="odrDtlQuantity"
                       onChange={handleChange}
@@ -527,10 +503,7 @@ function OrdrDtls(props) {
               <div className="col-md-6 col-sm-12 mb-3">
                 <div className="row">
                   <div>
-                    <label
-                      className="form-label"
-                      style={{ whiteSpace: "nowrap" }}
-                    >
+                    <label className="form-label label-space">
                       Packing Level
                     </label>
                     {/* <input
@@ -542,7 +515,7 @@ function OrdrDtls(props) {
                     {/* {packdata.length > 0 ? ( */}
                     <select
                       id="strpkng"
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       name="odrDtlPkngLvl"
                       value={ordrDetailsChange.PkngLvl}
                       onChange={handleChange}
@@ -571,17 +544,16 @@ function OrdrDtls(props) {
         <div className="col-md-4 col-sm-12">
           <Form className="">
             <div
-              className="ip-box form-bg"
-              style={{ height: "552px", width: "180px" }}
+              className="form-bg"
+              style={{ height: "375px", width: "180px", marginLeft: "-12px" }}
             >
-              <h5 className="mt-3">
-                <b>Process details</b>
-              </h5>
+              <label className="form-label">Process details</label>
+
               <div className="row">
                 <div>
                   <label className="form-label">Ordered</label>
                   <input
-                    className="in-fields"
+                    className="in-field"
                     type="text"
                     value={LastSlctedRow?.Qty_Ordered || " "}
                   />
@@ -591,7 +563,7 @@ function OrdrDtls(props) {
                 <div>
                   <label className="form-label">Scheduled</label>
                   <input
-                    className="in-fields"
+                    className="in-field"
                     type="text"
                     value={LastSlctedRow?.QtyScheduled || " "}
                   />
@@ -601,7 +573,7 @@ function OrdrDtls(props) {
                 <div>
                   <label className="form-label">Produced</label>
                   <input
-                    className="in-fields"
+                    className="in-field"
                     type="text"
                     value={LastSlctedRow?.QtyProduced || " "}
                   />
@@ -611,7 +583,7 @@ function OrdrDtls(props) {
                 <div>
                   <label className="form-label">Packed</label>
                   <input
-                    className="in-fields"
+                    className="in-field"
                     type="text"
                     value={LastSlctedRow?.QtyPacked || " "}
                   />
@@ -621,13 +593,13 @@ function OrdrDtls(props) {
                 <div>
                   <label className="form-label">Delivered</label>
                   <input
-                    className="in-fields"
+                    className="in-field"
                     type="text"
                     value={LastSlctedRow?.QtyDelivered || " "}
                   />
                 </div>
               </div>
-              <div className="row mt-4">
+              <div className="row">
                 <div className="col-md-6  col-sm-12 mt-1">
                   <label
                     className="form-label"
@@ -659,48 +631,43 @@ function OrdrDtls(props) {
           {" "}
           {props.OrderData?.Type === "Profile" ? (
             <div className="ip-box form-bg mb-3">
-              <h5 className="">
-                <b>Load Drawing</b>
-              </h5>
+              <label className="form-label">Load Drawing</label>
+
               <div className="row">
                 <div className="col-md-4">
-                  {" "}
-                  <label className="form-label">Part id</label>
-                  {BomData?.length != 0 ? (
-                    <Typeahead
-                      className="in-fields"
-                      selected={selectedPartId}
-                      // id="basic-example"
-                      options={options}
-                      labelKey="label"
-                      placeholder="Select ..."
-                      onChange={handleSelectChange}
-                    />
-                  ) : (
-                    <Typeahead
-                      className="in-fields"
-                      labelKey="label"
-                      placeholder="No PartId for this Customer"
-                      disabled
-                    />
-                  )}
+                  <div className="d-flex field-gap">
+                    {" "}
+                    <label className="form-label label-space">Part id</label>
+                    {BomData?.length != 0 ? (
+                      <Typeahead
+                        className="in-field"
+                        selected={selectedPartId}
+                        // id="basic-example"
+                        options={options}
+                        labelKey="label"
+                        placeholder="Select ..."
+                        onChange={handleSelectChange}
+                      />
+                    ) : (
+                      <Typeahead
+                        className="in-field"
+                        labelKey="label"
+                        placeholder="No PartId for this Customer"
+                        disabled
+                      />
+                    )}
+                  </div>
                   <button
                     className="button-style"
-                    style={{ width: "195px", marginTop: "26%" }}
                     onClick={() => PostOrderDetails(3)}
                   >
                     Add Drawing to Order
                   </button>
-                  <button
-                    className="button-style "
-                    style={{ width: "195px", marginTop: "23%" }}
-                  >
+                  <button className="button-style ">
                     Save to Customer Dwg
                   </button>
                 </div>
                 <div className="col-md-8">
-                  <label className="form-label">{""}</label>
-
                   {/* <select
                   id=""
                   className="ip-select dropdown-field "
@@ -710,13 +677,20 @@ function OrdrDtls(props) {
                   <option value="option2">option 2</option>
                   <option value="option3">option 3</option>
                 </select> */}
-                  <input className="in-fields " style={{ marginTop: "5.5%" }} />
+                  <input className="in-field" />
                   <div className="row">
                     <div className="col-md-6">
-                      <label className="form-label">LOC</label>
-                      <input className="in-fields" type="text" />
-                      <label className="form-label">Pierces</label>
-                      <input className="in-fields" type="text" />
+                      <div
+                        className="d-flex field-gap mt-1"
+                        style={{ gap: "27px" }}
+                      >
+                        <label className="form-label">LOC</label>
+                        <input className="in-field" type="text" />
+                      </div>
+                      <div className="d-flex field-gap">
+                        <label className="form-label">Pierces</label>
+                        <input className="in-field" type="text" />
+                      </div>
                       {/* <label className="form-label">Part Weight</label>
                   <input
                     className="in-fields"
@@ -726,14 +700,18 @@ function OrdrDtls(props) {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label">Process</label>
-                      <input className="in-fields" type="text" />
-                      <label className="form-label"> Part Weight</label>{" "}
-                      <input
-                        className="in-fields"
-                        type="text"
-                        // value={BomArry[0]?.Weight}
-                      />
+                      <div className="d-flex field-gap mt-1">
+                        <label className="form-label">Process</label>
+                        <input className="in-field" type="text" />
+                      </div>
+                      <div className="d-flex field-gap">
+                        <label className="form-label"> Part Weight</label>{" "}
+                        <input
+                          className="in-field"
+                          type="text"
+                          // value={BomArry[0]?.Weight}
+                        />
+                      </div>
                       {/* <label className="form-label">Material Cost</label>
                   <input
                     className="in-fields"
@@ -744,24 +722,24 @@ function OrdrDtls(props) {
                   </div>
                 </div>
                 <div className="row mt-2 mb-3">
-                  <div className="col-md-3">
-                    <label className="form-label mt-2">J W Cost</label>
+                  <div className="col-md-2" style={{ marginTop: "-10px" }}>
+                    <label className="form-label">J W Cost</label>
                   </div>
-                  <div className="col-md-3">
+                  <div className="col-md-4">
                     {" "}
                     <input
-                      className="in-fields"
+                      className="in-field"
                       type="text"
                       value={BomArry[0]?.JobWorkCost}
                     />
                   </div>
-                  <div className="col-md-3">
-                    <label className="form-label mt-2">Mtrl Cost</label>
+                  <div className="col-md-2" style={{ marginTop: "-10px" }}>
+                    <label className="form-label">Mtrl Cost</label>
                   </div>
-                  <div className="col-md-3">
+                  <div className="col-md-4">
                     {" "}
                     <input
-                      className="in-fields"
+                      className="in-field"
                       type="text"
                       value={BomArry[0]?.MtrlCost}
                     />
@@ -772,17 +750,13 @@ function OrdrDtls(props) {
           ) : (
             <div className="ip-box form-bg mb-3">
               <div className="row">
-                <div className="col-md-7">
-                  {" "}
-                  <h5 className="mt-2">
-                    <b>Load Drawing</b>
-                  </h5>
+                <div className="col-md-8">
+                  <label className="form-label">Load Drawing</label>
                 </div>
                 <div className="col-md-4">
                   {" "}
                   <button
                     className="button-style"
-                    style={{ width: "195px" }}
                     onClick={() => PostOrderDetails(3)}
                   >
                     Add Drawing to Order
@@ -799,7 +773,7 @@ function OrdrDtls(props) {
                   {" "}
                   {BomData?.length != 0 ? (
                     <Typeahead
-                      className="in-fields"
+                      className="ip-slecet input-field"
                       selected={selectedPartId}
                       // id="basic-example"
                       options={options}
@@ -808,7 +782,7 @@ function OrdrDtls(props) {
                     />
                   ) : (
                     <Typeahead
-                      className="in-fields"
+                      className="ip-slecet input-field"
                       labelKey="label"
                       placeholder="No PartId's"
                       disabled
@@ -818,7 +792,7 @@ function OrdrDtls(props) {
                 <div className="col-md-6">
                   {mtrldata.length > 0 || mtrldata != null ? (
                     <Typeahead
-                      className="ip-select in-fields"
+                      className="ip-select input-fields mt-2"
                       id="basic-example"
                       labelKey="Mtrl_Code"
                       onChange={handleMtrlCodeTypeaheadChange}
@@ -832,12 +806,12 @@ function OrdrDtls(props) {
                     ""
                   )}
                 </div>
-                <div className="row mt-2 mb-3">
+                <div className="row mb-5">
                   <div className="col-md-4">
                     <label className="form-label">Operation</label>
                     {/* {procdata.length > 0 ? ( */}
                     <select
-                      className="ip-select in-fields"
+                      className="ip-select in-field"
                       id="strprocess"
                       onChange={selectProc}
                       disabled={BomData.length === 0}
@@ -892,7 +866,7 @@ function OrdrDtls(props) {
                   <div className="col-md-4">
                     <label className="form-label ">J W Cost</label>
                     <input
-                      className="in-fields"
+                      className="in-field"
                       type="text"
                       value={BomArry[0]?.JobWorkCost}
                       disabled={BomData.length === 0}
@@ -902,7 +876,7 @@ function OrdrDtls(props) {
                   <div className="col-md-4">
                     <label className="form-label ">Mtrl Cost</label>
                     <input
-                      className="in-fields"
+                      className="in-field"
                       type="text"
                       value={BomArry[0]?.MtrlCost}
                       disabled={BomData.length === 0}

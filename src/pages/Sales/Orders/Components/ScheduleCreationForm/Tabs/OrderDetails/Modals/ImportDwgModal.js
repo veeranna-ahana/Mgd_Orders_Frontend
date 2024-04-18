@@ -57,7 +57,9 @@ function ImportDwgModal(props) {
             color: "#ffffff",
           }}
         >
-          <Modal.Title>Enter Default Parameters for Import</Modal.Title>
+          <Modal.Title style={{ fontSize: "14px" }}>
+            Enter Default Parameters for Import
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-style">
@@ -66,12 +68,13 @@ function ImportDwgModal(props) {
               <div className="col">
                 <div className="row">
                   <Form.Group controlId="strmtrlcode">
-                    <div className="md-col-2">
-                      <Form.Label className="form-label">
+                    <div className="d-flex md-col-2 field-gap">
+                      <label className="form-label label-space">
                         Material Code
-                      </Form.Label>
+                      </label>
                       {mtrldata?.length > 0 || mtrldata != null ? (
                         <Typeahead
+                          className="ip-select in-field"
                           id="basic-example"
                           labelKey="Mtrl_Code"
                           name="impDwgMaterial"
@@ -89,7 +92,7 @@ function ImportDwgModal(props) {
                 </div>
                 <div className="row mt-1">
                   <Form.Group controlId="strprocess">
-                    <div className="md-col-4">
+                    <div className="d-flex md-col-4 field-gap" style={{gap:'45px'}}>
                       <label className="form-label">Process</label>
                       {procdata?.length > 0 ? (
                         <select
@@ -117,7 +120,7 @@ function ImportDwgModal(props) {
                 </div>
                 <div className="row mt-1">
                   <Form.Group controlId="source">
-                    <div className="md-col-4">
+                    <div className="d-flex md-col-4 field-gap" style={{gap:'50px'}}>
                       <label className="form-label">Source</label>
                       <select
                         className="ip-select"
@@ -136,7 +139,7 @@ function ImportDwgModal(props) {
                 </div>
 
                 <div className="row mt-1">
-                  <div className="md-col-4">
+                  <div className="d-flex md-col-4 field-gap" style={{gap:'35px'}}>
                     <label className="form-label">Tolerance</label>
                     {tolerancedata?.length > 0 ? (
                       <select
@@ -163,8 +166,8 @@ function ImportDwgModal(props) {
                 </div>
 
                 <div className="row mt-1">
-                  <div className="col-md-6">
-                    <label className="form-label">Insp Level</label>
+                  <div className="d-flex col-md-6 field-gap" style={{gap:'33px'}}>
+                    <label className="form-label label-space">Insp Level</label>
                     {inspdata?.length > 0 ? (
                       <select
                         id="strinsp"
@@ -187,8 +190,10 @@ function ImportDwgModal(props) {
                       ""
                     )}
                   </div>
-                  <div className="col-md-6">
-                    <label className="form-label">Packing Level</label>
+                  <div className="d-flex col-md-6 field-gap">
+                    <label className="form-label label-space">
+                      Packing Level
+                    </label>
                     {packdata?.length > 0 ? (
                       <select
                         id="strpkng"
@@ -215,47 +220,51 @@ function ImportDwgModal(props) {
                 <div className="row mt-1"></div>
 
                 <div className="row mt-1">
-                  {/* <div className="col-md-4"> */}
-                  <InputField
-                    label="Quantity"
-                    id="Qty"
-                    name="impDwgQty"
-                    value={quantity}
-                    onChangeCallback={setQuantity}
-                    required
-                  />
-                  {/* </div> */}
+                  <div className="d-flex col-md-12 field-gap" style={{gap:'40px'}}>
+                    <label className="form-label">Quantity</label>
+                    <input
+                      className="in-field"
+                      id="Qty"
+                      name="impDwgQty"
+                      value={quantity}
+                      onChangeCallback={setQuantity}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="row">
-                  <Form.Group controlId="rates">
-                    <Form.Label className="form-label">Rate </Form.Label>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <Form.Label className="form-label">Cutting </Form.Label>
-                        <input type="text" id="dblCuttingRate" name="Cutting" />
-                      </div>
-                      <div className="col-md-6">
-                        <Form.Label className="form-label">
-                          Piercing{" "}
-                        </Form.Label>
-                        <input type="text" id="dblPierceRate" name="Piercing" />
-                      </div>
-                    </div>
-                  </Form.Group>
-                </div>
-                <div className="row mt-1">
-                  <Form.Group controlId="files">
-                    <div className="md-col-4">
-                      <Form.Label className="form-label">
-                        Select Files{" "}
-                      </Form.Label>
-                      <Form.Control
-                        type="file"
-                        multiple="multiple"
-                        accept=".dxf"
+                <label className=" ms-3 form-label">Rate </label>
+                <div className="d-flex">
+                  <div className="row">
+                    <div className="d-flex field-gap col-md-6" style={{gap:'45px'}}>
+                      <label className="form-label">Cutting </label>
+                      <input
+                        className="in-field"
+                        type="text"
+                        id="dblCuttingRate"
+                        name="Cutting"
                       />
                     </div>
-                  </Form.Group>
+                    <div className="d-flex field-gap col-md-6">
+                      <label className="form-label">Piercing </label>
+                      <input
+                        className="in-field"
+                        type="text"
+                        id="dblPierceRate"
+                        name="Piercing"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row mt-1">
+                  <div className="d-flex field-gap md-col-4" style={{gap:'25px'}}>
+                    <label className="form-label label-space">Select Files </label>
+                    <input
+                      className="in-field"
+                      type="file"
+                      multiple="multiple"
+                      accept=".dxf"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -265,24 +274,23 @@ function ImportDwgModal(props) {
         <Modal.Footer>
           {" "}
           <div className="row ">
-            <button
-              className="button-style"
-              type="submit"
-              style={{ width: "100px" }}
-              // onClick={insertnewsrldata}
-              onClick={() => PostOrderDetails(2)}
-            >
-              Save
-            </button>
-
-            <button
-              className="button-style"
-              style={{ width: "100px", backgroundColor: "gray" }}
-              variant="secondary"
-              onClick={() => handleCloseImportDwgmdl()}
-            >
-              Close
-            </button>
+            <div>
+              <button
+                className="button-style"
+                type="submit"
+                // onClick={insertnewsrldata}
+                onClick={() => PostOrderDetails(2)}
+              >
+                Save
+              </button>
+              <button
+                className="button-style"
+                variant="secondary"
+                onClick={() => handleCloseImportDwgmdl()}
+              >
+                Close
+              </button>
+            </div>
           </div>
         </Modal.Footer>
       </Modal>
