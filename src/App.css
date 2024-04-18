@@ -533,6 +533,10 @@ input::-webkit-inner-spin-button {
   background-color: #98a8f8 !important;
 }
 
+.typeaheadClass .rbt-input-main {
+  background-color: transparent !important;
+  border: none !important;
+}
 /* used in bulk change modal qty, jwrate ,unit prise, mtrl rate,  */
 .custom-checkbox {
   width: 13px;
