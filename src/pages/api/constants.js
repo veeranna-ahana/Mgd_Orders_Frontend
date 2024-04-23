@@ -315,7 +315,7 @@ export const endpoints = {
   getPartsData: `${API}/NCProgram/NCProgramPartsData`,
 
   //Production Schedule Creation
-  CreateSchedule: `${API}/productionSchCreation/createSchedule`,
+  CreateProductionSchedule: `${API}/productionSchCreation/createProductionSchedule`,
   shortcloseOrder: `${API}/productionSchCreation/shortCloseOrder`,
   //ShortClose to Recorded
   shortclosetoRecorded: `${API}/productionSchCreation/shortclosetoRecorded`,
@@ -374,7 +374,6 @@ export const endpoints = {
   postDetailsDataInImportQtn: `${API}/orderDetails/postDetailsDataInImportQtn`,
 
   //Combined Schedule
-  //Job Work
   getSalesContact: `${API}/CombinedScheduleCreate/getSalesContactList`,
   allcustomerdata: `${API}/CombinedScheduleCreate/allcustomersData`,
   rightTabledata: `${API}/CombinedScheduleCreate/getRightTableData`,
