@@ -687,7 +687,6 @@ export default function OrderDetails(props) {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
-
         dwg: imprtDwgObj.Dwg,
         tolerance: imprtDwgObj.StrTolerance,
         Qty_Ordered: imprtDwgObj.quantity,
@@ -697,6 +696,7 @@ export default function OrderDetails(props) {
         material: imprtDwgObj.material,
         Operation: imprtDwgObj.Operation,
         NewSrlFormData: NewSrlFormData,
+        tolerance: imprtDwgObj.StrTolerance,
       };
     } else if (flag === 3) {
       setHasBOM(1);
@@ -730,7 +730,7 @@ export default function OrderDetails(props) {
       { requestData: requestData },
       (InsertedNewSrlData) => {
         if (InsertedNewSrlData.affectedRows != 0) {
-          // toast.success("Added serial successfully");
+          toast.success("Added serial successfully");
           fetchData();
           handleCloseImportDwg();
         } else {

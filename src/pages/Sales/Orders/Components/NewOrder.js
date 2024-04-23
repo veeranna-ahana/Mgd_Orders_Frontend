@@ -345,7 +345,7 @@ function NewOrder(props) {
       </div>
 
       <Form className="form" onSubmit={SaveOrder}>
-        <div className="d-flex col-md-12 justify-content-end mb-1">
+        <div className="d-flex col-md-12 justify-content-end mb-2">
           <button
             className={
               purchaseorder ? "button-style" : "button-style button-disabled"
@@ -727,7 +727,7 @@ function NewOrder(props) {
                     style={{
                       borderRadius: "0",
                       height: "50px",
-                      width: "355px",
+                      width: "100%",
                     }}
                     disabled
                   />
@@ -750,7 +750,7 @@ function NewOrder(props) {
                     style={{
                       borderRadius: "0",
                       height: "50px",
-                      width: "355px",
+                      width: "100%",
                     }}
                   />{" "}
                 </div>
@@ -827,7 +827,7 @@ function NewOrder(props) {
                     style={{
                       borderRadius: "0",
                       height: "50px",
-                      width: "355px",
+                      width: "100%",
                     }}
                   />
                 </div>
@@ -864,7 +864,7 @@ function NewOrder(props) {
               >
                 <label className="form-label">Magod Delivery</label>
               </div>
-              <div className="col-md-1 col-sm-12">
+              <div className="col-md-1 col-sm-12 mb-3">
                 <input
                   class="form-check-input"
                   type="checkbox"
