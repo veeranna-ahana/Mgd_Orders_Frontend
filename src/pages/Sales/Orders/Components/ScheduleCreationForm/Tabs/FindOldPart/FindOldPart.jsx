@@ -33,7 +33,7 @@ export default function FindOldPart(props) {
   return (
     <>
       <div>
-        <div className="row mt-3">
+        <div className="row">
           <div className="col-md-4 col-sm-12">
             <div className="row">
               <div className="col-md-5 mb-2 col-sm-12">
@@ -43,7 +43,7 @@ export default function FindOldPart(props) {
               </div>
               <div className="col-md-7 mt-2 col-sm-12">
                 <input
-                  // className="form-control"
+                  className="in-field"
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}

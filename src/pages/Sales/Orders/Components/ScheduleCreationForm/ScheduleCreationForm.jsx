@@ -84,6 +84,7 @@ const InputField = ({
 };
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
+  // console.log("props", props.OrersData);
   // //console.log("props", props.OrersData);
   //console.log("ocation.state", location.state);
 
@@ -777,6 +778,9 @@ export default function ScheduleCreationForm(props) {
   const [LastSlctedRow, setLastSlctedRow] = useState([]);
   //getScheduleList Table Data
   const [scheduleListData, setScheduleListData] = useState([]);
+  const [oldOrderListData, setOldOrderListData] = useState([]);
+  const [oldOrderDetailsData, setOldOrderDetailsData] = useState([]);
+
   // Register button
   const [isButtonDisabled, setButtonDisabled] = useState(false);
   // Alert Modals
@@ -816,6 +820,20 @@ export default function ScheduleCreationForm(props) {
             setOrdrDetailsData(ordrdtlsdata);
           }
         );
+
+        postRequest(
+          endpoints.getOldOrderByCustCodeAndOrderNo,
+          {
+            Cust_Code: orderData?.orderData[0].Cust_Code,
+            Order_No: orderData?.orderData[0].Order_No,
+          },
+
+          (oldOrderData) => {
+            // console.log("dataqwqw...", oldOrderData);
+            setOldOrderListData(oldOrderData.orderListData);
+            setOldOrderDetailsData(oldOrderData.orderDetailsData);
+          }
+        );
       }
     );
     postRequest(
@@ -844,7 +862,7 @@ export default function ScheduleCreationForm(props) {
     setSelectedItems([]);
   };
 
-  console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
+  // console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
   useEffect(() => {
     fetchData();
   }, []);
@@ -949,6 +967,22 @@ export default function ScheduleCreationForm(props) {
       setSelectedItems(newArray);
     }
   };
+  // let insertnewsrldata = () => {
+  //   ////console.log("entering into insertnewsrldata");
+  //   postRequest(
+  //     endpoints.InsertNewSrlData,
+  //     { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
+  //     (InsertedNewSrlData) => {
+  //       ////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+  //     }
+  //   );
+  // };
+
+  // useEffect(()=>{
+  //   setorderNo(props.OrersData[0].Order_No);
+  // },[props.OrersData]);
+
+  // console.log("location.state is",location.state);
 
   // NOT USED
   let insertnewsrldata = () => {
@@ -995,7 +1029,7 @@ export default function ScheduleCreationForm(props) {
           updateOrdrData={updateOrdrData}
         />
 
-        <Tabs defaultActiveKey="orderinfo" id="uncontrolled-tab-example">
+        <Tabs className="nav-tabs tab_font">
           <Tab eventKey="orderinfo" title="Order Info">
             <OrderInfo OrderData={OrderData} />
           </Tab>
@@ -1020,8 +1054,8 @@ export default function ScheduleCreationForm(props) {
             <MaterialInfo OrderData={OrderData} />
           </Tab>
         </Tabs>
-        <div className="mt-5">
-          <Tabs>
+        <div className="mt-1">
+          <Tabs className="nav-tabs tab_font">
             <Tab eventKey="orderdetails" title="Order Details">
               <OrderDetails
                 OrderData={OrderData}
@@ -1042,6 +1076,8 @@ export default function ScheduleCreationForm(props) {
                 handleReverseSelection={handleReverseSelection}
                 selectedSrl={selectedSrl}
                 // insertnewsrldata={insertnewsrldata}
+                oldOrderListData={oldOrderListData}
+                oldOrderDetailsData={oldOrderDetailsData}
                 //---------new
                 newSerial={newSerial}
                 setNewSerial={setNewSerial}

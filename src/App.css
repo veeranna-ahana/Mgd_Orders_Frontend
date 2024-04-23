@@ -533,6 +533,10 @@ input::-webkit-inner-spin-button {
   background-color: #98a8f8 !important;
 }
 
+.typeaheadClass .rbt-input-main {
+  background-color: transparent !important;
+  border: none !important;
+}
 /* used in bulk change modal qty, jwrate ,unit prise, mtrl rate,  */
 .custom-checkbox {
   width: 13px;
@@ -543,4 +547,120 @@ input::-webkit-inner-spin-button {
   padding-top: "10px";
   background-color: "#283E81";
   color: "#ffffff";
+}
+
+/*------------------------------------------NEW CSS 11-03-2024------------------------------------ */
+
+.input-field {
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.button-style {
+  width: auto;
+  height: 25px;
+  border: none;
+  margin-right: 10px;
+  background-color: #2b3a55;
+  color: #ffffff;
+  border-radius: 5px;
+  /* padding: 1px; */
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+th {
+  font-size: 12px !important;
+  padding: 3px !important;
+}
+
+td {
+  font-size: 12px !important;
+  padding: 3px !important;
+}
+
+.in-field {
+  font-size: 12px;
+  height: 22px;
+  /* border-radius: 5px; */
+}
+
+.ip-select {
+  font-size: 12px;
+  padding: -3px 10px 10px 5px;
+  display: block;
+  width: 100%;
+  height: 22px;
+  border: none;
+  /* border-radius: 6px; */
+  border-bottom: 1px solid #757575;
+}
+
+.ip-select:focus {
+  outline: none;
+  border-bottom: 1px solid #3932be;
+}
+
+.selectedRowClr,
+.selcted-row-clr {
+  background-color: #98a8f8 !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.erp_title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.title {
+  text-align: center;
+  height: 22px;
+  color: white;
+  background-color: #2b3a55;
+  border-radius: 10px 10px 0px 0px;
+  font-size: 14px;
+  padding: 2px;
+}
+
+.nav-link {
+  padding: 3px;
+}
+
+.tab_font {
+  /* font-weight: 600; */
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link {
+  background-color: rgb(107, 162, 207) !important;
+  color: white !important;
+  padding: 3px;
+}
+.nav-tabs .nav-link.active {
+  background-color: whitesmoke !important;
+  color: black !important;
+  padding: 3px;
+}
+
+li.nav-item {
+  margin-left: 5px !important;
+}
+
+.field-gap{
+  gap: 10px;
+}
+
+.label-space{
+  white-space: nowrap;
 }

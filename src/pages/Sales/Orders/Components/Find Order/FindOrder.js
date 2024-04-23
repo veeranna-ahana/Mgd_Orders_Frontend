@@ -26,17 +26,15 @@ export default function FindOrder(props) {
   return (
     <div>
       <div className="row">
-        <div className="col-md-12">
-          <h4 className="title">Find Order</h4>
-        </div>
+        <h4 className="title">Find Order</h4>
 
-        <div className="row mt-2">
-          <div className="col-md-4 sm-12">
-            <label className="form-label">Order No</label>
+        <div className="row">
+          <div className="d-flex col-md-4 sm-12 mt-2" style={{gap:'10px'}}>
+            <label className="form-label" style={{whiteSpace:'nowrap'}}>Order No</label>
             {/* <input type="text" /> */}
             {orderNoData?.length > 0 ? (
               <Typeahead
-                className="mt-1"
+                className="ip-select"
                 id="basic-example"
                 options={orderNoData.map((item) => ({
                   label: item.Order_No,
@@ -53,7 +51,7 @@ export default function FindOrder(props) {
               ""
             )}
           </div>
-          <div className="col-md-2 sm-12 mt-3">
+          <div className="col-md-7 sm-12">
             <Link
               to={
                 props.Type === "Profile"
@@ -73,15 +71,15 @@ export default function FindOrder(props) {
                     : "button-style button-disabled"
                 }
                 disabled={!selectedorderNo}
-                style={{ width: "120px" }}
+                
               >
                 Open
               </button>
             </Link>
           </div>
-          <div className="col-md-1 sm-12 mt-3">
+          <div className="col-md-1 sm-12">
             <Link to={"/Orders"}>
-              <button className="button-style">Close</button>
+              <button className="button-style" style={{float:'right'}}>Close</button>
             </Link>
           </div>
         </div>

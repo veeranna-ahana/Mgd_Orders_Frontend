@@ -37,22 +37,21 @@ export default function FormHeader(props) {
         <h4 className="title">Schedule List Creation Form</h4>
       </div>
       <div className="row">
-        <div className="col-md-6">
-          <h5 className="mt-2">
-            <b>
+        <div className="col-md-8">
+          <h5 className="">
+            <label className="form-label">
               Order No: {props.OrderData?.Type} - {props.OrderData?.Order_No}
-            </b>
+            </label>
             <> </>
-            <b>
+            <label className="form-label">
               {props.OrderCustData?.Cust_name} - (
               {props.OrderCustData?.Cust_Code})
-            </b>
+            </label>
           </h5>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-4">
           <button
             className="button-style"
-            style={{ width: "23%" }}
             // onClick={() => {
             //   if (!isButtonDisabled) {
             //     handleRegisterBtn();
@@ -68,7 +67,6 @@ export default function FormHeader(props) {
           </button>
           <button
             className="button-style"
-            style={{ width: "23%" }}
             onClick={() => {
               updateOrdrData();
             }}
@@ -78,7 +76,6 @@ export default function FormHeader(props) {
           </button>
           <button
             className="button-style"
-            style={{ width: "23%" }}
             // onClick={() => {
             //   handleSaveBtn();
             // }}
@@ -89,8 +86,8 @@ export default function FormHeader(props) {
           <Link to={"/Orders/FindOrder"}>
             <button
               className="button-style "
-              style={{ width: "23%" }}
               onClick={() => navigate(-1)}
+              style={{ float: "right" }}
             >
               Close
             </button>

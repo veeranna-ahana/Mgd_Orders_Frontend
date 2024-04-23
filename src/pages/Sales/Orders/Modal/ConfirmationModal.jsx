@@ -19,25 +19,19 @@ export default function ConfirmationModal(props) {
         style={{ background: "#4d4d4d57" }}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Confirmation Message</Modal.Title>
+          <Modal.Title style={{ fontSize: "14px" }}>
+            Confirmation Message
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <span>{props.message}</span>
+          <span style={{ fontSize: "12px" }}>{props.message}</span>
         </Modal.Body>
         <Modal.Footer className="d-flex flex-row justify-content-end">
-          <button
-            className="button-style m-0 me-3"
-            style={{ width: "60px" }}
-            onClick={yesClicked}
-          >
+          <button className="button-style m-0 me-3" onClick={yesClicked}>
             Yes
           </button>
 
-          <button
-            className="button-style m-0"
-            style={{ width: "60px", background: "rgb(173, 173, 173)" }}
-            onClick={closeModal}
-          >
+          <button className="button-style m-0" onClick={closeModal}>
             No
           </button>
         </Modal.Footer>

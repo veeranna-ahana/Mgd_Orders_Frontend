@@ -18,7 +18,7 @@ export default function Header(props) {
       <div className="row">
         <div className="col-md-10">
           <div>
-            <b>Search Order List</b>
+            <label className="form-label">Search Order List</label>
             <div
               className="p-1 row d-flex align-items-center justify-content-between"
               style={{
@@ -29,9 +29,10 @@ export default function Header(props) {
             >
               {/* select customer */}
               <div className="col-md-9">
-                <div>
-                  <b>Customer</b>
+                <div className="d-flex field-gap">
+                  <label className="form-label">Customer</label>
                   <Typeahead
+                    className="ip-select mt-1"
                     placeholder="Select the Customer..."
                     selected={
                       props.selectedCust.length === 0 ? [] : props.selectedCust
@@ -43,8 +44,8 @@ export default function Header(props) {
               </div>
               {/* order status */}
               <div className="col-md-3">
-                <div>
-                  <b>Order Status</b>
+                <div className="d-flex field-gap">
+                  <label className="form-label label-space">Order Status</label>
                   <Typeahead
                     placeholder="Select Order Status..."
                     selected={
@@ -54,7 +55,9 @@ export default function Header(props) {
                     }
                     disabled={props.orderStatus !== "All"}
                     className={
-                      props.orderStatus !== "All" ? "input-disabled" : ""
+                      props.orderStatus !== "All"
+                        ? "input-disabled mt-1"
+                        : "ip-select mt-1"
                     }
                     options={props.OrderStatus}
                     onChange={props.handleOrderStatusChange}
@@ -62,34 +65,30 @@ export default function Header(props) {
                 </div>
               </div>
               {/* order type */}
-              <div className="col-md-8">
-                <b>Order Type</b>
-                <div>
-                  <div className="row">
-                    {props.orderTypeButtons.map((val) => (
-                      <div className="col-md-3">
-                        <button
-                          className="button-style m-0 p-0 border rounded"
-                          style={
-                            !(props.selectedOrderType === val)
-                              ? {
-                                  height: "auto",
-                                  width: "100%",
-                                  background: "none",
-                                  color: "black",
-                                }
-                              : { height: "auto", width: "100%" }
-                          }
-                          id="OrderType"
-                          name={val}
-                          onClick={props.handleOrderTypeChange}
-                        >
-                          {val}
-                        </button>
-                      </div>
-                    ))}
+              <div className="d-flex col-md-8 field-gap">
+                <label className="form-label">Order Type</label>
+                {props.orderTypeButtons.map((val) => (
+                  <div className="col-md-3">
+                    <button
+                      className="button-style m-0 p-0 border rounded"
+                      style={
+                        !(props.selectedOrderType === val)
+                          ? {
+                              height: "auto",
+                              width: "100%",
+                              background: "none",
+                              color: "black",
+                            }
+                          : { height: "auto", width: "100%" }
+                      }
+                      id="OrderType"
+                      name={val}
+                      onClick={props.handleOrderTypeChange}
+                    >
+                      {val}
+                    </button>
                   </div>
-                </div>
+                ))}
               </div>
               {/* clear filter */}
               <div className="col-md-2">
@@ -111,7 +110,7 @@ export default function Header(props) {
         </div>
         <div className="col-md-2">
           <div>
-            <b>Task Pane</b>
+            <label className="form-label">Task Pane</label>
             <div
               className="p-1 row d-flex align-items-center"
               style={{

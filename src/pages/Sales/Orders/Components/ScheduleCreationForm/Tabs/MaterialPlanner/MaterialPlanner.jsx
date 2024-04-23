@@ -5,7 +5,7 @@ export default function MaterialPlanner() {
   return (
     <>
       <div>
-        <div className="row justify-content-center mt-3">
+        <div className="row justify-content-center">
           <div className="col-md-2 col-sm-12">
             <button className="button-style "> Create DXF WS</button>
           </div>
@@ -18,11 +18,11 @@ export default function MaterialPlanner() {
           <div className="col-md-2 col-sm-12">
             <button className="button-style ">Print Estimate</button>
           </div>
-          <div className="mt-3" style={{ overflowY: "scroll" }}>
+          <div className="mt-1" style={{ overflowY: "scroll" }}>
             <Table
               striped
               className="table-data border"
-              style={{ border: "1px", height: "400px" }}
+              style={{ border: "1px", height: "200px" }}
             >
               <thead className="tableHeaderBGColor">
                 <tr>
@@ -84,14 +84,14 @@ export default function MaterialPlanner() {
             </Table>
           </div>
 
-          <div className="row mt-2">
+          <div className="d-flex mt-1 field-gap">
             <div className="col-md-4 col-sm-12">
               <Table
                 striped
                 className="table-data border"
                 style={{
                   border: "1px",
-                  height: "200px",
+                  height: "155px",
                   overflowY: "scroll",
                 }}
               >
@@ -142,19 +142,30 @@ export default function MaterialPlanner() {
             <div className="col-md-4 col-sm-12">
               <Form>
                 <div className="ip-box form-bg">
-                  <h4>
-                    <b>Task No</b>
-                  </h4>
+                  <label className="form-label">Task No</label>
+
                   <div className="row">
-                    <div className="col-md-4 col-sm-12">
-                      <label className=" form-label mt-2">Length</label>
-                      <label className="form-label mt-2">Width</label>
-                      <label className=" form-label mt-2">Quantity</label>
+                    <div className="col-md-2">
+                      <div>
+                        <label className="form-label">Length</label>
+                      </div>
+                      <div>
+                        <label className="form-label">Width</label>
+                      </div>
+                      <div>
+                        <label className="form-label">Quantity</label>
+                      </div>
                     </div>
-                    <div className="col-md-8 col-sm-12">
-                      <input className="mt-2" type="text" />
-                      <input className="mt-3" type="text" />
-                      <input className="mt-3 mb-4" type="text" />
+                    <div className="col-md-10">
+                      <div>
+                        <input className="input-field" type="text" />
+                      </div>
+                      <div>
+                        <input className="input-field" type="text" />
+                      </div>
+                      <div>
+                        <input className="input-field mb-4" type="text" />
+                      </div>
                     </div>
                   </div>
                 </div>
