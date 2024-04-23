@@ -794,7 +794,8 @@ const handleSchedulelist = (index, field, value) => {
               formdata[0]?.Schedule_Status === "Cancelled" ||
               formdata[0]?.Schedule_Status === "Closed" ||
               formdata[0]?.Schedule_Status === "ShortClosed" ||
-              formdata[0]?.Schedule_Status === "Suspended"
+              formdata[0]?.Schedule_Status === "Suspended" ||
+              formdata[0]?.Schedule_Status === "Created"
             }
           >
             NC Program

@@ -95,9 +95,8 @@ export default function ProductionScheduleCreation({
         });
         return; // Exit the function without making the API request
       }
-  
       postRequest(
-        endpoints.CreateSchedule,
+        endpoints.CreateProductionSchedule,
         {
           OrderData,
           scheduleType: scheduleType,
