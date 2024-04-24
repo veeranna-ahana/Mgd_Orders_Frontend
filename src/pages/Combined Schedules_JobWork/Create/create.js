@@ -6,9 +6,8 @@ import { Typeahead } from "react-bootstrap-typeahead";
 import { getRequest, postRequest } from "../../api/apiinstance";
 import { endpoints } from "../../api/constants";
 
-
-export default function Create({type}) {
-  console.log("type is",type);
+export default function Create({ type }) {
+  console.log("type is", type);
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
@@ -166,21 +165,24 @@ export default function Create({type}) {
     <div>
       <h4 className="title">Combined Schedule Creator</h4>
 
-      <div className="row mt-3">
+      <div className="row">
         <div className="col-md-4">
-          <div>
-            <label className="form-label">Customer Name</label>
-            <label
-              style={{
-                color: "#f20707",
-                fontSize: "16px",
-                fontWeight: "bold",
-              }}
-            >
-              *
+          <div className="d-flex field-gap">
+            <label className="form-label label-space">
+              Customer Name{" "}
+              <span
+                style={{
+                  color: "#f20707",
+                  fontWeight: "bold",
+                }}
+              >
+                *
+              </span>
             </label>
+
             {1 > 0 ? (
               <Typeahead
+                className="ip-select mt-1"
                 id="basic-example"
                 options={custdata}
                 placeholder="Select Customer"
@@ -191,13 +193,13 @@ export default function Create({type}) {
             )}
           </div>
 
-          <h5 style={{ marginLeft: "130px", marginTop: "15px" }}>
+          <label className="form-label">
             Selected Schedules{" "}
-          </h5>
+          </label>
         </div>
 
-        <div className="col-md-4">
-          <label className="form-label">Sales Contact</label>
+        <div className="d-flex col-md-4 field-gap">
+          <label className="form-label label-space">Sales Contact</label>
           <select
             id="gstpan"
             className="ip-select mt-1"
@@ -215,9 +217,10 @@ export default function Create({type}) {
           </select>
         </div>
 
-        <div className="col-md-4">
-          <label className="form-label">Completion Date</label>
+        <div className="d-flex field-gap col-md-4">
+          <label className="form-label label-space">Completion Date</label>
           <input
+            className="in-field mt-1"
             name="Completion Date"
             type="date"
             value={displayDate}
@@ -226,7 +229,7 @@ export default function Create({type}) {
         </div>
       </div>
 
-      <Tabs className=" tab_font mt-4">
+      <Tabs className="nav-tabs tab_font mt-1">
         <Tab eventKey="prepareSchedule" title="Prepare Schedule">
           <PrepareScheduleTab
             oderSchedule={oderSchedule}

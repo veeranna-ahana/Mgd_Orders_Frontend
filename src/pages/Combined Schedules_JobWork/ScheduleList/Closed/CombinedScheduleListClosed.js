@@ -5,25 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { endpoints } from "../../../api/constants";
 import { getRequest } from "../../../api/apiinstance";
 
-export default function CombinedScheduleListClosed({type}) {
-
-  console.log("type closed form is",type);
+export default function CombinedScheduleListClosed({ type }) {
+  console.log("type closed form is", type);
   const navigate = useNavigate();
 
   //ScheduleList Orders
   const [scheduleListClosed, setScheduleListClosed] = useState([]);
   const getScheduleListData = () => {
-    if(type==='JobWork'){
+    if (type === "JobWork") {
       getRequest(endpoints.ScheduleListClosed, (response) => {
         console.log(response);
         setScheduleListClosed(response);
-  });
-    }
-    else{
+      });
+    } else {
       getRequest(endpoints.ScheduleListClosedSales, (response) => {
         console.log(response);
         setScheduleListClosed(response);
-  }); 
+      });
     }
   };
 
@@ -42,8 +40,8 @@ export default function CombinedScheduleListClosed({type}) {
 
   return (
     <div>
-      <h4 className="title">Combined Schedule List</h4>{" "}
-      <div className="row mt-4 mb-1 ">
+      <h4 className="title">Combined Schedule List</h4>
+      <div className="">
         <button
           className="button-style"
           onClick={() =>
@@ -51,16 +49,15 @@ export default function CombinedScheduleListClosed({type}) {
               state: { selectedRow: selectedRow },
             })
           }
-          style={{ width: "130px" }}
         >
           Open
         </button>
       </div>
-      <div style={{ overflowY: "scroll" }}>
+      <div className="mt-1" style={{ overflowY: "scroll" }}>
         <Table
           striped
-          className="table-data border mt-2"
-          style={{ border: "1px", height: "400px", overflowY: "scroll" }}
+          className="table-data border"
+          style={{ border: "1px", height: "350px", overflowY: "scroll" }}
         >
           <thead className="tableHeaderBGColor">
             <tr>

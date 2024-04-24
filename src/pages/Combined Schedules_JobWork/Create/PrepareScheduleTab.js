@@ -20,7 +20,8 @@ export default function PrepareScheduleTab({
   setPrepareScheduleData,
   onclickpreapreScheduleButton,
   selectedSalesContact,
-  storedDate,type
+  storedDate,
+  type,
 }) {
   const [openCombinedSchedule, setOpenCombinedSchedule] = useState(false);
   const [openTasked, setOpenTasked] = useState(false);
@@ -142,7 +143,7 @@ export default function PrepareScheduleTab({
     if (rowselectleft.length <= 1) {
       validationModal();
     } else {
-      if(type==='JobWork'){
+      if (type === "JobWork") {
         postRequest(endpoints.CreateSchedule, {
           rowselectleft,
           custCode: custCode,
@@ -154,8 +155,7 @@ export default function PrepareScheduleTab({
           setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
           openCombineScheduleModal();
         });
-      }
-      else{
+      } else {
         postRequest(endpoints.CreateScheduleforSales, {
           rowselectleft,
           custCode: custCode,
@@ -186,50 +186,37 @@ export default function PrepareScheduleTab({
   return (
     <div>
       <div className="row">
-        <div className="col-md-8  col-sm-12">
-          <div className="row">
-            <div className="col-md-2 col-sm-12">
+        <div className="col-md-8 col-sm-12">
+          <div className="">
+            <div className="col-md-8 col-sm-12">
               <button
                 className="button-style  group-button"
-                style={{ width: "120px" }}
                 onClick={onClickSelectAllLeft}
               >
                 Select All
               </button>
-            </div>
-            <div className="col-md-2 col-sm-12">
               <button
                 className="button-style  group-button"
-                style={{ width: "120px" }}
                 onClick={onClickReverse}
               >
                 Revers
               </button>
-            </div>
-            <div className="col-md-2 col-sm-12">
               <button
                 className="button-style  group-button"
-                style={{ width: "120px" }}
                 onClick={onClickRightShiftButton}
               >
                 {">>"}{" "}
               </button>
-            </div>
-            <div className="col-md-3 col-sm-12">
               <button
                 className="button-style  group-button"
-                style={{ width: "185px" }}
                 onClick={onclickpreapreScheduleButton}
               >
                 Prepare Schedule
               </button>
-            </div>
-            <div className="col-md-3 col-sm-12">
               <button
-                className={`button-style mb-3 group-button ${
+                className={`button-style group-button ${
                   disablebutton ? "disabledButton" : ""
                 }`}
-                style={{ width: "175px" }}
                 onClick={onClickCreateSchedule}
                 disabled={disablebutton}
               >
@@ -237,11 +224,11 @@ export default function PrepareScheduleTab({
               </button>
             </div>
           </div>
-          <div style={{ overflowY: "scroll" }}>
+          <div className="mt-1" style={{ overflowY: "scroll" }}>
             <Table
               striped
-              className="table-data border mt-2"
-              style={{ border: "1px", height: "400px" }}
+              className="table-data border"
+              style={{ border: "1px", height: "200px" }}
             >
               <thead className="tableHeaderBGColor table-space">
                 <tr>
@@ -282,15 +269,16 @@ export default function PrepareScheduleTab({
             </Table>
           </div>
           <div
+            className="mt-1"
             style={{
-              height: "270px",
+              height: "200px",
               overflowY: "scroll",
               overflowX: "scroll",
             }}
           >
             <Table
               striped
-              className="table-data border mt-2"
+              className="table-data border"
               style={{ height: "200px" }}
             >
               <thead className="tableHeaderBGColor">
@@ -319,39 +307,32 @@ export default function PrepareScheduleTab({
           </div>
         </div>
         <div className="col-md-4 col-sm-12">
-          <div className="row">
-            <div className="col-md-4 col-sm-12">
+          <div className="">
+            <div className="col-md-8 col-sm-12">
               <button
                 className="button-style  group-button"
-                style={{ width: "110px" }}
                 onClick={onclickofLeftShiftButton}
               >
                 {"<<"}
               </button>
-            </div>
-            <div className="col-md-4 col-sm-12">
               <button
                 className="button-style  group-button"
-                style={{ width: "110px" }}
                 onClick={onClickSelectAllRight}
               >
                 Select All
               </button>
-            </div>
-            <div className="col-md-1 col-sm-12">
               <button
-                className="button-style mb-3  group-button"
-                style={{ width: "110px" }}
+                className="button-style group-button"
                 onClick={onClickReverse1}
               >
                 Revers
               </button>
             </div>
           </div>
-          <div style={{ overflowY: "scroll" }}>
+          <div className="mt-1" style={{ overflowY: "scroll" }}>
             <Table
               striped
-              className="table-data border mt-2"
+              className="table-data border"
               style={{ border: "1px", height: "400px" }}
             >
               <thead className="tableHeaderBGColor table-space">
