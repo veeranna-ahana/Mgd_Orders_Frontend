@@ -25,14 +25,14 @@ export default function PackingNoteAndInvoice(props) {
   }
   return (
     <>
-      <button className="button-style" onClick={showInvoice}>
+      <button className="button-style ms-3 mb-1" onClick={showInvoice}>
         Show Invoice
       </button>
       <div className="row">
         <div
           className="col-md-5"
           style={{
-            height: "400px",
+            height: "auto",
             overflow: "auto",
           }}
         >
@@ -48,7 +48,7 @@ export default function PackingNoteAndInvoice(props) {
         <div
           className="col-md-7"
           style={{
-            height: "400px",
+            height: "auto",
             overflow: "auto",
           }}
         >

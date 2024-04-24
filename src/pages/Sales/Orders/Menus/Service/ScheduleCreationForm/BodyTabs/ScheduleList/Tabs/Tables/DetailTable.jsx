@@ -10,7 +10,7 @@ export default function DetailTable(props) {
         style={{ border: "1px", overflow: "auto" }}
       >
         <thead className="tableHeaderBGColor">
-          <tr>
+          <tr className="label-space">
             <th>Drawing Name</th>
             <th>Material</th>
             <th>Quantity</th>
