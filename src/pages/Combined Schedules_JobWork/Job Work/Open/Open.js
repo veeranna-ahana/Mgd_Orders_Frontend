@@ -6,11 +6,11 @@ function Open() {
     <div>
       <h4 className="title">Find Production Schedule</h4>
       <div className="row">
-        <div className="col-md-4">
-          <label className="form-label">Enter Schedule No</label>
-          <input />
+        <div className="d-flex field-gap col-md-4 mt-2">
+          <label className="form-label label-space">Enter Schedule No</label>
+          <input className="in-field" />
         </div>
-        <div className="col-md-3 mt-3">
+        <div className="col-md-3">
           <button
             className="button-style"
             onClick={() => navigate("/orders/CombinedScheduleDetails")}
