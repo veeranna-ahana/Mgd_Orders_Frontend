@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import LoadingPage from "../../../Loading";
 
 const {
   getRequest,
@@ -49,11 +50,15 @@ function AddNewSrlModal(props) {
     newSerial,
     setNewSerial,
     handleChange,
+    isLoading,
   } = props;
   console.log(props.OrderData?.Order_Type);
 
+  // const [isLoading, setIsloading] = useState();
+
   return (
     <div className="row mt-1">
+      {isLoading && <LoadingPage />}
       <Modal
         name="SrlModal"
         show={importdwgshow}

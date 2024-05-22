@@ -91,7 +91,7 @@ export default function OrderInfo(props) {
 
         <div className="row">
           <div
-            className="d-flex col-md-4 sm-12 field-gap"
+            className="d-flex col-md-2 sm-12 field-gap"
             style={{ gap: "27px" }}
           >
             <label className="form-label label-space">Order Status</label>
@@ -105,7 +105,7 @@ export default function OrderInfo(props) {
 
           <div
             className="d-flex col-md-2 sm-12 field-gap"
-            style={{ gap: "66px" }}
+            // style={{ gap: "66px" }}
           >
             <label className="form-label label-space">Delivery</label>
             <input
@@ -126,7 +126,7 @@ export default function OrderInfo(props) {
               readOnly
             />
           </div>
-          <div className="col-md-4 sm-12 d-flex field-gap">
+          <div className="col-md-3 sm-12 d-flex field-gap">
             <label className="form-label label-space">Dealing Engineer</label>
             {/* <select className="ip-select" id="formDealingEngineer">
               <option>*** Select ***</option>
@@ -140,10 +140,21 @@ export default function OrderInfo(props) {
               value={props.OrderData?.Dealing_Engineer}
             />
           </div>
+          <div
+            className="d-flex col-md-3 sm-12 field-gap"
+            style={{ gap: "26px" }}
+          >
+            <label className="form-label label-space">Contact Name</label>
+            <input
+              className="in-field"
+              type="text"
+              value={props.OrderData?.Contact_Name}
+            />
+          </div>
         </div>
 
         <div className="row mt-2">
-          <div className="col-md-4 sm-12 d-flex field-gap">
+          <div className="col-md-2 sm-12 d-flex field-gap">
             <label className="form-label label-space">Payment Terms</label>
             <input
               className="in-field"
@@ -168,22 +179,8 @@ export default function OrderInfo(props) {
             </select> */}
           </div>
           <div
-            className="d-flex col-md-4 sm-12 field-gap"
-            style={{ gap: "26px" }}
-          >
-            <label className="form-label label-space">Contact Name</label>
-            <input
-              className="in-field"
-              type="text"
-              value={props.OrderData?.Contact_Name}
-            />
-          </div>
-        </div>
-
-        <div className="row mt-2">
-          <div
-            className="d-flex col-md-4 sm-12 field-gap"
-            style={{ gap: "60px" }}
+            className="d-flex col-md-3 sm-12 field-gap"
+            style={{ gap: "65px" }}
           >
             <label className="form-label label-space">PO No</label>
             <input
@@ -193,26 +190,7 @@ export default function OrderInfo(props) {
             />
           </div>
           <div
-            className="d-flex col-md-4 sm-12 field-gap"
-            style={{ gap: "33px" }}
-          >
-            <label className="form-label label-space">Quotation No</label>
-            <input
-              className="in-field"
-              type="text"
-              value={props.OrderData?.QtnNo}
-            />
-          </div>
-          {/* <div className="col-md-4 sm-12 ">
-            <label className="form-label">Order Value</label>
-            <input type="text" value={props.OrderData?.OrderValue} />
-          </div> */}
-          {/* <div className="col-md-4 sm-12 ">
-            <label className="form-label">Delivery</label>
-            <input type="text" id="delivery" value={props.OrderData?.Delivery} />
-          </div> */}
-          <div
-            className="d-flex col-md-4 sm-12 field-gap"
+            className="d-flex col-md-3 sm-12 field-gap"
             style={{ gap: "38px" }}
           >
             <label className="form-label label-space">Order Value</label>
@@ -222,6 +200,28 @@ export default function OrderInfo(props) {
               value={props.OrderData?.OrderValue}
             />
           </div>
+        </div>
+
+        <div className="row mt-2">
+          {/* <div
+            className="d-flex col-md-4 sm-12 field-gap"
+            style={{ gap: "33px" }}
+          >
+            <label className="form-label label-space">Quotation No</label>
+            <input
+              className="in-field"
+              type="text"
+              value={props.OrderData?.QtnNo}
+            />
+          </div> */}
+          {/* <div className="col-md-4 sm-12 ">
+            <label className="form-label">Order Value</label>
+            <input type="text" value={props.OrderData?.OrderValue} />
+          </div> */}
+          {/* <div className="col-md-4 sm-12 ">
+            <label className="form-label">Delivery</label>
+            <input type="text" id="delivery" value={props.OrderData?.Delivery} />
+          </div> */}
         </div>
       </div>
     </>

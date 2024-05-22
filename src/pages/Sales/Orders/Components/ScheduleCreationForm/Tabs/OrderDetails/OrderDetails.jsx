@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 import BulkChangeModal from "./Modals/BulkChangeModal";
 import ConfirmationModal from "../../../../Modal/ConfirmationModal";
+import Loading from "../../Loading";
 import { Profiler } from "react";
 // import { propTypes } from "react-bootstrap/esm/Image";
 // import { Link, useNavigate } from "react-router-dom";
@@ -78,6 +79,8 @@ export default function OrderDetails(props) {
   const [importExcelModal, setImportExcelModal] = useState(false);
   // import qoutation
   const [importQtnMdl, setImportQtnMdl] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
 
   function importExcelFunc() {
     setImportExcelModal(true);
@@ -366,7 +369,8 @@ export default function OrderDetails(props) {
   };
 
   let blkCngCheckBoxx = blkCngCheckBox;
-
+console.log("blkCngCheckBoxx",blkCngCheckBoxx)
+console.log("selectedSrl",selectedSrl)
   let updateblkcngOrdrData = () => {
     postRequest(
       endpoints.bulkChangeUpdate,
@@ -517,6 +521,11 @@ export default function OrderDetails(props) {
   };
   const handleCloseImportDwg = () => {
     setImportDwgShow(false);
+    setQuantity(0.0);
+    setJwRate(0.0);
+    setMaterialRate(0.0);
+    setUnitPrice(0.0);
+
     setNewSerial((prevState) => ({
       ...prevState,
       DwgName: "",
@@ -526,14 +535,26 @@ export default function OrderDetails(props) {
       InspLvl: "",
       PkngLvl: "",
       MtrlSrc: "",
+      quantity: 0.0,
+      jwRate: 0.0,
+      materialRate: 0.0,
+      unitPrice: 0.0,
     }));
-    setNewSrlFormData({
-      ...NewSrlFormData,
-      Quantity: 0.0,
-      JW_Rate: 0.0,
-      Mtrl_Rate: 0.0,
-      UnitPrice: 0.0,
-    });
+
+    // setNewSrlFormData({
+    //   ...NewSrlFormData,
+    //   Quantity: 0.0,
+    //   JW_Rate: 0.0,
+    //   Mtrl_Rate: 0.0,
+    //   UnitPrice: 0.0,
+    // });
+    // setNewSerial((prevState) => ({
+    //   ...prevState,
+    //   quantity: 0.0,
+    //   jwRate: 0.0,
+    //   materialRate: 0.0,
+    //   unitPrice: 0.0,
+    // }));
     //// console.log("closeddddd");
   };
 
@@ -541,7 +562,11 @@ export default function OrderDetails(props) {
   const [importdwgmdlshow, setImportDwgmdlShow] = useState(false);
 
   const handleImportDwgmdl = () => {
-    setImportDwgmdlShow(true);
+    if (props.OrderData?.Order_Status === "Recorded") {
+      toast.warning("Cannot import after the Order is recorded");
+    } else {
+      setImportDwgmdlShow(true);
+    }
   };
   const handleCloseImportDwgmdl = () => {
     setImportDwgmdlShow(false);
@@ -604,6 +629,23 @@ export default function OrderDetails(props) {
     ]);
   };
 
+  //DELETE BUTTON
+  function deleteRowsBySrl() {
+    console.log("entering into the deleteRowsBySrl");
+    postRequest(
+      endpoints.postDeleteDetailsBySrl,
+      { Order_No: props.OrderData.Order_No, selectedSrl: selectedSrl },
+      (deleteData) => {
+        if (deleteData.flag > 0) {
+          toast.success("Serial Deleted sucessfully");
+          fetchData();
+        } else {
+          toast.warning("Not Deleted Please Check Once");
+        }
+      }
+    );
+  }
+
   function deleteRowsByOrderNoFunc() {
     postRequest(
       endpoints.postDeleteDetailsByOrderNo,
@@ -611,7 +653,7 @@ export default function OrderDetails(props) {
       (deleteData) => {
         if (deleteData.flag > 0) {
           setOrdrDetailsData([]);
-          toast.success("Delete the serials sucessfully");
+          toast.success("Serial Deleted sucessfully");
           setConfirmationModalOpen(false);
 
           if (buttonClicked === "Import Qtn") {
@@ -655,13 +697,14 @@ export default function OrderDetails(props) {
 
   // INSERT ORDER DETAILS FALG 1,2,3
   const PostOrderDetails = (flag) => {
+    setImportDwgShow(false);
+    setisLoading(true);
     let requestData = {};
     if (flag === 1) {
       requestData = {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
-        // DwgName: DwgName,
         DwgName: newSerial.DwgName,
         Dwg_Code: "",
         dwg: Dwg,
@@ -723,18 +766,24 @@ export default function OrderDetails(props) {
       };
     } else {
     }
-
+    if (requestData.DwgName === "" || requestData.Operation === "") {
+      setisLoading(false);
+      toast.error("Feild is mandotory");
+      return;
+    }
     postRequest(
       endpoints.InsertNewSrlData,
 
       { requestData: requestData },
       (InsertedNewSrlData) => {
         if (InsertedNewSrlData.affectedRows != 0) {
+          setisLoading(false);
           toast.success("Added serial successfully");
           fetchData();
           handleCloseImportDwg();
         } else {
-          toast.warning("Serial not adde");
+          // setisLoading(false);
+          toast.warning("Serial not added");
           handleCloseImportDwg();
         }
       }
@@ -990,6 +1039,7 @@ export default function OrderDetails(props) {
             <button
               className="button-style"
               disabled={props.OrderData?.Order_Status === "Processing"}
+              onClick={deleteRowsBySrl}
             >
               Delete
             </button>
@@ -1162,6 +1212,7 @@ export default function OrderDetails(props) {
                   ordrDetailsChange={ordrDetailsChange}
                   setordrDetailsChange={setordrDetailsChange}
                   handleChange={handleChange}
+                  isLoading={isLoading}
                 />
               </Tab>
             </Tabs>

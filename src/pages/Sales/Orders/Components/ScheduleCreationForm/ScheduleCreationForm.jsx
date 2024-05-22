@@ -85,9 +85,9 @@ const InputField = ({
 };
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  // //console.log("props", props.OrersData);
   // ////console.log("props", props.OrersData);
-  ////console.log("ocation.state", location.state);
+  // //////console.log("props", props.OrersData);
+  //////console.log("ocation.state", location.state);
   // state for order_status change
   const [intSchStatus, setIntSchStatus] = useState(0);
 
@@ -242,7 +242,7 @@ export default function ScheduleCreationForm(props) {
     formData.append("thickness", thickness);
     formData.append("specficWeight", specificwt); // resp[0].Specific_Wt);
     //  setSpecificWt(resp[0].Specific_Wt);
-    //// ////console.log("Sending to Service");
+    //// //////console.log("Sending to Service");
     // const getCalcReq = await fetch('http://127.0.0.1:21341/getCalc', {
     const getCalcReq = await fetch("http://localhost:21341/getCalc", {
       method: "POST",
@@ -253,9 +253,9 @@ export default function ScheduleCreationForm(props) {
     });
     const res = await getCalcReq.json();
     //   const data = await res.json();
-    //    //// ////console.log("Get Calc Response");
-    //// ////console.log(res.data);
-    //// ////console.log(res.data.partOutArea);
+    //    //// //////console.log("Get Calc Response");
+    //// //////console.log(res.data);
+    //// //////console.log(res.data.partOutArea);
 
     setLengthOfCut(res.data.lengthOfCut);
     setNoofPierces(res.data.noOfPierces);
@@ -289,11 +289,11 @@ export default function ScheduleCreationForm(props) {
 
   async function dxfupload(files, destPath, response) {
     const data = new FormData();
-    //// ////console.log(files);
+    //// //////console.log(files);
     for (let i = 0; i < files.length; i++) {
       data.append("files", files[i]);
     }
-    //// ////console.log(data);
+    //// //////console.log(data);
     let API = "http://localhost:6001";
     const rawResponse = await fetch(`${API}/file/uploaddxf`, {
       method: "POST",
@@ -310,17 +310,17 @@ export default function ScheduleCreationForm(props) {
 
   let importdrawings = async (e) => {
     e.preventDefault();
-    //// ////console.log("Import Drawings");
+    //// //////console.log("Import Drawings");
 
     if (!(orderStatus === "Created" || orderStatus === "Recorded")) {
       alert("Cannot import after the Order is recorded");
       return;
     }
 
-    ////// ////console.log(document.getElementById("mtrlcode").value);
+    ////// //////console.log(document.getElementById("mtrlcode").value);
     // let materialcode = mtrlcode; //e.target.elements.mtrlcode.value;
     let materialcode = strmtrlcode;
-    //// ////console.log("materialcode", materialcode);
+    //// //////console.log("materialcode", materialcode);
     let process = strprocess; //e.target.elements.processdescription.value;
     let quantity = quantity; // e.target.elements.quantity.value;
     let materialsource = strSource; // e.target.elements.materialsource.value;
@@ -332,13 +332,13 @@ export default function ScheduleCreationForm(props) {
     setDblPierceRate(dblPierceRate);
 
     for (let i = 0; i < files.length; i++) {
-      //// ////console.log(files[i]);
+      //// //////console.log(files[i]);
       let drwfname = files[i];
 
-      //// ////console.log(drwfname);
+      //// //////console.log(drwfname);
       locCalc(drwfname, material, grade, thickness, (output) => {
-        //// ////console.log(output);
-        //   //// ////console.log("Qtn Profile Data : ", typeof qtnProfileData);
+        //// //////console.log(output);
+        //   //// //////console.log("Qtn Profile Data : ", typeof qtnProfileData);
 
         let olddata = Object.entries(orderdetailsdata).map(([key, value]) => ({
           key,
@@ -346,7 +346,7 @@ export default function ScheduleCreationForm(props) {
         }));
         //  let olddata = [...qtnProfileData];
 
-        //// ////console.log("Old Data : " + olddata);
+        //// //////console.log("Old Data : " + olddata);
         if (olddata === null || olddata === undefined) {
           // Handle the case where olddata is null
           return;
@@ -396,11 +396,11 @@ export default function ScheduleCreationForm(props) {
     let destPath = `\\Wo\\` + Orderno + "\\DXF\\"; //quotationNo;
 
     dxfupload(files, destPath, (res) => {
-      //// ////console.log(res);
+      //// //////console.log(res);
     });
 
     window.dxffiles = files;
-    //// ////console.log(
+    //// //////console.log(
     //   materialcode,
     //   material,
     //   grade,
@@ -648,6 +648,7 @@ export default function ScheduleCreationForm(props) {
         MtrlSrc: value,
       }));
     } else if (name === "odrDtlMtrlSrc") {
+      console.log("e.target.value---", e.target.value);
       setordrDetailsChange((prevState) => ({
         ...prevState,
         MtrlSrc: value,
@@ -660,58 +661,68 @@ export default function ScheduleCreationForm(props) {
     }
     // QUANTITY
     if (name === "newSrlQty") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setNewSerial((prevState) => ({
         ...prevState,
-        quantity: value,
+        quantity: mvalue,
       }));
     } else if (name === "odrDtlQuantity") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setordrDetailsChange((prevState) => ({
         ...prevState,
-        quantity: value,
+        quantity: mvalue,
       }));
     } else if (name === "blkCngQty") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setBlkChange((prevState) => ({
         ...prevState,
-        quantity: value,
+        quantity: mvalue,
       }));
     } else if (name === "impDwgQty") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setImprtDwgObj((prevState) => ({
         ...prevState,
-        quantity: value,
+        quantity: mvalue,
       }));
     }
     // JW RATE
     if (name === "newSrlJWRate") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setNewSerial((prevState) => ({
         ...prevState,
-        jwRate: value,
+        jwRate: mvalue,
       }));
     } else if (name === "odrDtljwrate") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setordrDetailsChange((prevState) => ({
         ...prevState,
-        jwRate: value,
+        jwRate: mvalue,
       }));
     } else if (name === "blkCngJWRate") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setBlkChange((prevState) => ({
         ...prevState,
-        jwRate: value,
+        jwRate: mvalue,
       }));
     }
     // MTRL RATE
     if (name === "newSrlMaterialRate") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setNewSerial((prevState) => ({
         ...prevState,
-        materialRate: value,
+        materialRate: mvalue,
       }));
     } else if (name === "odrDtlMtrlRate") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setordrDetailsChange((prevState) => ({
         ...prevState,
-        materialRate: value,
+        materialRate: mvalue,
       }));
     } else if (name === "blkCngMrate") {
+      const mvalue = e.target.value.replace(/[^0-9.]/g, "");
       setBlkChange((prevState) => ({
         ...prevState,
-        materialRate: value,
+        materialRate: mvalue,
       }));
     }
     // UNIT PRICE
@@ -733,7 +744,8 @@ export default function ScheduleCreationForm(props) {
     }
   };
 
-  //console.log("ordrDetailsChange.MtrlSrc", ordrDetailsChange.MtrlSrc);
+  ////console.log("ordrDetailsChange.MtrlSrc", ordrDetailsChange.MtrlSrc);
+  console.log("newserial.quantity", newSerial.quantity);
   let updateOrdrData = () => {
     postRequest(
       endpoints.singleChangeUpdate,
@@ -756,7 +768,7 @@ export default function ScheduleCreationForm(props) {
         PkngLvl: ordrDetailsChange.PkngLvl,
       },
       (singleChngData) => {
-        //////console.log(" blkChngData", blkChngData);
+        ////////console.log(" blkChngData", blkChngData);
         if (singleChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -795,7 +807,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.getOrderDetailsByOrdrNoAndType,
       { orderNo: orderNo, orderType: props.Type },
       (orderData) => {
-        //console.log("orderDetails.....", orderData);
+        ////console.log("orderDetails.....", orderData);
         setOrderData(orderData?.orderData[0]);
         setOrderCustData(orderData?.custData[0]);
 
@@ -803,7 +815,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetBomData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (bomdata) => {
-            // ////console.log("bomdata......", bomdata);
+            // //////console.log("bomdata......", bomdata);
             setBomData(bomdata);
           }
         );
@@ -811,7 +823,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetFindOldpartData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (findOldpartData) => {
-            ////  // ////console.log("findOldpartData......", findOldpartData);
+            ////  // //////console.log("findOldpartData......", findOldpartData);
             setfindOldpart(findOldpartData);
           }
         );
@@ -820,7 +832,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.PostNewSrlData,
           { custcode: orderData?.custData[0]?.Cust_Code, OrderNo: orderNo },
           (ordrdtlsdata) => {
-            // ////// ////console.log("ordrdtlsdata", ordrdtlsdata);
+            // ////// //////console.log("ordrdtlsdata", ordrdtlsdata);
             setOrdrDetailsData(ordrdtlsdata);
           }
         );
@@ -833,7 +845,7 @@ export default function ScheduleCreationForm(props) {
           },
 
           (oldOrderData) => {
-            // //console.log("dataqwqw...", oldOrderData);
+            // ////console.log("dataqwqw...", oldOrderData);
             setOldOrderListData(oldOrderData.orderListData);
             setOldOrderDetailsData(oldOrderData.orderDetailsData);
           }
@@ -844,10 +856,10 @@ export default function ScheduleCreationForm(props) {
       endpoints.getProfarmaMain,
       { OrderNo: orderNo },
       (profarmaMainData) => {
-        // // ////console.log("profarmaMainData", profarmaMainData);
+        // // //////console.log("profarmaMainData", profarmaMainData);
 
         setProfarmaInvMain(profarmaMainData);
-        // // ////console.log("ordrdtlsdata", ordrdtlsdata);
+        // // //////console.log("ordrdtlsdata", ordrdtlsdata);
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
@@ -855,10 +867,10 @@ export default function ScheduleCreationForm(props) {
       endpoints.getProfarmaDetails,
       { OrderNo: orderNo },
       (profarmaDetailsData) => {
-        // // ////console.log("profarmaDetailsData", profarmaDetailsData);
+        // // //////console.log("profarmaDetailsData", profarmaDetailsData);
 
         setProfarmaInvDetails(profarmaDetailsData);
-        // // ////console.log("ordrdtlsdata", ordrdtlsdata);
+        // // //////console.log("ordrdtlsdata", ordrdtlsdata);
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
@@ -894,7 +906,7 @@ export default function ScheduleCreationForm(props) {
   const updateOrderStatus = () => {
     const status = getStatusText(intSchStatus);
     // Update order status here
-    //console.log("Order Status:", status);
+    ////console.log("Order Status:", status);
   };
 
   const getStatusText = (status) => {
@@ -923,11 +935,11 @@ export default function ScheduleCreationForm(props) {
   };
 
   const setDetailsColour = () => {
-    //console.log("entering into the setDetailsColour");
+    ////console.log("entering into the setDetailsColour");
     const rows = document.querySelectorAll(".order-details-row");
     rows.forEach((row) => {
       const srlStatus = parseInt(row.getAttribute("data-srlstatus"));
-      //console.log("srlStatus..........", srlStatus);
+      ////console.log("srlStatus..........", srlStatus);
       let backgroundColor = ""; // Define backgroundColor here
       switch (srlStatus) {
         case 0:
@@ -940,7 +952,7 @@ export default function ScheduleCreationForm(props) {
           backgroundColor = "lightcoral";
           break;
         case 3:
-          //console.log("entering into case 3, light yellow");
+          ////console.log("entering into case 3, light yellow");
           backgroundColor = "lightyellow";
           break;
         case 4:
@@ -968,20 +980,20 @@ export default function ScheduleCreationForm(props) {
           backgroundColor = "";
       }
       row.style.backgroundColor = backgroundColor; // Use backgroundColor here
-      //console.log(
+      ////console.log(
       // `Row with srlStatus ${srlStatus} has background color: ${backgroundColor}`
       // );
     });
   };
 
-  // //console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
-  // //console.log("Ordr_Status", OrdrDetailsData[0]?.Order_Status);
-  // //console.log("Order_Type", OrderData.Order_Type);
+  // ////console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
+  // ////console.log("Ordr_Status", OrdrDetailsData[0]?.Order_Status);
+  // ////console.log("Order_Type", OrderData.Order_Type);
 
   // let orderType = OrderData.Order_Type;
 
   // const setOrderDetails = (setDetails) => {
-  //   //console.log("setDetails", setDetails);
+  //   ////console.log("setDetails", setDetails);
   //   switch (setDetails) {
   //     case "Created":
   //       // Enable order details editing
@@ -1082,7 +1094,7 @@ export default function ScheduleCreationForm(props) {
     JWCost: false,
     MtrlCost: false,
   });
-  // //console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
+  // ////console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
   useEffect(() => {
     fetchData();
     setIntSchStatus(calculateMinSrlStatus());
@@ -1117,7 +1129,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.registerOrder,
       { Order_No: orderNo, Order_Status: "Recorded" },
       (registerOrderData) => {
-        // ////console.log("registerOrderData......", registerOrderData);
+        // //////console.log("registerOrderData......", registerOrderData);
 
         setOrderData({ ...OrderData, Order_Status: "Recorded" });
         toast.success("Order Registered Successfully");
@@ -1138,15 +1150,16 @@ export default function ScheduleCreationForm(props) {
       const updatedSelectedItems = isSelected
         ? prevSelectedItems.filter((item) => item !== OrdrDetailsItem)
         : [...prevSelectedItems, OrdrDetailsItem];
-      // //console.log("Selected Order details Rows:", updatedSelectedItems);
+      console.log("Selected Order details Rows:", updatedSelectedItems);
       const selectedOrderSrl = updatedSelectedItems.map(
         (item) => item.Order_Srl
       );
-      // //console.log("selectedOrderSrl", selectedOrderSrl);
+
+      console.log("selectedOrderSrl", selectedOrderSrl);
       setSelectedSrl(selectedOrderSrl);
       const lastSelectedRow =
         updatedSelectedItems[updatedSelectedItems.length - 1];
-      //console.log("Last Selected Row:", lastSelectedRow);
+      ////console.log("Last Selected Row:", lastSelectedRow);
       setLastSlctedRow(lastSelectedRow);
       setordrDetailsChange((prevState) => ({
         ...prevState,
@@ -1165,7 +1178,7 @@ export default function ScheduleCreationForm(props) {
     });
   };
 
-  //console.log("selectedItems", selectedItems);
+  ////console.log("selectedItems", selectedItems);
   // selectAll button
   const handleSelectAll = () => {
     setSelectedItems(OrdrDetailsData);
@@ -1192,12 +1205,12 @@ export default function ScheduleCreationForm(props) {
     }
   };
   // let insertnewsrldata = () => {
-  //   //////console.log("entering into insertnewsrldata");
+  //   ////////console.log("entering into insertnewsrldata");
   //   postRequest(
   //     endpoints.InsertNewSrlData,
   //     { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
   //     (InsertedNewSrlData) => {
-  //       //////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+  //       ////////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
   //     }
   //   );
   // };
@@ -1206,7 +1219,7 @@ export default function ScheduleCreationForm(props) {
   //   setorderNo(props.OrersData[0].Order_No);
   // },[props.OrersData]);
 
-  // //console.log("location.state is",location.state);
+  // ////console.log("location.state is",location.state);
 
   // NOT USED
   let insertnewsrldata = () => {
@@ -1214,7 +1227,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.InsertNewSrlData,
       { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
       (InsertedNewSrlData) => {
-        // ////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        // //////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
       }
     );
   };

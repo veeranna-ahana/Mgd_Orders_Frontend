@@ -60,6 +60,7 @@ function OrdrDtls(props) {
     ordrDetailsChange,
     setordrDetailsChange,
     handleChange,
+    isLoading,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
@@ -142,6 +143,7 @@ function OrdrDtls(props) {
         newSerial={newSerial}
         setNewSerial={setNewSerial}
         handleChange={handleChange}
+        isLoading={isLoading}
       />
 
       <div className="row">
@@ -150,7 +152,7 @@ function OrdrDtls(props) {
           <div className="ip-box form-bg">
             <div className="row">
               <div className="col-md-6 col-sm-12">
-                <label className="form-label">Order Details</label>
+                {/* <label className="form-label">Order Details</label> */}
 
                 <div className="row">
                   <div>
@@ -511,6 +513,7 @@ function OrdrDtls(props) {
                   <div>
                     <label className="form-label">Quantity</label>
                     <input
+                      type="text"
                       className="ip-select in-field"
                       id="Qty"
                       name="odrDtlQuantity"

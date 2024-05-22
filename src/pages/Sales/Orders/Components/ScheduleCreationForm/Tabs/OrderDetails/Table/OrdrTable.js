@@ -317,6 +317,7 @@ function OrdrTable(props) {
                   backgroundColor: selectedItems?.includes(OrdrDetailsItem)
                     ? "#98a8f8"
                     : backgroundColor,
+                  whiteSpace: "nowrap",
                 }}
                 // className="order-details-row"
 
