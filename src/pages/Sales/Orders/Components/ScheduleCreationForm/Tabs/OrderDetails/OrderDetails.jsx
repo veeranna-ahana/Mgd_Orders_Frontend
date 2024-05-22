@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import ImportExcelModal from "./Modals/ImportExcelModal/ImportExcelModal";
 import BulkChangeModal from "./Modals/BulkChangeModal";
 import ConfirmationModal from "../../../../Modal/ConfirmationModal";
+import Loading from "../../Loading";
 import { Profiler } from "react";
 // import { propTypes } from "react-bootstrap/esm/Image";
 // import { Link, useNavigate } from "react-router-dom";
@@ -49,8 +50,26 @@ export default function OrderDetails(props) {
     setImprtDwgObj,
     handleChange,
     InputField,
+    setDetailsColour,
+    calculateMinSrlStatus,
+    updateOrderStatus,
+    getStatusText,
   } = props;
 
+  // console.log("type", OrderData.Order_Type);
+  // console.log("status", OrderData.Order_Status);
+
+  // const [orderType, setOrderType] = useState("");
+  // const [status, setStatus] = useState("");
+
+  // useEffect(() => {
+  //   if (OrderData) {
+  //     setOrderType(OrderData.Order_Type);
+  //     setStatus(OrderData.Order_Status);
+  //   }
+  // }, [OrderData]); // Run the effect whenever OrderData changes
+
+  const [groupBoxAddSrlVisible, setGroupBoxAddSrlVisible] = useState(true);
   // console.log("OrdrDetailsData", OrdrDetailsData);
 
   const [buttonClicked, setButtonClicked] = useState("");
@@ -60,6 +79,8 @@ export default function OrderDetails(props) {
   const [importExcelModal, setImportExcelModal] = useState(false);
   // import qoutation
   const [importQtnMdl, setImportQtnMdl] = useState(false);
+
+  const [isLoading, setisLoading] = useState(false);
 
   function importExcelFunc() {
     setImportExcelModal(true);
@@ -121,11 +142,11 @@ export default function OrderDetails(props) {
     false,
     false,
   ]);
-  // //console.log("first", quantity);
-  // //console.log("second", jwRate);
-  // //console.log("third", materialRate);
-  // //console.log("fourth", unitPrice);
-  //console.log("blkCngCheckBox", blkCngCheckBox);
+  // //// console.log("first", quantity);
+  // //// console.log("second", jwRate);
+  // //// console.log("third", materialRate);
+  // //// console.log("fourth", unitPrice);
+  //// console.log("blkCngCheckBox", blkCngCheckBox);
 
   const [NewSrlFormData, setNewSrlFormData] = useState({
     DrawingName: "",
@@ -238,7 +259,7 @@ export default function OrderDetails(props) {
       //   endpoints.PostNewSrlData,
       //   { custcode: Cust_Code, OrderNo: OrderNo },
       //   (srldata) => {
-      //     //////////console.log("srl data", srldata);
+      //     //////////// console.log("srl data", srldata);
       //     setSerailData(srldata);
       //   }
       // );
@@ -250,7 +271,7 @@ export default function OrderDetails(props) {
         endpoints.getSalesIndiExecLists,
         { salesContact: SalesContact },
         (sdata) => {
-          ////console.log(sdata[0]["Name"]);
+          ////// console.log(sdata[0]["Name"]);
           // setSalesExecContact(sdata[0]["Name"]);
         }
       );
@@ -295,6 +316,7 @@ export default function OrderDetails(props) {
     fetchData();
   }, []);
 
+  // Handle button enabl and disable
   const handleDwgInputChange = (event) => {
     const newValue = event.target.value;
     setDwgName(newValue);
@@ -333,7 +355,7 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
       },
       (InsertedNewSrlData) => {
-        //////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
+        //////// console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           fetchData();
           toast.success("Added serial successfully");
@@ -347,7 +369,8 @@ export default function OrderDetails(props) {
   };
 
   let blkCngCheckBoxx = blkCngCheckBox;
-
+console.log("blkCngCheckBoxx",blkCngCheckBoxx)
+console.log("selectedSrl",selectedSrl)
   let updateblkcngOrdrData = () => {
     postRequest(
       endpoints.bulkChangeUpdate,
@@ -374,7 +397,7 @@ export default function OrderDetails(props) {
         //blkCngCheckBox: blkCngCheckBox,
       },
       (blkChngData) => {
-        //console.log("RES", blkChngData);
+        //// console.log("RES", blkChngData);
         if (blkChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -398,7 +421,7 @@ export default function OrderDetails(props) {
         mtrlcost: materialRate,
       },
       (singleChngData) => {
-        ////console.log(" blkChngData", blkChngData);
+        ////// console.log(" blkChngData", blkChngData);
         if (singleChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -453,7 +476,7 @@ export default function OrderDetails(props) {
       ...NewSrlFormData,
       Operation: e.target.value,
     });
-    //////////console.log(e.target.value);
+    //////////// console.log(e.target.value);
   };
   const selectInsp = async (e) => {
     e.preventDefault();
@@ -481,7 +504,7 @@ export default function OrderDetails(props) {
       }
     }
     setStrTolerance(e.target.value);
-    //////////console.log(e.target.value);
+    //////////// console.log(e.target.value);
   };
   const selectMtrlSrc = async (e) => {
     e.preventDefault();
@@ -498,6 +521,11 @@ export default function OrderDetails(props) {
   };
   const handleCloseImportDwg = () => {
     setImportDwgShow(false);
+    setQuantity(0.0);
+    setJwRate(0.0);
+    setMaterialRate(0.0);
+    setUnitPrice(0.0);
+
     setNewSerial((prevState) => ({
       ...prevState,
       DwgName: "",
@@ -507,22 +535,38 @@ export default function OrderDetails(props) {
       InspLvl: "",
       PkngLvl: "",
       MtrlSrc: "",
+      quantity: 0.0,
+      jwRate: 0.0,
+      materialRate: 0.0,
+      unitPrice: 0.0,
     }));
-    setNewSrlFormData({
-      ...NewSrlFormData,
-      Quantity: 0.0,
-      JW_Rate: 0.0,
-      Mtrl_Rate: 0.0,
-      UnitPrice: 0.0,
-    });
-    //console.log("closeddddd");
+
+    // setNewSrlFormData({
+    //   ...NewSrlFormData,
+    //   Quantity: 0.0,
+    //   JW_Rate: 0.0,
+    //   Mtrl_Rate: 0.0,
+    //   UnitPrice: 0.0,
+    // });
+    // setNewSerial((prevState) => ({
+    //   ...prevState,
+    //   quantity: 0.0,
+    //   jwRate: 0.0,
+    //   materialRate: 0.0,
+    //   unitPrice: 0.0,
+    // }));
+    //// console.log("closeddddd");
   };
 
   // IMPORT DWG MODAL
   const [importdwgmdlshow, setImportDwgmdlShow] = useState(false);
 
   const handleImportDwgmdl = () => {
-    setImportDwgmdlShow(true);
+    if (props.OrderData?.Order_Status === "Recorded") {
+      toast.warning("Cannot import after the Order is recorded");
+    } else {
+      setImportDwgmdlShow(true);
+    }
   };
   const handleCloseImportDwgmdl = () => {
     setImportDwgmdlShow(false);
@@ -585,6 +629,23 @@ export default function OrderDetails(props) {
     ]);
   };
 
+  //DELETE BUTTON
+  function deleteRowsBySrl() {
+    console.log("entering into the deleteRowsBySrl");
+    postRequest(
+      endpoints.postDeleteDetailsBySrl,
+      { Order_No: props.OrderData.Order_No, selectedSrl: selectedSrl },
+      (deleteData) => {
+        if (deleteData.flag > 0) {
+          toast.success("Serial Deleted sucessfully");
+          fetchData();
+        } else {
+          toast.warning("Not Deleted Please Check Once");
+        }
+      }
+    );
+  }
+
   function deleteRowsByOrderNoFunc() {
     postRequest(
       endpoints.postDeleteDetailsByOrderNo,
@@ -592,7 +653,7 @@ export default function OrderDetails(props) {
       (deleteData) => {
         if (deleteData.flag > 0) {
           setOrdrDetailsData([]);
-          toast.success("Delete the serials sucessfully");
+          toast.success("Serial Deleted sucessfully");
           setConfirmationModalOpen(false);
 
           if (buttonClicked === "Import Qtn") {
@@ -636,13 +697,14 @@ export default function OrderDetails(props) {
 
   // INSERT ORDER DETAILS FALG 1,2,3
   const PostOrderDetails = (flag) => {
+    setImportDwgShow(false);
+    setisLoading(true);
     let requestData = {};
     if (flag === 1) {
       requestData = {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
-        // DwgName: DwgName,
         DwgName: newSerial.DwgName,
         Dwg_Code: "",
         dwg: Dwg,
@@ -668,7 +730,6 @@ export default function OrderDetails(props) {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
-
         dwg: imprtDwgObj.Dwg,
         tolerance: imprtDwgObj.StrTolerance,
         Qty_Ordered: imprtDwgObj.quantity,
@@ -678,6 +739,7 @@ export default function OrderDetails(props) {
         material: imprtDwgObj.material,
         Operation: imprtDwgObj.Operation,
         NewSrlFormData: NewSrlFormData,
+        tolerance: imprtDwgObj.StrTolerance,
       };
     } else if (flag === 3) {
       setHasBOM(1);
@@ -704,18 +766,24 @@ export default function OrderDetails(props) {
       };
     } else {
     }
-
+    if (requestData.DwgName === "" || requestData.Operation === "") {
+      setisLoading(false);
+      toast.error("Feild is mandotory");
+      return;
+    }
     postRequest(
       endpoints.InsertNewSrlData,
 
       { requestData: requestData },
       (InsertedNewSrlData) => {
         if (InsertedNewSrlData.affectedRows != 0) {
+          setisLoading(false);
           toast.success("Added serial successfully");
           fetchData();
           handleCloseImportDwg();
         } else {
-          toast.warning("Serial not adde");
+          // setisLoading(false);
+          toast.warning("Serial not added");
           handleCloseImportDwg();
         }
       }
@@ -724,6 +792,59 @@ export default function OrderDetails(props) {
 
   const PostSrlData = () => {};
   const locCalc = () => {};
+
+  // const [addsrlBtn, setAddsrlBtn] = useState(false);
+  // const [bulkchangeBtn, setBulkchangeBtn] = useState(false);
+  // const [ImpDwgBtn, setImpDwgBtn] = useState(false);
+  // const [ImtExlBtn, setImtExlBtn] = useState(false);
+  // const [ImtOldOrderBtn, setImtOldOrderBtn] = useState(false);
+  // const [ImtQtnBtn, setQtnBtn] = useState(false);
+  // const [SelectAllBtn, setSelectAllBtn] = useState(false);
+  // const [ReverseBtn, setReverseBtn] = useState(false);
+  // const [AddDwgOrderBtn, setAddDwgOrderBtn] = useState(false);
+
+  // var status = OrderData.Order_Status;
+  // var orderType = OrderData.Order_Type;
+
+  // const setOrderDetails = (status, orderType) => {
+  //   console.log(status);
+  //   console.log(orderType);
+  //   switch (status) {
+  //     case "Created":
+  //       setBulkchangeBtn(true);
+  //       setAddsrlBtn(true);
+  //       break;
+  //     case "Processing":
+  //       setBulkchangeBtn(false);
+  //       setAddsrlBtn(false);
+  //       switch (orderType) {
+  //         case "Complete":
+  //           setAddsrlBtn(false);
+  //           setBulkchangeBtn(false);
+  //           break;
+  //         case "Scheduled":
+  //           setAddsrlBtn(false);
+  //           break;
+  //         case "Open":
+  //           setAddsrlBtn(true);
+  //           break;
+  //         default:
+  //           // Default case if no matching order type
+  //           break;
+  //       }
+  //       break;
+  //     case "Nochange":
+  //       setBulkchangeBtn(false);
+  //       break;
+  //     default:
+  //       // Default case if no matching status
+  //       break;
+  //   }
+  // };
+  // useEffect(() => {
+  //   setOrderDetails(status, orderType);
+  //   setBulkchangeBtn(false);
+  // }, []);
 
   return (
     <>
@@ -883,18 +1004,74 @@ export default function OrderDetails(props) {
               </button>
             ) : null}
 
-            {/* <button className="button-style" onClick={importExcelFunc}>
-              Import EXCEL */}
             <button
               className="button-style"
+              disabled={props.OrderData?.Order_Status === "Processing"}
               onClick={(e) => {
                 setButtonClicked("Import From Excel");
                 handleImportFromExcelModal();
               }}
-              // onClick={importExcelFunc}
             >
-              Import From Excel
+              Import Excel
             </button>
+
+            {/* <button
+              className="button-style"
+              onClick={importExcelFunc}
+              disabled={props.OrderData?.Order_Status === "Processing"}
+            >
+              Import EXCEL
+            </button> */}
+            <button
+              className="button-style"
+              onClick={handleImportQtnMdl}
+              disabled={props.OrderData?.Order_Status === "Processing"}
+            >
+              Import Qtn
+            </button>
+            <button
+              className="button-style"
+              onClick={handleImportOldOrdrMdl}
+              disabled={props.OrderData?.Order_Status === "Processing"}
+            >
+              Import Old Order
+            </button>
+            <button
+              className="button-style"
+              disabled={props.OrderData?.Order_Status === "Processing"}
+              onClick={deleteRowsBySrl}
+            >
+              Delete
+            </button>
+            <button
+              className="button-style"
+              onClick={handlebulkChnangMdl}
+              disabled={
+                props.OrderData?.Order_Status === "Processing" ||
+                props.OrderData?.Order_Type === "Complete" ||
+                props.OrderData?.Order_Type === "Scheduled"
+              }
+            >
+              Bulk Change
+            </button>
+            <button
+              className="button-style"
+              onClick={handleSelectAll}
+              disabled={props.OrderData?.Order_Status === "Processing"}
+            >
+              Select All
+            </button>
+            <button
+              className="button-style"
+              onClick={handleReverseSelection}
+              disabled={props.OrderData?.Order_Status === "Processing"}
+            >
+              Reverse
+            </button>
+            {Type === "Profile" ? (
+              <button className="button-style">Edit DXF</button>
+            ) : null}
+            {/* {Type === "Profile" ? (
             <button
               className="button-style"
               onClick={(e) => {
@@ -922,7 +1099,7 @@ export default function OrderDetails(props) {
             </button>
             <button className="button-style" onClick={handleReverseSelection}>
               Reverse
-            </button>
+            </button> */}
             {/* {Type === "Profile" ? (
             <button
               className="button-style"
@@ -946,9 +1123,9 @@ export default function OrderDetails(props) {
             <button className="button-style" onClick={handleReverseSelection}>
               Reverse
             </button>
-            {Type === "Profile" ? (
-              <button className="button-style">Edit DXF</button>
-            ) : null} */}
+            // {Type === "Profile" ? (
+            //   <button className="button-style">Edit DXF</button>
+            // ) : null} */}
             {/* <button
             className="button-style"
             style={{ width: "100px", marginLeft: "4px" }}
@@ -966,6 +1143,10 @@ export default function OrderDetails(props) {
               OrdrDetailsData={OrdrDetailsData}
               selectedItems={selectedItems}
               selectItem={selectItem}
+              setDetailsColour={setDetailsColour}
+              calculateMinSrlStatus={calculateMinSrlStatus}
+              updateOrderStatus={updateOrderStatus}
+              getStatusText={getStatusText}
             />
           </div>
           <div className="col-md-6">
@@ -1031,6 +1212,7 @@ export default function OrderDetails(props) {
                   ordrDetailsChange={ordrDetailsChange}
                   setordrDetailsChange={setordrDetailsChange}
                   handleChange={handleChange}
+                  isLoading={isLoading}
                 />
               </Tab>
             </Tabs>

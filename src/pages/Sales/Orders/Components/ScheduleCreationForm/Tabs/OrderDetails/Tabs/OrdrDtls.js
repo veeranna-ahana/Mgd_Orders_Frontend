@@ -60,6 +60,7 @@ function OrdrDtls(props) {
     ordrDetailsChange,
     setordrDetailsChange,
     handleChange,
+    isLoading,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
@@ -142,6 +143,7 @@ function OrdrDtls(props) {
         newSerial={newSerial}
         setNewSerial={setNewSerial}
         handleChange={handleChange}
+        isLoading={isLoading}
       />
 
       <div className="row">
@@ -150,7 +152,7 @@ function OrdrDtls(props) {
           <div className="ip-box form-bg">
             <div className="row">
               <div className="col-md-6 col-sm-12">
-                <label className="form-label">Order Details</label>
+                {/* <label className="form-label">Order Details</label> */}
 
                 <div className="row">
                   <div>
@@ -168,6 +170,11 @@ function OrdrDtls(props) {
                   className="button-style"
                   onClick={handleImportDwg}
                   // onClick={() => PostOrderDetails(1)}
+                  disabled={
+                    props.OrderData?.Order_Status === "Processing" ||
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Schedule"
+                  }
                 >
                   Add New Serial
                 </button>
@@ -191,6 +198,11 @@ function OrdrDtls(props) {
                       // }
                       value={ordrDetailsChange.DwgName}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Status === "Created" ||
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     />
                   </div>
                 </div>
@@ -209,6 +221,10 @@ function OrdrDtls(props) {
                       required
                       onChange={handleChange}
                       value={ordrDetailsChange.jwRate}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                       // value={LastSlctedRow?.JWCost || " "}
                     />
                     {/* <InputField
@@ -258,6 +274,10 @@ function OrdrDtls(props) {
                         // }
                         placeholder="Choose a Material..."
                         required
+                        disabled={
+                          props.OrderData?.Order_Type === "Complete" ||
+                          props.OrderData?.Order_Type === "Scheduled"
+                        }
                       ></Typeahead>
                     ) : (
                       ""
@@ -293,6 +313,10 @@ function OrdrDtls(props) {
                       onChange={handleChange}
                       value={ordrDetailsChange.materialRate}
                       required
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     />
 
                     {/* <InputField
@@ -324,6 +348,10 @@ function OrdrDtls(props) {
                       name="odrDtlMtrlSrc"
                       value={ordrDetailsChange.MtrlSrc}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     >
                       <option value="" selected>
                         ** Select **
@@ -455,6 +483,10 @@ function OrdrDtls(props) {
                       name="odrDtlInspLvl"
                       value={ordrDetailsChange.InspLvl}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     >
                       <option value="" disabled selected>
                         ** Select **
@@ -481,12 +513,14 @@ function OrdrDtls(props) {
                   <div>
                     <label className="form-label">Quantity</label>
                     <input
+                      type="text"
                       className="ip-select in-field"
                       id="Qty"
                       name="odrDtlQuantity"
                       onChange={handleChange}
                       value={ordrDetailsChange.quantity}
                       required
+                      disabled={props.OrderData?.Order_Type === "Complete"}
                     />
                     {/* <InputField
                       className="ip-select in-fields"
@@ -519,6 +553,10 @@ function OrdrDtls(props) {
                       name="odrDtlPkngLvl"
                       value={ordrDetailsChange.PkngLvl}
                       onChange={handleChange}
+                      disabled={
+                        props.OrderData?.Order_Type === "Complete" ||
+                        props.OrderData?.Order_Type === "Scheduled"
+                      }
                     >
                       <option value="" disabled selected>
                         ** Select **
@@ -660,6 +698,11 @@ function OrdrDtls(props) {
                   <button
                     className="button-style"
                     onClick={() => PostOrderDetails(3)}
+                    disabled={
+                      props.OrderData?.Order_Status === "Processing" ||
+                      props.OrderData?.Order_Type === "Complete" ||
+                      props.OrderData?.Order_Type === "Scheduled"
+                    }
                   >
                     Add Drawing to Order
                   </button>
@@ -758,6 +801,11 @@ function OrdrDtls(props) {
                   <button
                     className="button-style"
                     onClick={() => PostOrderDetails(3)}
+                    disabled={
+                      props.OrderData?.Order_Status === "Processing" ||
+                      props.OrderData?.Order_Type === "Complete" ||
+                      props.OrderData?.Order_Type === "Scheduled"
+                    }
                   >
                     Add Drawing to Order
                   </button>
