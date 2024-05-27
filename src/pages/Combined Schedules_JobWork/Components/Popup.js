@@ -15,22 +15,22 @@ function Popup(props) {
   return (
     <Modal show={props.show} onHide={props.onHide}>
       <Modal.Header closeButton>
-        <Modal.Title>{props.title}</Modal.Title>
+        <Modal.Title style={{fontSize:'14px'}}>{props.title}</Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>
+      <Modal.Body style={{fontSize:'12px'}}>
         <p>{props.message}</p>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button
-          style={{ backgroundColor: "#2b3a55", border: "#2b3a55" }}
+        <button
+          className="group-button button-style"
           onClick={() => {
             props.firstbutton();
           }}
         >
           {props.firstbuttontext}
-        </Button>
+        </button>
         {/* <Button
           variant="secondary"
           onClick={() => {

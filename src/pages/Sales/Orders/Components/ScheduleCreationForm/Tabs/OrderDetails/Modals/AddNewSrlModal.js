@@ -1,6 +1,7 @@
 import { React, useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
+import LoadingPage from "../../../Loading";
 
 const {
   getRequest,
@@ -49,10 +50,15 @@ function AddNewSrlModal(props) {
     newSerial,
     setNewSerial,
     handleChange,
+    isLoading,
   } = props;
+  console.log(props.OrderData?.Order_Type);
+
+  // const [isLoading, setIsloading] = useState();
 
   return (
     <div className="row mt-1">
+      {isLoading && <LoadingPage />}
       <Modal
         name="SrlModal"
         show={importdwgshow}
@@ -79,7 +85,9 @@ function AddNewSrlModal(props) {
                 <div className="row">
                   <Form.Group controlId="strmtrlcode">
                     <div className="d-flex field-gap md-col-2">
-                      <label className="form-label label-space">Dwg / Part Name</label>
+                      <label className="form-label label-space">
+                        Dwg / Part Name
+                      </label>
                       <input
                         className="in-field"
                         name="newSrlDwgname"
@@ -94,7 +102,10 @@ function AddNewSrlModal(props) {
                 </div>
                 <div className="row">
                   <Form.Group controlId="strmtrlcode">
-                    <div className="d-flex field-gap md-col-2" style={{gap:'60px'}}>
+                    <div
+                      className="d-flex field-gap md-col-2"
+                      style={{ gap: "60px" }}
+                    >
                       <label className="form-label">Material</label>
                       {mtrldata.length > 0 || mtrldata != null ? (
                         <Typeahead
@@ -118,8 +129,13 @@ function AddNewSrlModal(props) {
 
                 <div className="row mt-1">
                   <Form.Group controlId="source">
-                    <div className="d-flex field-gap md-col-4" style={{gap:'17px'}}>
-                      <label className="form-label label-space">Material Source</label>
+                    <div
+                      className="d-flex field-gap md-col-4"
+                      style={{ gap: "17px" }}
+                    >
+                      <label className="form-label label-space">
+                        Material Source
+                      </label>
                       <select
                         className="ip-select"
                         id="strsource"
@@ -161,7 +177,10 @@ function AddNewSrlModal(props) {
                         ""
                       )}
                     </div> */}
-                    <div className="d-flex field-gap md-col-4" style={{gap:'47px'}}>
+                    <div
+                      className="d-flex field-gap md-col-4"
+                      style={{ gap: "47px" }}
+                    >
                       <label className="form-label">Operation</label>
                       {/* {procdata.length > 0 ? ( */}
                       <select
@@ -247,7 +266,12 @@ function AddNewSrlModal(props) {
                   </div>
                 </div> */}
                 <div className="row mt-1">
-                  <div className="d-flex field-gap col-md-6" style={{gap:'19px'}}>
+                  <div
+                    className="d-flex field-gap col-md-6"
+                    style={{ gap: "19px" }}
+                  >
+                    {/* <label className="form-label">Quantity</label> */}
+
                     {/* <InputField
                       label="Quantity"
                       name="newSrlQty"
@@ -257,7 +281,7 @@ function AddNewSrlModal(props) {
                       required
                     /> */}
                     <label className="form-label">Quantity</label>
-                    <input
+                    <InputField
                       className="in-field"
                       name="newSrlQty"
                       id="Qty"
@@ -266,7 +290,10 @@ function AddNewSrlModal(props) {
                       required
                     />
                   </div>
-                  <div className="d-flex field-gap col-md-6" style={{gap:'42px'}}>
+                  <div
+                    className="d-flex field-gap col-md-6"
+                    style={{ gap: "42px" }}
+                  >
                     {/* <Form.Group controlId="rates">
                       <InputField
                         label="JW Rate"
@@ -278,7 +305,7 @@ function AddNewSrlModal(props) {
                       />
                     </Form.Group> */}
                     <label className="form-label label-space">JW Rate</label>
-                    <input
+                    <InputField
                       className="in-field"
                       name="newSrlJWRate"
                       id="JWrate"
@@ -290,7 +317,10 @@ function AddNewSrlModal(props) {
                 </div>
 
                 <div className="row">
-                  <div className="d-flex field-gap col-md-6" style={{gap:'15px'}}>
+                  <div
+                    className="d-flex field-gap col-md-6"
+                    style={{ gap: "15px" }}
+                  >
                     {/* <Form.Group controlId="rates">
                       <InputField
                         label="UnitPrice"
@@ -306,16 +336,20 @@ function AddNewSrlModal(props) {
                       />
                     </Form.Group> */}
                     <label className="form-label">UnitPrice</label>
-                    <input
+                    <InputField
                       className="in-field"
                       name="newSrlUnitPrice"
                       id="UnitPrice"
-                      defaultValue={unitPrice}
+                      value={parseFloat(jwRate) + parseFloat(materialRate)}
+                      disabled
                       onChangeCallback={setUnitPrice}
                       required
                     />
                   </div>
-                  <div className="d-flex field-gap col-md-6" style={{gap:'15px'}}>
+                  <div
+                    className="d-flex field-gap col-md-6"
+                    style={{ gap: "15px" }}
+                  >
                     {" "}
                     {/* <Form.Group controlId="rates">
                       <InputField
@@ -328,7 +362,7 @@ function AddNewSrlModal(props) {
                       />
                     </Form.Group> */}
                     <label className="form-label">MaterialRate</label>
-                    <input
+                    <InputField
                       className="in-field"
                       id="MaterialRate"
                       name="newSrlMaterialRate"

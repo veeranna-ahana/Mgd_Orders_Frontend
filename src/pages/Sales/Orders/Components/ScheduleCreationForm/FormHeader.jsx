@@ -60,7 +60,8 @@ export default function FormHeader(props) {
             onClick={props.openRegisterOrder}
             disabled={
               props.isButtonDisabled ||
-              props.OrderData?.Order_Status === "Recorded"
+              props.OrderData?.Order_Status === "Recorded" ||
+              props.OrderData?.Order_Status === "Processing"
             }
           >
             Register Order

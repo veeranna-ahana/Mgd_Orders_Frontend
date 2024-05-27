@@ -15,7 +15,7 @@ export default function CombinedScheduleDetailsFormClosed() {
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
-    getRequest(endpoints.getSalesContact,(response) => {
+    getRequest(endpoints.getSalesContact, (response) => {
       //  console.log(response.data);
       setSalesContactList(response);
     });
@@ -25,12 +25,16 @@ export default function CombinedScheduleDetailsFormClosed() {
   const [scheduleListDetailsData, setScheduleListDetailsData] = useState([]);
   const getScheduleListDetails = () => {
     // console.log(selectedRow.ScheduleId);
-    postRequest(endpoints.getSchedudleDetails, {
-      selectedRow,
-    },(response) => {
-      // console.log(response.data);
-      setScheduleListDetailsData(response);
-    });
+    postRequest(
+      endpoints.getSchedudleDetails,
+      {
+        selectedRow,
+      },
+      (response) => {
+        // console.log(response.data);
+        setScheduleListDetailsData(response);
+      }
+    );
   };
 
   const getBackgroundColor = (item) => {
@@ -98,12 +102,16 @@ export default function CombinedScheduleDetailsFormClosed() {
   //Combined Tasks Table 1
   const [TaskNoTableData, setTaskNoTableData] = useState([]);
   const getTaskNoTabledata = () => {
-    postRequest(endpoints.CombinedTasksTaskTable, {
-      ScheduleId: selectedRow?.ScheduleId,
-    },(response) => {
-      // console.log(response.data);
-      setTaskNoTableData(response);
-    });
+    postRequest(
+      endpoints.CombinedTasksTaskTable,
+      {
+        ScheduleId: selectedRow?.ScheduleId,
+      },
+      (response) => {
+        // console.log(response.data);
+        setTaskNoTableData(response);
+      }
+    );
   };
 
   //const row select TaskNo Table
@@ -112,23 +120,31 @@ export default function CombinedScheduleDetailsFormClosed() {
   const rowSelectFuncTaskNo = (item, index) => {
     let list = { ...item, index: index };
     setSelectedTaskNo(list);
-    postRequest(endpoints.CombinedTasksShowDwg, {
-      TaskNo: list?.TaskNo,
-    },(response) => {
-      // console.log(response.data);
-      setDwgNameTableData(response);
-    });
+    postRequest(
+      endpoints.CombinedTasksShowDwg,
+      {
+        TaskNo: list?.TaskNo,
+      },
+      (response) => {
+        // console.log(response.data);
+        setDwgNameTableData(response);
+      }
+    );
   };
 
   ///Original Schedules Table 1
   const [orinalScheudledata, setOrinalScheduledata] = useState([]);
   const getOriginalTable1 = () => {
-    postRequest(endpoints.OriginalTable, {
-      selectedRow,
-    },(response) => {
-      // console.log(response.data);
-      setOrinalScheduledata(response);
-    });
+    postRequest(
+      endpoints.OriginalTable,
+      {
+        selectedRow,
+      },
+      (response) => {
+        // console.log(response.data);
+        setOrinalScheduledata(response);
+      }
+    );
   };
 
   //table row select
@@ -138,12 +154,16 @@ export default function CombinedScheduleDetailsFormClosed() {
     let list = { ...item, index: index };
     // console.log(list);
     setSelectedOrignalSchedule(list);
-    postRequest(endpoints.OriginalTable2, {
-      list,
-    },(response) => {
-      // console.log(response.data);
-      setOrinalScheduleTable2(response);
-    });
+    postRequest(
+      endpoints.OriginalTable2,
+      {
+        list,
+      },
+      (response) => {
+        // console.log(response.data);
+        setOrinalScheduleTable2(response);
+      }
+    );
   };
 
   useEffect(() => {
@@ -158,12 +178,15 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.updateToOriganalSchedule, {
       selectedRow,
     });
-    toast
-      .success("Sucessfully Updated", {
+    toast.success(
+      "Sucessfully Updated",
+      {
         position: toast.POSITION.TOP_CENTER,
-      },(response) => {
+      },
+      (response) => {
         // console.log(response.data);
-      });
+      }
+    );
   };
 
   //rowselect for dwg name table
@@ -177,25 +200,29 @@ export default function CombinedScheduleDetailsFormClosed() {
   // console.log(selectedTaskNo);
 
   const updateTask = () => {
-    postRequest(endpoints.updateTask, {
-      DwgSelect,
-    },(response) => {
-      // console.log(response.data);
-      if (response === "Success") {
-        toast.success(response, {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      } else {
-        toast.error(response, {
-          position: toast.POSITION.TOP_CENTER,
-        });
+    postRequest(
+      endpoints.updateTask,
+      {
+        DwgSelect,
+      },
+      (response) => {
+        // console.log(response.data);
+        if (response === "Success") {
+          toast.success(response, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error(response, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       }
-    });
+    );
   };
 
   //Distribute Parts
   const distributeParts = () => {
-    postRequest(endpoints.distributeParts, { selectedRow },(response) => {
+    postRequest(endpoints.distributeParts, { selectedRow }, (response) => {
       console.log(response);
     });
   };
@@ -254,7 +281,7 @@ export default function CombinedScheduleDetailsFormClosed() {
       Dealing_Engineer: selectedSalesContact, // Set Dealing_Engineer to selectedSalesContact
     };
 
-    postRequest(endpoints.save, { updatedSelectedRow },(response) => {
+    postRequest(endpoints.save, { updatedSelectedRow }, (response) => {
       toast.success("Saved", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -266,60 +293,98 @@ export default function CombinedScheduleDetailsFormClosed() {
       <h4 className="title">Combined Schedule Details Form</h4>
       <div className="ip-box">
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
+          <div
+            className="d-flex field-gap col-md-4 col-sm-12"
+            style={{ gap: "92px" }}
+          >
             <label className="form-label">No</label>
-            <input class="" type="text" value={selectedRow.OrdSchNo} />
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow.OrdSchNo}
+            />
           </div>
 
-          <div className="col-md-4  mb-2 col-sm-12">
+          <div
+            className="d-flex field-gap col-md-4 col-sm-12"
+            style={{ gap: "17px" }}
+          >
             <label className="form-label">Customer</label>
-            <input class="" type="text" value={selectedRow.Cust_name} />
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow.Cust_name}
+            />
           </div>
 
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label"> Sales Contact</label>
-            <input class="" type="text" value={selectedRow.SalesContact} />
+          <div className="d-flex field-gap col-md-4 col-sm-12">
+            <label className="form-label label-space"> Sales Contact</label>
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow.SalesContact}
+            />
           </div>
         </div>
 
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
+          <div
+            className="d-flex field-gap col-md-4 col-sm-12"
+            style={{ gap: "82px" }}
+          >
             <label className="form-label">Type</label>
-            <input class="" type="text" value={selectedRow.ScheduleType} />
-          </div>
-
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label">PO No</label>
-            <input class="" type="text" value={selectedRow.PO} />
-          </div>
-
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label"> Target Date</label>
             <input
-              class=""
+              className="in-field"
+              type="text"
+              value={selectedRow.ScheduleType}
+            />
+          </div>
+
+          <div
+            className="d-flex field-gap col-md-4 col-sm-12"
+            style={{ gap: "34px" }}
+          >
+            <label className="form-label label-space">PO No</label>
+            <input className="in-field" type="text" value={selectedRow.PO} />
+          </div>
+
+          <div
+            className="d-flex field-gap col-md-4 col-sm-12"
+            style={{ gap: "20px" }}
+          >
+            <label className="form-label label-space"> Target Date</label>
+            <input
+              className="in-field"
               type="text"
               value={formatDeliveryDate(selectedRow.schTgtDate)}
             />
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
+          <div
+            className="field-gap d-flex col-md-4 col-sm-12"
+            style={{ gap: "73px" }}
+          >
             <label className="form-label">Status</label>
-            <input class="" type="text" value={selectedRow.Schedule_Status} />
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow.Schedule_Status}
+            />
           </div>
-          <div className="col-md-4  mb-2 col-sm-12">
+          <div className="d-flex field-gap col-md-4 col-sm-12">
             <label className="form-label">Instruction</label>
             <input
-              class=""
+              className="in-field"
               type="text"
               onChange={onChangeInstruction}
               value={selectedRow.Special_Instructions}
             />
           </div>
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label"> Delivery Date</label>
+          <div className="d-flex field-gap col-md-4 col-sm-12">
+            <label className="form-label label-space"> Delivery Date</label>
             <input
-              className="mt-1"
+              className="in-field"
               type="date"
               onChange={(e) => handleDateChange(e)}
               value={displayDate}
@@ -327,8 +392,8 @@ export default function CombinedScheduleDetailsFormClosed() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
-            <label className="form-label"> Dealing Engineer</label>
+          <div className="d-flex field-gap col-md-4 col-sm-12">
+            <label className="form-label label-space"> Dealing Engineer</label>
             <select
               id="gstpan"
               className="ip-select mt-1"
@@ -347,43 +412,21 @@ export default function CombinedScheduleDetailsFormClosed() {
           </div>
         </div>
       </div>
-      <div
-        className="row justify-content-center mt-5"
-        style={{ display: "flex" }}
-      >
-        <button
-          className="button-style"
-          style={{ width: "60px" }}
-          onClick={onClickSave}
-        >
-          Save
-        </button>
-        <button
-          className="button-style"
-          style={{ width: "150px" }}
-          onClick={distributeParts}
-        >
-          Distribute Parts
-        </button>
-        <button
-          className="button-style"
-          style={{ width: "270px" }}
-          onClick={updateToOriganSchedule}
-        >
-          Update To Original Schedule
-        </button>
-        <button className="button-style" style={{ width: "120px" }}>
-          Short Close
-        </button>
-        <button className="button-style" style={{ width: "80px" }}>
-          Cancel
-        </button>
+      <div className="row">
         <div>
-          <button
-            className="button-style"
-            style={{ width: "130px" }}
-            onClick={handleButtonClick}
-          >
+          <button className="button-style" onClick={onClickSave}>
+            Save
+          </button>
+          <button className="button-style" onClick={distributeParts}>
+            Distribute Parts
+          </button>
+          <button className="button-style" onClick={updateToOriganSchedule}>
+            Update To Original Schedule
+          </button>
+          <button className="button-style">Short Close</button>
+          <button className="button-style">Cancel</button>
+
+          <button className="button-style" onClick={handleButtonClick}>
             Open Folder
           </button>
           <input
@@ -392,31 +435,24 @@ export default function CombinedScheduleDetailsFormClosed() {
             style={{ display: "none" }}
             onChange={handleFileChange}
           />
+
+          <button className="button-style">Copy Drawings</button>
+          <button className="button-style">Print</button>
+          <button className="button-style">NC Programming</button>
         </div>
-        <button className="button-style" style={{ width: "150px" }}>
-          Copy Drawings
-        </button>
-        <button className="button-style" style={{ width: "60px" }}>
-          Print
-        </button>
-        <button className="button-style" style={{ width: "170px" }}>
-          NC Programming
-        </button>
       </div>
 
-      <Tabs className=" tab_font mt-4">
+      <Tabs className=" tab_font mt-1">
         <Tab eventKey="" title="Schedule Details">
           <div className="row">
             <div className="col-md-8">
               <div>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
-                    height: "200px",
                     overflowY: "scroll",
                     overflowX: "scroll",
-                    width: "200px",
                   }}
                 >
                   <thead className="tableHeaderBGColor ">
@@ -464,10 +500,9 @@ export default function CombinedScheduleDetailsFormClosed() {
               <div style={{ overflowY: "scroll" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
@@ -500,13 +535,15 @@ export default function CombinedScheduleDetailsFormClosed() {
               <button className="button-style" onClick={updateTask}>
                 Update Task
               </button>
-              <div style={{ height: "300px", overflowY: "scroll" }}>
+              <div
+                className="mt-1"
+                style={{ height: "300px", overflowY: "scroll" }}
+              >
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
@@ -550,15 +587,12 @@ export default function CombinedScheduleDetailsFormClosed() {
                   </tbody>
                 </Table>
               </div>
-              <div
-                style={{ height: "190px", width: "400px", overflowY: "scroll" }}
-              >
+              <div style={{ height: "190px", overflowY: "scroll" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
@@ -574,17 +608,22 @@ export default function CombinedScheduleDetailsFormClosed() {
               </div>
             </div>
             <div className="col-md-4">
-              <div style={{ height: "350px", overflowY: "scroll" }}>
+              <div
+                style={{
+                  height: "300px",
+                  overflowY: "scroll",
+                  marginTop: "37px",
+                }}
+              >
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor table-space">
+                  <thead className="tableHeaderBGColor table-space label-space">
                     <tr>
                       <th>Dwg Name</th>
                       <th>Qty To Nest</th>
@@ -621,12 +660,11 @@ export default function CombinedScheduleDetailsFormClosed() {
         <Tab eventKey="prepareSchedule" title="Original Schedules">
           <div className="row">
             <div className="col-md-5">
-              <div style={{ overflowY: "scroll" }}>
+              <div style={{ overflowY: "scroll", height: "400px" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
@@ -667,13 +705,12 @@ export default function CombinedScheduleDetailsFormClosed() {
             </div>
             <div className="col-md-7">
               {" "}
-              <div style={{ overflow: "scroll" }}>
+              <div style={{ overflow: "scroll",  height: "400px", }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >

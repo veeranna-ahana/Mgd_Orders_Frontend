@@ -92,7 +92,10 @@ function ImportDwgModal(props) {
                 </div>
                 <div className="row mt-1">
                   <Form.Group controlId="strprocess">
-                    <div className="d-flex md-col-4 field-gap" style={{gap:'45px'}}>
+                    <div
+                      className="d-flex md-col-4 field-gap"
+                      style={{ gap: "45px" }}
+                    >
                       <label className="form-label">Process</label>
                       {procdata?.length > 0 ? (
                         <select
@@ -120,7 +123,10 @@ function ImportDwgModal(props) {
                 </div>
                 <div className="row mt-1">
                   <Form.Group controlId="source">
-                    <div className="d-flex md-col-4 field-gap" style={{gap:'50px'}}>
+                    <div
+                      className="d-flex md-col-4 field-gap"
+                      style={{ gap: "50px" }}
+                    >
                       <label className="form-label">Source</label>
                       <select
                         className="ip-select"
@@ -139,7 +145,10 @@ function ImportDwgModal(props) {
                 </div>
 
                 <div className="row mt-1">
-                  <div className="d-flex md-col-4 field-gap" style={{gap:'35px'}}>
+                  <div
+                    className="d-flex md-col-4 field-gap"
+                    style={{ gap: "35px" }}
+                  >
                     <label className="form-label">Tolerance</label>
                     {tolerancedata?.length > 0 ? (
                       <select
@@ -166,7 +175,10 @@ function ImportDwgModal(props) {
                 </div>
 
                 <div className="row mt-1">
-                  <div className="d-flex col-md-6 field-gap" style={{gap:'33px'}}>
+                  <div
+                    className="d-flex col-md-6 field-gap"
+                    style={{ gap: "33px" }}
+                  >
                     <label className="form-label label-space">Insp Level</label>
                     {inspdata?.length > 0 ? (
                       <select
@@ -220,7 +232,10 @@ function ImportDwgModal(props) {
                 <div className="row mt-1"></div>
 
                 <div className="row mt-1">
-                  <div className="d-flex col-md-12 field-gap" style={{gap:'40px'}}>
+                  <div
+                    className="d-flex col-md-12 field-gap"
+                    style={{ gap: "40px" }}
+                  >
                     <label className="form-label">Quantity</label>
                     <input
                       className="in-field"
@@ -235,7 +250,10 @@ function ImportDwgModal(props) {
                 <label className=" ms-3 form-label">Rate </label>
                 <div className="d-flex">
                   <div className="row">
-                    <div className="d-flex field-gap col-md-6" style={{gap:'45px'}}>
+                    <div
+                      className="d-flex field-gap col-md-6"
+                      style={{ gap: "45px" }}
+                    >
                       <label className="form-label">Cutting </label>
                       <input
                         className="in-field"
@@ -256,8 +274,13 @@ function ImportDwgModal(props) {
                   </div>
                 </div>
                 <div className="row mt-1">
-                  <div className="d-flex field-gap md-col-4" style={{gap:'25px'}}>
-                    <label className="form-label label-space">Select Files </label>
+                  <div
+                    className="d-flex field-gap md-col-4"
+                    style={{ gap: "25px" }}
+                  >
+                    <label className="form-label label-space">
+                      Select Files{" "}
+                    </label>
                     <input
                       className="in-field"
                       type="file"
@@ -286,6 +309,7 @@ function ImportDwgModal(props) {
               <button
                 className="button-style"
                 variant="secondary"
+                style={{ backgroundColor: "gray" }}
                 onClick={() => handleCloseImportDwgmdl()}
               >
                 Close

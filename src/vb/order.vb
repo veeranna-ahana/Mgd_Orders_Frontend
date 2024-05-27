@@ -266,7 +266,7 @@ Public Class Order
             With DA_Schedule
 
 
-                With .SelectCommand
+                With.SelectCommand
                     .CommandText = "SELECT c.cust_name, o.*,m.indent_no,m.indentstatus " _
                                 & "FROM magodmis.cust_data c, magodmis.orderschedule o " _
                                 & "left join magodmis.mtrl_indent_register m on o.`ScheduleID`=m.`scheduleId`" _
@@ -2235,7 +2235,6 @@ Skip:
     Private Sub setOrderSrlStatus()
         Dim IntSchStatus As Integer
         If Orders1.Order_Details.Rows.Count > 0 Then
-
 
             For Each srl As magod.Orders.Order_DetailsRow In Orders1.Order_Details.Rows
                 With srl

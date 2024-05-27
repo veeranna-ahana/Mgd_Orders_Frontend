@@ -15,9 +15,8 @@ function ServiceOpenSchedule() {
 
   //  console.log("DwgNameList is", DwgNameList[0]);
 
-   
-    // Standardize the case of the property name
-    const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
+  // Standardize the case of the property name
+  const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
 
   // Set initial state of newState to DwgNameList
   const [newState, setNewState] = useState(DwgNameList);
@@ -31,7 +30,7 @@ function ServiceOpenSchedule() {
         setNewState(response);
       }
     );
-  }, []); 
+  }, []);
 
   let [profileOrder1, setProfileOrder1] = useState(false);
   let [profileOrder2, setProfileOrder2] = useState(false);
@@ -81,8 +80,7 @@ function ServiceOpenSchedule() {
 
   useEffect(() => {
     if (DwgNameList.length === 0) return; // Ensure DwgNameList is not empty
-   
-  
+
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
@@ -102,7 +100,6 @@ function ServiceOpenSchedule() {
       }
     );
   }, [DwgNameList[0]]);
-  
 
   //get Sales Contact
   const [ProgramEngineer, setProgramEngineer] = useState([]);
@@ -132,7 +129,7 @@ function ServiceOpenSchedule() {
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
-    console.log("scheduleDetailsRow",scheduleDetailsRow);
+    console.log("scheduleDetailsRow", scheduleDetailsRow);
     if (scheduleDetailsRow) {
       postRequest(
         endpoints.getScheduleListTaskandMaterial,
@@ -144,30 +141,24 @@ function ServiceOpenSchedule() {
       );
     }
   }, [scheduleDetailsRow]); // Watch for changes in scheduleDetailsRow
-  
-
 
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
-  const[tmDwgList,setTmDwgList]=useState([]);
+  const [tmDwgList, setTmDwgList] = useState([]);
   const onRowSelectTaskMaterialTable = (item, index) => {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
-    console.log("list is",list);
+    console.log("list is", list);
     // Check if list is present before making the request
     if (list) {
+      postRequest(endpoints.getDwgListData, { list }, (response) => {
+        // console.log("response is", response);
+        setTmDwgList(response);
+      });
+    } else {
       postRequest(
         endpoints.getDwgListData,
-        { list },
-        (response) => {
-          // console.log("response is", response);
-          setTmDwgList(response);
-        }
-      );
-    }else{
-      postRequest(
-        endpoints.getDwgListData,
-        { list:rowselectTaskMaterial },
+        { list: rowselectTaskMaterial },
         (response) => {
           // console.log("response is", response);
           setTmDwgList(response);
@@ -175,17 +166,15 @@ function ServiceOpenSchedule() {
       );
     }
   };
-  
- //Default first row select for Task and Mterial
- useEffect(() => {
-  if (TaskMaterialData.length > 0 && !rowselectTaskMaterial.TaskNo) {
-    onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
-  }
-}, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
-  
+
+  //Default first row select for Task and Mterial
+  useEffect(() => {
+    if (TaskMaterialData.length > 0 && !rowselectTaskMaterial.TaskNo) {
+      onRowSelectTaskMaterialTable(TaskMaterialData[0], 0); // Select the first row
+    }
+  }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
+
   // console.log("rowselectTaskMaterial",rowselectTaskMaterial);
-
-
 
   //Onclick of Table
   const onClickofScheduleDtails = (item, index) => {
@@ -193,7 +182,7 @@ function ServiceOpenSchedule() {
     setScheduleDetailsRow(list);
     postRequest(
       endpoints.getScheduleListTaskandMaterial,
-      { scheduleDetailsRow:list },
+      { scheduleDetailsRow: list },
       (response) => {
         setTaskMaterialData(response);
         setRowSelectTaskMaterial({ ...response[0], index: 0 });
@@ -207,7 +196,6 @@ function ServiceOpenSchedule() {
       onClickofScheduleDtails(newState[0], 0); // Select the first row
     }
   }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
-
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -289,11 +277,11 @@ function ServiceOpenSchedule() {
 
   //Onclick Suspend
   const OnClickSuspend = () => {
-    if(formdata[0]?.Schedule_Status === "Suspended" ){
+    if (formdata[0]?.Schedule_Status === "Suspended") {
       postRequest(
         endpoints.releaseSuspended,
         {
-          formdata
+          formdata,
         },
         (response) => {
           toast.success("Success", {
@@ -311,40 +299,34 @@ function ServiceOpenSchedule() {
           );
         }
       );
-    }
-    else{
-      postRequest(
-        endpoints.onClickSuspend,
-        { formdata },
-        (response) => {
-          if (
-            response.message ===
-            "Clear Order Suspension of the order before trying to clear it for schedule"
-          ) {
-            toast.warning(
-              "Clear Order Suspension of the order before trying to clear it for schedule",
-              {
-                position: toast.POSITION.TOP_CENTER,
-              }
-            );
-          } else {
-            toast.success("Suspended", {
+    } else {
+      postRequest(endpoints.onClickSuspend, { formdata }, (response) => {
+        if (
+          response.message ===
+          "Clear Order Suspension of the order before trying to clear it for schedule"
+        ) {
+          toast.warning(
+            "Clear Order Suspension of the order before trying to clear it for schedule",
+            {
               position: toast.POSITION.TOP_CENTER,
-            });
-            postRequest(
-              endpoints.getScheduleListgetFormDetails,
-              {
-                Cust_Code: DwgNameList[0]?.Cust_Code,
-                ScheduleId: DwgNameList[0]?.ScheduleId,
-              },
-              (response) => {
-                setFormdata(response);
-              }
-            );
-          }
+            }
+          );
+        } else {
+          toast.success("Suspended", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          postRequest(
+            endpoints.getScheduleListgetFormDetails,
+            {
+              Cust_Code: DwgNameList[0]?.Cust_Code,
+              ScheduleId: DwgNameList[0]?.ScheduleId,
+            },
+            (response) => {
+              setFormdata(response);
+            }
+          );
         }
-      );
-
+      });
     }
   };
 
@@ -375,20 +357,20 @@ function ServiceOpenSchedule() {
   };
 
   //Scheduled
-  const[openScheduleModal,setOpenScheduleModal]=useState(false);
-  const[responseSchedule,setResponseSchedule]=useState('');
-  const[delelteAskModal,setDeleteAskModal]=useState(false);
-  const[deleteResponse,setDeleteResponse]=useState('');
+  const [openScheduleModal, setOpenScheduleModal] = useState(false);
+  const [responseSchedule, setResponseSchedule] = useState("");
+  const [delelteAskModal, setDeleteAskModal] = useState(false);
+  const [deleteResponse, setDeleteResponse] = useState("");
   const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
-      { scheduleDetailsRow, formdata,newState},
+      { scheduleDetailsRow, formdata, newState },
       (response) => {
         if (response.message === "Scheduled") {
           toast.success(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
-  
+
           // Introducing a delay of 1000 milliseconds (1 second)
           setTimeout(() => {
             postRequest(
@@ -399,14 +381,16 @@ function ServiceOpenSchedule() {
               }
             );
           }, 3000);
-        } else if (response.message.startsWith("Cannot Schedule Zero Quantity For")) {
+        } else if (
+          response.message.startsWith("Cannot Schedule Zero Quantity For")
+        ) {
           setDeleteAskModal(true);
           setDeleteResponse(response.message);
         } else {
           setOpenScheduleModal(true);
           setResponseSchedule(response.message);
         }
-  
+
         postRequest(
           endpoints.getScheduleListgetFormDetails,
           {
@@ -420,33 +404,30 @@ function ServiceOpenSchedule() {
       }
     );
   };
-  
-  
 
   //onClick of yes Payment ALert Modal
-  const onClickScheduleYes=()=>{
+  const onClickScheduleYes = () => {
     setOpenScheduleModal(false);
     toast.warning("Caution Customer for Payment ", {
       position: toast.POSITION.TOP_CENTER,
     });
-  }
+  };
 
   //onClick No For Payment ALert Modal
-  const onClickScheduleNo=()=>{
+  const onClickScheduleNo = () => {
     setOpenScheduleModal(false);
     toast.warning("Unit Head needs to approve this personally", {
       position: toast.POSITION.TOP_CENTER,
     });
-  }
+  };
 
   //Onclick of Yes for Zero Quantity(Delete Dwg)
-  const onclickYes=()=>{
+  const onclickYes = () => {
     setDeleteAskModal(false);
     toast.warning("Deleted Sucessfully", {
       position: toast.POSITION.TOP_CENTER,
     });
-  }
-
+  };
 
   //OnClick NCProgram
   const navigate = useNavigate();
@@ -491,7 +472,6 @@ function ServiceOpenSchedule() {
     });
   };
 
-
   //OnClick Yes Fixture Order
   const [fixturedata, setFixtureData] = useState([]);
   const onClickYesFixtureOrder = () => {
@@ -502,17 +482,15 @@ function ServiceOpenSchedule() {
       setFixtureData(response);
       setFixtureOrder1(false);
       // console.log("response",response);
-       if(response[0].Type==='Service'){
+      if (response[0].Type === "Service") {
         navigate("/Orders/Service/ScheduleCreationForm", {
           state: response[0].Order_No,
         });
-      }else if(response[0].Type==='Profile'){
+      } else if (response[0].Type === "Profile") {
         navigate("/Orders/Profile/ScheduleCreationForm", {
           state: response[0].Order_No,
         });
-      }
-      else if(response[0].Type==='Fabrication')
-      {
+      } else if (response[0].Type === "Fabrication") {
         navigate("/Orders/Fabrication/ScheduleCreationForm", {
           state: response[0].Order_No,
         });
@@ -520,24 +498,22 @@ function ServiceOpenSchedule() {
     });
   };
 
-
-//onClick of Profile Orders
-const[profileOrders,setProfileOrders]=useState([]);
-const onClickYesProfileOrders = () => {
-  postRequest(endpoints.onClickProfileOrder, { formdata }, (response) => {
-    toast.success("Order Created", {
-      position: toast.POSITION.TOP_CENTER,
+  //onClick of Profile Orders
+  const [profileOrders, setProfileOrders] = useState([]);
+  const onClickYesProfileOrders = () => {
+    postRequest(endpoints.onClickProfileOrder, { formdata }, (response) => {
+      toast.success("Order Created", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      setProfileOrders(response);
+      setProfileOrder1(false);
+      navigate("/Orders/Profile/ScheduleCreationForm", {
+        state: response[0].Order_No,
+      });
     });
-    setProfileOrders(response);
-    setProfileOrder1(false);
-    navigate("/Orders/Profile/ScheduleCreationForm", {
-      state: response[0].Order_No,
-    });
-  });
-};
+  };
 
-
-//set OrderSchNo
+  //set OrderSchNo
   const ScheduleNo = formdata[0]?.ScheduleNo;
   const Orsch =
     formdata[0]?.Order_No +
@@ -545,7 +521,6 @@ const onClickYesProfileOrders = () => {
     (ScheduleNo != null && ScheduleNo !== "null" && ScheduleNo !== undefined
       ? ScheduleNo
       : "");
-
 
   //CHECK STATUS
   const checkstatus = () => {
@@ -561,84 +536,123 @@ const onClickYesProfileOrders = () => {
     );
   };
 
-
-// Onclick MPdf Open
-const[serviceOpen,setServiceOpen]=useState(false);
-const OnclickPdfOpen=()=>{
-  setServiceOpen(true);
-}
-
-// console.log("formdata is",formdata);
-
-// 
-const handleSchedulelist = (index, field, value) => {
-  // console.log("value is",value);
-  const updatedDwgdata = [...newState]; // Create a copy of the array
-  // Update the specific item's field with the new value
-  // console.log("updatedDwgdata",updatedDwgdata);
-  updatedDwgdata[index] = {
-    ...updatedDwgdata[index],
-    [field]: value,
+  // Onclick MPdf Open
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const OnclickPdfOpen = () => {
+    setServiceOpen(true);
   };
-  setNewState(updatedDwgdata);
-};
 
-// console.log("newState is",newState);
+  // console.log("formdata is",formdata);
+
+  //
+  const handleSchedulelist = (index, field, value) => {
+    // console.log("value is",value);
+    const updatedDwgdata = [...newState]; // Create a copy of the array
+    // Update the specific item's field with the new value
+    // console.log("updatedDwgdata",updatedDwgdata);
+    updatedDwgdata[index] = {
+      ...updatedDwgdata[index],
+      [field]: value,
+    };
+    setNewState(updatedDwgdata);
+  };
+
+  // console.log("newState is",newState);
 
   return (
     <div>
+      <h4 className="title">Order Schedule Details</h4>
+      <label className="form-label ms-2">Service</label>
+
       <div className="row">
-        <div className="col-md-12">
-          <h4 className="title">Order Schedule Details</h4>
-        </div>
-      </div>
-      <div className="row">
-        <h4>Service</h4>
-        <div className="col-md-4 sm-12 ">
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "62px" }}
+        >
           <label className="form-label">Customer</label>
-          <input type="text" value={formdata[0]?.Cust_name} disabled />
-        </div>
-
-        <div className="col-md-4 sm-12">
-          <label className="form-label">Sales Contact</label>
-          <input type="text" value={formdata[0]?.SalesContact} disabled />
-        </div>
-
-        <div className="col-md-4 sm-12">
-          <label className="form-label">Schedule No</label>
           <input
-             type="text"
-           value={
-          formdata[0]?.Schedule_Status === 'Created'
-             ? Orsch
-            : formdata[0]?.OrdSchNo
+            className="in-field"
+            type="text"
+            value={formdata[0]?.Cust_name}
+            disabled
+          />
+        </div>
+
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "25px" }}
+        >
+          <label className="form-label label-space">Sales Contact</label>
+          <input
+            className="in-field"
+            type="text"
+            value={formdata[0]?.SalesContact}
+            disabled
+          />
+        </div>
+
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "15px" }}
+        >
+          <label className="form-label label-space">Schedule No</label>
+          <input
+            className="in-field"
+            type="text"
+            value={
+              formdata[0]?.Schedule_Status === "Created"
+                ? Orsch
+                : formdata[0]?.OrdSchNo
             }
-           disabled
-           />
-
+            disabled
+          />
         </div>
       </div>
 
       <div className="row mt-2">
-        <div className="col-md-4 sm-12 ">
-          <label className="form-label">Schedule Type</label>
-          <input type="text" value={formdata[0]?.ScheduleType} disabled />
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "35px" }}
+        >
+          <label className="form-label label-space">Schedule Type</label>
+          <input
+            className="in-field"
+            type="text"
+            value={formdata[0]?.ScheduleType}
+            disabled
+          />
         </div>
 
-        <div className="col-md-4 sm-12">
-          <label className="form-label">Schedule Status</label>
-          <input type="text" value={formdata[0]?.Schedule_Status} disabled />
+        <div className="d-flex field-gap col-md-4 sm-12">
+          <label className="form-label label-space">Schedule Status</label>
+          <input
+            className="in-field"
+            type="text"
+            value={formdata[0]?.Schedule_Status}
+            disabled
+          />
         </div>
 
-        <div className="col-md-4 sm-12">
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "70px" }}
+        >
           <label className="form-label">PO</label>
-          <input type="text" value={formdata[0]?.PO} disabled />
+          <input
+            className="in-field"
+            type="text"
+            value={formdata[0]?.PO}
+            disabled
+          />
         </div>
       </div>
 
       <div className="row mt-2">
-        <div className="col-md-4 sm-12 ">
-          <label className="form-label">Program Engineer</label>
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "12px" }}
+        >
+          <label className="form-label label-space">Program Engineer</label>
           <select
             id=""
             className="ip-select"
@@ -657,17 +671,22 @@ const handleSchedulelist = (index, field, value) => {
           </select>
         </div>
 
-        <div className="col-md-4 sm-12">
-          <label className="form-label">Target Date</label>
+        <div
+          className="d-flex field-gap col-md-4 sm-12"
+          style={{ gap: "35px" }}
+        >
+          <label className="form-label label-space">Target Date</label>
           <input
+            className="in-field"
             type="date"
             value={formatDate(formdata[0]?.schTgtDate)}
             disabled
           />
         </div>
-        <div className="col-md-4 sm-12">
-          <label className="form-label">Delivery Date</label>
+        <div className="d-flex field-gap col-md-4 sm-12">
+          <label className="form-label label-space">Delivery Date</label>
           <input
+            className="in-field"
             type="date"
             value={deliveryDate}
             onChange={handleChangeDeliveryDate}
@@ -676,18 +695,19 @@ const handleSchedulelist = (index, field, value) => {
       </div>
 
       <div className="row mt-2">
-        <div className="col-md-4 sm-12">
-          <label className="form-label">Special Instruction</label>
+        <div className="d-flex field-gap col-md-4 sm-12">
+          <label className="form-label label-space">Special Instruction</label>
           <textarea
+            className="in-field"
             onChange={handleChangeSpecialInstruction}
             id="exampleFormControlTextarea1"
             rows="3"
-            style={{ width: "360px" }}
+            style={{ width: "360px", height: "50px" }}
             value={formdata[0]?.Special_Instructions}
           ></textarea>
         </div>
 
-        <div className="col-md-8 sm-12 mt-5">
+        <div className="col-md-8 sm-12">
           <button
             className="button-style"
             onClick={OnClickSuspend}
@@ -701,8 +721,10 @@ const handleSchedulelist = (index, field, value) => {
               formdata[0]?.Schedule_Status === "Cancelled"
             }
           >
-            {formdata[0]?.Schedule_Status === "Suspended" ? "Release" : "Suspend"}          
-            </button>
+            {formdata[0]?.Schedule_Status === "Suspended"
+              ? "Release"
+              : "Suspend"}
+          </button>
 
           <button
             className="button-style"
@@ -750,8 +772,8 @@ const handleSchedulelist = (index, field, value) => {
         </div>
       </div>
 
-      <div className="row mt-2">
-        <div className="col-md-2 col-sm-3">
+      <div className="row">
+        <div className="col-md-12 col-sm-3">
           <button
             className="button-style"
             onClick={onClickScheduled}
@@ -782,9 +804,7 @@ const handleSchedulelist = (index, field, value) => {
             `}
             </style>
           )}
-        </div>
 
-        <div className="col-md-2 col-sm-3">
           {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
           <button
             className="button-style "
@@ -801,9 +821,7 @@ const handleSchedulelist = (index, field, value) => {
             NC Program
           </button>
           {/* </Link> */}
-        </div>
 
-        <div className="col-md-2 col-sm-3">
           <button
             className="button-style"
             onClick={onClickTasked}
@@ -831,9 +849,7 @@ const handleSchedulelist = (index, field, value) => {
             }
             `}
           </style>
-        </div>
 
-        <div className="col-md-2 col-sm-3">
           <button
             className="button-style"
             onClick={onClickSave}
@@ -857,9 +873,7 @@ const handleSchedulelist = (index, field, value) => {
             `}
             </style>
           )}
-        </div>
 
-        <div className="col-md-2 col-sm-3">
           <button
             className="button-style"
             onClick={checkstatus}
@@ -873,11 +887,9 @@ const handleSchedulelist = (index, field, value) => {
           >
             Check Status
           </button>
-        </div>
 
-        <div className="col-md-2 col-sm-3">
           <button
-          onClick={OnclickPdfOpen}
+            onClick={OnclickPdfOpen}
             className="button-style "
             disabled={
               formdata[0]?.Schedule_Status === "Dispatched" ||
@@ -895,26 +907,20 @@ const handleSchedulelist = (index, field, value) => {
           >
             Print Schedule
           </button>
-        </div>
-        
-        {formdata.Type === 'Profile' && (
-        <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={profileOrderOpen1}
-          disabled={formdata[0]?.Schedule_Status !== "Scheduled" || formdata[0]?.Schedule_Status !== "Tasked" }
 
-          >
-            Profile Order
-          </button>
-        </div>
-      )}
+          {formdata.Type === "Profile" && (
+            <button
+              className="button-style"
+              onClick={profileOrderOpen1}
+              disabled={
+                formdata[0]?.Schedule_Status !== "Scheduled" ||
+                formdata[0]?.Schedule_Status !== "Tasked"
+              }
+            >
+              Profile Order
+            </button>
+          )}
 
-        {/* <div className="col-md-2 col-sm-3">
-          <button className="button-style" onClick={profileOrderOpen1}>
-            Profile Order
-          </button>
-        </div> */}
-
-        <div className="col-md-2 col-sm-3">
           <button
             className="button-style"
             onClick={fixtureOrderOpen1}
@@ -931,17 +937,19 @@ const handleSchedulelist = (index, field, value) => {
           >
             Fixture Order
           </button>
-        </div>
 
-        {/* <div className="col-md-2 col-sm-3">
-          <button className="button-style ">Show DXF</button>
-        </div> */}
+          {/* <button className="button-style" onClick={profileOrderOpen1}>
+            Profile Order
+          </button>
+
+          <button className="button-style ">Show DXF</button> */}
+        </div>
       </div>
 
       <div className="row">
-        <Tabs className=" tab_font mt-4">
+        <Tabs className=" tab_font mt-1">
           <Tab eventKey="Schedule Details" title="Schedule Details">
-            <div className="mt-3" style={{ overflow: "auto", height: "350px" }}>
+            <div className="mt-1" style={{ overflow: "auto", height: "auto" }}>
               <Table
                 striped
                 className="table-data border"
@@ -954,10 +962,9 @@ const handleSchedulelist = (index, field, value) => {
                     <th>Material</th>
                     <th>Source</th>
                     <th>Process</th>
-                    {formdata[0]?.Schedule_Status==='Created' ?
-                    <th>To Schedule</th>
-                      : null
-                    }
+                    {formdata[0]?.Schedule_Status === "Created" ? (
+                      <th>To Schedule</th>
+                    ) : null}
                     <th>Scheduled</th>
                     <th>Programmed</th>
                     <th>Produced</th>
@@ -985,19 +992,25 @@ const handleSchedulelist = (index, field, value) => {
                         <td>{item.Mtrl_Code}</td>
                         <td>{item.Mtrl_Source}</td>
                         <td>{item.Operation}</td>
-                        {formdata[0]?.Schedule_Status==='Created' ?
-                        <td>{item.QtyToSchedule}</td>
-                        : null
-                    }
+                        {formdata[0]?.Schedule_Status === "Created" ? (
+                          <td>{item.QtyToSchedule}</td>
+                        ) : null}
                         <td>
                           <input
-                          className="table-cell-editor"
-                          style={{backgroundColor:"transparent",border:"none"}}
-                          value={item.QtyScheduled}
-                          onChange={(e) =>
-                            handleSchedulelist(key, "QtyScheduled", e.target.value)
-                          }
-                        />
+                            className="table-cell-editor"
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            value={item.QtyScheduled}
+                            onChange={(e) =>
+                              handleSchedulelist(
+                                key,
+                                "QtyScheduled",
+                                e.target.value
+                              )
+                            }
+                          />
                         </td>
                         <td>{item.QtyProgrammed}</td>
                         <td>{item.QtyProduced}</td>
@@ -1015,21 +1028,21 @@ const handleSchedulelist = (index, field, value) => {
           </Tab>
 
           <Tab eventKey="Task and Material List" title="Task and Material List">
-            <div className="row mt-3">
+            <div className="row">
               <div style={{ display: "flex", gap: "170px" }}>
-                <h5 className="mt-3">Task List</h5>
+                <label className="form-label mt-1">Task List</label>
                 <button
-                  className="button-style mb-2"
+                  className="button-style"
                   onClick={onClickPerformance}
                 >
                   Performance
                 </button>
               </div>
               <div className="col-md-6">
-                <div style={{ height: "300px", overflow: "auto" }}>
+                <div className="mt-1" style={{ height: "auto", overflow: "auto" }}>
                   <Table
                     striped
-                    className="table-data border mt-2"
+                    className="table-data border"
                     style={{
                       border: "1px",
                     }}
@@ -1112,10 +1125,10 @@ const handleSchedulelist = (index, field, value) => {
                 </div>
               </div>
               <div className="col-md-6">
-                <div style={{ height: "300px", overflow: "auto" }}>
+                <div className="mt-1" style={{ height: "auto", overflow: "auto" }}>
                   <Table
                     striped
-                    className="table-data border mt-2 table-space"
+                    className="table-data border table-space"
                     style={{
                       border: "1px",
                     }}
@@ -1383,8 +1396,8 @@ const handleSchedulelist = (index, field, value) => {
         secondbuttontext="No"
       />
 
-{/* Schedule Button */}
-    <AlertModal
+      {/* Schedule Button */}
+      <AlertModal
         show={openScheduleModal}
         onHide={(e) => setOpenScheduleModal(e)}
         firstbutton={onClickScheduleYes}
@@ -1408,11 +1421,10 @@ const handleSchedulelist = (index, field, value) => {
       />
 
       <ServiceModal
-      serviceOpen={serviceOpen}
-      setServiceOpen={setServiceOpen}
-      formdata={formdata}
+        serviceOpen={serviceOpen}
+        setServiceOpen={setServiceOpen}
+        formdata={formdata}
       />
-
     </div>
   );
 }

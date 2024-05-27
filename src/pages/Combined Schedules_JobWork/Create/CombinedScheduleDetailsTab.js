@@ -11,23 +11,23 @@ export default function CombinedScheduleDetailsTab({
       <Form className="form mt-2">
         <div className="ip-box">
           <div className="row">
-            <div className="col-md-4 mb-2 col-sm-12">
+            <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'92px'}}>
               <label className="form-label">No</label>
               <input
-                class=""
+                class="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.OrdSchNo}
               />
             </div>
-            <div className="col-md-4  mb-2 col-sm-12">
+            <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'18px'}}>
               <label className="form-label">Customer</label>
-              <input class="" type="text" style={{ borderRadius: "0" }} />
+              <input className="in-field" type="text" style={{ borderRadius: "0" }} />
             </div>
-            <div className="col-md-4  mb-2 col-sm-12">
-              <label className="form-label"> Sales Contact</label>
+            <div className="d-flex field-gap col-md-4 col-sm-12">
+              <label className="form-label label-space"> Sales Contact</label>
               <input
-                class=""
+                className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.SalesContact}
@@ -35,28 +35,28 @@ export default function CombinedScheduleDetailsTab({
             </div>
           </div>
           <div className="row">
-            <div className="col-md-4 mb-2 col-sm-12">
+            <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'82px'}}>
               <label className="form-label">Type</label>
               <input
-                class=""
+                className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.ScheduleType}
               />
             </div>
-            <div className="col-md-4  mb-2 col-sm-12">
-              <label className="form-label">PO No</label>
+            <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'35px'}}>
+              <label className="form-label label-space">PO No</label>
               <input
-                class=""
+                className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.PO}
               />
             </div>
-            <div className="col-md-4  mb-2 col-sm-12">
-              <label className="form-label"> Target Date</label>
+            <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'21px'}}>
+              <label className="form-label label-space">Target Date</label>
               <input
-                class=""
+                className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.schTgtDate}
@@ -64,37 +64,37 @@ export default function CombinedScheduleDetailsTab({
             </div>
           </div>
           <div className="row">
-            <div className="col-md-4 mb-2 col-sm-12">
+            <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'73px'}}>
               <label className="form-label">Status</label>
               <input
-                class=""
+                className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.Schedule_Status}
               />
             </div>
 
-            <div className="col-md-4  mb-2 col-sm-12">
+            <div className="d-flex field-gap col-md-4 col-sm-12">
               <label className="form-label">Instruction</label>
               <input
-                class=""
+                className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
                 value={beforecombine[0]?.Special_Instructions || null}
               />
             </div>
-            <div className="col-md-4  mb-2 col-sm-12">
-              <label className="form-label"> Delivery Date</label>
+            <div className="d-flex field-gap col-md-4 col-sm-12">
+              <label className="form-label label-space"> Delivery Date</label>
               <input
-                className="mt-1"
+                className="in-field"
                 type="text"
                 value={beforecombine[0]?.Delivery_Date}
               />
             </div>
           </div>
           <div className="row">
-            <div className="col-md-4 mb-2 col-sm-12">
-              <label className="form-label"> Dealing Engineer</label>
+            <div className="d-flex field-gap col-md-4 col-sm-12">
+              <label className="form-label label-space"> Dealing Engineer</label>
               <select
                 id="gstpan"
                 className="ip-select"
@@ -110,7 +110,7 @@ export default function CombinedScheduleDetailsTab({
           </div>
         </div>
       </Form>
-      <div className="mt-3" style={{ height: "350px", overflowY: "scroll" }}>
+      <div className="mt-1" style={{ height: "250px", overflowY: "scroll" }}>
         <Table striped className="table-data border" style={{ border: "1px" }}>
           <thead className="tableHeaderBGColor">
             <tr>

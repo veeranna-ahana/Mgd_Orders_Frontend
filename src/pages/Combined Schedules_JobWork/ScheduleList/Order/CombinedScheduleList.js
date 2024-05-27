@@ -41,24 +41,25 @@ export default function CombinedScheduleList({ type }) {
   return (
     <div>
       <h4 className="title">Combined Schedule List</h4>{" "}
-      <div className="row mt-4 mb-1 ">
-        <button
-          className="button-style"
-          onClick={() =>
-            navigate("/Orders/JobWork/ScheduleList/Order/OpenDetailForm", {
-              state: { selectedRow: selectedRow },
-            })
-          }
-          style={{ width: "130px" }}
-        >
-          Open
-        </button>
+      <div className="">
+        <div className="col-md-12">
+          <button
+            className="button-style"
+            onClick={() =>
+              navigate("/Orders/JobWork/ScheduleList/Order/OpenDetailForm", {
+                state: { selectedRow: selectedRow },
+              })
+            }
+          >
+            Open
+          </button>
+        </div>
       </div>
-      <div style={{ overflowY: "scroll" }}>
+      <div className="mt-1" style={{ overflowY: "scroll", height: "350px", }}>
         <Table
           striped
-          className="table-data border mt-2"
-          style={{ border: "1px", height: "400px", overflowY: "scroll" }}
+          className="table-data border"
+          style={{ border: "1px", overflowY: "scroll" }}
         >
           <thead className="tableHeaderBGColor">
             <tr>
