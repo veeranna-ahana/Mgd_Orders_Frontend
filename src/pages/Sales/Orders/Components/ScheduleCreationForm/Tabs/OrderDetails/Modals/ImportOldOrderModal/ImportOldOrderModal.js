@@ -51,13 +51,15 @@ export default function ImportOldOrderModal(props) {
         fullscreen
       >
         <Modal.Header closeButton>
-          <Modal.Title>Import Old Order</Modal.Title>
+          <Modal.Title style={{ fontSize: "14px" }}>
+            Import Old Order
+          </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ paddingTop: "0px" }}>
           <Table
             striped
             className="table-data border"
-            style={{ border: "1px" }}
+            // style={{ border: "1px" }}
           >
             <thead className="tableHeaderBGColor">
               <tr>

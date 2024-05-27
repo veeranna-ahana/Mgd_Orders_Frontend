@@ -6,7 +6,7 @@ export default function DetailsTable(props) {
     <>
       <Table striped className="table-data border" style={{ border: "1px" }}>
         <thead className="tableHeaderBGColor">
-          <tr>
+          <tr className="label-space">
             <th>Srl</th>
             <th>Drawing Name</th>
             <th>Material Code</th>

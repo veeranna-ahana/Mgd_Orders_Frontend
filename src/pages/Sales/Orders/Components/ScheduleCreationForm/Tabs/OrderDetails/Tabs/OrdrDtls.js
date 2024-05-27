@@ -60,6 +60,7 @@ function OrdrDtls(props) {
     ordrDetailsChange,
     setordrDetailsChange,
     handleChange,
+    isLoading,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
@@ -142,83 +143,234 @@ function OrdrDtls(props) {
         newSerial={newSerial}
         setNewSerial={setNewSerial}
         handleChange={handleChange}
+        isLoading={isLoading}
       />
 
-      <div className="row">
-        {/* {selectedItems.map((item, i) => ( */}
-        <div className="col-md-8 col-sm-12">
-          <div className="ip-box form-bg">
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <label className="form-label">Order Details</label>
-
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">Srl No</label>
-                    <input
-                      className="in-field"
-                      type="text"
-                      value={LastSlctedRow?.Order_Srl || " "}
-                    />
-                  </div>
-                </div>
+      <div className="d-flex form-bg">
+        <div className="col-md-8">
+          <div className="row">
+            <div className="col-md-7 mt-2">
+              <div className="d-flex" style={{ gap: "42px" }}>
+                <label className="form-label label-space">Srl No</label>
+                <input
+                  className="in-field"
+                  type="text"
+                  value={LastSlctedRow?.Order_Srl || " "}
+                />
               </div>
-              <div className="col-md-6 mt-4 col-sm-12">
+              <div className="d-flex" style={{ gap: "13px" }}>
+                <label className="form-label label-space">Dwg Name</label>
+                <input
+                  className="in-field"
+                  type="text"
+                  name="odrDtlDwgName"
+                  // value={
+                  //   // selectedItems[0]?.DwgName || " "
+                  //   LastSlctedRow?.DwgName || " "
+                  // }
+                  value={ordrDetailsChange.DwgName}
+                  onChange={handleChange}
+                  disabled={
+                    props.OrderData?.Order_Status === "Created" ||
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                />
+              </div>
+              <div className="d-flex" style={{ gap: "29px" }}>
+                <label className="form-label">Material</label>
+                {/* <input
+                      className="in-fields"
+                      type="text"
+                      value={selectedItems[0]?.Mtrl_Code || " "}
+                    /> */}
+                {mtrldata.length > 0 || mtrldata != null ? (
+                  <Typeahead
+                    className="ip-select in-field"
+                    id="basic-example"
+                    name="odrDtlMaterial"
+                    labelKey="Mtrl_Code"
+                    onChange={handleMtrlCodeTypeaheadChange}
+                    selected={selectedItems}
+                    options={mtrldata}
+                    // onChange={(selected) =>
+                    //   changeMtrl("mtrlCode", selected[0]?.Mtrl_Code)
+                    // }
+                    placeholder="Choose a Material..."
+                    required
+                    disabled={
+                      props.OrderData?.Order_Type === "Complete" ||
+                      props.OrderData?.Order_Type === "Scheduled"
+                    }
+                  ></Typeahead>
+                ) : (
+                  ""
+                )}
+                {/* {mtrldata.length > 0 || mtrldata != null ? ( */}
+                {/* <Typeahead
+                      id="basic-example"
+                      labelKey="Mtrl_Code"
+                      name="newSrlMaterial"
+                      onChange={handleMtrlCodeTypeaheadChange}
+                      options={mtrldata}
+                      // placeholder="Choose a Material..."
+                      required
+                      value={selectedItems[0]?.Mtrl_Code}
+                    /> */}
+                {/* ) : (
+                      "" */}
+                {/* )} */}
+              </div>
+              <div className="d-flex" style={{ gap: "10px" }}>
+                <label className="form-label label-space">Mtrl Source</label>
+                {console.log(
+                  "ordrDetailsChange.MtrlSrc",
+                  ordrDetailsChange.MtrlSrc
+                )}
+                <select
+                  className="ip-select in-field"
+                  id="strsource"
+                  name="odrDtlMtrlSrc"
+                  value={ordrDetailsChange.MtrlSrc}
+                  onChange={handleChange}
+                  disabled={
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                >
+                  <option value="" selected>
+                    ** Select **
+                  </option>
+                  <option value={"Customer"}>Customer</option>
+                  <option value={"Magod"}>Magod</option>
+                </select>
+              </div>
+              <div className="d-flex" style={{ gap: "19px" }}>
+                <label className="form-label">Operation</label>
+                {/* <input
+                      className="in-fields"
+                      type="text"
+                      value={LastSlctedRow?.Operation || " "}
+                    /> */}
+                {/* {procdata.length > 0 ? ( */}
+                <select
+                  className="ip-select in-field"
+                  id="strprocess"
+                  name="odrDtlOperation"
+                  value={ordrDetailsChange.Operation}
+                  // onChange={selectProc}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled selected>
+                    ** Select **
+                  </option>
+                  {procdata.map((proc) => {
+                    // Check if "Service" column has non-zero values
+                    if (props.OrderData?.Type === "Service") {
+                      if (proc["Service"] !== 0) {
+                        return (
+                          <option
+                            key={proc["ProcessDescription"]}
+                            value={proc["ProcessDescription"]}
+                          >
+                            {proc["ProcessDescription"]}
+                          </option>
+                        );
+                      }
+                    } else if (props.OrderData?.Type === "Fabrication") {
+                      if (proc["MultiOperation"] !== 0) {
+                        return (
+                          <option
+                            key={proc["ProcessDescription"]}
+                            value={proc["ProcessDescription"]}
+                            required
+                          >
+                            {proc["ProcessDescription"]}
+                          </option>
+                        );
+                      }
+                    } else {
+                      if (proc["Profile"] !== 0) {
+                        return (
+                          <option
+                            key={proc["ProcessDescription"]}
+                            value={proc["ProcessDescription"]}
+                          >
+                            {proc["ProcessDescription"]}
+                          </option>
+                        );
+                      }
+                    }
+
+                    return null; // Exclude options with zero values in "Service" column
+                  })}
+                </select>
+                {/* ) : (
+                      ""
+                    )} */}
+              </div>
+              <div className="d-flex" style={{ gap: "27px" }}>
+                <label className="form-label">Quantity</label>
+                <input
+                  type="text"
+                  className="ip-select in-field"
+                  id="Qty"
+                  name="odrDtlQuantity"
+                  onChange={handleChange}
+                  value={ordrDetailsChange.quantity}
+                  required
+                  disabled={props.OrderData?.Order_Type === "Complete"}
+                />
+                {/* <InputField
+                      className="ip-select in-fields"
+                      label="Quantity"
+                      id="Qty"
+                      name="odrDtlQuantity"
+                      value={quantity}
+                      onChangeCallback={setQuantity}
+                      required
+                    /> */}
+              </div>
+            </div>
+            <div className="col-md-5">
+              <div>
                 <button
                   className="button-style"
                   onClick={handleImportDwg}
                   // onClick={() => PostOrderDetails(1)}
+                  disabled={
+                    props.OrderData?.Order_Status === "Processing" ||
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Schedule"
+                  }
                 >
                   Add New Serial
                 </button>
               </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">
-                      Drawing Name
-                    </label>
-                    <input
-                      className="in-field"
-                      type="text"
-                      name="odrDtlDwgName"
-                      // value={
-                      //   // selectedItems[0]?.DwgName || " "
-                      //   LastSlctedRow?.DwgName || " "
-                      // }
-                      value={ordrDetailsChange.DwgName}
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">
-                      Job Work Rate
-                    </label>
-                    <input
-                      className="ip-select in-field"
-                      label="JW Rate"
-                      id="jwrate"
-                      name="odrDtljwrate"
-                      required
-                      onChange={handleChange}
-                      value={ordrDetailsChange.jwRate}
-                      // value={LastSlctedRow?.JWCost || " "}
-                    />
-                    {/* <InputField
+              <div className="d-flex mt-2" style={{ gap: "10px" }}>
+                <label className="form-label label-space">Job Wrk Rate</label>
+                <input
+                  className="ip-select in-field"
+                  label="JW Rate"
+                  id="jwrate"
+                  name="odrDtljwrate"
+                  required
+                  onChange={handleChange}
+                  value={ordrDetailsChange.jwRate}
+                  disabled={
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                  // value={LastSlctedRow?.JWCost || " "}
+                />
+                {/* <InputField
                       label="JW Rate"
                       id="jwrate"
                       value={jwRate}
                       onChangeCallback={setJwRate}
                       required
                     /> */}
-                    {/* <InputField
+                {/* <InputField
                       className="ip-select in-fields"
                       label="JW Rate"
                       id="jwrate"
@@ -229,73 +381,24 @@ function OrdrDtls(props) {
                       onChange={handleChange}
                       required
                     /> */}
-                  </div>
-                </div>
               </div>
-            </div>
+              <div className="d-flex" style={{ gap: "17px" }}>
+                <label className="form-label label-space">Mtrl Rate</label>
+                <input
+                  className="ip-select in-field"
+                  label="Mtrl Rate"
+                  name="odrDtlMtrlRate"
+                  id="mtrlRate"
+                  onChange={handleChange}
+                  value={ordrDetailsChange.materialRate}
+                  required
+                  disabled={
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                />
 
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label">Material</label>
-                    {/* <input
-                      className="in-fields"
-                      type="text"
-                      value={selectedItems[0]?.Mtrl_Code || " "}
-                    /> */}
-                    {mtrldata.length > 0 || mtrldata != null ? (
-                      <Typeahead
-                        className="ip-select in-field"
-                        id="basic-example"
-                        name="odrDtlMaterial"
-                        labelKey="Mtrl_Code"
-                        onChange={handleMtrlCodeTypeaheadChange}
-                        selected={selectedItems}
-                        options={mtrldata}
-                        // onChange={(selected) =>
-                        //   changeMtrl("mtrlCode", selected[0]?.Mtrl_Code)
-                        // }
-                        placeholder="Choose a Material..."
-                        required
-                      ></Typeahead>
-                    ) : (
-                      ""
-                    )}
-                    {/* {mtrldata.length > 0 || mtrldata != null ? ( */}
-                    {/* <Typeahead
-                      id="basic-example"
-                      labelKey="Mtrl_Code"
-                      name="newSrlMaterial"
-                      onChange={handleMtrlCodeTypeaheadChange}
-                      options={mtrldata}
-                      // placeholder="Choose a Material..."
-                      required
-                      value={selectedItems[0]?.Mtrl_Code}
-                    /> */}
-                    {/* ) : (
-                      "" */}
-                    {/* )} */}
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">
-                      Material Rate
-                    </label>
-                    <input
-                      className="ip-select in-field"
-                      label="Mtrl Rate"
-                      name="odrDtlMtrlRate"
-                      id="mtrlRate"
-                      onChange={handleChange}
-                      value={ordrDetailsChange.materialRate}
-                      required
-                    />
-
-                    {/* <InputField
+                {/* <InputField
                       className="ip-select in-fields"
                       label="Mtrl Rate"
                       name="odrDtlMtrlRate"
@@ -304,56 +407,25 @@ function OrdrDtls(props) {
                       value={materialRate}
                       onChangeCallback={setMaterialRate}
                     /> */}
-                  </div>
-                </div>
               </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div className="md-col-4">
-                    <label className="form-label">Material Source</label>
-                    {console.log(
-                      "ordrDetailsChange.MtrlSrc",
-                      ordrDetailsChange.MtrlSrc
-                    )}
-                    <select
-                      className="ip-select in-field"
-                      id="strsource"
-                      name="odrDtlMtrlSrc"
-                      value={ordrDetailsChange.MtrlSrc}
-                      onChange={handleChange}
-                    >
-                      <option value="" selected>
-                        ** Select **
-                      </option>
-                      <option value={"Customer"}>Customer</option>
-                      <option value={"Magod"}>Magod</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">Unit Price</label>
-                    <input
-                      className="ip-select in-field"
-                      label="UnitPrice"
-                      name="odrDtlUnitPrice"
-                      id="Qty"
-                      // value={unitPrice}
-                      // onChangeCallback={setUnitPrice}
-                      // onChange={handleChange}
-                      // value={ordrDetailsChange.unitPrice}
-                      value={
-                        parseFloat(ordrDetailsChange.jwRate) +
-                        parseFloat(ordrDetailsChange.materialRate)
-                      }
-                      disabled
-                    />
-                    {/* <InputField
+              <div className="d-flex" style={{ gap: "17px" }}>
+                <label className="form-label label-space">Unit Price</label>
+                <input
+                  className="ip-select in-field"
+                  label="UnitPrice"
+                  name="odrDtlUnitPrice"
+                  id="Qty"
+                  // value={unitPrice}
+                  // onChangeCallback={setUnitPrice}
+                  // onChange={handleChange}
+                  // value={ordrDetailsChange.unitPrice}
+                  value={
+                    parseFloat(ordrDetailsChange.jwRate) +
+                    parseFloat(ordrDetailsChange.materialRate)
+                  }
+                  disabled
+                />
+                {/* <InputField
                       className="ip-select in-fields"
                       label="UnitPrice"
                       name="odrDtlUnitPrice"
@@ -362,313 +434,195 @@ function OrdrDtls(props) {
                       onChangeCallback={setUnitPrice}
                       required
                     /> */}
-                  </div>
-                </div>
               </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label">Operation</label>
-                    {/* <input
-                      className="in-fields"
-                      type="text"
-                      value={LastSlctedRow?.Operation || " "}
-                    /> */}
-                    {/* {procdata.length > 0 ? ( */}
-                    <select
-                      className="ip-select in-field"
-                      id="strprocess"
-                      name="odrDtlOperation"
-                      value={ordrDetailsChange.Operation}
-                      // onChange={selectProc}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled selected>
-                        ** Select **
-                      </option>
-                      {procdata.map((proc) => {
-                        // Check if "Service" column has non-zero values
-                        if (props.OrderData?.Type === "Service") {
-                          if (proc["Service"] !== 0) {
-                            return (
-                              <option
-                                key={proc["ProcessDescription"]}
-                                value={proc["ProcessDescription"]}
-                              >
-                                {proc["ProcessDescription"]}
-                              </option>
-                            );
-                          }
-                        } else if (props.OrderData?.Type === "Fabrication") {
-                          if (proc["MultiOperation"] !== 0) {
-                            return (
-                              <option
-                                key={proc["ProcessDescription"]}
-                                value={proc["ProcessDescription"]}
-                                required
-                              >
-                                {proc["ProcessDescription"]}
-                              </option>
-                            );
-                          }
-                        } else {
-                          if (proc["Profile"] !== 0) {
-                            return (
-                              <option
-                                key={proc["ProcessDescription"]}
-                                value={proc["ProcessDescription"]}
-                              >
-                                {proc["ProcessDescription"]}
-                              </option>
-                            );
-                          }
-                        }
-
-                        return null; // Exclude options with zero values in "Service" column
-                      })}
-                    </select>
-                    {/* ) : (
-                      ""
-                    )} */}
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">
-                      Inspection Level
-                    </label>
-                    {/* <input
+              <div className="d-flex" style={{ gap: "10px" }}>
+                <label className="form-label label-space">Inptn Level</label>
+                {/* <input
                       className="in-fields"
                       name="odrDtlInspLvl"
                       type="text"
                       value={LastSlctedRow?.InspLevel || " "}
                     /> */}
-                    {/* {inspdata.length > 0 ? ( */}
-                    <select
-                      id="strinsp"
-                      className="ip-select in-field"
-                      name="odrDtlInspLvl"
-                      value={ordrDetailsChange.InspLvl}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled selected>
-                        ** Select **
+                {/* {inspdata.length > 0 ? ( */}
+                <select
+                  id="strinsp"
+                  className="ip-select in-field"
+                  name="odrDtlInspLvl"
+                  value={ordrDetailsChange.InspLvl}
+                  onChange={handleChange}
+                  disabled={
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                >
+                  <option value="" disabled selected>
+                    ** Select **
+                  </option>
+                  {inspdata.map((insplvl) => {
+                    return (
+                      <option value={insplvl["InspLevel"]}>
+                        {insplvl["InspLevel"]}
                       </option>
-                      {inspdata.map((insplvl) => {
-                        return (
-                          <option value={insplvl["InspLevel"]}>
-                            {insplvl["InspLevel"]}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    {/* ) : (
+                    );
+                  })}
+                </select>
+                {/* ) : (
                       ""
                     )} */}
-                  </div>
-                </div>
               </div>
-            </div>
-
-            <div className="row">
-              <div className="col-md-6 col-sm-12">
-                <div className="row">
-                  <div>
-                    <label className="form-label">Quantity</label>
-                    <input
-                      className="ip-select in-field"
-                      id="Qty"
-                      name="odrDtlQuantity"
-                      onChange={handleChange}
-                      value={ordrDetailsChange.quantity}
-                      required
-                    />
-                    {/* <InputField
-                      className="ip-select in-fields"
-                      label="Quantity"
-                      id="Qty"
-                      name="odrDtlQuantity"
-                      value={quantity}
-                      onChangeCallback={setQuantity}
-                      required
-                    /> */}
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6 col-sm-12 mb-3">
-                <div className="row">
-                  <div>
-                    <label className="form-label label-space">
-                      Packing Level
-                    </label>
-                    {/* <input
+              <div className="d-flex" style={{ gap: "20px" }}>
+                <label className="form-label label-space">Pkg Level</label>
+                {/* <input
                       className="in-fields"
                       name="odrDtlPkngLvl"
                       type="text"
                       value={LastSlctedRow?.PackingLevel || " "}
                     /> */}
-                    {/* {packdata.length > 0 ? ( */}
-                    <select
-                      id="strpkng"
-                      className="ip-select in-field"
-                      name="odrDtlPkngLvl"
-                      value={ordrDetailsChange.PkngLvl}
-                      onChange={handleChange}
-                    >
-                      <option value="" disabled selected>
-                        ** Select **
+                {/* {packdata.length > 0 ? ( */}
+                <select
+                  id="strpkng"
+                  className="ip-select in-field"
+                  name="odrDtlPkngLvl"
+                  value={ordrDetailsChange.PkngLvl}
+                  onChange={handleChange}
+                  disabled={
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                >
+                  <option value="" disabled selected>
+                    ** Select **
+                  </option>
+                  {packdata.map((packlvl) => {
+                    return (
+                      <option value={packlvl["PkngLevel"]}>
+                        {packlvl["PkngLevel"]}
                       </option>
-                      {packdata.map((packlvl) => {
-                        return (
-                          <option value={packlvl["PkngLevel"]}>
-                            {packlvl["PkngLevel"]}
-                          </option>
-                        );
-                      })}
-                    </select>
-                    {/* ) : (
+                    );
+                  })}
+                </select>
+                {/* ) : (
                       ""
                     )} */}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         </div>
-        {/* ))} */}
-        <div className="col-md-4 col-sm-12">
-          <Form className="">
-            <div
-              className="form-bg"
-              style={{ height: "375px", width: "180px", marginLeft: "-12px" }}
-            >
-              <label className="form-label">Process details</label>
-
-              <div className="row">
-                <div>
-                  <label className="form-label">Ordered</label>
-                  <input
-                    className="in-field"
-                    type="text"
-                    value={LastSlctedRow?.Qty_Ordered || " "}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div>
-                  <label className="form-label">Scheduled</label>
-                  <input
-                    className="in-field"
-                    type="text"
-                    value={LastSlctedRow?.QtyScheduled || " "}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div>
-                  <label className="form-label">Produced</label>
-                  <input
-                    className="in-field"
-                    type="text"
-                    value={LastSlctedRow?.QtyProduced || " "}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div>
-                  <label className="form-label">Packed</label>
-                  <input
-                    className="in-field"
-                    type="text"
-                    value={LastSlctedRow?.QtyPacked || " "}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div>
-                  <label className="form-label">Delivered</label>
-                  <input
-                    className="in-field"
-                    type="text"
-                    value={LastSlctedRow?.QtyDelivered || " "}
-                  />
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6  col-sm-12 mt-1">
-                  <label
-                    className="form-label"
-                    style={{
-                      whiteSpace: "nowrap",
-                      marginLeft: "4%",
-                    }}
-                  >
-                    Has BOM
-                  </label>
-                </div>
-                <div className="col-md-6 col-sm-12 mt-3">
-                  <input
-                    type="checkbox"
-                    className="checkBoxStyle"
-                    checked={HasBOM === 1}
-                    onChange={(e) => setHasBOM(e.target.checked ? 1 : 0)}
-                  />
-                </div>
-              </div>
+        <div className="col-md-4">
+          <div className="" style={{ textAlign: "center" }}>
+            <label className="form-label">Process details</label>
+          </div>
+          <div className="d-flex" style={{ gap: "22px" }}>
+            <label className="form-label">Ordered</label>
+            <input
+              className="in-field"
+              type="text"
+              value={LastSlctedRow?.Qty_Ordered || " "}
+            />
+          </div>
+          <div className="d-flex" style={{ gap: "10px" }}>
+            <label className="form-label">Scheduled</label>
+            <input
+              className="in-field"
+              type="text"
+              value={LastSlctedRow?.QtyScheduled || " "}
+            />
+          </div>
+          <div className="d-flex" style={{ gap: "15px" }}>
+            <label className="form-label">Produced</label>
+            <input
+              className="in-field"
+              type="text"
+              value={LastSlctedRow?.QtyProduced || " "}
+            />
+          </div>
+          <div className="d-flex" style={{ gap: "28px" }}>
+            <label className="form-label">Packed</label>
+            <input
+              className="in-field"
+              type="text"
+              value={LastSlctedRow?.QtyPacked || " "}
+            />
+          </div>
+          <div className="d-flex" style={{ gap: "14px" }}>
+            <label className="form-label">Delivered</label>
+            <input
+              className="in-field"
+              type="text"
+              value={LastSlctedRow?.QtyDelivered || " "}
+            />
+          </div>
+          <div className="d-flex">
+            <div>
+              <label className="form-label label-space">Has BOM</label>
             </div>
-          </Form>
+            <div>
+              <input
+                style={{ marginTop: "13px" }}
+                type="checkbox"
+                className="checkBoxStyle ms-2"
+                checked={HasBOM === 1}
+                onChange={(e) => setHasBOM(e.target.checked ? 1 : 0)}
+              />
+            </div>
+          </div>
         </div>
       </div>
+
       {/* <Form className="mt-2" style={{ marginLeft: "0px" }}> */}
 
-      <div className="row">
-        <div className="col-md-12">
-          {" "}
-          {props.OrderData?.Type === "Profile" ? (
-            <div className="ip-box form-bg mb-3">
-              <label className="form-label">Load Drawing</label>
+      <div className="mt-1">
+        {props.OrderData?.Type === "Profile" ? (
+          <div className="form-bg mb-3">
+            <div className="row mb-2">
+              <div className="col-md-4">
+                <label className="form-label">Load Drawing</label>
+              </div>
+              <div className="col-md-4">
+                <button
+                  className="button-style"
+                  onClick={() => PostOrderDetails(3)}
+                  disabled={
+                    props.OrderData?.Order_Status === "Processing" ||
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                >
+                  Add Drawing to Order
+                </button>
+              </div>
+              <div className="col-md-4">
+                <button className="button-style ">Save to Customer Dwg</button>
+              </div>
+            </div>
 
-              <div className="row">
-                <div className="col-md-4">
-                  <div className="d-flex field-gap">
-                    {" "}
-                    <label className="form-label label-space">Part id</label>
-                    {BomData?.length != 0 ? (
-                      <Typeahead
-                        className="in-field"
-                        selected={selectedPartId}
-                        // id="basic-example"
-                        options={options}
-                        labelKey="label"
-                        placeholder="Select ..."
-                        onChange={handleSelectChange}
-                      />
-                    ) : (
-                      <Typeahead
-                        className="in-field"
-                        labelKey="label"
-                        placeholder="No PartId for this Customer"
-                        disabled
-                      />
-                    )}
-                  </div>
-                  <button
-                    className="button-style"
-                    onClick={() => PostOrderDetails(3)}
-                  >
-                    Add Drawing to Order
-                  </button>
-                  <button className="button-style ">
-                    Save to Customer Dwg
-                  </button>
+            <div className="row">
+              <div className="col-md-4">
+                <div className="d-flex" style={{gap:'26px'}}>
+                  {" "}
+                  <label className="form-label label-space">Part id</label>
+                  {BomData?.length != 0 ? (
+                    <Typeahead
+                      className="in-field"
+                      selected={selectedPartId}
+                      // id="basic-example"
+                      options={options}
+                      labelKey="label"
+                      placeholder="Select ..."
+                      onChange={handleSelectChange}
+                    />
+                  ) : (
+                    <Typeahead
+                      className="in-field"
+                      labelKey="label"
+                      placeholder="No PartId for this Customer"
+                      disabled
+                    />
+                  )}
                 </div>
-                <div className="col-md-8">
-                  {/* <select
+              </div>
+              <div className="col-md-8">
+                {/* <select
                   id=""
                   className="ip-select dropdown-field "
                   style={{ width: "230px" }}
@@ -677,216 +631,207 @@ function OrdrDtls(props) {
                   <option value="option2">option 2</option>
                   <option value="option3">option 3</option>
                 </select> */}
-                  <input className="in-field" />
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div
-                        className="d-flex field-gap mt-1"
-                        style={{ gap: "27px" }}
-                      >
-                        <label className="form-label">LOC</label>
-                        <input className="in-field" type="text" />
-                      </div>
-                      <div className="d-flex field-gap">
-                        <label className="form-label">Pierces</label>
-                        <input className="in-field" type="text" />
-                      </div>
-                      {/* <label className="form-label">Part Weight</label>
+                <input className="in-field" />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-md-4">
+                <div className="d-flex" style={{gap:'15px'}}>
+                  <label className="form-label label-space">J W Cost</label>
+                  <input
+                    className="in-field"
+                    type="text"
+                    value={BomArry[0]?.JobWorkCost}
+                  />
+                </div>
+                <div className="d-flex field-gap">
+                  <label className="form-label label-space">Mtrl Cost</label>
+                  <input
+                    className="in-field"
+                    type="text"
+                    value={BomArry[0]?.MtrlCost}
+                  />
+                </div>
+              </div>
+              <div className="col-md-4">
+                <div className="d-flex field-gap" style={{ gap: "27px" }}>
+                  <label className="form-label">LOC</label>
+                  <input className="in-field" type="text" />
+                </div>
+                <div className="d-flex field-gap">
+                  <label className="form-label">Pierces</label>
+                  <input className="in-field" type="text" />
+                </div>
+                {/* <label className="form-label">Part Weight</label>
                   <input
                     className="in-fields"
                     type="text"
                     value={BomArry[0]?.Weight}
                   /> */}
-                    </div>
-
-                    <div className="col-md-6">
-                      <div className="d-flex field-gap mt-1">
-                        <label className="form-label">Process</label>
-                        <input className="in-field" type="text" />
-                      </div>
-                      <div className="d-flex field-gap">
-                        <label className="form-label"> Part Weight</label>{" "}
-                        <input
-                          className="in-field"
-                          type="text"
-                          // value={BomArry[0]?.Weight}
-                        />
-                      </div>
-                      {/* <label className="form-label">Material Cost</label>
+              </div>
+              <div className="col-md-4">
+                <div className="d-flex" style={{gap:'30px'}}>
+                  <label className="form-label">Process</label>
+                  <input className="in-field" type="text" />
+                </div>
+                <div className="d-flex field-gap">
+                  <label className="form-label label-space"> Prt Weight</label>{" "}
+                  <input
+                    className="in-field"
+                    type="text"
+                    // value={BomArry[0]?.Weight}
+                  />
+                </div>
+                {/* <label className="form-label">Material Cost</label>
                   <input
                     className="in-fields"
                     type="text"
                     value={BomArry?.MtrlCost}
                   /> */}
-                    </div>
-                  </div>
-                </div>
-                <div className="row mt-2 mb-3">
-                  <div className="col-md-2" style={{ marginTop: "-10px" }}>
-                    <label className="form-label">J W Cost</label>
-                  </div>
-                  <div className="col-md-4">
-                    {" "}
-                    <input
-                      className="in-field"
-                      type="text"
-                      value={BomArry[0]?.JobWorkCost}
-                    />
-                  </div>
-                  <div className="col-md-2" style={{ marginTop: "-10px" }}>
-                    <label className="form-label">Mtrl Cost</label>
-                  </div>
-                  <div className="col-md-4">
-                    {" "}
-                    <input
-                      className="in-field"
-                      type="text"
-                      value={BomArry[0]?.MtrlCost}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
-          ) : (
-            <div className="ip-box form-bg mb-3">
-              <div className="row">
-                <div className="col-md-8">
-                  <label className="form-label">Load Drawing</label>
-                </div>
-                <div className="col-md-4">
-                  {" "}
-                  <button
-                    className="button-style"
-                    onClick={() => PostOrderDetails(3)}
-                  >
-                    Add Drawing to Order
-                  </button>
-                </div>
+          </div>
+        ) : (
+          <div className="form-bg mb-3">
+            <div className="row">
+              <div className="col-md-8">
+                <label className="form-label">Load Drawing</label>
               </div>
+              <div className="col-md-4">
+                <button
+                  className="button-style"
+                  onClick={() => PostOrderDetails(3)}
+                  disabled={
+                    props.OrderData?.Order_Status === "Processing" ||
+                    props.OrderData?.Order_Type === "Complete" ||
+                    props.OrderData?.Order_Type === "Scheduled"
+                  }
+                >
+                  Add Drawing to Order
+                </button>
+              </div>
+            </div>
 
-              <div className="row">
-                <div className="col-md-2">
-                  {" "}
-                  <label className="form-label">Part id</label>
-                </div>
-                <div className="col-md-4">
-                  {" "}
-                  {BomData?.length != 0 ? (
-                    <Typeahead
-                      className="ip-slecet input-field"
-                      selected={selectedPartId}
-                      // id="basic-example"
-                      options={options}
-                      placeholder="Select ..."
-                      onChange={handleSelectChange}
-                    />
-                  ) : (
-                    <Typeahead
-                      className="ip-slecet input-field"
-                      labelKey="label"
-                      placeholder="No PartId's"
-                      disabled
-                    />
-                  )}
-                </div>
-                <div className="col-md-6">
-                  {mtrldata.length > 0 || mtrldata != null ? (
-                    <Typeahead
-                      className="ip-select input-fields mt-2"
-                      id="basic-example"
-                      labelKey="Mtrl_Code"
-                      onChange={handleMtrlCodeTypeaheadChange}
-                      // selected={Material}
-                      options={mtrldata}
-                      placeholder="Choose a Material..."
-                      required
-                      disabled={BomData.length === 0}
-                    ></Typeahead>
-                  ) : (
-                    ""
-                  )}
-                </div>
-                <div className="row mb-5">
-                  <div className="col-md-4">
-                    <label className="form-label">Operation</label>
-                    {/* {procdata.length > 0 ? ( */}
-                    <select
-                      className="ip-select in-field"
-                      id="strprocess"
-                      onChange={selectProc}
-                      disabled={BomData.length === 0}
-                    >
-                      <option value="" disabled selected>
-                        ** Select **
-                      </option>
-                      {procdata.map((proc) => {
-                        // Check if "Service" column has non-zero values
-                        if (props.OrderData?.Type === "Service") {
-                          if (proc["Service"] !== 0) {
-                            return (
-                              <option
-                                key={proc["ProcessDescription"]}
-                                value={proc["ProcessDescription"]}
-                              >
-                                {proc["ProcessDescription"]}
-                              </option>
-                            );
-                          }
-                        } else if (props.OrderData?.Type === "Fabrication") {
-                          if (proc["MultiOperation"] !== 0) {
-                            return (
-                              <option
-                                key={proc["ProcessDescription"]}
-                                value={proc["ProcessDescription"]}
-                              >
-                                {proc["ProcessDescription"]}
-                              </option>
-                            );
-                          }
-                        } else {
-                          if (proc["Profile"] !== 0) {
-                            return (
-                              <option
-                                key={proc["ProcessDescription"]}
-                                value={proc["ProcessDescription"]}
-                              >
-                                {proc["ProcessDescription"]}
-                              </option>
-                            );
-                          }
-                        }
+            <div className="row" style={{ gap: "20px" }}>
+              <div className="col-md-1">
+                <label className="form-label label-space">Part id</label>
+              </div>
+              <div className="col-md-4">
+                {" "}
+                {BomData?.length != 0 ? (
+                  <Typeahead
+                    className="ip-slecet input-field"
+                    selected={selectedPartId}
+                    // id="basic-example"
+                    options={options}
+                    placeholder="Select ..."
+                    onChange={handleSelectChange}
+                  />
+                ) : (
+                  <Typeahead
+                    className="ip-slecet input-field"
+                    labelKey="label"
+                    placeholder="No PartId's"
+                    disabled
+                  />
+                )}
+              </div>
+              <div className="col-md-6">
+                {mtrldata.length > 0 || mtrldata != null ? (
+                  <Typeahead
+                    className="ip-select input-fields mt-2"
+                    id="basic-example"
+                    labelKey="Mtrl_Code"
+                    onChange={handleMtrlCodeTypeaheadChange}
+                    // selected={Material}
+                    options={mtrldata}
+                    placeholder="Choose a Material..."
+                    required
+                    disabled={BomData.length === 0}
+                  ></Typeahead>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+            <div className="row mt-1 mb-2">
+              <div className="col-md-5 d-flex" style={{ gap: "10px" }}>
+                <label className="form-label">Operation</label>
+                {/* {procdata.length > 0 ? ( */}
+                <select
+                  className="ip-select in-field mt-1"
+                  id="strprocess"
+                  onChange={selectProc}
+                  disabled={BomData.length === 0}
+                >
+                  <option value="" disabled selected>
+                    ** Select **
+                  </option>
+                  {procdata.map((proc) => {
+                    // Check if "Service" column has non-zero values
+                    if (props.OrderData?.Type === "Service") {
+                      if (proc["Service"] !== 0) {
+                        return (
+                          <option
+                            key={proc["ProcessDescription"]}
+                            value={proc["ProcessDescription"]}
+                          >
+                            {proc["ProcessDescription"]}
+                          </option>
+                        );
+                      }
+                    } else if (props.OrderData?.Type === "Fabrication") {
+                      if (proc["MultiOperation"] !== 0) {
+                        return (
+                          <option
+                            key={proc["ProcessDescription"]}
+                            value={proc["ProcessDescription"]}
+                          >
+                            {proc["ProcessDescription"]}
+                          </option>
+                        );
+                      }
+                    } else {
+                      if (proc["Profile"] !== 0) {
+                        return (
+                          <option
+                            key={proc["ProcessDescription"]}
+                            value={proc["ProcessDescription"]}
+                          >
+                            {proc["ProcessDescription"]}
+                          </option>
+                        );
+                      }
+                    }
 
-                        return null; // Exclude options with zero values in "Service" column
-                      })}
-                    </select>
-                    {/* ) : (
+                    return null; // Exclude options with zero values in "Service" column
+                  })}
+                </select>
+                {/* ) : (
                       ""
                     )} */}
-                  </div>
-                  <div className="col-md-4">
-                    <label className="form-label ">J W Cost</label>
-                    <input
-                      className="in-field"
-                      type="text"
-                      value={BomArry[0]?.JobWorkCost}
-                      disabled={BomData.length === 0}
-                    />
-                  </div>
-
-                  <div className="col-md-4">
-                    <label className="form-label ">Mtrl Cost</label>
-                    <input
-                      className="in-field"
-                      type="text"
-                      value={BomArry[0]?.MtrlCost}
-                      disabled={BomData.length === 0}
-                    />
-                  </div>
-                </div>
+              </div>
+              <div className="col-md-4 d-flex" style={{ gap: "10px" }}>
+                <label className="form-label label-space">J W Cost</label>
+                <input
+                  className="in-field mt-1"
+                  type="text"
+                  value={BomArry[0]?.JobWorkCost}
+                  disabled={BomData.length === 0}
+                />
+              </div>
+              <div className="col-md-3 d-flex" style={{ gap: "10px" }}>
+                <label className="form-label label-space">Mtrl Cost</label>
+                <input
+                  className="in-field mt-1"
+                  type="text"
+                  value={BomArry[0]?.MtrlCost}
+                  disabled={BomData.length === 0}
+                />
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* </Form> */}
