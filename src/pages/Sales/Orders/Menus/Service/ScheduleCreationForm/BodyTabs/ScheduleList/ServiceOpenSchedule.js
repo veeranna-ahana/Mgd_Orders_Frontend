@@ -57,7 +57,31 @@ function ServiceOpenSchedule() {
   };
 
   let fixtureOrderOpen1 = () => {
-    setFixtureOrder1(true);
+    postRequest(
+      endpoints.getFixtureStatus,
+      { formdata },
+      (response) => {
+       if(response.status===true){
+        console.log("true")
+        if (response.data[0].Type === "Service") {
+          navigate("/Orders/Service/ScheduleCreationForm", {
+            state: response.data[0].Order_No,
+          });
+        } else if (response.data[0].Type === "Profile") {
+          navigate("/Orders/Profile/ScheduleCreationForm", {
+            state: response.data[0].Order_No,
+          });
+        } else if (response.data[0].Type === "Fabrication") {
+          navigate("/Orders/Fabrication/ScheduleCreationForm", {
+            state: response.data[0].Order_No,
+          });
+        }
+       }
+       else{
+         setFixtureOrder1(true);
+       }
+      }
+    );
   };
 
   let fixtureOrderClose1 = () => {
@@ -129,7 +153,6 @@ function ServiceOpenSchedule() {
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
-    console.log("scheduleDetailsRow", scheduleDetailsRow);
     if (scheduleDetailsRow) {
       postRequest(
         endpoints.getScheduleListTaskandMaterial,
@@ -1031,15 +1054,15 @@ function ServiceOpenSchedule() {
             <div className="row">
               <div style={{ display: "flex", gap: "170px" }}>
                 <label className="form-label mt-1">Task List</label>
-                <button
-                  className="button-style"
-                  onClick={onClickPerformance}
-                >
+                <button className="button-style" onClick={onClickPerformance}>
                   Performance
                 </button>
               </div>
               <div className="col-md-6">
-                <div className="mt-1" style={{ height: "auto", overflow: "auto" }}>
+                <div
+                  className="mt-1"
+                  style={{ height: "auto", overflow: "auto" }}
+                >
                   <Table
                     striped
                     className="table-data border"
@@ -1125,7 +1148,10 @@ function ServiceOpenSchedule() {
                 </div>
               </div>
               <div className="col-md-6">
-                <div className="mt-1" style={{ height: "auto", overflow: "auto" }}>
+                <div
+                  className="mt-1"
+                  style={{ height: "auto", overflow: "auto" }}
+                >
                   <Table
                     striped
                     className="table-data border table-space"
