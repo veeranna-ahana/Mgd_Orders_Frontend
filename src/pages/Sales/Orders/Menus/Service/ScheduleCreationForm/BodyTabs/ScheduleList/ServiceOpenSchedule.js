@@ -432,15 +432,17 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
+    console.log("rowselectTaskMaterial........",rowselectTaskMaterial)
     postRequest(
       endpoints.onClickNCProgram,
       { rowselectTaskMaterial },
       (response) => {
+        console.log(" first response ......", response)
         postRequest(
           endpoints.getMachineList,
           { NCprogramForm: response },
           (responsedata) => {
-            // console.log("API response:", responsedata);
+            console.log("API second response:", responsedata);
             navigate("/Orders/Service/NCProgram", {
               state: { response: response, responsedata: responsedata },
             });

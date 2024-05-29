@@ -32,11 +32,13 @@ const InputField = ({
   const [isValid, setIsValid] = useState(true);
 
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    const isValidNumber =
-      /^\d*\.?\d+$/.test(inputValue) && parseFloat(inputValue) >= 0;
+    // const inputValue = e.target.value;
+    const inputValue = e.target.value.replace(/[^0-9.]/g, "");
 
-    setIsValid(isValidNumber);
+    // const isValidNumber =
+    //   /^\d*\.?\d+$/.test(inputValue) && parseFloat(inputValue) >= 0;
+
+    // setIsValid(isValidNumber);
     onChangeCallback(inputValue);
   };
 
@@ -60,6 +62,7 @@ const InputField = ({
                 // className="in-field"
                 onChange={() => onCheckboxChange(checkboxIndex)}
                 checked={isChecked}
+                required
               />
             )}
           </div>
@@ -71,15 +74,16 @@ const InputField = ({
         id={id}
         value={value}
         onChange={handleInputChange}
-        style={{ borderColor: isValid ? "initial" : "red" }}
+        // style={{ borderColor: isValid ? "initial" : "red" }}
         disabled={disabled}
         className={className}
       />
-      {!isValid && (
-        <p style={{ color: "red" }}>
-          Please enter a valid positive number for {label}.
-        </p>
-      )}
+      {/* {!isValid && (
+        // <p style={{ color: "red" }}>
+        //   Please enter a valid positive number for {label}.
+        // </p>
+        toast.warning("Please enter a valid positive number")
+      )} */}
     </div>
   );
 };
@@ -412,6 +416,15 @@ export default function ScheduleCreationForm(props) {
     setShow(false);
   };
 
+  //  const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+  //   console.log("selectedOptions.........",selectedOptions)
+  //   setSelectedItems(selectedOptions);
+  //   const selectedValue = selectedOptions.length > 0 ? selectedOptions[0].Mtrl_Code : "";
+  //   // if (selectedValue) {
+  //   //   setStrMtrlCode(selectedValue.Mtrl_Code);
+  //   // }
+  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     // DWG NAME
@@ -540,10 +553,19 @@ export default function ScheduleCreationForm(props) {
     }
     // MATERIAL CODE [ Feild name is material]
 
+    // const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+    //   const selectedValue =
+    //     selectedOptions.length > 0 ? selectedOptions[0] : null;
+    //   setStrMtrlCode(selectedValue?.Mtrl_Code);
+    // };
+
     const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+      setSelectedItems(selectedOptions); // Update the state with the selected options
       const selectedValue =
         selectedOptions.length > 0 ? selectedOptions[0] : null;
-      setStrMtrlCode(selectedValue?.Mtrl_Code);
+      if (selectedValue) {
+        setStrMtrlCode(selectedValue.Mtrl_Code);
+      }
     };
 
     if (name === "newSrlMaterial") {
@@ -1129,8 +1151,6 @@ export default function ScheduleCreationForm(props) {
       endpoints.registerOrder,
       { Order_No: orderNo, Order_Status: "Recorded" },
       (registerOrderData) => {
-        // //////console.log("registerOrderData......", registerOrderData);
-
         setOrderData({ ...OrderData, Order_Status: "Recorded" });
         toast.success("Order Registered Successfully");
         closeRegisterOrder();
@@ -1178,7 +1198,6 @@ export default function ScheduleCreationForm(props) {
     });
   };
 
-  ////console.log("selectedItems", selectedItems);
   // selectAll button
   const handleSelectAll = () => {
     setSelectedItems(OrdrDetailsData);

@@ -157,8 +157,8 @@ export default function OrderDetails(props) {
     JW_Rate: jwRate,
     Mtrl_Rate: materialRate,
     UnitPrice: unitPrice,
-    InspLvl: 0,
-    PkngLvl: 0,
+    InspLvl: "Insp1",
+    PkngLvl: "Pkng1",
   });
 
   useEffect(() => {
@@ -316,7 +316,6 @@ export default function OrderDetails(props) {
     fetchData();
   }, []);
 
-  // Handle button enabl and disable
   const handleDwgInputChange = (event) => {
     const newValue = event.target.value;
     setDwgName(newValue);
@@ -355,7 +354,6 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
       },
       (InsertedNewSrlData) => {
-        //////// console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
         if (InsertedNewSrlData.affectedRows != 0) {
           fetchData();
           toast.success("Added serial successfully");
@@ -369,9 +367,48 @@ export default function OrderDetails(props) {
   };
 
   let blkCngCheckBoxx = blkCngCheckBox;
-console.log("blkCngCheckBoxx",blkCngCheckBoxx)
-console.log("selectedSrl",selectedSrl)
+  console.log("blkCngCheckBoxx ", blkCngCheckBoxx);
+  console.log("selectedItems..... ", selectedItems);
+  console.log("selectedSrl", selectedSrl);
+
   let updateblkcngOrdrData = () => {
+    handleClosesetBulkChnangMdl();
+
+    for (let i = 0; i < selectedItems.length; i++) {
+      const element = selectedItems[i];
+
+      blkCngCheckBoxx[0] === true
+        ? (element.DwgName = blkChange.DwgName)
+        : (element.DwgName = element.DwgName);
+      blkCngCheckBoxx[1] === true
+        ? (element.Mtrl_Code = blkChange.strmtrlcode)
+        : (element.Mtrl_Code = element.Mtrl_Code);
+      blkCngCheckBoxx[2] === true
+        ? (element.Mtrl_Source = blkChange.material)
+        : (element.Mtrl_Source = element.Mtrl_Source);
+      blkCngCheckBoxx[3] === true
+        ? (element.Operation = blkChange.Operation)
+        : (element.Operation = element.Operation);
+      blkCngCheckBoxx[4] === true
+        ? (element.quantity = blkChange.quantity)
+        : (element.quantity = element.quantity);
+      blkCngCheckBoxx[5] === true
+        ? (element.JWCost = blkChange.jwRate)
+        : (element.JWCost = element.JWCost);
+      blkCngCheckBoxx[6] === true
+        ? (element.UnitPrice = blkChange.unitPrice)
+        : (element.UnitPrice = element.UnitPrice);
+      blkCngCheckBoxx[7] === true
+        ? (element.MtrlCost = blkChange.materialRate)
+        : (element.MtrlCost = element.MtrlCost);
+      blkCngCheckBoxx[8] === true
+        ? (element.InspLevel = blkChange.InspLvl)
+        : (element.InspLevel = element.InspLevel);
+      blkCngCheckBoxx[9] === true
+        ? (element.PackingLevel = blkChange.PkngLvl)
+        : (element.PackingLevel = element.PackingLevel);
+    }
+
     postRequest(
       endpoints.bulkChangeUpdate,
       {
@@ -379,25 +416,8 @@ console.log("selectedSrl",selectedSrl)
         OrderNo: OrderNo,
         custcode: Cust_Code,
         OrderSrl: selectedSrl,
-        DwgName: blkChange.DwgName,
-        // strmtrlcode: blkChange.strmtrlcode,
-        // MtrlSrc: blkChange.MtrlSrc,
-        quantity: blkChange.quantity,
-        JwCost: blkChange.jwRate,
-        mtrlcost: blkChange.materialRate,
-        // unitPrice: blkChange.unitPrice,
-        unitPrice:
-          parseFloat(blkChange.jwRate) + parseFloat(blkChange.materialRate),
-        Operation: blkChange.Operation,
-        InspLvl: blkChange.InspLvl,
-        PkngLvl: blkChange.PkngLvl,
-        blkChange: blkChange,
-        blkCngCheckBox: blkCngCheckBoxx,
-        //quantity: quantity,
-        //blkCngCheckBox: blkCngCheckBox,
       },
       (blkChngData) => {
-        //// console.log("RES", blkChngData);
         if (blkChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -433,8 +453,8 @@ console.log("selectedSrl",selectedSrl)
   };
 
   const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
-    const selectedValue =
-      selectedOptions.length > 0 ? selectedOptions[0] : null;
+    console.log("selectedOptions....", selectedOptions);
+    const selectedValue = selectedOptions.length > 0 ? selectedOptions[0] : " ";
     setStrMtrlCode(selectedValue?.Mtrl_Code);
   };
 
@@ -700,6 +720,23 @@ console.log("selectedSrl",selectedSrl)
     setImportDwgShow(false);
     setisLoading(true);
     let requestData = {};
+    // Validation for quantity and other fields
+    if (quantity === 0 || isNaN(quantity)) {
+      setisLoading(false);
+      toast.error("Quantity should be greater than 0");
+      return;
+    }
+    if (jwRate === 0 || isNaN(jwRate)) {
+      setisLoading(false);
+      toast.error("jwRate should be greater than 0");
+      return;
+    }
+    if (materialRate === 0 || isNaN(materialRate)) {
+      setisLoading(false);
+      toast.error("materialRate should be greater than 0");
+      return;
+    }
+
     if (flag === 1) {
       requestData = {
         OrderNo: OrderNo,
@@ -766,9 +803,44 @@ console.log("selectedSrl",selectedSrl)
       };
     } else {
     }
-    if (requestData.DwgName === "" || requestData.Operation === "") {
+    console.log("requestData.strMtrlCode", requestData.strmtrlcode);
+    // if (requestData.DwgName === "") {
+    //   setisLoading(false);
+    //   toast.error(" DwgName is mandotory");
+    //   return;
+    // }
+
+    // Check if any required field is empty
+    if (requestData.DwgName === "") {
       setisLoading(false);
-      toast.error("Feild is mandotory");
+      toast.error("DwgName is mandatory");
+      return;
+    }
+
+    if (requestData.strmtrlcode === "") {
+      setisLoading(false);
+      toast.error("Material code is mandatory");
+      return;
+    }
+
+    if (requestData.Operation === "") {
+      setisLoading(false);
+      toast.error("Operation is mandatory");
+      return;
+    }
+    if (requestData.NewSrlFormData.MtrlSrc === "") {
+      setisLoading(false);
+      toast.error("Material source is mandatory");
+      return;
+    }
+    if (requestData.NewSrlFormData.InspLvl === "") {
+      setisLoading(false);
+      toast.error("InspLvl source is mandatory");
+      return;
+    }
+    if (requestData.NewSrlFormData.PkngLvl === "") {
+      setisLoading(false);
+      toast.error("PkngLvl source is mandatory");
       return;
     }
     postRequest(
@@ -999,6 +1071,10 @@ console.log("selectedSrl",selectedSrl)
               <button
                 className="button-style"
                 onClick={() => handleImportDwgmdl()}
+                disabled={
+                  props.OrderData?.Order_Status === "Processing" ||
+                  props.OrderData?.Order_Status === "Recorded"
+                }
               >
                 Import Dwg
               </button>
@@ -1006,7 +1082,10 @@ console.log("selectedSrl",selectedSrl)
 
             <button
               className="button-style"
-              disabled={props.OrderData?.Order_Status === "Processing"}
+              disabled={
+                props.OrderData?.Order_Status === "Processing" ||
+                props.OrderData?.Order_Status === "Recorded"
+              }
               onClick={(e) => {
                 setButtonClicked("Import From Excel");
                 handleImportFromExcelModal();
@@ -1025,14 +1104,20 @@ console.log("selectedSrl",selectedSrl)
             <button
               className="button-style"
               onClick={handleImportQtnMdl}
-              disabled={props.OrderData?.Order_Status === "Processing"}
+              disabled={
+                props.OrderData?.Order_Status === "Processing" ||
+                props.OrderData?.Order_Status === "Recorded"
+              }
             >
               Import Qtn
             </button>
             <button
               className="button-style"
               onClick={handleImportOldOrdrMdl}
-              disabled={props.OrderData?.Order_Status === "Processing"}
+              disabled={
+                props.OrderData?.Order_Status === "Processing" ||
+                props.OrderData?.Order_Status === "Recorded"
+              }
             >
               Import Old Order
             </button>

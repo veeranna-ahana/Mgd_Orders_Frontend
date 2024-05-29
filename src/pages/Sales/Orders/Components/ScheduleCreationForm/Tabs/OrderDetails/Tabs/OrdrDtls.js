@@ -188,7 +188,7 @@ function OrdrDtls(props) {
                   <Typeahead
                     className="ip-select in-field"
                     id="basic-example"
-                    name="odrDtlMaterial"
+                    // name="odrDtlMaterial"
                     labelKey="Mtrl_Code"
                     onChange={handleMtrlCodeTypeaheadChange}
                     selected={selectedItems}
@@ -508,7 +508,7 @@ function OrdrDtls(props) {
             </div>
           </div>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-3">
           <div className="" style={{ textAlign: "center" }}>
             <label className="form-label">Process details</label>
           </div>
