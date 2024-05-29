@@ -304,6 +304,8 @@ export const endpoints = {
   deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
   pdfdata: `${API}/ScheduleList/PrintPdf`,
   getCustName: `${API}/ScheduleList/getCustomerName`,
+  getFixtureStatus:`${API}/ScheduleList/checkFixtureOrder`,
+
 
   //NCProgram Button
   onClickNCProgram: `${API}/NCProgram/getFormData`,
