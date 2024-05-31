@@ -1232,6 +1232,39 @@ export default function ScheduleCreationForm(props) {
     );
   };
 
+
+  //Sales Job Work
+  const [scheduleType, setScheduleType] = useState("Job Work");
+  const [scheduleOption, setScheduleOption] = useState("Full Order");
+
+  const handleScheduleTypeChange = (event) => {
+    const { value } = event.target;
+    setScheduleType(value);
+    //  console.log("Schedule Type:", value);
+    // if (OrderData) {
+    //   fetchScheduleList(value);
+    // }
+  };
+
+  
+  // Handle change for schedule option radio buttons
+  const handleScheduleOptionChange = (event) => {
+    const { value } = event.target;
+    setScheduleOption(value);
+    //  console.log("Schedule Option:", value);
+    if (value === "Partial Order") {
+      toast.warning("Only Selected Serials will be included in the Schedule", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
+      toast.warning("All Serials will be included in the Schedule", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+  };
+
+
+
   return (
     <>
       <div>
@@ -1278,6 +1311,10 @@ export default function ScheduleCreationForm(props) {
               OrderData={OrderData}
               selectedItems={selectedItems}
               setScheduleListData={setScheduleListData}
+              scheduleType={scheduleType}
+              scheduleOption={scheduleOption}
+              handleScheduleTypeChange={handleScheduleTypeChange}
+              handleScheduleOptionChange={handleScheduleOptionChange}
             />
           </Tab>
           <Tab eventKey="findoldpart" title="Find Old Part">
@@ -1330,6 +1367,8 @@ export default function ScheduleCreationForm(props) {
                 calculateMinSrlStatus={calculateMinSrlStatus}
                 updateOrderStatus={updateOrderStatus}
                 getStatusText={getStatusText}
+                scheduleType={scheduleType}
+              scheduleOption={scheduleOption}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
