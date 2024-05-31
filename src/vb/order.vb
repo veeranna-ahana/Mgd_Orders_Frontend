@@ -202,7 +202,7 @@ Public Class Order
             End With
 
         End With
-        '***** Se Customer Drawings
+        '***** See Customer Drawings
         DA_custDwg = Orders.getDBLink.getMySqlDataAdopter
         With DA_custDwg
             With .SelectCommand

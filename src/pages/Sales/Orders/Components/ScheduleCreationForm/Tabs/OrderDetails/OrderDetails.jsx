@@ -616,8 +616,36 @@ export default function OrderDetails(props) {
   // BULK CHANGE MODAL
   const [bulkChnangMdl, setBulkChnangMdl] = useState(false);
 
+  // const handlebulkChnangMdl = () => {
+  //   {
+  //     selectedItems.map((item, index) =>
+  //       item.QtyScheduled !== 0
+  //         ? setBulkChnangMdl(false)
+  //         : setBulkChnangMdl(true)
+  //     );
+  //   }
+
+  //   setBulkChnangMdl(true);
+  // };
   const handlebulkChnangMdl = () => {
-    setBulkChnangMdl(true);
+    // const allScheduled = selectedItems.every((item) => item.QtyScheduled !== 0);
+    // // setBulkChnangMdl(!allScheduled);
+    // if (!allScheduled) {
+    //   setBulkChnangMdl(true);
+    // } else {
+    //   setBulkChnangMdl(false);
+    // }
+
+    const hasScheduled = selectedItems.some((item) => item.QtyScheduled !== 0);
+
+    if (hasScheduled) {
+      toast.warning(
+        "The selected DWGs are already scheduled, do you want to get them back?"
+      );
+      setBulkChnangMdl(false);
+    } else {
+      setBulkChnangMdl(true);
+    }
   };
   const handleClosesetBulkChnangMdl = () => {
     setBulkChnangMdl(false);
@@ -1079,7 +1107,6 @@ export default function OrderDetails(props) {
                 Import Dwg
               </button>
             ) : null}
-
             <button
               className="button-style"
               disabled={
@@ -1093,14 +1120,6 @@ export default function OrderDetails(props) {
             >
               Import Excel
             </button>
-
-            {/* <button
-              className="button-style"
-              onClick={importExcelFunc}
-              disabled={props.OrderData?.Order_Status === "Processing"}
-            >
-              Import EXCEL
-            </button> */}
             <button
               className="button-style"
               onClick={handleImportQtnMdl}
@@ -1128,17 +1147,19 @@ export default function OrderDetails(props) {
             >
               Delete
             </button>
+
             <button
               className="button-style"
               onClick={handlebulkChnangMdl}
               disabled={
-                props.OrderData?.Order_Status === "Processing" ||
-                props.OrderData?.Order_Type === "Complete" ||
-                props.OrderData?.Order_Type === "Scheduled"
+                OrderData?.Order_Status === "Processing" ||
+                OrderData?.Order_Type === "Complete" ||
+                OrderData?.Order_Type === "Scheduled"
               }
             >
               Bulk Change
             </button>
+
             <button
               className="button-style"
               onClick={handleSelectAll}
@@ -1156,68 +1177,6 @@ export default function OrderDetails(props) {
             {Type === "Profile" ? (
               <button className="button-style">Edit DXF</button>
             ) : null}
-            {/* {Type === "Profile" ? (
-            <button
-              className="button-style"
-              onClick={(e) => {
-                setButtonClicked("Import Qtn");
-                handleImportQtnMdl();
-              }}
-            >
-              Import Qtn
-            </button>
-            <button
-              className="button-style"
-              onClick={(e) => {
-                setButtonClicked("Import Old Order");
-                handleImportOldOrdrMdl();
-              }}
-            >
-              Import Old Order
-            </button>
-            <button className="button-style">Delete</button>
-            <button className="button-style" onClick={handlebulkChnangMdl}>
-              Bulk Change
-            </button>
-            <button className="button-style" onClick={handleSelectAll}>
-              Select All
-            </button>
-            <button className="button-style" onClick={handleReverseSelection}>
-              Reverse
-            </button> */}
-            {/* {Type === "Profile" ? (
-            <button
-              className="button-style"
-              style={{ width: "100px", marginLeft: "4px" }}
-            >
-              Edit DXF
-            </button>
-            <button className="button-style" onClick={handleImportQtnMdl}>
-              Import Qtn
-            </button>
-            <button className="button-style" onClick={handleImportOldOrdrMdl}>
-              Import Old Order
-            </button>
-            <button className="button-style">Delete</button>
-            <button className="button-style" onClick={handlebulkChnangMdl}>
-              Bulk Change
-            </button>
-            <button className="button-style" onClick={handleSelectAll}>
-              Select All
-            </button>
-            <button className="button-style" onClick={handleReverseSelection}>
-              Reverse
-            </button>
-            // {Type === "Profile" ? (
-            //   <button className="button-style">Edit DXF</button>
-            // ) : null} */}
-            {/* <button
-            className="button-style"
-            style={{ width: "100px", marginLeft: "4px" }}
-            onClick={singleupdateOrdrData}
-          >
-            Update
-          </button> */}
           </div>
         </div>
         <div className="row mt-1">

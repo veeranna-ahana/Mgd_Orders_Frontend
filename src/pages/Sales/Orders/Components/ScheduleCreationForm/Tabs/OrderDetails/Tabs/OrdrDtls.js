@@ -67,9 +67,9 @@ function OrdrDtls(props) {
     selectedItems[0]?.Mtrl_Code || ""
   );
 
-  // console.log("BomData.......", BomData);
+  // console.log("OrdrDetailsData...", OrdrDetailsData);
+  // console.log("selectedItems...", selectedItems[i].QtyScheduled);
 
-  // console.log("selectedItems.srlNo", selectedItems[0]?.Order_Srl);
   //   //console.log("mtrldata", mtrldata);
   // const [importdwgshow, setImportDwgShow] = useState(false);
 
@@ -598,7 +598,7 @@ function OrdrDtls(props) {
 
             <div className="row">
               <div className="col-md-4">
-                <div className="d-flex" style={{gap:'26px'}}>
+                <div className="d-flex" style={{ gap: "26px" }}>
                   {" "}
                   <label className="form-label label-space">Part id</label>
                   {BomData?.length != 0 ? (
@@ -636,7 +636,7 @@ function OrdrDtls(props) {
             </div>
             <div className="row">
               <div className="col-md-4">
-                <div className="d-flex" style={{gap:'15px'}}>
+                <div className="d-flex" style={{ gap: "15px" }}>
                   <label className="form-label label-space">J W Cost</label>
                   <input
                     className="in-field"
@@ -670,7 +670,7 @@ function OrdrDtls(props) {
                   /> */}
               </div>
               <div className="col-md-4">
-                <div className="d-flex" style={{gap:'30px'}}>
+                <div className="d-flex" style={{ gap: "30px" }}>
                   <label className="form-label">Process</label>
                   <input className="in-field" type="text" />
                 </div>
