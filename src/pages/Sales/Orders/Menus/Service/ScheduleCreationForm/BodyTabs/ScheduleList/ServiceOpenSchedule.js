@@ -39,8 +39,30 @@ function ServiceOpenSchedule() {
   const [openTask, setOpenTask] = useState(false);
 
   let profileOrderOpen1 = (e) => {
-    e.preventDefault();
-    setProfileOrder1(true);
+    postRequest(
+      endpoints.getProfileOrderStatus,
+      { formdata },
+      (response) => {
+       if(response.status===true){
+        if (response.data[0].Type === "Service") {
+          navigate("/Orders/Service/ScheduleCreationForm", {
+            state: response.data[0].Order_No,
+          });
+        } else if (response.data[0].Type === "Profile") {
+          navigate("/Orders/Profile/ScheduleCreationForm", {
+            state: response.data[0].Order_No,
+          });
+        } else if (response.data[0].Type === "Fabrication") {
+          navigate("/Orders/Fabrication/ScheduleCreationForm", {
+            state: response.data[0].Order_No,
+          });
+        }
+       }
+       else{
+        setProfileOrder1(true);
+      }
+      }
+    );
   };
 
   let profileOrderClose1 = () => {
@@ -62,7 +84,6 @@ function ServiceOpenSchedule() {
       { formdata },
       (response) => {
        if(response.status===true){
-        console.log("true")
         if (response.data[0].Type === "Service") {
           navigate("/Orders/Service/ScheduleCreationForm", {
             state: response.data[0].Order_No,
@@ -141,12 +162,6 @@ function ServiceOpenSchedule() {
   //   setScheduleDetailsRow(list);
   // };
 
-  // //Default first row select
-  // useEffect(() => {
-  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
-  //   }
-  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
   // console.log(scheduleDetailsRow);
 
@@ -171,23 +186,10 @@ function ServiceOpenSchedule() {
   const onRowSelectTaskMaterialTable = (item, index) => {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
-    console.log("list is", list);
-    // Check if list is present before making the request
-    if (list) {
       postRequest(endpoints.getDwgListData, { list }, (response) => {
         // console.log("response is", response);
         setTmDwgList(response);
       });
-    } else {
-      postRequest(
-        endpoints.getDwgListData,
-        { list: rowselectTaskMaterial },
-        (response) => {
-          // console.log("response is", response);
-          setTmDwgList(response);
-        }
-      );
-    }
   };
 
   //Default first row select for Task and Mterial
@@ -212,6 +214,15 @@ function ServiceOpenSchedule() {
       }
     );
   };
+  
+  useEffect(() => {
+    if (rowselectTaskMaterial.length === undefined && TaskMaterialData[0]) {
+      postRequest(endpoints.getDwgListData, { list: TaskMaterialData[0] }, (response) => {
+        setTmDwgList(response);
+      });
+    } 
+  }, [TaskMaterialData, rowselectTaskMaterial]);
+
 
   //Default first row select
   useEffect(() => {
@@ -279,8 +290,11 @@ function ServiceOpenSchedule() {
     setSpecialInstruction(formdata[0]?.Special_Instructions);
   }, [formdata]);
 
+  console.log("changedEngineer is",changedEngineer);
+
   //Onclick save Button
   const onClickSave = () => {
+    console.log("changedEngineer is",changedEngineer);
     postRequest(
       endpoints.onClickSave,
       {
@@ -291,6 +305,7 @@ function ServiceOpenSchedule() {
         changedEngineer: changedEngineer,
       },
       (response) => {
+        console.log("response is",response);
         toast.success("Saved", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -432,6 +447,9 @@ function ServiceOpenSchedule() {
   const onClickScheduleYes = () => {
     setOpenScheduleModal(false);
     toast.warning("Caution Customer for Payment ", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    toast.warning("Not Scheduled", {
       position: toast.POSITION.TOP_CENTER,
     });
   };
@@ -581,6 +599,15 @@ function ServiceOpenSchedule() {
   };
 
   // console.log("newState is",newState);
+
+  
+    // //Default first row select
+    useEffect(() => {
+      if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+        onClickofScheduleDtails(newState[0], 0); // Select the first row
+      }
+    }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  
 
   return (
     <div>
@@ -975,7 +1002,7 @@ function ServiceOpenSchedule() {
             <div className="mt-1" style={{ overflow: "auto", height: "auto" }}>
               <Table
                 striped
-                className="table-data border"
+                className="table-data border table-space"
                 style={{ border: "1px" }}
               >
                 <thead className="tableHeaderBGColor table-space">
@@ -1050,6 +1077,7 @@ function ServiceOpenSchedule() {
             </div>
           </Tab>
 
+{/* Task and Material List */}
           <Tab eventKey="Task and Material List" title="Task and Material List">
             <div className="row">
               <div style={{ display: "flex", gap: "170px" }}>
@@ -1065,7 +1093,7 @@ function ServiceOpenSchedule() {
                 >
                   <Table
                     striped
-                    className="table-data border"
+                    className="table-data border table-space"
                     style={{
                       border: "1px",
                     }}

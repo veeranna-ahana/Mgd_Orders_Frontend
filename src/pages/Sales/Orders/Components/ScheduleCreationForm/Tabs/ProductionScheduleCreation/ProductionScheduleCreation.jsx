@@ -9,25 +9,15 @@ import { ToastContainer, toast } from "react-toastify";
 export default function ProductionScheduleCreation({
   OrderData,
   selectedItems,
-  setScheduleListData,
+  setScheduleListData,handleScheduleOptionChange,handleScheduleTypeChange,scheduleOption,scheduleType
 }) {
   //  console.log("OrderData",OrderData);
 
   //  console.log("selectedItems",selectedItems);
 
-  const [scheduleType, setScheduleType] = useState("Job Work");
-  const [scheduleOption, setScheduleOption] = useState("Full Order");
 
   // Handle change for schedule type radio buttons
-  const handleScheduleTypeChange = (event) => {
-    const { value } = event.target;
-    setScheduleType(value);
-    //  console.log("Schedule Type:", value);
-    if (OrderData) {
-      fetchScheduleList(value);
-    }
-  };
-
+ 
   // API call to fetch schedule list
   const fetchScheduleList = (type) => {
     postRequest(
@@ -45,22 +35,6 @@ export default function ProductionScheduleCreation({
       fetchScheduleList(scheduleType);
     }
   }, [OrderData, scheduleType]);
-
-  // Handle change for schedule option radio buttons
-  const handleScheduleOptionChange = (event) => {
-    const { value } = event.target;
-    setScheduleOption(value);
-    //  console.log("Schedule Option:", value);
-    if (value === "Partial Order") {
-      toast.warning("Only Selected Serials will be included in the Schedule", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } else {
-      toast.warning("All Serials will be included in the Schedule", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    }
-  };
 
   //  console.log("selected Schedule type is ",scheduleType,"selected schedule option is",scheduleOption);
 

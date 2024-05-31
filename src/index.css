@@ -533,3 +533,6 @@ code {
   font-size: 12px !important;
 }
 
+.table-space {
+  white-space: nowrap;
+} 
