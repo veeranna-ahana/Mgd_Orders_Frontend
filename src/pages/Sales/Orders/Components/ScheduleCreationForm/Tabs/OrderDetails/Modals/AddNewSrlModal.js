@@ -272,22 +272,23 @@ function AddNewSrlModal(props) {
                   >
                     {/* <label className="form-label">Quantity</label> */}
 
-                    {/* <InputField
-                      label="Quantity"
-                      name="newSrlQty"
-                      id="Qty"
-                      value={quantity}
-                      onChangeCallback={setQuantity}
-                      required
-                    /> */}
+                    {/* <input
+                  type="text"
+                  className="ip-select in-field"
+                  id="Qty"
+                  name="newSrlQuantity"
+                  onChange={handleChange}
+                  value={newSerial.quantity}
+                  required
+                /> */}
                     <label className="form-label">Quantity</label>
                     <InputField
                       className="in-field"
                       name="newSrlQty"
                       id="Qty"
                       value={quantity}
-                      onChangeCallback={setQuantity}
-                      required
+                      onChangeCallback={setQuantity}                      
+                     required
                     />
                   </div>
                   <div
