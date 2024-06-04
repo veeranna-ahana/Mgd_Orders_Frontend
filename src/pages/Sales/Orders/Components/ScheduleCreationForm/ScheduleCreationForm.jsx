@@ -1144,7 +1144,24 @@ export default function ScheduleCreationForm(props) {
   const closeRegisterOrder = () => {
     setRegisterOrder(false);
   };
-
+  // message for Register Button
+  console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
+  // console.log("props.OrderData?.Order_Status", orderType);
+  let message = "";
+  switch (props.OrderData?.Order_Status) {
+    case "complete":
+      message =
+        "No changes for Quantity, PartName or Rate will be permitted once you register. Proceed?";
+      break;
+    case "scheduled":
+      message =
+        "You can change only Quantity once you Register a Scheduled Order, Continue?";
+      break;
+    case "open":
+      message =
+        "You can add new serials, change Quantity and rates once you Register an Open Order, Continue?";
+      break;
+  }
   // Register Button
   const handleRegisterBtn = () => {
     postRequest(
@@ -1393,7 +1410,8 @@ export default function ScheduleCreationForm(props) {
           secondbutton={closeRegisterOrder}
           title="magod_Order"
           // message="You can add New Serials, Change Quantity and Rates once you register an Open Order. Continue ?"
-          message="No Change for Quantity, PackingLevels and Rates once you register. Proceed ?"
+          // message="No Change for Quantity, PackingLevels and Rates once you register. Proceed ?"
+          message={message}
           firstbuttontext="Yes"
           secondbuttontext="No"
         />
