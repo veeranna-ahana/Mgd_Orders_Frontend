@@ -54,6 +54,7 @@ export default function OrderDetails(props) {
     calculateMinSrlStatus,
     updateOrderStatus,
     getStatusText,
+    scheduleType,scheduleOption
   } = props;
 
   // console.log("type", OrderData.Order_Type);

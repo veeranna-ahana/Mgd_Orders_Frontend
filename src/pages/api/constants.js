@@ -287,7 +287,7 @@ export const endpoints = {
   getScheduleListDwgData: `${API}/ScheduleList/getDwgTableData`,
   getScheduleListTaskandMaterial: `${API}/ScheduleList/getTaskandMterial`,
   getDwgListData: `${API}/ScheduleList/getDwgDataListTMTab`,
-  ShiftDetails: `${API}/ScheduleList/shiftDetails`,
+  ShiftDetails: `${API}/ScheduleList/ScheduleDetails`,
 
   //OpenSchedule Srvice
   getScheduleListgetFormDetails: `${API}/ScheduleList/getFormDeatils`,
@@ -305,6 +305,7 @@ export const endpoints = {
   pdfdata: `${API}/ScheduleList/PrintPdf`,
   getCustName: `${API}/ScheduleList/getCustomerName`,
   getFixtureStatus:`${API}/ScheduleList/checkFixtureOrder`,
+  getProfileOrderStatus:`${API}/ScheduleList/checkProfileOrder`,
 
 
   //NCProgram Button

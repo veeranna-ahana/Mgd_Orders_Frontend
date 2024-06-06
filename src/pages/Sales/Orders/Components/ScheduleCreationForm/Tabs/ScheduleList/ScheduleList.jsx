@@ -7,8 +7,6 @@ import FirstTable from "./Tables/FirstTable";
 import SecondTable from "./Tables/SecondTable";
 import AlertModal from "../../../../Menus/Service/Components/Alert";
 import { ToastContainer, toast } from "react-toastify";
-// import { Link, useNavigate } from "react-router-dom";
-// import { Tab, Table, Tabs, Form } from "react-bootstrap";
 
 export default function ScheduleList({
   OrderData,
@@ -16,8 +14,6 @@ export default function ScheduleList({
   setScheduleListData,
   scheduleListData,
 }) {
-  // console.log("OrderData", OrderData.Type);
-
   //date format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -39,11 +35,7 @@ export default function ScheduleList({
         }
       );
     }
-  }, [OrderData]); // Watch for changes in OrderData
-
-  // useEffect(() => {
-  //   ScheduleListData();
-  // }, []);
+  }, [OrderData, setScheduleListData]); // Watch for changes in OrderData
 
   //onClick ScheduleList table
   const [DwgNameList, setDwgNameList] = useState([]);
@@ -59,6 +51,14 @@ export default function ScheduleList({
       }
     );
   };
+
+  // Ensure first row is selected after scheduleListData is updated
+  useEffect(() => {
+    if (scheduleListData.length > 0) {
+      setRowScheduleList({ ...scheduleListData[0], index: 0 });
+      onRowClickScheduleList(scheduleListData[0], 0); // Call to fetch DwgNameList
+    }
+  }, [scheduleListData]);
 
   //delete ask modal
   const [deleteAsk, setDeleteAsk] = useState(false);
@@ -86,7 +86,7 @@ export default function ScheduleList({
     );
   };
 
-  // console.log("rowScheduleList.Created", rowScheduleList.Schedule_Status);
+  // console.log("rowScheduleList", rowScheduleList);
 
   return (
     <>
@@ -117,10 +117,6 @@ export default function ScheduleList({
           </div>
 
           <div className="col-md-2">
-            {/* <Link
-              to={"/Orders/Service/ServiceOpenSchedule"}
-              state={DwgNameList}
-            > */}
             <Link
               to={
                 OrderData?.Type === "Profile"
