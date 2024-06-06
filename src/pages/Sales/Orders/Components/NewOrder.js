@@ -175,13 +175,15 @@ function NewOrder(props) {
       return;
     }
     e.preventDefault();
+    console.log("Type", e.target.elements?.formOrderType.value);
     let ordertype = props.Type;
+    console.log("ordertype", ordertype);
     let purchaseorder = e.target.elements?.formPurchaseOrderNo.value;
 
     let qtnno = formquotationNo;
     let deldate = e.target.elements?.formDeliveryDate.value;
     let deliverydate = deldate;
-
+    console.log("deliverydate", deliverydate);
     let paymentterms = e.target.elements?.formPaymentTerms.value;
     let salesContact = e.target.elements?.formSalesContact.value;
     console.log("asdfghjkl...", salesContact);
