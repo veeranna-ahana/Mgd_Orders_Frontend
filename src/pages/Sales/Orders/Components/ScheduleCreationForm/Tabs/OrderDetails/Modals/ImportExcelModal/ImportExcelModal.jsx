@@ -141,7 +141,7 @@ export default function ImportExcelModal(props) {
                 exportExcelTemplate();
               }}
             >
-              Export Excel Template
+              Download Excel Template
             </button>
             <button
               className="button-style m-0"
@@ -149,7 +149,7 @@ export default function ImportExcelModal(props) {
               onClick={exportModifiedExcel}
               disabled={importedExcelData.length < 1}
             >
-              Export Modified Excel
+              Download Modified Excel
             </button>
           </div>
           <button
