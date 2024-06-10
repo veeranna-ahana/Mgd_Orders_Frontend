@@ -1105,6 +1105,7 @@ export default function ScheduleCreationForm(props) {
   // };
 
   // Assuming you have state variables and setters for the conditions below
+  const [messagee, setMessagee] = useState("");
   const [orderDetailsEnabled, setOrderDetailsEnabled] = useState(false);
   const [bulkChangeEnabled, setBulkChangeEnabled] = useState(false);
   const [addSrlVisible, setAddSrlVisible] = useState(false);
@@ -1144,23 +1145,24 @@ export default function ScheduleCreationForm(props) {
   const closeRegisterOrder = () => {
     setRegisterOrder(false);
   };
+
+  console.log("OrderData?.Order_Type", OrderData?.Order_Type);
   // message for Register Button
-  console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
-  // console.log("props.OrderData?.Order_Status", orderType);
   let message = "";
-  switch (props.OrderData?.Order_Status) {
-    case "complete":
+  switch (OrderData?.Order_Type) {
+    case "Complete":
       message =
         "No changes for Quantity, PartName or Rate will be permitted once you register. Proceed?";
+
       break;
-    case "scheduled":
+    case "Scheduled":
       message =
         "You can change only Quantity once you Register a Scheduled Order, Continue?";
+
       break;
-    case "open":
+    case "Open":
       message =
         "You can add new serials, change Quantity and rates once you Register an Open Order, Continue?";
-      break;
   }
   // Register Button
   const handleRegisterBtn = () => {
@@ -1268,7 +1270,6 @@ export default function ScheduleCreationForm(props) {
     );
   };
 
-
   //Sales Job Work
   const [scheduleType, setScheduleType] = useState("Job Work");
   const [scheduleOption, setScheduleOption] = useState("Full Order");
@@ -1282,7 +1283,6 @@ export default function ScheduleCreationForm(props) {
     // }
   };
 
-  
   // Handle change for schedule option radio buttons
   const handleScheduleOptionChange = (event) => {
     const { value } = event.target;
@@ -1298,8 +1298,6 @@ export default function ScheduleCreationForm(props) {
       });
     }
   };
-
-
 
   return (
     <>
@@ -1404,7 +1402,7 @@ export default function ScheduleCreationForm(props) {
                 updateOrderStatus={updateOrderStatus}
                 getStatusText={getStatusText}
                 scheduleType={scheduleType}
-              scheduleOption={scheduleOption}
+                scheduleOption={scheduleOption}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">

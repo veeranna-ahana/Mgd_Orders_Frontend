@@ -54,9 +54,12 @@ export default function OrderDetails(props) {
     calculateMinSrlStatus,
     updateOrderStatus,
     getStatusText,
-    scheduleType,scheduleOption
+    scheduleType,
+    scheduleOption,
   } = props;
 
+  console.log("schType", scheduleType);
+  console.log("scheduleOption", scheduleOption);
   // console.log("type", OrderData.Order_Type);
   // console.log("status", OrderData.Order_Status);
 
@@ -1192,6 +1195,10 @@ export default function OrderDetails(props) {
               calculateMinSrlStatus={calculateMinSrlStatus}
               updateOrderStatus={updateOrderStatus}
               getStatusText={getStatusText}
+              scheduleType={scheduleType}
+              scheduleOption={scheduleOption}
+              handleSelectAll={handleSelectAll}
+              handleReverseSelection={handleReverseSelection}
             />
           </div>
           <div className="col-md-6">

@@ -160,6 +160,18 @@ function NewOrder(props) {
     }
   };
 
+  const [selectedOrderType, setSelectedOrderType] = useState("Completed");
+
+  function handleOrderTypeChange(event) {
+    // const selectedOrderType = event.target.value;
+    // Do something with the selected order type
+    console.log("Selected order type:", event.target.value);
+    setSelectedOrderType(event.target.value);
+    // You can perform any action here based on the selected value
+  }
+
+  console.log("selectedOrderType", selectedOrderType);
+
   async function SaveOrder(e) {
     if (e) {
       e.preventDefault();
@@ -176,7 +188,8 @@ function NewOrder(props) {
     }
     e.preventDefault();
     console.log("Type", e.target.elements?.formOrderType.value);
-    let ordertype = props.Type;
+    // let ordertype = props.Type;
+    let ordertype = selectedOrderType;
     console.log("ordertype", ordertype);
     let purchaseorder = e.target.elements?.formPurchaseOrderNo.value;
 
@@ -340,6 +353,7 @@ function NewOrder(props) {
       select.classList.remove("required"); // Remove class
     }
   };
+
   return (
     <div>
       <div className="row">
@@ -477,10 +491,14 @@ function NewOrder(props) {
                   <label className="form-label">Order Type</label>
                 </div>
                 <div className="col-md-8 col-sm-12">
-                  <select id="formOrderType" className="ip-select input-field">
+                  <select
+                    id="formOrderType"
+                    className="ip-select input-field"
+                    onChange={handleOrderTypeChange}
+                  >
                     {/* <option value="">Select Order Type</option> */}
-                    <option value="">Complete</option>
-                    {/* <option value="Complete">Complete</option> */}
+                    {/* <option value="">Complete</option> */}
+                    <option value="Complete">Complete</option>
                     <option value="Scheduled">Scheduled</option>
                     <option value="Open">Open</option>
                   </select>
