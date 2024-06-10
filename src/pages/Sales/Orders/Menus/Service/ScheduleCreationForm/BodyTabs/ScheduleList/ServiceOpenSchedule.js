@@ -6,7 +6,7 @@ import { getRequest, postRequest } from "../../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../../api/constants";
 import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
-import { Create } from "@mui/icons-material";
+import { Create, Today } from "@mui/icons-material";
 import ServiceModal from "./Service/ServiceModal";
 
 function ServiceOpenSchedule() {
@@ -609,6 +609,9 @@ function ServiceOpenSchedule() {
         onClickofScheduleDtails(newState[0], 0); // Select the first row
       }
     }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+
+    // Get today's date in the format YYYY-MM-DD
+  const today = new Date().toISOString().split('T')[0];
   
 
   return (
@@ -741,6 +744,7 @@ function ServiceOpenSchedule() {
             className="in-field"
             type="date"
             value={deliveryDate}
+            min={today}
             onChange={handleChangeDeliveryDate}
           />
         </div>

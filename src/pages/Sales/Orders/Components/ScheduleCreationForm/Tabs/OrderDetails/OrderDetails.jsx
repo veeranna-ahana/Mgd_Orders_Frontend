@@ -250,70 +250,70 @@ export default function OrderDetails(props) {
     //   //console.log("bomdata......", bomdata);
     //   setBomData(bomdata);
     // });
-    async function fetchData() {
-      postRequest(
-        endpoints.getCustomerDets,
-        { custcode: Cust_Code },
-        (custdata) => {
-          // setCustomer(custdata[0]["Cust_name"]);
-          // setCustdata(custdata);
-        }
-      );
-      // await postRequest(
-      //   endpoints.PostNewSrlData,
-      //   { custcode: Cust_Code, OrderNo: OrderNo },
-      //   (srldata) => {
-      //     //////////// console.log("srl data", srldata);
-      //     setSerailData(srldata);
-      //   }
-      // );
+    // async function fetchData() {
+    //   postRequest(
+    //     endpoints.getCustomerDets,
+    //     { custcode: Cust_Code },
+    //     (custdata) => {
+    //       // setCustomer(custdata[0]["Cust_name"]);
+    //       // setCustdata(custdata);
+    //     }
+    //   );
+    //   // await postRequest(
+    //   //   endpoints.PostNewSrlData,
+    //   //   { custcode: Cust_Code, OrderNo: OrderNo },
+    //   //   (srldata) => {
+    //   //     //////////// console.log("srl data", srldata);
+    //   //     setSerailData(srldata);
+    //   //   }
+    //   // );
 
-      await postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
-        setSalesExecdata(sdata);
-      });
-      await postRequest(
-        endpoints.getSalesIndiExecLists,
-        { salesContact: SalesContact },
-        (sdata) => {
-          ////// console.log(sdata[0]["Name"]);
-          // setSalesExecContact(sdata[0]["Name"]);
-        }
-      );
-      // await postRequest(endpoints.getSalesIndiExecLists, { salesContact: order.DealingEngineer }, (ddata) => {
-      //     setDealingEngineer(ddata[0]["Name"]);
-      // });
-      // await postRequest(
-      //   endpoints.getSalesIndiExecLists,
-      //   { salesContact: RecordedBy },
-      //   (recdata) => {
-      //     setRecordedby(recdata[0]["Name"]);
-      //   }
-      // );
-      await postRequest(
-        endpoints.getSalesIndiExecLists,
-        { salesContact: Order_Received_By },
-        (rcvddata) => {
-          // setReceivedBy(rcvddata[0]["Name"]);
-        }
-      );
-      getRequest(endpoints.getMaterials, (mtrldata) => {
-        setMtrldata(mtrldata);
-      });
-      getRequest(endpoints.getProcessLists, (pdata) => {
-        setProcdata(pdata);
-      });
+    //   await postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
+    //     setSalesExecdata(sdata);
+    //   });
+    //   await postRequest(
+    //     endpoints.getSalesIndiExecLists,
+    //     { salesContact: SalesContact },
+    //     (sdata) => {
+    //       ////// console.log(sdata[0]["Name"]);
+    //       // setSalesExecContact(sdata[0]["Name"]);
+    //     }
+    //   );
+    //   // await postRequest(endpoints.getSalesIndiExecLists, { salesContact: order.DealingEngineer }, (ddata) => {
+    //   //     setDealingEngineer(ddata[0]["Name"]);
+    //   // });
+    //   // await postRequest(
+    //   //   endpoints.getSalesIndiExecLists,
+    //   //   { salesContact: RecordedBy },
+    //   //   (recdata) => {
+    //   //     setRecordedby(recdata[0]["Name"]);
+    //   //   }
+    //   // );
+    //   await postRequest(
+    //     endpoints.getSalesIndiExecLists,
+    //     { salesContact: Order_Received_By },
+    //     (rcvddata) => {
+    //       // setReceivedBy(rcvddata[0]["Name"]);
+    //     }
+    //   );
+    //   getRequest(endpoints.getMaterials, (mtrldata) => {
+    //     setMtrldata(mtrldata);
+    //   });
+    //   getRequest(endpoints.getProcessLists, (pdata) => {
+    //     setProcdata(pdata);
+    //   });
 
-      getRequest(endpoints.getToleranceTypes, (ttdata) => {
-        setTolerancedata(ttdata);
-      });
-      getRequest(endpoints.getInspectionLevels, (ildata) => {
-        setInspdata(ildata);
-      });
-      getRequest(endpoints.getPackingLevels, (pckdata) => {
-        setPackdata(pckdata);
-      });
-    }
-    fetchData();
+    //   getRequest(endpoints.getToleranceTypes, (ttdata) => {
+    //     setTolerancedata(ttdata);
+    //   });
+    //   getRequest(endpoints.getInspectionLevels, (ildata) => {
+    //     setInspdata(ildata);
+    //   });
+    //   getRequest(endpoints.getPackingLevels, (pckdata) => {
+    //     setPackdata(pckdata);
+    //   });
+    // }
+    // fetchData();
   }, []);
 
   useEffect(() => {
