@@ -134,7 +134,9 @@ export default function IEFormHeader(props) {
             props.setImportedExcelData(parsedData);
             toast.success("All order details correctly loaded.");
           } else {
-            toast.error("Template error.");
+            toast.error(
+              `Template error, Please click on "Download Excel Template"`
+            );
             props.setImportedExcelData([]);
           }
         } else {
@@ -218,7 +220,7 @@ export default function IEFormHeader(props) {
        
       </div> */}
       <div className="d-flex justify-content-center">
-        <button className="button-style m-1">Update Para</button>
+        {/* <button className="button-style m-1">Update Para</button> */}
         <button
           className="button-style m-1"
           style={{ width: "auto" }}
@@ -231,7 +233,7 @@ export default function IEFormHeader(props) {
         </button>
         {/* <button className="button-style m-1">Set Operation</button> */}
         {/* <button className="button-style m-1">Load Excel</button> */}
-        <button className="button-style m-1">Compare</button>
+        {/* <button className="button-style m-1">Compare</button> */}
         <button
           className="button-style m-1"
           disabled={
