@@ -44,19 +44,22 @@ function ServiceOpenSchedule() {
       { formdata },
       (response) => {
        if(response.status===true){
-        if (response.data[0].Type === "Service") {
-          navigate("/Orders/Service/ScheduleCreationForm", {
-            state: response.data[0].Order_No,
-          });
-        } else if (response.data[0].Type === "Profile") {
-          navigate("/Orders/Profile/ScheduleCreationForm", {
-            state: response.data[0].Order_No,
-          });
-        } else if (response.data[0].Type === "Fabrication") {
-          navigate("/Orders/Fabrication/ScheduleCreationForm", {
-            state: response.data[0].Order_No,
-          });
-        }
+        navigate("/Orders/Profile/ScheduleCreationForm", {
+          state: response.data[0].Order_No,
+        });
+        // if (response.data[0].Type === "Service") {
+        //   navigate("/Orders/Service/ScheduleCreationForm", {
+        //     state: response.data[0].Order_No,
+        //   });
+        // } else if (response.data[0].Type === "Profile") {
+        //   navigate("/Orders/Profile/ScheduleCreationForm", {
+        //     state: response.data[0].Order_No,
+        //   });
+        // } else if (response.data[0].Type === "Fabrication") {
+        //   navigate("/Orders/Fabrication/ScheduleCreationForm", {
+        //     state: response.data[0].Order_No,
+        //   });
+        // }
        }
        else{
         setProfileOrder1(true);
@@ -84,19 +87,22 @@ function ServiceOpenSchedule() {
       { formdata },
       (response) => {
        if(response.status===true){
-        if (response.data[0].Type === "Service") {
-          navigate("/Orders/Service/ScheduleCreationForm", {
-            state: response.data[0].Order_No,
-          });
-        } else if (response.data[0].Type === "Profile") {
-          navigate("/Orders/Profile/ScheduleCreationForm", {
-            state: response.data[0].Order_No,
-          });
-        } else if (response.data[0].Type === "Fabrication") {
-          navigate("/Orders/Fabrication/ScheduleCreationForm", {
-            state: response.data[0].Order_No,
-          });
-        }
+        navigate("/Orders/Profile/ScheduleCreationForm", {
+              state: response.data[0].Order_No,
+            });
+        // if (response.data[0].Type === "Service") {
+        //   navigate("/Orders/Service/ScheduleCreationForm", {
+        //     state: response.data[0].Order_No,
+        //   });
+        // } else if (response.data[0].Type === "Profile") {
+        //   navigate("/Orders/Profile/ScheduleCreationForm", {
+        //     state: response.data[0].Order_No,
+        //   });
+        // } else if (response.data[0].Type === "Fabrication") {
+        //   navigate("/Orders/Fabrication/ScheduleCreationForm", {
+        //     state: response.data[0].Order_No,
+        //   });
+        // }
        }
        else{
          setFixtureOrder1(true);
@@ -290,7 +296,6 @@ function ServiceOpenSchedule() {
     setSpecialInstruction(formdata[0]?.Special_Instructions);
   }, [formdata]);
 
-  console.log("changedEngineer is",changedEngineer);
 
   //Onclick save Button
   const onClickSave = () => {
@@ -522,20 +527,23 @@ function ServiceOpenSchedule() {
       });
       setFixtureData(response);
       setFixtureOrder1(false);
+      navigate("/Orders/Profile/ScheduleCreationForm", {
+        state: response[0].Order_No,
+      });
       // console.log("response",response);
-      if (response[0].Type === "Service") {
-        navigate("/Orders/Service/ScheduleCreationForm", {
-          state: response[0].Order_No,
-        });
-      } else if (response[0].Type === "Profile") {
-        navigate("/Orders/Profile/ScheduleCreationForm", {
-          state: response[0].Order_No,
-        });
-      } else if (response[0].Type === "Fabrication") {
-        navigate("/Orders/Fabrication/ScheduleCreationForm", {
-          state: response[0].Order_No,
-        });
-      }
+      // if (response[0].Type === "Service") {
+      //   navigate("/Orders/Service/ScheduleCreationForm", {
+      //     state: response[0].Order_No,
+      //   });
+      // } else if (response[0].Type === "Profile") {
+      //   navigate("/Orders/Profile/ScheduleCreationForm", {
+      //     state: response[0].Order_No,
+      //   });
+      // } else if (response[0].Type === "Fabrication") {
+      //   navigate("/Orders/Fabrication/ScheduleCreationForm", {
+      //     state: response[0].Order_No,
+      //   });
+      // }
     });
   };
 
