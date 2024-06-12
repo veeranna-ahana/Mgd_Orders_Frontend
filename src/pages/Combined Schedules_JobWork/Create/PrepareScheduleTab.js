@@ -150,9 +150,9 @@ export default function PrepareScheduleTab({
           selectedSalesContact: selectedSalesContact,
           Date: storedDate,
           ScheduleDate: ScheduleDate,
-        }).then((response) => {
+        },(response) => {
           setDisableButton(true);
-          setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
+          setCombinedScheduleNo(response.combinedScheduleNos[0]);
           openCombineScheduleModal();
         });
       } else {
@@ -162,9 +162,9 @@ export default function PrepareScheduleTab({
           selectedSalesContact: selectedSalesContact,
           Date: storedDate,
           ScheduleDate: ScheduleDate,
-        }).then((response) => {
+        },(response) => {
           setDisableButton(true);
-          setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
+          setCombinedScheduleNo(response.combinedScheduleNos[0]);
           openCombineScheduleModal();
         });
       }
@@ -174,8 +174,8 @@ export default function PrepareScheduleTab({
   const getAlldataAfterCombineSchedule = () => {
     postRequest(endpoints.afterCombinedSchedule, {
       combinedScheduleNo,
-    }).then((response) => {
-      setBeforeCombine(response.data);
+    },(response) => {
+      setBeforeCombine(response);
     });
   };
 
@@ -290,7 +290,7 @@ export default function PrepareScheduleTab({
                 </tr>
               </thead>
               <tbody className="tablebody table-space">
-                {preapreScheduleData.map((data, key) => {
+                {preapreScheduleData?.map((data, key) => {
                   return (
                     <>
                       <tr>
