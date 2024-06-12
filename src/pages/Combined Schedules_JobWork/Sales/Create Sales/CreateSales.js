@@ -79,22 +79,21 @@ export default function CreateSales() {
     postRequest(endpoints.rightTabledata, {
       custCode: event[0]?.Cust_Code,
     }).then((response) => {
-      // console.log(response.data);
-      for (let i = 0; i < response.data.length; i++) {
-        let datesplit = response.data[i].schTgtDate.split(" ");
+      for (let i = 0; i < response.length; i++) {
+        let datesplit = response[i].schTgtDate.split(" ");
         let ScheduleDate = datesplit[0].split("-");
         let finalDay =
           ScheduleDate[2] + "/" + ScheduleDate[1] + "/" + ScheduleDate[0];
-        response.data[i].schTgtDate = finalDay;
+        response[i].schTgtDate = finalDay;
       }
-      for (let i = 0; i < response.data.length; i++) {
-        let datesplit1 = response.data[i].Delivery_Date.split(" ");
+      for (let i = 0; i < response.length; i++) {
+        let datesplit1 = response[i].Delivery_Date.split(" ");
         let Delivery_Date = datesplit1[0].split("-");
         let finalDay1 =
           Delivery_Date[2] + "/" + Delivery_Date[1] + "/" + Delivery_Date[0];
-        response.data[i].Delivery_Date = finalDay1;
+        response[i].Delivery_Date = finalDay1;
       }
-      setOrderSchedule(response.data);
+      setOrderSchedule(response);
     });
   };
 
@@ -148,8 +147,7 @@ export default function CreateSales() {
     postRequest(endpoints.prepareSchedule, {
       scheduleid: rowselectleft[0].ScheduleId,
     }).then((response) => {
-      // console.log(response.data);
-      setPrepareScheduleData(response.data);
+      setPrepareScheduleData(response);
     });
   };
 

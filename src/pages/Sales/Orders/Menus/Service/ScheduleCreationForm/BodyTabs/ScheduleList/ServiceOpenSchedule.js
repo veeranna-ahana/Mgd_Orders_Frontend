@@ -595,15 +595,24 @@ function ServiceOpenSchedule() {
 
   //
   const handleSchedulelist = (index, field, value) => {
-    // console.log("value is",value);
-    const updatedDwgdata = [...newState]; // Create a copy of the array
-    // Update the specific item's field with the new value
-    // console.log("updatedDwgdata",updatedDwgdata);
-    updatedDwgdata[index] = {
-      ...updatedDwgdata[index],
-      [field]: value,
-    };
-    setNewState(updatedDwgdata);
+    if(value > scheduleDetailsRow?.QtyToSchedule){
+      toast.error("Scheduled cannot be greater than ToSchedule", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }else if(value < 0){
+      toast.error("Please Enter a Positive Number", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    else{
+      const updatedDwgdata = [...newState]; // Create a copy of the array
+      // Update the specific item's field with the new value
+      updatedDwgdata[index] = {
+        ...updatedDwgdata[index],
+        [field]: value,
+      };
+      setNewState(updatedDwgdata);
+    }
   };
 
   // console.log("newState is",newState);
