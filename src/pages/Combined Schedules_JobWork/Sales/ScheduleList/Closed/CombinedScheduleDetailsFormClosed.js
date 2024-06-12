@@ -16,7 +16,6 @@ export default function CombinedScheduleDetailsFormClosed() {
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
     getRequest(endpoints.getSalesContact,(response) => {
-      //  console.log(response.data);
       setSalesContactList(response);
     });
   };
@@ -28,7 +27,6 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.getSchedudleDetails, {
       selectedRow,
     },(response) => {
-      // console.log(response.data);
       setScheduleListDetailsData(response);
     });
   };
@@ -101,7 +99,6 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.CombinedTasksTaskTable, {
       ScheduleId: selectedRow?.ScheduleId,
     },(response) => {
-      // console.log(response.data);
       setTaskNoTableData(response);
     });
   };
@@ -115,7 +112,6 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.CombinedTasksShowDwg, {
       TaskNo: list?.TaskNo,
     },(response) => {
-      // console.log(response.data);
       setDwgNameTableData(response);
     });
   };
@@ -126,7 +122,6 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.OriginalTable, {
       selectedRow,
     },(response) => {
-      // console.log(response.data);
       setOrinalScheduledata(response);
     });
   };
@@ -141,7 +136,6 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.OriginalTable2, {
       list,
     },(response) => {
-      // console.log(response.data);
       setOrinalScheduleTable2(response);
     });
   };
@@ -162,7 +156,6 @@ export default function CombinedScheduleDetailsFormClosed() {
       .success("Sucessfully Updated", {
         position: toast.POSITION.TOP_CENTER,
       },(response) => {
-        // console.log(response.data);
       });
   };
 
@@ -180,7 +173,6 @@ export default function CombinedScheduleDetailsFormClosed() {
     postRequest(endpoints.updateTask, {
       DwgSelect,
     },(response) => {
-      // console.log(response.data);
       if (response === "Success") {
         toast.success(response, {
           position: toast.POSITION.TOP_CENTER,

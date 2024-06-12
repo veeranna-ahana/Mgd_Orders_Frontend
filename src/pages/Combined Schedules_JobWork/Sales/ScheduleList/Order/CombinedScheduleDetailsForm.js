@@ -15,7 +15,6 @@ function CombinedScheduleDetailsForm() {
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
     getRequest(endpoints.getSalesContact,(response) => {
-        //  console.log(response.data);
         setSalesContactList(response);
       });
   };
@@ -99,7 +98,6 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.CombinedTasksTaskTable, {
         ScheduleId: selectedRow?.ScheduleId,
       },(response) => {
-        // console.log(response.data);
         setTaskNoTableData(response);
       });
   };
@@ -113,7 +111,6 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.CombinedTasksShowDwg, {
         TaskNo: list?.TaskNo,
       },(response) => {
-        // console.log(response.data);
         setDwgNameTableData(response);
       });
   };
@@ -124,7 +121,6 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.OriginalTable, {
         selectedRow,
       },(response) => {
-        // console.log(response.data);
         setOrinalScheduledata(response);
       });
   };
@@ -139,7 +135,6 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.OriginalTable2, {
         list,
       },(response) => {
-        // console.log(response.data);
         setOrinalScheduleTable2(response);
       });
   };
@@ -160,7 +155,6 @@ function CombinedScheduleDetailsForm() {
       .success("Sucessfully Updated", {
         position: toast.POSITION.TOP_CENTER,
       },(response) => {
-        // console.log(response.data);
       });
   };
 
@@ -178,13 +172,12 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.updateTask, {
         DwgSelect,
       },(response) => {
-        // console.log(response.data);
-        if (response.data === "Success") {
-          toast.success(response.data, {
+        if (response === "Success") {
+          toast.success(response, {
             position: toast.POSITION.TOP_CENTER,
           });
         } else {
-          toast.error(response.data, {
+          toast.error(response, {
             position: toast.POSITION.TOP_CENTER,
           });
         }
@@ -194,7 +187,7 @@ function CombinedScheduleDetailsForm() {
   //Distribute Parts
   const distributeParts = () => {
     postRequest(endpoints.distributeParts, { selectedRow },(response) => {
-        console.log(response.data);
+        console.log(response);
       });
   };
 

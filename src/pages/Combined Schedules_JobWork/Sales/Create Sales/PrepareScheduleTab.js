@@ -150,9 +150,9 @@ export default function PrepareScheduleTab({
         selectedSalesContact: selectedSalesContact,
         Date: storedDate,
         ScheduleDate: ScheduleDate,
-      }).then((response) => {
+      },(response) => {
         setDisableButton(true);
-        setCombinedScheduleNo(response.data.combinedScheduleNos[0]);
+        setCombinedScheduleNo(response.combinedScheduleNos[0]);
         openCombineScheduleModal();
       });
     }
@@ -161,8 +161,8 @@ export default function PrepareScheduleTab({
   const getAlldataAfterCombineSchedule = () => {
     postRequest(endpoints.afterCombinedSchedule, {
       combinedScheduleNo,
-    }).then((response) => {
-      setBeforeCombine(response.data);
+    },(response) => {
+      setBeforeCombine(response);
     });
   };
 
