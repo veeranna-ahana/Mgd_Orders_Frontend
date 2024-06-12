@@ -39,11 +39,8 @@ function ServiceOpenSchedule() {
   const [openTask, setOpenTask] = useState(false);
 
   let profileOrderOpen1 = (e) => {
-    postRequest(
-      endpoints.getProfileOrderStatus,
-      { formdata },
-      (response) => {
-       if(response.status===true){
+    postRequest(endpoints.getProfileOrderStatus, { formdata }, (response) => {
+      if (response.status === true) {
         navigate("/Orders/Profile/ScheduleCreationForm", {
           state: response.data[0].Order_No,
         });
@@ -60,12 +57,10 @@ function ServiceOpenSchedule() {
         //     state: response.data[0].Order_No,
         //   });
         // }
-       }
-       else{
+      } else {
         setProfileOrder1(true);
       }
-      }
-    );
+    });
   };
 
   let profileOrderClose1 = () => {
@@ -82,14 +77,11 @@ function ServiceOpenSchedule() {
   };
 
   let fixtureOrderOpen1 = () => {
-    postRequest(
-      endpoints.getFixtureStatus,
-      { formdata },
-      (response) => {
-       if(response.status===true){
+    postRequest(endpoints.getFixtureStatus, { formdata }, (response) => {
+      if (response.status === true) {
         navigate("/Orders/Profile/ScheduleCreationForm", {
-              state: response.data[0].Order_No,
-            });
+          state: response.data[0].Order_No,
+        });
         // if (response.data[0].Type === "Service") {
         //   navigate("/Orders/Service/ScheduleCreationForm", {
         //     state: response.data[0].Order_No,
@@ -103,12 +95,10 @@ function ServiceOpenSchedule() {
         //     state: response.data[0].Order_No,
         //   });
         // }
-       }
-       else{
-         setFixtureOrder1(true);
-       }
+      } else {
+        setFixtureOrder1(true);
       }
-    );
+    });
   };
 
   let fixtureOrderClose1 = () => {
@@ -168,7 +158,6 @@ function ServiceOpenSchedule() {
   //   setScheduleDetailsRow(list);
   // };
 
-
   // console.log(scheduleDetailsRow);
 
   //get Task and Material Tab Data
@@ -192,10 +181,10 @@ function ServiceOpenSchedule() {
   const onRowSelectTaskMaterialTable = (item, index) => {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
-      postRequest(endpoints.getDwgListData, { list }, (response) => {
-        // console.log("response is", response);
-        setTmDwgList(response);
-      });
+    postRequest(endpoints.getDwgListData, { list }, (response) => {
+      // console.log("response is", response);
+      setTmDwgList(response);
+    });
   };
 
   //Default first row select for Task and Mterial
@@ -220,15 +209,18 @@ function ServiceOpenSchedule() {
       }
     );
   };
-  
+
   useEffect(() => {
     if (rowselectTaskMaterial.length === undefined && TaskMaterialData[0]) {
-      postRequest(endpoints.getDwgListData, { list: TaskMaterialData[0] }, (response) => {
-        setTmDwgList(response);
-      });
-    } 
+      postRequest(
+        endpoints.getDwgListData,
+        { list: TaskMaterialData[0] },
+        (response) => {
+          setTmDwgList(response);
+        }
+      );
+    }
   }, [TaskMaterialData, rowselectTaskMaterial]);
-
 
   //Default first row select
   useEffect(() => {
@@ -296,10 +288,9 @@ function ServiceOpenSchedule() {
     setSpecialInstruction(formdata[0]?.Special_Instructions);
   }, [formdata]);
 
-
   //Onclick save Button
   const onClickSave = () => {
-    console.log("changedEngineer is",changedEngineer);
+    console.log("changedEngineer is", changedEngineer);
     postRequest(
       endpoints.onClickSave,
       {
@@ -310,7 +301,7 @@ function ServiceOpenSchedule() {
         changedEngineer: changedEngineer,
       },
       (response) => {
-        console.log("response is",response);
+        console.log("response is", response);
         toast.success("Saved", {
           position: toast.POSITION.TOP_CENTER,
         });
@@ -478,12 +469,12 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
-    console.log("rowselectTaskMaterial........",rowselectTaskMaterial)
+    console.log("rowselectTaskMaterial........", rowselectTaskMaterial);
     postRequest(
       endpoints.onClickNCProgram,
       { rowselectTaskMaterial },
       (response) => {
-        console.log(" first response ......", response)
+        console.log(" first response ......", response);
         postRequest(
           endpoints.getMachineList,
           { NCprogramForm: response },
@@ -610,17 +601,15 @@ function ServiceOpenSchedule() {
 
   // console.log("newState is",newState);
 
-  
-    // //Default first row select
-    useEffect(() => {
-      if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-        onClickofScheduleDtails(newState[0], 0); // Select the first row
-      }
-    }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // //Default first row select
+  useEffect(() => {
+    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+      onClickofScheduleDtails(newState[0], 0); // Select the first row
+    }
+  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
-    // Get today's date in the format YYYY-MM-DD
-  const today = new Date().toISOString().split('T')[0];
-  
+  // Get today's date in the format YYYY-MM-DD
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div>
@@ -1091,7 +1080,7 @@ function ServiceOpenSchedule() {
             </div>
           </Tab>
 
-{/* Task and Material List */}
+          {/* Task and Material List */}
           <Tab eventKey="Task and Material List" title="Task and Material List">
             <div className="row">
               <div style={{ display: "flex", gap: "170px" }}>

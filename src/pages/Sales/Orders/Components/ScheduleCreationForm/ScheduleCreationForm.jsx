@@ -1150,7 +1150,7 @@ export default function ScheduleCreationForm(props) {
   // message for Register Button
   let message = "";
   switch (OrderData?.Order_Type) {
-    case "Complete":
+    case "Completed":
       message =
         "No changes for Quantity, PartName or Rate will be permitted once you register. Proceed?";
 
