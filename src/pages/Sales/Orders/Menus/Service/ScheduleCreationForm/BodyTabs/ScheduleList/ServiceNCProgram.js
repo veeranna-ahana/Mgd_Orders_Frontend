@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { endpoints } from "../../../../../../../api/constants";
 import { postRequest } from "../../../../../../../api/apiinstance";
 import AlertModal from "../../../Components/Alert";
@@ -52,9 +52,11 @@ function ServiceNCProgram() {
 
   //row select
   const [selectedNCprogram, setSelectedNCProgram] = useState({});
+  const[selectedNcid,setSelectedNcid]=useState('');
   const onClickSelectedNCprogram = (item, index) => {
     let list = { ...item, index: index };
     setSelectedNCProgram(list);
+    setSelectedNcid(list.Ncid);
   };
 
   //Default first row select
@@ -133,6 +135,43 @@ function ServiceNCProgram() {
     );
   };
 
+  console.log("selectedNcid is",selectedNcid);
+
+
+ let navigate =useNavigate();
+
+ //Task Sheet
+  const onClickTaskSheet=()=>{
+    if (!selectedNcid) {
+      toast.error("Select Table row");
+      return;
+    }
+    navigate("/Orders/Service/TaskSheet", {
+      state: { selectedNcid,response:response,responsedata:MachineList},
+    });
+  }
+
+  //Solid State
+  const onClickSolidState = () => {
+    if (!selectedNcid) {
+      toast.error("Select Table row");
+      return;
+    }
+    navigate("/Orders/Service/Solidstatelaser", {
+      state: { selectedNcid,response:response,responsedata:MachineList },
+    });
+  };
+
+  //Co2Form
+  const onClickCo2State = () => {
+    if (!selectedNcid) {
+      toast.error("Select Table row");
+      return;
+    }
+    navigate("/Orders/Service/Co2Form", {
+      state: { selectedNcid,response:response,responsedata:MachineList },
+    });
+  };
 
 
   return (
@@ -274,7 +313,26 @@ function ServiceNCProgram() {
               <button className="button-style">Close</button>
             </Link>
           </div>
+          
+          <div className="col-md-2">
+            <button className="button-style"  onClick={onClickTaskSheet}>
+              TaskSheet
+            </button>
+          </div>
+
+          <div className="col-md-2">
+            <button className="button-style" onClick={onClickSolidState}>
+              Solid State
+            </button>
+          </div>
+
+          <div className="col-md-2">
+            <button className="button-style" onClick={onClickCo2State}>
+              Co2 Form
+            </button>
+          </div>
         </div>
+
 
         <div className="row mt-2">
           <div className="col-md-4 sm-12 mt-3" style={{ overflowY: "scroll" }}>

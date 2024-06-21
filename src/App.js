@@ -110,6 +110,11 @@ import CombinedScheduleListJW from "./pages/Combined Schedules_JobWork/Job Work/
 import CombinedScheduleListSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Order/CombinedScheduleListSales";
 import CombinedScheduleListClosedJW from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Closed/CombinedScheduleListClosedJW";
 import CombinedScheduleListClosedSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Closed/CombinedScheduleListClosedSales";
+import TaskSheet from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/TaskSheet";
+import SolidStateLaserTable from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/SolidStateLaserTable";
+import CoTable from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/CoTable"
+import Solidstatelaser from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/JobParameters/SolidStateLaser/Solidstatelaser";
+import Co2Form from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/JobParameters/Co2Form/Co2Form";
 
 function App() {
   return (
@@ -315,7 +320,13 @@ function App() {
                       path="NewOrderSerial"
                       element={<ServiceNewOrderSerial />}
                     />
-                    <Route path="NCProgram" element={<ServiceNCProgram />} />
+
+                    <Route path="NCProgram" element={<ServiceNCProgram />}/>
+                    <Route path="TaskSheet" element={<TaskSheet />} />
+                    <Route path="Solidstatelaser" element={<Solidstatelaser />} />
+                    <Route path="Co2Form" element={<Co2Form/>} />
+
+
                     <Route
                       path="OrderSchedule"
                       element={<ServiceOrderSchedule />}
