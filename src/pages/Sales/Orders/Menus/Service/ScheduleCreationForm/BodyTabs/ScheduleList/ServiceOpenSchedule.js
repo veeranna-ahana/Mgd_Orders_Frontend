@@ -478,7 +478,6 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
-    console.log("rowselectTaskMaterial........",rowselectTaskMaterial)
     postRequest(
       endpoints.onClickNCProgram,
       { rowselectTaskMaterial },
