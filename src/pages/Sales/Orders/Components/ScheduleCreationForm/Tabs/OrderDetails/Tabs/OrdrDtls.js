@@ -737,79 +737,24 @@ function OrdrDtls(props) {
                 )}
               </div>
               <div className="col-md-6">
-                {mtrldata.length > 0 || mtrldata != null ? (
-                  <Typeahead
-                    className="ip-select input-fields mt-2"
-                    id="basic-example"
-                    labelKey="Mtrl_Code"
-                    onChange={handleMtrlCodeTypeaheadChange}
-                    // selected={Material}
-                    options={mtrldata}
-                    placeholder="Choose a Material..."
-                    required
-                    disabled={BomData.length === 0}
-                  ></Typeahead>
-                ) : (
-                  ""
-                )}
+                <input
+                  className="in-field mt-1"
+                  type="text"
+                  value={BomArry[0]?.Material}
+                  disabled={BomData.length === 0}
+                />
               </div>
             </div>
             <div className="row mt-1 mb-2">
               <div className="col-md-5 d-flex" style={{ gap: "10px" }}>
                 <label className="form-label">Operation</label>
-                {/* {procdata.length > 0 ? ( */}
-                <select
-                  className="ip-select in-field mt-1"
-                  id="strprocess"
-                  onChange={selectProc}
-                  disabled={BomData.length === 0}
-                >
-                  <option value="" disabled selected>
-                    ** Select **
-                  </option>
-                  {procdata.map((proc) => {
-                    // Check if "Service" column has non-zero values
-                    if (props.OrderData?.Type === "Service") {
-                      if (proc["Service"] !== 0) {
-                        return (
-                          <option
-                            key={proc["ProcessDescription"]}
-                            value={proc["ProcessDescription"]}
-                          >
-                            {proc["ProcessDescription"]}
-                          </option>
-                        );
-                      }
-                    } else if (props.OrderData?.Type === "Fabrication") {
-                      if (proc["MultiOperation"] !== 0) {
-                        return (
-                          <option
-                            key={proc["ProcessDescription"]}
-                            value={proc["ProcessDescription"]}
-                          >
-                            {proc["ProcessDescription"]}
-                          </option>
-                        );
-                      }
-                    } else {
-                      if (proc["Profile"] !== 0) {
-                        return (
-                          <option
-                            key={proc["ProcessDescription"]}
-                            value={proc["ProcessDescription"]}
-                          >
-                            {proc["ProcessDescription"]}
-                          </option>
-                        );
-                      }
-                    }
 
-                    return null; // Exclude options with zero values in "Service" column
-                  })}
-                </select>
-                {/* ) : (
-                      ""
-                    )} */}
+                <input
+                  className="in-field mt-1"
+                  type="text"
+                  value={BomArry[0]?.Operation}
+                  disabled={BomData.length === 0}
+                />
               </div>
               <div className="col-md-4 d-flex" style={{ gap: "10px" }}>
                 <label className="form-label label-space">J W Cost</label>

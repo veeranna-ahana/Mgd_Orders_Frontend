@@ -187,9 +187,12 @@ function NewOrder(props) {
       return;
     }
     e.preventDefault();
+    // Order_Type = "complete"
+    // Type = "Service"
     console.log("Type", e.target.elements?.formOrderType.value);
-    // let ordertype = props.Type;
-    let ordertype = selectedOrderType;
+    // let ordertype = selectedOrderType;
+    let ordertype = props.Type;
+    let type = selectedOrderType;
     console.log("ordertype", ordertype);
     let purchaseorder = e.target.elements?.formPurchaseOrderNo.value;
 
@@ -237,6 +240,7 @@ function NewOrder(props) {
       endpoints.saveCreateOrder,
       {
         ordertype,
+        type,
         purchaseorder,
         qtnno,
         deliverydate,

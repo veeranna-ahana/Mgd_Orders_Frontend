@@ -251,6 +251,7 @@ function OrdrTable(props) {
     scheduleOption,
     handleSelectAll,
     handleReverseSelection,
+    filteredData,
   } = props;
 
   useEffect(() => {
@@ -278,21 +279,21 @@ function OrdrTable(props) {
   };
 
   // Function to filter data based on scheduleType
-  const getFilteredData = () => {
-    if (scheduleType === "Job Work") {
-      return OrdrDetailsData.filter(
-        (item) => item.Mtrl_Source.toLowerCase() === "customer"
-      );
-    } else if (scheduleType === "Sales") {
-      return OrdrDetailsData.filter(
-        (item) => item.Mtrl_Source.toLowerCase() === "magod"
-      );
-    } else {
-      return OrdrDetailsData;
-    }
-  };
+  // const getFilteredData = () => {
+  //   if (scheduleType === "Job Work") {
+  //     return OrdrDetailsData.filter(
+  //       (item) => item.Mtrl_Source.toLowerCase() === "customer"
+  //     );
+  //   } else if (scheduleType === "Sales") {
+  //     return OrdrDetailsData.filter(
+  //       (item) => item.Mtrl_Source.toLowerCase() === "magod"
+  //     );
+  //   } else {
+  //     return OrdrDetailsData;
+  //   }
+  // };
 
-  const filteredData = getFilteredData();
+  // const filteredData = getFilteredData();
 
   // useEffect(() => {
   //   if (scheduleOption === "Full Order") {
@@ -333,7 +334,7 @@ function OrdrTable(props) {
           </tr>
         </thead>
         <tbody style={{ textAlign: "center" }}>
-          {filteredData.map((OrdrDetailsItem, i) => {
+          {filteredData?.map((OrdrDetailsItem, i) => {
             const backgroundColor = getRowBackgroundColor(OrdrDetailsItem);
             return (
               <tr

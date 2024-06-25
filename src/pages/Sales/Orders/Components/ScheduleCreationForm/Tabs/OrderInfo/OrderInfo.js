@@ -17,6 +17,7 @@ export default function OrderInfo(props) {
   // Format the date as dd mm yyyy
   const formattedDate = `${day}-${month}-${year}`;
   // console.log(formattedDate);
+  console.log(props.OrderData);
 
   return (
     <>

@@ -56,6 +56,7 @@ export default function OrderDetails(props) {
     getStatusText,
     scheduleType,
     scheduleOption,
+    filteredData,
   } = props;
 
   console.log("schType", scheduleType);
@@ -420,6 +421,7 @@ export default function OrderDetails(props) {
         OrderNo: OrderNo,
         custcode: Cust_Code,
         OrderSrl: selectedSrl,
+        MtrlSrc: blkChange.MtrlSrc,
       },
       (blkChngData) => {
         if (blkChngData.affectedRows != 0) {
@@ -1199,6 +1201,7 @@ export default function OrderDetails(props) {
               scheduleOption={scheduleOption}
               handleSelectAll={handleSelectAll}
               handleReverseSelection={handleReverseSelection}
+              filteredData={filteredData}
             />
           </div>
           <div className="col-md-6">
