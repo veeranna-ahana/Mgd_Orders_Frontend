@@ -481,8 +481,7 @@ function ServiceOpenSchedule() {
     if(Object.keys(rowselectTaskMaterial).length===1){
       toast.error("Please Select a Task", {
         position: toast.POSITION.TOP_CENTER,
-      });
-    }
+      });    }
     else{
       postRequest(
         endpoints.onClickNCProgram,

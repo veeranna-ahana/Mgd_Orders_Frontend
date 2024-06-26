@@ -29,7 +29,7 @@ function ServiceNCProgram() {
   const [NCProramData, setNCProgramData] = useState([]);
   const getNCProgramData = () => {
     postRequest(endpoints.getNCPrograms, { NCprogramForm }, (response) => {
-      // console.log("NCProgramList is", response);
+      console.log("NCProgramList is", response);
       setNCProgramData(response);
     });
   };
