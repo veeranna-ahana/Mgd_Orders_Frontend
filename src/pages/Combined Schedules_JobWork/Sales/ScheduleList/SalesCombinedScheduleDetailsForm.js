@@ -88,9 +88,9 @@ function SalesCombinedScheduleDetailsForm() {
         <button className="button-style" style={{ width: "60px" }}>
           Print
         </button>
-        <button className="button-style" style={{ width: "170px" }}>
+        {/* <button className="button-style" style={{ width: "170px" }}>
           NC Programming
-        </button>
+        </button> */}
       </div>
 
       <Tabs className=" tab_font mt-4">
