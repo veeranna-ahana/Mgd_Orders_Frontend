@@ -3,6 +3,7 @@ import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AddNewSrlModal from "../Modals/AddNewSrlModal";
 import { Typeahead } from "react-bootstrap-typeahead";
+import { Login } from "@mui/icons-material";
 
 function OrdrDtls(props) {
   const {
@@ -67,6 +68,17 @@ function OrdrDtls(props) {
     selectedItems[0]?.Mtrl_Code || ""
   );
 
+  console.log("selectepartID...", selectedPartId.length);
+
+  if (selectedPartId.length === 0) {
+    console.log("nulll...");
+  } else {
+    console.log("value", selectedPartId);
+  }
+
+  // selectedPartId.length > 0
+  //   ? console.log(selectedPartId.length)
+  //   : console.log("null");
   // console.log("OrdrDetailsData...", OrdrDetailsData);
   // console.log("selectedItems...", selectedItems[i].QtyScheduled);
 
@@ -561,8 +573,8 @@ function OrdrDtls(props) {
                 style={{ marginTop: "13px" }}
                 type="checkbox"
                 className="checkBoxStyle ms-2"
-                checked={HasBOM === 1}
-                onChange={(e) => setHasBOM(e.target.checked ? 1 : 0)}
+                checked={LastSlctedRow?.HasBOM === 1 || HasBOM}
+                // onChange={(e) => setHasBOM(e.target.checked ? 1 : 0)}
               />
             </div>
           </div>
@@ -642,6 +654,12 @@ function OrdrDtls(props) {
                     className="in-field"
                     type="text"
                     value={BomArry[0]?.JobWorkCost}
+                    // value={BomArry.length > 0 ? BomArry[0].JobWorkCost :null}
+                    // value={
+                    //   selectedPartId.length === 0
+                    //     ? 0.0
+                    //     : BomArry[0]?.JobWorkCost
+                    // }
                   />
                 </div>
                 <div className="d-flex field-gap">
@@ -740,7 +758,10 @@ function OrdrDtls(props) {
                 <input
                   className="in-field mt-1"
                   type="text"
-                  value={BomArry[0]?.Material}
+                  // value={BomArry[0]?.Material}
+                  value={
+                    selectedPartId.length === 0 ? "" : BomArry[0]?.Material
+                  }
                   disabled={BomData.length === 0}
                 />
               </div>
@@ -752,7 +773,10 @@ function OrdrDtls(props) {
                 <input
                   className="in-field mt-1"
                   type="text"
-                  value={BomArry[0]?.Operation}
+                  // value={BomArry[0]?.Operation}
+                  value={
+                    selectedPartId.length === 0 ? "" : BomArry[0]?.Operation
+                  }
                   disabled={BomData.length === 0}
                 />
               </div>
@@ -761,7 +785,10 @@ function OrdrDtls(props) {
                 <input
                   className="in-field mt-1"
                   type="text"
-                  value={BomArry[0]?.JobWorkCost}
+                  // value={BomArry[0]?.JobWorkCost}
+                  value={
+                    selectedPartId.length === 0 ? 0.0 : BomArry[0]?.JobWorkCost
+                  }
                   disabled={BomData.length === 0}
                 />
               </div>
@@ -770,7 +797,10 @@ function OrdrDtls(props) {
                 <input
                   className="in-field mt-1"
                   type="text"
-                  value={BomArry[0]?.MtrlCost}
+                  // value={BomArry[0]?.MtrlCost}
+                  value={
+                    selectedPartId.length === 0 ? 0.0 : BomArry[0]?.MtrlCost
+                  }
                   disabled={BomData.length === 0}
                 />
               </div>

@@ -156,7 +156,7 @@ export default function OrderDetails(props) {
   const [NewSrlFormData, setNewSrlFormData] = useState({
     DrawingName: "",
     Material: "",
-    MtrlSrc: "",
+    MtrlSrc: "Customer",
     Operation: "",
     Quantity: quantity,
     JW_Rate: jwRate,
@@ -736,40 +736,47 @@ export default function OrderDetails(props) {
   // PartId DROPDOWN
   const [selectedPartId, setSelectedPartId] = useState([]);
   const [BomArry, setBomArry] = useState([]);
+
   const handleSelectChange = (selected) => {
     const arr = BomData.filter(
-      (obj) => obj.UniqueColumn === selected[0]?.label
+      (obj) => obj.AssyCust_PartId === selected[0]?.label
     );
+    console.log("arr....", arr);
     setBomArry(arr);
     setSelectedPartId(selected);
+    // Check if the selected part ID is in AssyCust_PartId
+    const hasBOM = BomData.some(
+      (obj) => obj.AssyCust_PartId === selected[0]?.label
+    )
+      ? 1
+      : 0;
+    setHasBOM(hasBOM);
+
+    // Log the result based on hasBOM value
+    if (hasBOM === 1) {
+      console.log("It's an assembly");
+    } else {
+      console.log("It's a part");
+    }
   };
+
+  console.log("HasBOM......", HasBOM);
+  // const options = BomData?.map((item) => ({
+  //   // label: item.PartId,
+  //   label: item.AssyCust_PartId || "",
+  //   // label: item.UniqueColumn,
+  // }));
   const options = BomData?.map((item) => ({
-    // label: item.PartId,
-    // label: item.AssyCust_PartId,
-    label: item.UniqueColumn,
-  }));
+    label: item.AssyCust_PartId || "", // Use AssyCust_PartId as label, with fallback to empty string
+  })).filter((option) => option.label !== "");
+
+  console.log("options", options);
 
   // INSERT ORDER DETAILS FALG 1,2,3
   const PostOrderDetails = (flag) => {
     setImportDwgShow(false);
     setisLoading(true);
     let requestData = {};
-    // Validation for quantity and other fields
-    if (quantity === 0 || isNaN(quantity)) {
-      setisLoading(false);
-      toast.error("Quantity should be greater than 0");
-      return;
-    }
-    if (jwRate === 0 || isNaN(jwRate)) {
-      setisLoading(false);
-      toast.error("jwRate should be greater than 0");
-      return;
-    }
-    if (materialRate === 0 || isNaN(materialRate)) {
-      setisLoading(false);
-      toast.error("materialRate should be greater than 0");
-      return;
-    }
 
     if (flag === 1) {
       requestData = {
@@ -791,6 +798,55 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
         tolerance: "Standard(+/-0.1mm)- 100 Microns",
       };
+      // Validation for quantity and other fields
+      if (quantity === 0 || isNaN(quantity)) {
+        setisLoading(false);
+        toast.error("Quantity should be greater than 0");
+        return;
+      }
+      if (jwRate === 0 || isNaN(jwRate)) {
+        setisLoading(false);
+        toast.error("jwRate should be greater than 0");
+        return;
+      }
+      if (materialRate === 0 || isNaN(materialRate)) {
+        setisLoading(false);
+        toast.error("materialRate should be greater than 0");
+        return;
+      }
+      // Check if any required field is empty
+      if (requestData.DwgName === "") {
+        setisLoading(false);
+        toast.error("DwgName is mandatory");
+        return;
+      }
+
+      if (requestData.strmtrlcode === "") {
+        setisLoading(false);
+        toast.error("Material code is mandatory");
+        return;
+      }
+
+      if (requestData.Operation === "") {
+        setisLoading(false);
+        toast.error("Operation is mandatory");
+        return;
+      }
+      if (requestData.NewSrlFormData.MtrlSrc === "") {
+        setisLoading(false);
+        toast.error("Material source is mandatory");
+        return;
+      }
+      if (requestData.NewSrlFormData.InspLvl === "") {
+        setisLoading(false);
+        toast.error("InspLvl source is mandatory");
+        return;
+      }
+      if (requestData.NewSrlFormData.PkngLvl === "") {
+        setisLoading(false);
+        toast.error("PkngLvl source is mandatory");
+        return;
+      }
     } else if (flag === 2) {
       // if (props.OrderData?.Order_Status === "Recorded") {
       //   toast.warning("Cannot import after the Order is recorded");
@@ -813,7 +869,7 @@ export default function OrderDetails(props) {
         tolerance: imprtDwgObj.StrTolerance,
       };
     } else if (flag === 3) {
-      setHasBOM(1);
+      // setHasBOM(1);
       requestData = {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
@@ -822,14 +878,16 @@ export default function OrderDetails(props) {
         Dwg_Code: "",
         dwg: Dwg,
         tolerance: "Standard(+/-0.1mm)- 100 Microns",
-        HasBOM: 1,
-        Qty_Ordered: 0,
+        HasBOM: HasBOM,
+        Qty_Ordered: 1,
         JwCost: BomArry[0]?.JobWorkCost,
         mtrlcost: BomArry[0]?.MtrlCost,
         UnitPrice: parseFloat(jwRate) + parseFloat(materialRate),
-        strmtrlcode: strmtrlcode,
+        strmtrlcode: BomArry[0]?.Material,
         material: material,
-        Operation: Operation,
+        // material: BomArry[0]?.Material,
+        // Operation: Operation,
+        Operation: BomArry[0]?.Operation,
         insplevel: "Insp1",
         packinglevel: "Pkng1",
         delivery_date: "",
@@ -844,39 +902,6 @@ export default function OrderDetails(props) {
     //   return;
     // }
 
-    // Check if any required field is empty
-    if (requestData.DwgName === "") {
-      setisLoading(false);
-      toast.error("DwgName is mandatory");
-      return;
-    }
-
-    if (requestData.strmtrlcode === "") {
-      setisLoading(false);
-      toast.error("Material code is mandatory");
-      return;
-    }
-
-    if (requestData.Operation === "") {
-      setisLoading(false);
-      toast.error("Operation is mandatory");
-      return;
-    }
-    if (requestData.NewSrlFormData.MtrlSrc === "") {
-      setisLoading(false);
-      toast.error("Material source is mandatory");
-      return;
-    }
-    if (requestData.NewSrlFormData.InspLvl === "") {
-      setisLoading(false);
-      toast.error("InspLvl source is mandatory");
-      return;
-    }
-    if (requestData.NewSrlFormData.PkngLvl === "") {
-      setisLoading(false);
-      toast.error("PkngLvl source is mandatory");
-      return;
-    }
     postRequest(
       endpoints.InsertNewSrlData,
 

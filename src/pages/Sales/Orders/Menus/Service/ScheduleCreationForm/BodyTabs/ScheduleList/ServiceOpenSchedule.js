@@ -469,7 +469,6 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
-    console.log("rowselectTaskMaterial........", rowselectTaskMaterial);
     postRequest(
       endpoints.onClickNCProgram,
       { rowselectTaskMaterial },
@@ -588,16 +587,15 @@ function ServiceOpenSchedule() {
 
   //
   const handleSchedulelist = (index, field, value) => {
-    if(value > scheduleDetailsRow?.QtyToSchedule){
+    if (value > scheduleDetailsRow?.QtyToSchedule) {
       toast.error("Scheduled cannot be greater than ToSchedule", {
         position: toast.POSITION.TOP_CENTER,
       });
-    }else if(value < 0){
+    } else if (value < 0) {
       toast.error("Please Enter a Positive Number", {
         position: toast.POSITION.TOP_CENTER,
       });
-    }
-    else{
+    } else {
       const updatedDwgdata = [...newState]; // Create a copy of the array
       // Update the specific item's field with the new value
       updatedDwgdata[index] = {

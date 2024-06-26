@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 export default function OrderInfo(props) {
-  // console.log("propssss", props.OrderData);
+  console.log("propssss", props.OrderData);
   //console.log("props.OrderData?.salesContact", props.OrderData?.SalesContact);
   //console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
 
@@ -103,20 +103,32 @@ export default function OrderInfo(props) {
               value={props.OrderData?.Order_Status}
             />
           </div>
-
           <div
+            className="d-flex col-md-2 sm-12 field-gap"
+            style={{ gap: "38px" }}
+          >
+            <label className="form-label label-space">Order Value</label>
+            <input
+              className="in-field"
+              type="text"
+              value={props.OrderData?.OrderValue}
+            />
+          </div>
+
+          {/* <div
             className="d-flex col-md-2 sm-12 field-gap"
             // style={{ gap: "66px" }}
           >
             <label className="form-label label-space">Delivery</label>
-            <input
+            <textarea
               className="in-field"
               type="text"
               id="delivery"
-              value={props.OrderData?.Delivery}
+              // value={props.OrderData?.Delivery}
+              value={props.OrderData?.Del_Place}
               readOnly
             />
-          </div>
+          </div> */}
           <div className="col-md-2 sm-12 d-flex field-gap">
             <label className="form-label label-space">Delivery Mode</label>
             <input
@@ -164,7 +176,7 @@ export default function OrderInfo(props) {
               readOnly
             />
           </div>
-          <div className="d-flex col-md-4 sm-12 field-gap">
+          <div className="d-flex col-md-3 sm-12 field-gap">
             <label className="form-label label-space">Transport Charges</label>
             <input
               className="in-field"
@@ -190,7 +202,7 @@ export default function OrderInfo(props) {
               value={props.OrderData?.Purchase_Order}
             />
           </div>
-          <div
+          {/* <div
             className="d-flex col-md-3 sm-12 field-gap"
             style={{ gap: "38px" }}
           >
@@ -199,6 +211,30 @@ export default function OrderInfo(props) {
               className="in-field"
               type="text"
               value={props.OrderData?.OrderValue}
+            />
+          </div> */}
+          <div
+            className="d-flex col-md-4 sm-12 field-gap"
+            // style={{ gap: "66px" }}
+          >
+            <label className="form-label label-space">Delivery</label>
+            <textarea
+              className="in-field"
+              type="text"
+              id="delivery"
+              // value={props.OrderData?.Delivery}
+              // value={props.OrderData?.Del_Place}
+              value={
+                props.OrderData?.Delivery === 0
+                  ? "EX FACTORY"
+                  : props.OrderData?.Billing_Address
+              }
+              readOnly
+              style={{
+                borderRadius: "0",
+                height: "50px",
+                width: "100%",
+              }}
             />
           </div>
         </div>
