@@ -69,8 +69,9 @@ function ServiceNCProgram() {
 
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
+    console.log("NCprogramForm is",NCprogramForm);
     postRequest(endpoints.addNCProgram, { NCprogramForm }, (response) => {
-      if (response.message === "Success")
+      if (response.message === "NC Program added successfully")
         toast.success(response.message, {
           position: toast.POSITION.TOP_CENTER,
         });

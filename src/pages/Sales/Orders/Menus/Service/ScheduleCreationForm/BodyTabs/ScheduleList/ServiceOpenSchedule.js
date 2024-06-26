@@ -478,23 +478,28 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
-    postRequest(
-      endpoints.onClickNCProgram,
-      { rowselectTaskMaterial },
-      (response) => {
-        console.log(" first response ......", response)
-        postRequest(
-          endpoints.getMachineList,
-          { NCprogramForm: response },
-          (responsedata) => {
-            console.log("API second response:", responsedata);
-            navigate("/Orders/Service/NCProgram", {
-              state: { response: response, responsedata: responsedata },
-            });
-          }
-        );
-      }
-    );
+    if(Object.keys(rowselectTaskMaterial).length===1){
+      toast.error("Please Select a Task", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    else{
+      postRequest(
+        endpoints.onClickNCProgram,
+        { rowselectTaskMaterial },
+        (response) => {
+          postRequest(
+            endpoints.getMachineList,
+            { NCprogramForm: response },
+            (responsedata) => {
+              navigate("/Orders/Service/NCProgram", {
+                state: { response: response, responsedata: responsedata },
+              });
+            }
+          );
+        }
+      );
+    }
   };
 
   //onClick Tasked
