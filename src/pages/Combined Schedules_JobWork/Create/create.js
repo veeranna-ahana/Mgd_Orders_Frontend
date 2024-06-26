@@ -7,7 +7,6 @@ import { getRequest, postRequest } from "../../api/apiinstance";
 import { endpoints } from "../../api/constants";
 
 export default function Create({ type }) {
-  console.log("type is", type);
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
@@ -71,10 +70,12 @@ export default function Create({ type }) {
 
   const [oderSchedule, setOrderSchedule] = useState([]);
   const [custCode, setCustCode] = useState(""); // Use state hook to manage custCode
+  const[custName,setCustName]=useState("");
   const selectCust = async (event) => {
     // Update custCode using the setCustCode function from useState
     setCustCode(event[0]?.Cust_Code);
-    console.log(event[0]?.Cust_Code);
+    console.log(event[0]?.Cust_name);
+    setCustName(event[0]?.Cust_name)
     postRequest(endpoints.rightTabledata, {
       custCode: event[0]?.Cust_Code},(response) => {
       for (let i = 0; i < response.length; i++) {
@@ -157,7 +158,6 @@ export default function Create({ type }) {
     }
   }, [oderSchedule]);
 
-  console.log("selectedSalesContact", selectedSalesContact);
   return (
     <div>
       <h4 className="title">Combined Schedule Creator</h4>
@@ -256,6 +256,7 @@ export default function Create({ type }) {
             beforecombine={beforecombine}
             preapreScheduleData={preapreScheduleData}
             salesContactList={salesContactList}
+            custName={custName}
           />
         </Tab>
       </Tabs>

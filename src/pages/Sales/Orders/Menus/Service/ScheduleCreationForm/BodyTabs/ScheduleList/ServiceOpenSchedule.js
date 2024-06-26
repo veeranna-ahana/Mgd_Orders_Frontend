@@ -231,11 +231,11 @@ function ServiceOpenSchedule() {
 
 
   //Default first row select
-  useEffect(() => {
-    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-      onClickofScheduleDtails(newState[0], 0); // Select the first row
-    }
-  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -620,11 +620,11 @@ function ServiceOpenSchedule() {
 
   
     // //Default first row select
-    useEffect(() => {
-      if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-        onClickofScheduleDtails(newState[0], 0); // Select the first row
-      }
-    }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+    // useEffect(() => {
+    //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+    //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+    //   }
+    // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
     // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split('T')[0];

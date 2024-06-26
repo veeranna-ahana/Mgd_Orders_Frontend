@@ -5,7 +5,37 @@ export default function CombinedScheduleDetailsTab({
   beforecombine,
   preapreScheduleData,
   salesContactList,
-}) {
+  custName
+}) 
+{
+
+  //date format
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+  
+    try {
+      // Extract parts of the date string
+      const [dayPart, monthPart, yearPart] = dateString.split("/");
+      if (!dayPart || !monthPart || !yearPart) throw new Error("Invalid date format");
+  
+      const [day] = dayPart.split("T"); // Extract day before "T"
+      const year = yearPart.match(/\d{4}/)?.[0]; // Extract year
+  
+      if (!day || !monthPart || !year) throw new Error("Invalid date format");
+  
+      // Create a new Date object
+      const date = new Date(`${year}-${monthPart}-${day}`);
+      if (isNaN(date)) throw new Error("Invalid Date");
+  
+      // Format the date to dd/mm/yyyy
+      const formattedDate = `${day.padStart(2, '0')}/${monthPart.padStart(2, '0')}/${year}`;
+      return formattedDate;
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return "Invalid Date";
+    }
+  };
+
   return (
     <div>
       <Form className="form mt-2">
@@ -20,10 +50,14 @@ export default function CombinedScheduleDetailsTab({
                 value={beforecombine[0]?.OrdSchNo}
               />
             </div>
+
             <div className="d-flex field-gap col-md-4 col-sm-12" style={{gap:'18px'}}>
               <label className="form-label">Customer</label>
-              <input className="in-field" type="text" style={{ borderRadius: "0" }} />
+              <input className="in-field" type="text"
+              value={custName}
+               style={{ borderRadius: "0" }} />
             </div>
+
             <div className="d-flex field-gap col-md-4 col-sm-12">
               <label className="form-label label-space"> Sales Contact</label>
               <input
@@ -59,7 +93,7 @@ export default function CombinedScheduleDetailsTab({
                 className="in-field"
                 type="text"
                 style={{ borderRadius: "0" }}
-                value={beforecombine[0]?.schTgtDate}
+                value={formatDate(beforecombine[0]?.schTgtDate)}
               />
             </div>
           </div>
@@ -88,7 +122,7 @@ export default function CombinedScheduleDetailsTab({
               <input
                 className="in-field"
                 type="text"
-                value={beforecombine[0]?.Delivery_Date}
+                value={formatDate(beforecombine[0]?.Delivery_Date)}
               />
             </div>
           </div>
