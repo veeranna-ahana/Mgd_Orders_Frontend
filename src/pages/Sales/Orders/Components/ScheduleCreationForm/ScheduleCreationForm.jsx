@@ -27,8 +27,9 @@ const InputField = ({
   onCheckboxChange,
   isChecked,
   checkboxIndex,
-  showCheckbox,
+  showCheckbox,Type
 }) => {
+
   const [isValid, setIsValid] = useState(true);
 
   const handleInputChange = (e) => {
