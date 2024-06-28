@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import AddNewSrlModal from "../Modals/AddNewSrlModal";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { Login } from "@mui/icons-material";
+import { Last } from "react-bootstrap/esm/PageItem";
 
 function OrdrDtls(props) {
   const {
@@ -62,19 +63,31 @@ function OrdrDtls(props) {
     setordrDetailsChange,
     handleChange,
     isLoading,
+    handleInputChange,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
     selectedItems[0]?.Mtrl_Code || ""
   );
 
-  console.log("selectepartID...", selectedPartId.length);
-
-  if (selectedPartId.length === 0) {
-    console.log("nulll...");
-  } else {
-    console.log("value", selectedPartId);
-  }
+  // console.log("selectepartID...", selectedPartId.length);
+  console.log("selectedItems...", selectedItems);
+  console.log("mtrldata...", mtrldata);
+  // const handleInputChange = (input) => {
+  //   setLastSlctedRow({ Mtrl_Code: input });
+  // };
+  // const handleInputChange = (input) => {
+  //   setLastSlctedRow((prevSelectedItem) => ({
+  //     ...prevSelectedItem,
+  //     Mtrl_Code: input,
+  //   }));
+  // };
+  console.log("lastslctedrowmtrlcode", LastSlctedRow?.Mtrl_Code);
+  // if (selectedPartId.length === 0) {
+  //   // console.log("nulll...");
+  // } else {
+  //   // console.log("value", selectedPartId);
+  // }
 
   // selectedPartId.length > 0
   //   ? console.log(selectedPartId.length)
@@ -199,11 +212,12 @@ function OrdrDtls(props) {
                 {mtrldata.length > 0 || mtrldata != null ? (
                   <Typeahead
                     className="ip-select in-field"
-                    id="basic-example"
-                    // name="odrDtlMaterial"
+                    id="basic-exampleunique"
                     labelKey="Mtrl_Code"
                     onChange={handleMtrlCodeTypeaheadChange}
-                    selected={selectedItems}
+                    onInputChange={handleInputChange}
+                    // selected={selectedItems}
+                    selected={LastSlctedRow ? [LastSlctedRow] : []}
                     options={mtrldata}
                     // onChange={(selected) =>
                     //   changeMtrl("mtrlCode", selected[0]?.Mtrl_Code)

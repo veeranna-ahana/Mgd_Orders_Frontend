@@ -399,9 +399,9 @@ function CombinedScheduleDetailsForm() {
         <button className="button-style" style={{ width: "60px" }}>
           Print
         </button>
-        <button className="button-style" style={{ width: "170px" }}>
+        {/* <button className="button-style" style={{ width: "170px" }}>
           NC Programming
-        </button>
+        </button> */}
       </div>
 
       <Tabs className=" tab_font mt-4">
@@ -632,7 +632,7 @@ function CombinedScheduleDetailsForm() {
                 >
                   <thead className="tableHeaderBGColor table-space ">
                     <tr>
-                      <th>OrderSrcNo</th>
+                      <th>OrdSchNo</th>
                       <th>Delivery Date</th>
                       <th>Schedule Status</th>
                       <th>PO</th>

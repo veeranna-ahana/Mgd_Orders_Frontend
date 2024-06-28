@@ -28,6 +28,7 @@ const InputField = ({
   isChecked,
   checkboxIndex,
   showCheckbox,
+  Type,
 }) => {
   const [isValid, setIsValid] = useState(true);
   const handleInputChange = (e) => {
@@ -677,6 +678,7 @@ export default function ScheduleCreationForm(props) {
         Operation: ordrDetailsChange.Operation,
         InspLvl: ordrDetailsChange.InspLvl,
         PkngLvl: ordrDetailsChange.PkngLvl,
+        strmtrlcode: LastSlctedRow?.Mtrl_Code,
       },
       (singleChngData) => {
         if (singleChngData.affectedRows != 0) {
@@ -701,7 +703,7 @@ export default function ScheduleCreationForm(props) {
   // row selection data
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedSrl, setSelectedSrl] = useState([]);
-  const [LastSlctedRow, setLastSlctedRow] = useState([]);
+  const [LastSlctedRow, setLastSlctedRow] = useState(null);
   //getScheduleList Table Data
   const [scheduleListData, setScheduleListData] = useState([]);
   const [oldOrderListData, setOldOrderListData] = useState([]);
@@ -966,6 +968,7 @@ export default function ScheduleCreationForm(props) {
       setSelectedSrl(selectedOrderSrl);
       const lastSelectedRow =
         updatedSelectedItems[updatedSelectedItems.length - 1];
+      console.log("lastselected row", lastSelectedRow);
       setLastSlctedRow(lastSelectedRow);
       setordrDetailsChange((prevState) => ({
         ...prevState,
@@ -978,6 +981,7 @@ export default function ScheduleCreationForm(props) {
         Operation: lastSelectedRow?.Operation || "",
         InspLvl: lastSelectedRow?.InspLevel || "",
         PkngLvl: lastSelectedRow?.PackingLevel || "",
+        strmtrlcode: lastSelectedRow?.Mtrl_Code || "",
       }));
 
       return updatedSelectedItems;
@@ -1104,6 +1108,7 @@ export default function ScheduleCreationForm(props) {
                 OrdrDetailsData={OrdrDetailsData}
                 setOrdrDetailsData={setOrdrDetailsData}
                 selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
                 selectItem={selectItem}
                 LastSlctedRow={LastSlctedRow}
                 setLastSlctedRow={setLastSlctedRow}

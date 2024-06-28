@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Tab, Table, Tabs, Form } from "react-bootstrap";
 export default function OrderInfo(props) {
-  console.log("propssss", props.OrderData);
-  //console.log("props.OrderData?.salesContact", props.OrderData?.SalesContact);
-  //console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
+  //console.log("propssss", props.OrderData);
+  ////console.log("props.OrderData?.salesContact", props.OrderData?.SalesContact);
+  ////console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
 
   const orderDateISOString = props.OrderData?.Delivery_Date;
   const orderDate = new Date(orderDateISOString);
@@ -16,8 +16,8 @@ export default function OrderInfo(props) {
 
   // Format the date as dd mm yyyy
   const formattedDate = `${day}-${month}-${year}`;
-  // console.log(formattedDate);
-  console.log(props.OrderData);
+  // //console.log(formattedDate);
+  //console.log(props.OrderData);
 
   return (
     <>

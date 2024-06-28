@@ -430,7 +430,7 @@ export default function CombinedScheduleDetailsFormClosed() {
 
           <button className="button-style">Copy Drawings</button>
           <button className="button-style">Print</button>
-          <button className="button-style">NC Programming</button>
+          {/* <button className="button-style">NC Programming</button> */}
         </div>
       </div>
 

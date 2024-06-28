@@ -52,7 +52,7 @@ function AddNewSrlModal(props) {
     handleChange,
     isLoading,
   } = props;
-  console.log(props.OrderData?.Order_Type);
+  //console.log(props.OrderData?.Order_Type);
 
   // const [isLoading, setIsloading] = useState();
 
@@ -287,8 +287,8 @@ function AddNewSrlModal(props) {
                       name="newSrlQty"
                       id="Qty"
                       value={quantity}
-                      onChangeCallback={setQuantity}                      
-                     required
+                      onChangeCallback={setQuantity}
+                      required
                     />
                   </div>
                   <div

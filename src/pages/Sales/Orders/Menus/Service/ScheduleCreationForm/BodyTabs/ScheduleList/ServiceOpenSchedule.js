@@ -223,11 +223,11 @@ function ServiceOpenSchedule() {
   }, [TaskMaterialData, rowselectTaskMaterial]);
 
   //Default first row select
-  useEffect(() => {
-    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-      onClickofScheduleDtails(newState[0], 0); // Select the first row
-    }
-  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
@@ -469,23 +469,27 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
-    postRequest(
-      endpoints.onClickNCProgram,
-      { rowselectTaskMaterial },
-      (response) => {
-        console.log(" first response ......", response);
-        postRequest(
-          endpoints.getMachineList,
-          { NCprogramForm: response },
-          (responsedata) => {
-            console.log("API second response:", responsedata);
-            navigate("/Orders/Service/NCProgram", {
-              state: { response: response, responsedata: responsedata },
-            });
-          }
-        );
-      }
-    );
+    if (Object.keys(rowselectTaskMaterial).length === 1) {
+      toast.error("Please Select a Task", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } else {
+      postRequest(
+        endpoints.onClickNCProgram,
+        { rowselectTaskMaterial },
+        (response) => {
+          postRequest(
+            endpoints.getMachineList,
+            { NCprogramForm: response },
+            (responsedata) => {
+              navigate("/Orders/Service/NCProgram", {
+                state: { response: response, responsedata: responsedata },
+              });
+            }
+          );
+        }
+      );
+    }
   };
 
   //onClick Tasked
@@ -609,11 +613,11 @@ function ServiceOpenSchedule() {
   // console.log("newState is",newState);
 
   // //Default first row select
-  useEffect(() => {
-    if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
-      onClickofScheduleDtails(newState[0], 0); // Select the first row
-    }
-  }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
+  // useEffect(() => {
+  //   if (newState.length > 0 && !scheduleDetailsRow.TaskNo) {
+  //     onClickofScheduleDtails(newState[0], 0); // Select the first row
+  //   }
+  // }, [newState, scheduleDetailsRow, onClickofScheduleDtails]);
 
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];

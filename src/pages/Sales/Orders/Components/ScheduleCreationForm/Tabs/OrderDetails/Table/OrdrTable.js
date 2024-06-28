@@ -19,7 +19,7 @@
 //     setDetailsColour();
 //   }, [OrdrDetailsData]); // Run this effect whenever OrdrDetailsData changes
 
-//   console.log("OrderData", OrderData);
+//   //console.log("OrderData", OrderData);
 
 //   // Function to determine background color based on conditions
 //   const getRowBackgroundColor = (order) => {
@@ -136,7 +136,7 @@
 //     setDetailsColour();
 //   }, [OrdrDetailsData]); // Run this effect whenever OrdrDetailsData changes
 
-//   console.log("OrderData", OrderData);
+//   //console.log("OrderData", OrderData);
 
 //   // Function to determine background color based on conditions
 //   const getRowBackgroundColor = (order) => {
@@ -259,7 +259,7 @@ function OrdrTable(props) {
     setDetailsColour();
   }, [OrdrDetailsData]); // Run this effect whenever OrdrDetailsData changes
 
-  console.log("OrderData", OrderData);
+  //console.log("OrderData", OrderData);
 
   // Function to determine background color based on conditions
   const getRowBackgroundColor = (order) => {
