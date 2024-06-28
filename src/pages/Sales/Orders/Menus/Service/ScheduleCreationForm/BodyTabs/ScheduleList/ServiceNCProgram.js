@@ -11,6 +11,7 @@ function ServiceNCProgram() {
   const response = location?.state.response || [];
   const MachineList = location?.state.responsedata || [];
 
+
   const [NCprogramForm, setNCProgramForm] = useState([]);
   const [machineList, setMachineList] = useState([]);
 
@@ -29,7 +30,6 @@ function ServiceNCProgram() {
   const [NCProramData, setNCProgramData] = useState([]);
   const getNCProgramData = () => {
     postRequest(endpoints.getNCPrograms, { NCprogramForm }, (response) => {
-      console.log("NCProgramList is", response);
       setNCProgramData(response);
     });
   };
@@ -69,19 +69,26 @@ function ServiceNCProgram() {
 
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
-    console.log("NCprogramForm is",NCprogramForm);
-    postRequest(endpoints.addNCProgram, { NCprogramForm }, (response) => {
-      if (response.message === "NC Program added successfully")
-        toast.success(response.message, {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      else {
-        toast.warning(response.message, {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      }
-      getNCProgramData();
-    });
+    console.log("selectedMachine is",selectedMachine)
+    if (!selectedMachine) {
+      toast.error("Please Select Machine", {
+        position: toast.POSITION.TOP_CENTER,
+      }); 
+    }    
+    else{
+      postRequest(endpoints.addNCProgram, { NCprogramForm,selectedMachine }, (response) => {
+        if (response.message === "NC Program added successfully")
+          toast.success(response.message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        else {
+          toast.warning(response.message, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+        getNCProgramData();
+      });
+    }
   };
 
   //Send MTrl Issue Modal
@@ -136,7 +143,6 @@ function ServiceNCProgram() {
     );
   };
 
-  console.log("selectedNcid is",selectedNcid);
 
 
  let navigate =useNavigate();
@@ -173,6 +179,7 @@ function ServiceNCProgram() {
       state: { selectedNcid,response:response,responsedata:MachineList },
     });
   };
+
 
 
   return (
@@ -233,9 +240,7 @@ function ServiceNCProgram() {
                 className="ip-select"
                 onChange={handleChangeMachine}
               >
-                <option value={NCprogramForm[0]?.Machine}>
-                  {NCprogramForm[0]?.Machine}
-                </option>
+                <option>Select Machine</option>
                 {machineList.map((item, key) => {
                   return (
                     <>
