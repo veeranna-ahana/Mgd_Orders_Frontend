@@ -12,6 +12,9 @@ import ServiceModal from "./Service/ServiceModal";
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state || []; // Get DwgNameList from location state
+  // const Type=location?.location || '';
+
+  // console.log("Type is",Type);
 
   //  console.log("DwgNameList is", DwgNameList[0]);
 

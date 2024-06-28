@@ -64,6 +64,7 @@ function OrdrDtls(props) {
     handleChange,
     isLoading,
     handleInputChange,
+    handleMtrlCodeTypeaheadChangeeee,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
@@ -126,6 +127,7 @@ function OrdrDtls(props) {
     setQuantity(event.target.value);
     // Your other logic if needed
   };
+
   // console.log("setQuantity", quantity);
   return (
     <div>
@@ -169,6 +171,8 @@ function OrdrDtls(props) {
         setNewSerial={setNewSerial}
         handleChange={handleChange}
         isLoading={isLoading}
+        handleInputChange={handleInputChange}
+        handleMtrlCodeTypeaheadChangeeee={handleMtrlCodeTypeaheadChangeeee}
       />
 
       <div className="d-flex form-bg">

@@ -458,7 +458,17 @@ export default function OrderDetails(props) {
       }
     );
   };
-
+  const handleMtrlCodeTypeaheadChangeeee = (selectedOptions) => {
+    console.log("selectedOptions....", selectedOptions);
+    setSelectedItems(selectedOptions);
+    // if (selectedOptions.length > 0) {
+    //   setLastSlctedRow(selectedOptions[0]);
+    // }
+    const selectedValue =
+      selectedOptions.length > 0 ? selectedOptions[0]?.Mtrl_Code : " ";
+    console.log("selectedValue", selectedValue?.Mtrl_Code);
+    setStrMtrlCode(selectedValue);
+  };
   const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
     //console.log("selectedOptions....", selectedOptions);
     // setSelectedItems(selectedOptions);
@@ -835,9 +845,14 @@ export default function OrderDetails(props) {
         return;
       }
 
-      if (requestData.strmtrlcode === "") {
+      // if (requestData.strmtrlcode === "") {
+      //   setisLoading(false);
+      //   toast.error("Material is mandatory");
+      //   return;
+      // }
+      if (LastSlctedRow?.Mtrl_Code === "") {
         setisLoading(false);
-        toast.error("Material code is mandatory");
+        toast.error("Material is mandatory");
         return;
       }
 
@@ -1312,6 +1327,9 @@ export default function OrderDetails(props) {
                   handleChange={handleChange}
                   isLoading={isLoading}
                   handleInputChange={handleInputChange}
+                  handleMtrlCodeTypeaheadChangeeee={
+                    handleMtrlCodeTypeaheadChangeeee
+                  }
                 />
               </Tab>
             </Tabs>
