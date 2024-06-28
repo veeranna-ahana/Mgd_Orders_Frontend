@@ -19,7 +19,7 @@
 //     setDetailsColour();
 //   }, [OrdrDetailsData]); // Run this effect whenever OrdrDetailsData changes
 
-//   console.log("OrderData", OrderData);
+//   //console.log("OrderData", OrderData);
 
 //   // Function to determine background color based on conditions
 //   const getRowBackgroundColor = (order) => {
@@ -136,7 +136,7 @@
 //     setDetailsColour();
 //   }, [OrdrDetailsData]); // Run this effect whenever OrdrDetailsData changes
 
-//   console.log("OrderData", OrderData);
+//   //console.log("OrderData", OrderData);
 
 //   // Function to determine background color based on conditions
 //   const getRowBackgroundColor = (order) => {
@@ -247,6 +247,11 @@ function OrdrTable(props) {
     calculateMinSrlStatus,
     updateOrderStatus,
     getStatusText,
+    scheduleType,
+    scheduleOption,
+    handleSelectAll,
+    handleReverseSelection,
+    filteredData,
   } = props;
 
   useEffect(() => {
@@ -254,7 +259,7 @@ function OrdrTable(props) {
     setDetailsColour();
   }, [OrdrDetailsData]); // Run this effect whenever OrdrDetailsData changes
 
-  console.log("OrderData", OrderData);
+  //console.log("OrderData", OrderData);
 
   // Function to determine background color based on conditions
   const getRowBackgroundColor = (order) => {
@@ -272,6 +277,29 @@ function OrdrTable(props) {
     else if (order.QtyScheduled > 0) return "lightcoral";
     else return "lightblue";
   };
+
+  // Function to filter data based on scheduleType
+  // const getFilteredData = () => {
+  //   if (scheduleType === "Job Work") {
+  //     return OrdrDetailsData.filter(
+  //       (item) => item.Mtrl_Source.toLowerCase() === "customer"
+  //     );
+  //   } else if (scheduleType === "Sales") {
+  //     return OrdrDetailsData.filter(
+  //       (item) => item.Mtrl_Source.toLowerCase() === "magod"
+  //     );
+  //   } else {
+  //     return OrdrDetailsData;
+  //   }
+  // };
+
+  // const filteredData = getFilteredData();
+
+  // useEffect(() => {
+  //   if (scheduleOption === "Full Order") {
+  //     handleSelectAll();
+  //   }
+  // }, [filteredData, scheduleOption, handleSelectAll]);
 
   return (
     <div style={{ overflow: "auto", height: "350px" }}>
@@ -306,7 +334,7 @@ function OrdrTable(props) {
           </tr>
         </thead>
         <tbody style={{ textAlign: "center" }}>
-          {OrdrDetailsData.map((OrdrDetailsItem, i) => {
+          {filteredData?.map((OrdrDetailsItem, i) => {
             const backgroundColor = getRowBackgroundColor(OrdrDetailsItem);
             return (
               <tr

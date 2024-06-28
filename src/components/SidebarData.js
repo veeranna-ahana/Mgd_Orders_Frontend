@@ -30,7 +30,7 @@ import { AiFillSchedule } from "react-icons/ai";
 export const ordersSidebar = [
   {
     title: "Profile",
-    icon: <SiRedhatopenshift />,
+    icon: <FiCpu />,
     iconClosed: <RiIcons.RiArrowDownSFill />,
     iconOpened: <RiIcons.RiArrowUpSFill />,
     subNav: [

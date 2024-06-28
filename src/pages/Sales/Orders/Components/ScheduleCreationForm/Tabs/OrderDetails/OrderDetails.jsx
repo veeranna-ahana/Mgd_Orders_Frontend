@@ -29,6 +29,7 @@ export default function OrderDetails(props) {
     setOrdrDetailsData,
     selectItem,
     selectedItems,
+    setSelectedItems,
     fetchData,
     BomData,
     setBomData,
@@ -56,10 +57,13 @@ export default function OrderDetails(props) {
     getStatusText,
     scheduleType,
     scheduleOption,
+    filteredData,
   } = props;
 
-  // console.log("type", OrderData.Order_Type);
-  // console.log("status", OrderData.Order_Status);
+  //console.log("schType", scheduleType);
+  //console.log("scheduleOption", scheduleOption);
+  // //console.log("type", OrderData.Order_Type);
+  // //console.log("status", OrderData.Order_Status);
 
   // const [orderType, setOrderType] = useState("");
   // const [status, setStatus] = useState("");
@@ -72,7 +76,7 @@ export default function OrderDetails(props) {
   // }, [OrderData]); // Run the effect whenever OrderData changes
 
   const [groupBoxAddSrlVisible, setGroupBoxAddSrlVisible] = useState(true);
-  // console.log("OrdrDetailsData", OrdrDetailsData);
+  // //console.log("OrdrDetailsData", OrdrDetailsData);
 
   const [buttonClicked, setButtonClicked] = useState("");
   // confirmation modal
@@ -144,16 +148,16 @@ export default function OrderDetails(props) {
     false,
     false,
   ]);
-  // //// console.log("first", quantity);
-  // //// console.log("second", jwRate);
-  // //// console.log("third", materialRate);
-  // //// console.log("fourth", unitPrice);
-  //// console.log("blkCngCheckBox", blkCngCheckBox);
+  // //// //console.log("first", quantity);
+  // //// //console.log("second", jwRate);
+  // //// //console.log("third", materialRate);
+  // //// //console.log("fourth", unitPrice);
+  //// //console.log("blkCngCheckBox", blkCngCheckBox);
 
   const [NewSrlFormData, setNewSrlFormData] = useState({
     DrawingName: "",
     Material: "",
-    MtrlSrc: "",
+    MtrlSrc: "Customer",
     Operation: "",
     Quantity: quantity,
     JW_Rate: jwRate,
@@ -164,7 +168,7 @@ export default function OrderDetails(props) {
   });
 
   useEffect(() => {
-    //console.log("Cust_Code....", Cust_Code);
+    ////console.log("Cust_Code....", Cust_Code);
     postRequest(
       endpoints.getCustomerDets,
       { custcode: Cust_Code },
@@ -177,20 +181,20 @@ export default function OrderDetails(props) {
     //   endpoints.PostNewSrlData,
     //   { custcode: Cust_Code, OrderNo: OrderNo },
     //   (srldata) => {
-    //     //////console.log("srl data", srldata);
+    //     ////////console.log("srl data", srldata);
     //     setSerailData(srldata);
     //   }
     // );
 
     postRequest(endpoints.getSalesExecLists, {}, (sdata) => {
-      ////////console.log(sdata);
+      //////////console.log(sdata);
       setSalesExecdata(sdata);
     });
     postRequest(
       endpoints.getSalesIndiExecLists,
       { salesContact: SalesContact },
       (sdata) => {
-        ////////console.log(sdata[0]["Name"]);
+        //////////console.log(sdata[0]["Name"]);
         // setSalesExecContact(sdata[0]["Name"]);
       }
     );
@@ -212,7 +216,7 @@ export default function OrderDetails(props) {
       }
     );
     getRequest(endpoints.getMaterials, (mtrldata) => {
-      ////console.log(mtrldata);
+      //////console.log(mtrldata);
       let arr = [];
       for (let i = 0; i < mtrldata.length; i++) {
         mtrldata[i].label = mtrldata[i].Mtrl_Code;
@@ -230,7 +234,7 @@ export default function OrderDetails(props) {
 
       setProcdata(arr);
 
-      // console.log("pdata", pdata);
+      // //console.log("pdata", pdata);
     });
 
     getRequest(endpoints.getToleranceTypes, (ttdata) => {
@@ -243,9 +247,9 @@ export default function OrderDetails(props) {
       setPackdata(pckdata);
     });
 
-    //console.log("custcode:", Cust_Code);
+    ////console.log("custcode:", Cust_Code);
     // postRequest(endpoints.GetBomData, { custcode: Cust_Code }, (bomdata) => {
-    //   //console.log("bomdata......", bomdata);
+    //   ////console.log("bomdata......", bomdata);
     //   setBomData(bomdata);
     // });
     // async function fetchData() {
@@ -261,7 +265,7 @@ export default function OrderDetails(props) {
     //   //   endpoints.PostNewSrlData,
     //   //   { custcode: Cust_Code, OrderNo: OrderNo },
     //   //   (srldata) => {
-    //   //     //////////// console.log("srl data", srldata);
+    //   //     //////////// //console.log("srl data", srldata);
     //   //     setSerailData(srldata);
     //   //   }
     //   // );
@@ -273,7 +277,7 @@ export default function OrderDetails(props) {
     //     endpoints.getSalesIndiExecLists,
     //     { salesContact: SalesContact },
     //     (sdata) => {
-    //       ////// console.log(sdata[0]["Name"]);
+    //       ////// //console.log(sdata[0]["Name"]);
     //       // setSalesExecContact(sdata[0]["Name"]);
     //     }
     //   );
@@ -369,9 +373,9 @@ export default function OrderDetails(props) {
   };
 
   let blkCngCheckBoxx = blkCngCheckBox;
-  console.log("blkCngCheckBoxx ", blkCngCheckBoxx);
-  console.log("selectedItems..... ", selectedItems);
-  console.log("selectedSrl", selectedSrl);
+  //console.log("blkCngCheckBoxx ", blkCngCheckBoxx);
+  //console.log("selectedItems..... ", selectedItems);
+  //console.log("selectedSrl", selectedSrl);
 
   let updateblkcngOrdrData = () => {
     handleClosesetBulkChnangMdl();
@@ -383,7 +387,7 @@ export default function OrderDetails(props) {
         ? (element.DwgName = blkChange.DwgName)
         : (element.DwgName = element.DwgName);
       blkCngCheckBoxx[1] === true
-        ? (element.Mtrl_Code = blkChange.strmtrlcode)
+        ? (element.Mtrl_Code = LastSlctedRow?.Mtrl_Code)
         : (element.Mtrl_Code = element.Mtrl_Code);
       blkCngCheckBoxx[2] === true
         ? (element.Mtrl_Source = blkChange.material)
@@ -418,6 +422,7 @@ export default function OrderDetails(props) {
         OrderNo: OrderNo,
         custcode: Cust_Code,
         OrderSrl: selectedSrl,
+        MtrlSrc: blkChange.MtrlSrc,
       },
       (blkChngData) => {
         if (blkChngData.affectedRows != 0) {
@@ -443,7 +448,7 @@ export default function OrderDetails(props) {
         mtrlcost: materialRate,
       },
       (singleChngData) => {
-        ////// console.log(" blkChngData", blkChngData);
+        ////// //console.log(" blkChngData", blkChngData);
         if (singleChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -453,11 +458,34 @@ export default function OrderDetails(props) {
       }
     );
   };
-
-  const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+  const handleMtrlCodeTypeaheadChangeeee = (selectedOptions) => {
     console.log("selectedOptions....", selectedOptions);
-    const selectedValue = selectedOptions.length > 0 ? selectedOptions[0] : " ";
-    setStrMtrlCode(selectedValue?.Mtrl_Code);
+    setSelectedItems(selectedOptions);
+    // if (selectedOptions.length > 0) {
+    //   setLastSlctedRow(selectedOptions[0]);
+    // }
+    const selectedValue =
+      selectedOptions.length > 0 ? selectedOptions[0]?.Mtrl_Code : " ";
+    console.log("selectedValue", selectedValue?.Mtrl_Code);
+    setStrMtrlCode(selectedValue);
+  };
+  const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
+    //console.log("selectedOptions....", selectedOptions);
+    // setSelectedItems(selectedOptions);
+    if (selectedOptions.length > 0) {
+      setLastSlctedRow(selectedOptions[0]);
+    }
+    // const selectedValue =
+    //   selectedOptions.length > 0 ? selectedOptions[0]?.Mtrl_Code : " ";
+    // console.log("selectedValue", selectedValue?.Mtrl_Code);
+    // setStrMtrlCode(selectedValue);
+  };
+
+  const handleInputChange = (input) => {
+    setLastSlctedRow((prevSelectedItem) => ({
+      ...prevSelectedItem,
+      Mtrl_Code: input,
+    }));
   };
 
   const selectMtrl = async (e) => {
@@ -498,7 +526,7 @@ export default function OrderDetails(props) {
       ...NewSrlFormData,
       Operation: e.target.value,
     });
-    //////////// console.log(e.target.value);
+    //////////// //console.log(e.target.value);
   };
   const selectInsp = async (e) => {
     e.preventDefault();
@@ -526,7 +554,7 @@ export default function OrderDetails(props) {
       }
     }
     setStrTolerance(e.target.value);
-    //////////// console.log(e.target.value);
+    //////////// //console.log(e.target.value);
   };
   const selectMtrlSrc = async (e) => {
     e.preventDefault();
@@ -577,7 +605,7 @@ export default function OrderDetails(props) {
     //   materialRate: 0.0,
     //   unitPrice: 0.0,
     // }));
-    //// console.log("closeddddd");
+    //// //console.log("closeddddd");
   };
 
   // IMPORT DWG MODAL
@@ -681,7 +709,7 @@ export default function OrderDetails(props) {
 
   //DELETE BUTTON
   function deleteRowsBySrl() {
-    console.log("entering into the deleteRowsBySrl");
+    //console.log("entering into the deleteRowsBySrl");
     postRequest(
       endpoints.postDeleteDetailsBySrl,
       { Order_No: props.OrderData.Order_No, selectedSrl: selectedSrl },
@@ -732,40 +760,47 @@ export default function OrderDetails(props) {
   // PartId DROPDOWN
   const [selectedPartId, setSelectedPartId] = useState([]);
   const [BomArry, setBomArry] = useState([]);
+
   const handleSelectChange = (selected) => {
     const arr = BomData.filter(
-      (obj) => obj.UniqueColumn === selected[0]?.label
+      (obj) => obj.AssyCust_PartId === selected[0]?.label
     );
+    //console.log("arr....", arr);
     setBomArry(arr);
     setSelectedPartId(selected);
+    // Check if the selected part ID is in AssyCust_PartId
+    const hasBOM = BomData.some(
+      (obj) => obj.AssyCust_PartId === selected[0]?.label
+    )
+      ? 1
+      : 0;
+    setHasBOM(hasBOM);
+
+    // Log the result based on hasBOM value
+    if (hasBOM === 1) {
+      //console.log("It's an assembly");
+    } else {
+      //console.log("It's a part");
+    }
   };
+
+  //console.log("HasBOM......", HasBOM);
+  // const options = BomData?.map((item) => ({
+  //   // label: item.PartId,
+  //   label: item.AssyCust_PartId || "",
+  //   // label: item.UniqueColumn,
+  // }));
   const options = BomData?.map((item) => ({
-    // label: item.PartId,
-    // label: item.AssyCust_PartId,
-    label: item.UniqueColumn,
-  }));
+    label: item.AssyCust_PartId || "", // Use AssyCust_PartId as label, with fallback to empty string
+  })).filter((option) => option.label !== "");
+
+  //console.log("options", options);
 
   // INSERT ORDER DETAILS FALG 1,2,3
   const PostOrderDetails = (flag) => {
     setImportDwgShow(false);
     setisLoading(true);
     let requestData = {};
-    // Validation for quantity and other fields
-    if (quantity === 0 || isNaN(quantity)) {
-      setisLoading(false);
-      toast.error("Quantity should be greater than 0");
-      return;
-    }
-    if (jwRate === 0 || isNaN(jwRate)) {
-      setisLoading(false);
-      toast.error("jwRate should be greater than 0");
-      return;
-    }
-    if (materialRate === 0 || isNaN(materialRate)) {
-      setisLoading(false);
-      toast.error("materialRate should be greater than 0");
-      return;
-    }
 
     if (flag === 1) {
       requestData = {
@@ -787,6 +822,60 @@ export default function OrderDetails(props) {
         NewSrlFormData: NewSrlFormData,
         tolerance: "Standard(+/-0.1mm)- 100 Microns",
       };
+      // Validation for quantity and other fields
+      if (quantity === 0 || isNaN(quantity)) {
+        setisLoading(false);
+        toast.error("Quantity should be greater than 0");
+        return;
+      }
+      if (jwRate === 0 || isNaN(jwRate)) {
+        setisLoading(false);
+        toast.error("JWRate should be greater than 0");
+        return;
+      }
+      if (materialRate === 0 || isNaN(materialRate)) {
+        setisLoading(false);
+        toast.error("MaterialRate should be greater than 0");
+        return;
+      }
+      // Check if any required field is empty
+      if (requestData.DwgName === "") {
+        setisLoading(false);
+        toast.error("DwgName is mandatory");
+        return;
+      }
+
+      // if (requestData.strmtrlcode === "") {
+      //   setisLoading(false);
+      //   toast.error("Material is mandatory");
+      //   return;
+      // }
+      if (LastSlctedRow?.Mtrl_Code === "") {
+        setisLoading(false);
+        toast.error("Material is mandatory");
+        return;
+      }
+
+      if (requestData.Operation === "") {
+        setisLoading(false);
+        toast.error("Operation is mandatory");
+        return;
+      }
+      if (requestData.NewSrlFormData.MtrlSrc === "") {
+        setisLoading(false);
+        toast.error("Material source is mandatory");
+        return;
+      }
+      if (requestData.NewSrlFormData.InspLvl === "") {
+        setisLoading(false);
+        toast.error("InspLvl source is mandatory");
+        return;
+      }
+      if (requestData.NewSrlFormData.PkngLvl === "") {
+        setisLoading(false);
+        toast.error("PkngLvl source is mandatory");
+        return;
+      }
     } else if (flag === 2) {
       // if (props.OrderData?.Order_Status === "Recorded") {
       //   toast.warning("Cannot import after the Order is recorded");
@@ -809,7 +898,7 @@ export default function OrderDetails(props) {
         tolerance: imprtDwgObj.StrTolerance,
       };
     } else if (flag === 3) {
-      setHasBOM(1);
+      // setHasBOM(1);
       requestData = {
         OrderNo: OrderNo,
         newOrderSrl: newOrderSrl,
@@ -818,14 +907,16 @@ export default function OrderDetails(props) {
         Dwg_Code: "",
         dwg: Dwg,
         tolerance: "Standard(+/-0.1mm)- 100 Microns",
-        HasBOM: 1,
-        Qty_Ordered: 0,
+        HasBOM: HasBOM,
+        Qty_Ordered: 1,
         JwCost: BomArry[0]?.JobWorkCost,
         mtrlcost: BomArry[0]?.MtrlCost,
         UnitPrice: parseFloat(jwRate) + parseFloat(materialRate),
-        strmtrlcode: strmtrlcode,
+        strmtrlcode: BomArry[0]?.Material,
         material: material,
-        Operation: Operation,
+        // material: BomArry[0]?.Material,
+        // Operation: Operation,
+        Operation: BomArry[0]?.Operation,
         insplevel: "Insp1",
         packinglevel: "Pkng1",
         delivery_date: "",
@@ -833,46 +924,13 @@ export default function OrderDetails(props) {
       };
     } else {
     }
-    console.log("requestData.strMtrlCode", requestData.strmtrlcode);
+    //console.log("requestData.strMtrlCode", requestData.strmtrlcode);
     // if (requestData.DwgName === "") {
     //   setisLoading(false);
     //   toast.error(" DwgName is mandotory");
     //   return;
     // }
 
-    // Check if any required field is empty
-    if (requestData.DwgName === "") {
-      setisLoading(false);
-      toast.error("DwgName is mandatory");
-      return;
-    }
-
-    if (requestData.strmtrlcode === "") {
-      setisLoading(false);
-      toast.error("Material code is mandatory");
-      return;
-    }
-
-    if (requestData.Operation === "") {
-      setisLoading(false);
-      toast.error("Operation is mandatory");
-      return;
-    }
-    if (requestData.NewSrlFormData.MtrlSrc === "") {
-      setisLoading(false);
-      toast.error("Material source is mandatory");
-      return;
-    }
-    if (requestData.NewSrlFormData.InspLvl === "") {
-      setisLoading(false);
-      toast.error("InspLvl source is mandatory");
-      return;
-    }
-    if (requestData.NewSrlFormData.PkngLvl === "") {
-      setisLoading(false);
-      toast.error("PkngLvl source is mandatory");
-      return;
-    }
     postRequest(
       endpoints.InsertNewSrlData,
 
@@ -881,6 +939,9 @@ export default function OrderDetails(props) {
         if (InsertedNewSrlData.affectedRows != 0) {
           setisLoading(false);
           toast.success("Added serial successfully");
+          setSelectedPartId([]);
+          setHasBOM(0);
+          // setBomArry([]);
           fetchData();
           handleCloseImportDwg();
         } else {
@@ -909,8 +970,8 @@ export default function OrderDetails(props) {
   // var orderType = OrderData.Order_Type;
 
   // const setOrderDetails = (status, orderType) => {
-  //   console.log(status);
-  //   console.log(orderType);
+  //   //console.log(status);
+  //   //console.log(orderType);
   //   switch (status) {
   //     case "Created":
   //       setBulkchangeBtn(true);
@@ -1093,6 +1154,7 @@ export default function OrderDetails(props) {
         setImprtDwgObj={setImprtDwgObj}
         handleChange={handleChange}
         updateblkcngOrdrData={updateblkcngOrdrData}
+        handleInputChange={handleInputChange}
       />
       <div>
         <div className="row justify-content-left">
@@ -1193,6 +1255,11 @@ export default function OrderDetails(props) {
               calculateMinSrlStatus={calculateMinSrlStatus}
               updateOrderStatus={updateOrderStatus}
               getStatusText={getStatusText}
+              scheduleType={scheduleType}
+              scheduleOption={scheduleOption}
+              handleSelectAll={handleSelectAll}
+              handleReverseSelection={handleReverseSelection}
+              filteredData={filteredData}
             />
           </div>
           <div className="col-md-6">
@@ -1259,6 +1326,10 @@ export default function OrderDetails(props) {
                   setordrDetailsChange={setordrDetailsChange}
                   handleChange={handleChange}
                   isLoading={isLoading}
+                  handleInputChange={handleInputChange}
+                  handleMtrlCodeTypeaheadChangeeee={
+                    handleMtrlCodeTypeaheadChangeeee
+                  }
                 />
               </Tab>
             </Tabs>
