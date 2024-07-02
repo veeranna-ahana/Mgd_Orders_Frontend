@@ -482,18 +482,20 @@ function ServiceOpenSchedule() {
   const navigate = useNavigate();
   const onClickNCProgram = () => {
     if(Object.keys(rowselectTaskMaterial).length===1){
+      console.log("condition1 1")
       toast.error("Please Select a Task", {
         position: toast.POSITION.TOP_CENTER,
       }); 
        }
     else{
+      console.log("condition 2",rowselectTaskMaterial)
       postRequest(
         endpoints.onClickNCProgram,
         { rowselectTaskMaterial },
         (response) => {
           postRequest(
             endpoints.getMachineList,
-            { NCprogramForm: response },
+            { NCprogramForm: rowselectTaskMaterial },
             (responsedata) => {
               navigate("/Orders/Service/NCProgram", {
                 state: { response: response, responsedata: responsedata },
@@ -902,7 +904,7 @@ function ServiceOpenSchedule() {
           </button>
           {/* </Link> */}
 
-          <button
+          {/* <button
             className="button-style"
             onClick={onClickTasked}
             disabled={
@@ -928,7 +930,7 @@ function ServiceOpenSchedule() {
                 background-color: grey;
             }
             `}
-          </style>
+          </style> */}
 
           <button
             className="button-style"

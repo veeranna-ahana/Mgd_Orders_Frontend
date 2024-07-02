@@ -342,6 +342,7 @@ function ServiceNCProgram() {
 
         <div className="row mt-2">
           <div className="col-md-4 sm-12 mt-3" style={{ overflowY: "scroll" }}>
+            <h5>BOM Material Availablity : </h5>
             <Table
               striped
               className="table-data border"

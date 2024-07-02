@@ -141,7 +141,6 @@ export default function PrepareScheduleTab({
   const [disablebutton, setDisableButton] = useState(false);
   const onClickCreateSchedule = () => {
     console.log("type is",type);
-    console.log("rowselectleft",rowselectleft,"custCode",custCode,"selectedSalesContact",selectedSalesContact,"ScheduleDate",ScheduleDate);
     if (rowselectleft.length <= 1) {
       validationModal();
     } else {

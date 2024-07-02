@@ -6,7 +6,6 @@ import { getRequest } from "../../../api/apiinstance";
 import { endpoints } from "../../../api/constants";
 
 export default function CombinedScheduleList({ type }) {
-  console.log("type", type);
   const navigate = useNavigate();
 
   //ScheduleList Orders
@@ -19,7 +18,6 @@ export default function CombinedScheduleList({ type }) {
       });
     } else {
       getRequest(endpoints.ScheduleListOrderedSales, (response) => {
-        console.log(response);
         setScheduleListOrder(response);
       });
     }
