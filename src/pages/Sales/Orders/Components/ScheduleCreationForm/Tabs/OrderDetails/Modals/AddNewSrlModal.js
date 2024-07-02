@@ -51,11 +51,24 @@ function AddNewSrlModal(props) {
     setNewSerial,
     handleChange,
     isLoading,
+    handleInputChange,
+    handleMtrlCodeTypeaheadChangeeee,
   } = props;
-  console.log(props.OrderData?.Order_Type);
+  //console.log(props.OrderData?.Order_Type);
 
   // const [isLoading, setIsloading] = useState();
 
+  // const handleMtrlCodeTypeaheadChangeeee = (selectedOptions) => {
+  //   console.log("selectedOptions....", selectedOptions);
+  //   setSelectedItems(selectedOptions);
+  //   // if (selectedOptions.length > 0) {
+  //   //   setLastSlctedRow(selectedOptions[0]);
+  //   // }
+  //   const selectedValue =
+  //     selectedOptions.length > 0 ? selectedOptions[0]?.Mtrl_Code : " ";
+  //   console.log("selectedValue", selectedValue?.Mtrl_Code);
+  //   setStrMtrlCode(selectedValue);
+  // };
   return (
     <div className="row mt-1">
       {isLoading && <LoadingPage />}
@@ -113,7 +126,8 @@ function AddNewSrlModal(props) {
                           id="basic-example"
                           labelKey="Mtrl_Code"
                           name="newSrlMaterial"
-                          onChange={handleMtrlCodeTypeaheadChange}
+                          onChange={handleMtrlCodeTypeaheadChangeeee}
+                          // onInputChange={handleInputChange}
                           // onChange={handleChange}
                           // selected={Material}
                           options={mtrldata}
@@ -287,8 +301,8 @@ function AddNewSrlModal(props) {
                       name="newSrlQty"
                       id="Qty"
                       value={quantity}
-                      onChangeCallback={setQuantity}                      
-                     required
+                      onChangeCallback={setQuantity}
+                      required
                     />
                   </div>
                   <div

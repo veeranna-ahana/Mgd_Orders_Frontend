@@ -27,40 +27,25 @@ const InputField = ({
   onCheckboxChange,
   isChecked,
   checkboxIndex,
-  showCheckbox,Type
+  showCheckbox,
+  Type,
 }) => {
-
   const [isValid, setIsValid] = useState(true);
-
   const handleInputChange = (e) => {
-    // const inputValue = e.target.value;
     const inputValue = e.target.value.replace(/[^0-9.]/g, "");
 
-    // const isValidNumber =
-    //   /^\d*\.?\d+$/.test(inputValue) && parseFloat(inputValue) >= 0;
-
-    // setIsValid(isValidNumber);
     onChangeCallback(inputValue);
   };
 
   return (
     <div className="md-col-4">
       <div className="row">
-        {/* <div className="col-md-9">
-          <label className="form-label">{label}</label>
-        </div> */}
         <div className="col-md-3">
-          {/* <input
-            type="checkbox"
-            onChange={() => onCheckboxChange(checkboxIndex)}
-            checked={isChecked}
-          /> */}
           <div className="col-md-3">
-            {showCheckbox && ( // Conditionally render the checkbox
+            {showCheckbox && (
               <input
                 type="checkbox"
                 className="custom-checkbox in-field"
-                // className="in-field"
                 onChange={() => onCheckboxChange(checkboxIndex)}
                 checked={isChecked}
                 required
@@ -75,27 +60,16 @@ const InputField = ({
         id={id}
         value={value}
         onChange={handleInputChange}
-        // style={{ borderColor: isValid ? "initial" : "red" }}
         disabled={disabled}
         className={className}
       />
-      {/* {!isValid && (
-        // <p style={{ color: "red" }}>
-        //   Please enter a valid positive number for {label}.
-        // </p>
-        toast.warning("Please enter a valid positive number")
-      )} */}
     </div>
   );
 };
 export default function ScheduleCreationForm(props) {
   const location = useLocation();
-  // ////console.log("props", props.OrersData);
-  // //////console.log("props", props.OrersData);
-  //////console.log("ocation.state", location.state);
-  // state for order_status change
-  const [intSchStatus, setIntSchStatus] = useState(0);
 
+  const [intSchStatus, setIntSchStatus] = useState(0);
   const [mtrldata, setMtrldata] = useState([]);
   const [procdata, setProcdata] = useState([]);
   const [inspdata, setInspdata] = useState([]);
@@ -115,7 +89,6 @@ export default function ScheduleCreationForm(props) {
   const [grade, setGrade] = useState("");
   const [HasBOM, setHasBOM] = useState(0);
   const [Dwg, setDwg] = useState(0);
-
   const [newSerial, setNewSerial] = useState({
     DwgName: "",
     material: "",
@@ -150,18 +123,6 @@ export default function ScheduleCreationForm(props) {
     materialRate: 0.0,
     unitPrice: 0.0,
   });
-  // const [blkCngCheckBox, setBlkCngCheckBox] = useState([
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  //   false,
-  // ]);
   const [blkChange, setBlkChange] = useState({
     custcode: props.OrderCustData?.Cust_Code,
     DwgName: "",
@@ -178,7 +139,6 @@ export default function ScheduleCreationForm(props) {
     unitPrice: 0.0,
     blkCngCheckBox: false,
   });
-
   const [imprtDwgObj, setImprtDwgObj] = useState({
     custcode: props.OrderCustData?.Cust_Code,
     material: "",
@@ -204,9 +164,7 @@ export default function ScheduleCreationForm(props) {
   let [partOutWeight, setPartOutWeight] = useState(0);
   let [rectArea, setRectArea] = useState(0);
   let [rectWeight, setRectWeight] = useState(0);
-
   const [orderStatus, setOrderStatus] = useState("Created");
-
   //IMPORT DWG
   let [strprocess, setStrProcess] = useState("");
   let [strmtrlcode, setStrMtrlCode] = useState("");
@@ -247,7 +205,6 @@ export default function ScheduleCreationForm(props) {
     formData.append("thickness", thickness);
     formData.append("specficWeight", specificwt); // resp[0].Specific_Wt);
     //  setSpecificWt(resp[0].Specific_Wt);
-    //// //////console.log("Sending to Service");
     // const getCalcReq = await fetch('http://127.0.0.1:21341/getCalc', {
     const getCalcReq = await fetch("http://localhost:21341/getCalc", {
       method: "POST",
@@ -257,10 +214,6 @@ export default function ScheduleCreationForm(props) {
       body: formData,
     });
     const res = await getCalcReq.json();
-    //   const data = await res.json();
-    //    //// //////console.log("Get Calc Response");
-    //// //////console.log(res.data);
-    //// //////console.log(res.data.partOutArea);
 
     setLengthOfCut(res.data.lengthOfCut);
     setNoofPierces(res.data.noOfPierces);
@@ -273,7 +226,6 @@ export default function ScheduleCreationForm(props) {
     setPartOutWeight(res.data.partOutWeight);
     setRectArea(res.data.rectArea);
     setRectWeight(res.data.rectWeight);
-    //  setSpecificWt(res.Specific_Wt)
     cb({
       lengthOfCut: res.data.lengthOfCut,
       noOfPierces: res.data.noOfPierces,
@@ -287,25 +239,19 @@ export default function ScheduleCreationForm(props) {
       rectArea: res.data.rectArea,
       rectWeight: res.data.rectWeight,
     });
-    //, spWeight: res.data.Specific_Wt
-    // setQtnProfileData((olddata) => [...olddata, { file: files[i], operation: process, material, grade, thickness, quantity, materialcode,loc }]);
-    //});
   };
 
   async function dxfupload(files, destPath, response) {
     const data = new FormData();
-    //// //////console.log(files);
     for (let i = 0; i < files.length; i++) {
       data.append("files", files[i]);
     }
-    //// //////console.log(data);
     let API = "http://localhost:6001";
     const rawResponse = await fetch(`${API}/file/uploaddxf`, {
       method: "POST",
       headers: {
         Accept: "multipart/form-data",
         destinationPath: destPath,
-        // 'Content-Type': 'multipart/form-data'
       },
       body: data,
     });
@@ -315,17 +261,13 @@ export default function ScheduleCreationForm(props) {
 
   let importdrawings = async (e) => {
     e.preventDefault();
-    //// //////console.log("Import Drawings");
 
     if (!(orderStatus === "Created" || orderStatus === "Recorded")) {
       alert("Cannot import after the Order is recorded");
       return;
     }
 
-    ////// //////console.log(document.getElementById("mtrlcode").value);
-    // let materialcode = mtrlcode; //e.target.elements.mtrlcode.value;
     let materialcode = strmtrlcode;
-    //// //////console.log("materialcode", materialcode);
     let process = strprocess; //e.target.elements.processdescription.value;
     let quantity = quantity; // e.target.elements.quantity.value;
     let materialsource = strSource; // e.target.elements.materialsource.value;
@@ -337,27 +279,18 @@ export default function ScheduleCreationForm(props) {
     setDblPierceRate(dblPierceRate);
 
     for (let i = 0; i < files.length; i++) {
-      //// //////console.log(files[i]);
       let drwfname = files[i];
 
-      //// //////console.log(drwfname);
       locCalc(drwfname, material, grade, thickness, (output) => {
-        //// //////console.log(output);
-        //   //// //////console.log("Qtn Profile Data : ", typeof qtnProfileData);
-
         let olddata = Object.entries(orderdetailsdata).map(([key, value]) => ({
           key,
           value,
         }));
-        //  let olddata = [...qtnProfileData];
 
-        //// //////console.log("Old Data : " + olddata);
         if (olddata === null || olddata === undefined) {
-          // Handle the case where olddata is null
           return;
         } else {
           setOrderDetailsData((olddata) => {
-            // Append to existing olddata
             return [
               ...olddata,
               {
@@ -369,7 +302,7 @@ export default function ScheduleCreationForm(props) {
                 quantity,
                 mtrlcode,
                 lengthOfCut: output.lengthOfCut,
-                noOfPierces: output.noOfPierces, // ? 1 : 0,
+                noOfPierces: output.noOfPierces,
                 partNetArea: output.partNetArea,
                 complexity: output.complexity,
                 hasOpenContour: output.hasOpenContour,
@@ -384,47 +317,13 @@ export default function ScheduleCreationForm(props) {
           });
         }
       });
-
-      //  let LOC = parseFloat(CuttingLength * 0.001).tofixed(2)
-      //  let Holes = PierceCount
-
-      //  let JWCost = Math.Round(LOC * dblCuttingRate + Holes * dblPierceRate, 0)
-      // .MtrlCost = 0
-      // .delivery_date = DateTimePicker_DelDate.Value.ToString
     }
 
-    // let qno = quotationNo.replaceAll("/", "_");
-    // let month = qno.split("_")[1]
-    // let monthName = ["January", "Febraury", "March", "April", "May", "June",
-    //     "July", "August", "September", "October", "November", "December"][parseInt(month) - 1]
-
-    let destPath = `\\Wo\\` + Orderno + "\\DXF\\"; //quotationNo;
-
-    dxfupload(files, destPath, (res) => {
-      //// //////console.log(res);
-    });
-
+    let destPath = `\\Wo\\` + Orderno + "\\DXF\\";
+    dxfupload(files, destPath, (res) => {});
     window.dxffiles = files;
-    //// //////console.log(
-    //   materialcode,
-    //   material,
-    //   grade,
-    //   thickness,
-    //   process,
-    //   quantity,
-    //   files
-    // );
     setShow(false);
   };
-
-  //  const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
-  //   console.log("selectedOptions.........",selectedOptions)
-  //   setSelectedItems(selectedOptions);
-  //   const selectedValue = selectedOptions.length > 0 ? selectedOptions[0].Mtrl_Code : "";
-  //   // if (selectedValue) {
-  //   //   setStrMtrlCode(selectedValue.Mtrl_Code);
-  //   // }
-  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -552,16 +451,9 @@ export default function ScheduleCreationForm(props) {
         }
       );
     }
-    // MATERIAL CODE [ Feild name is material]
-
-    // const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
-    //   const selectedValue =
-    //     selectedOptions.length > 0 ? selectedOptions[0] : null;
-    //   setStrMtrlCode(selectedValue?.Mtrl_Code);
-    // };
 
     const handleMtrlCodeTypeaheadChange = (selectedOptions) => {
-      setSelectedItems(selectedOptions); // Update the state with the selected options
+      setSelectedItems(selectedOptions);
       const selectedValue =
         selectedOptions.length > 0 ? selectedOptions[0] : null;
       if (selectedValue) {
@@ -671,7 +563,7 @@ export default function ScheduleCreationForm(props) {
         MtrlSrc: value,
       }));
     } else if (name === "odrDtlMtrlSrc") {
-      console.log("e.target.value---", e.target.value);
+      //console.log("e.target.value---", e.target.value);
       setordrDetailsChange((prevState) => ({
         ...prevState,
         MtrlSrc: value,
@@ -767,8 +659,6 @@ export default function ScheduleCreationForm(props) {
     }
   };
 
-  ////console.log("ordrDetailsChange.MtrlSrc", ordrDetailsChange.MtrlSrc);
-  console.log("newserial.quantity", newSerial.quantity);
   let updateOrdrData = () => {
     postRequest(
       endpoints.singleChangeUpdate,
@@ -781,7 +671,6 @@ export default function ScheduleCreationForm(props) {
         OrderSrl: selectedSrl,
         JwCost: ordrDetailsChange.jwRate,
         mtrlcost: ordrDetailsChange.materialRate,
-        // unitPrice: ordrDetailsChange.unitPrice,
 
         unitPrice:
           parseFloat(ordrDetailsChange.jwRate) +
@@ -789,9 +678,9 @@ export default function ScheduleCreationForm(props) {
         Operation: ordrDetailsChange.Operation,
         InspLvl: ordrDetailsChange.InspLvl,
         PkngLvl: ordrDetailsChange.PkngLvl,
+        strmtrlcode: LastSlctedRow?.Mtrl_Code,
       },
       (singleChngData) => {
-        ////////console.log(" blkChngData", blkChngData);
         if (singleChngData.affectedRows != 0) {
           toast.success("Updated successfully");
           fetchData();
@@ -814,7 +703,7 @@ export default function ScheduleCreationForm(props) {
   // row selection data
   const [selectedItems, setSelectedItems] = useState([]);
   const [selectedSrl, setSelectedSrl] = useState([]);
-  const [LastSlctedRow, setLastSlctedRow] = useState([]);
+  const [LastSlctedRow, setLastSlctedRow] = useState(null);
   //getScheduleList Table Data
   const [scheduleListData, setScheduleListData] = useState([]);
   const [oldOrderListData, setOldOrderListData] = useState([]);
@@ -830,7 +719,6 @@ export default function ScheduleCreationForm(props) {
       endpoints.getOrderDetailsByOrdrNoAndType,
       { orderNo: orderNo, orderType: props.Type },
       (orderData) => {
-        ////console.log("orderDetails.....", orderData);
         setOrderData(orderData?.orderData[0]);
         setOrderCustData(orderData?.custData[0]);
 
@@ -838,7 +726,6 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetBomData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (bomdata) => {
-            // //////console.log("bomdata......", bomdata);
             setBomData(bomdata);
           }
         );
@@ -846,7 +733,6 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetFindOldpartData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (findOldpartData) => {
-            ////  // //////console.log("findOldpartData......", findOldpartData);
             setfindOldpart(findOldpartData);
           }
         );
@@ -855,7 +741,6 @@ export default function ScheduleCreationForm(props) {
           endpoints.PostNewSrlData,
           { custcode: orderData?.custData[0]?.Cust_Code, OrderNo: orderNo },
           (ordrdtlsdata) => {
-            // ////// //////console.log("ordrdtlsdata", ordrdtlsdata);
             setOrdrDetailsData(ordrdtlsdata);
           }
         );
@@ -868,7 +753,6 @@ export default function ScheduleCreationForm(props) {
           },
 
           (oldOrderData) => {
-            // ////console.log("dataqwqw...", oldOrderData);
             setOldOrderListData(oldOrderData.orderListData);
             setOldOrderDetailsData(oldOrderData.orderDetailsData);
           }
@@ -879,10 +763,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.getProfarmaMain,
       { OrderNo: orderNo },
       (profarmaMainData) => {
-        // // //////console.log("profarmaMainData", profarmaMainData);
-
         setProfarmaInvMain(profarmaMainData);
-        // // //////console.log("ordrdtlsdata", ordrdtlsdata);
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
@@ -890,10 +771,7 @@ export default function ScheduleCreationForm(props) {
       endpoints.getProfarmaDetails,
       { OrderNo: orderNo },
       (profarmaDetailsData) => {
-        // // //////console.log("profarmaDetailsData", profarmaDetailsData);
-
         setProfarmaInvDetails(profarmaDetailsData);
-        // // //////console.log("ordrdtlsdata", ordrdtlsdata);
         // setOrdrDetailsData(ordrdtlsdata);
       }
     );
@@ -928,8 +806,6 @@ export default function ScheduleCreationForm(props) {
 
   const updateOrderStatus = () => {
     const status = getStatusText(intSchStatus);
-    // Update order status here
-    ////console.log("Order Status:", status);
   };
 
   const getStatusText = (status) => {
@@ -958,11 +834,9 @@ export default function ScheduleCreationForm(props) {
   };
 
   const setDetailsColour = () => {
-    ////console.log("entering into the setDetailsColour");
     const rows = document.querySelectorAll(".order-details-row");
     rows.forEach((row) => {
       const srlStatus = parseInt(row.getAttribute("data-srlstatus"));
-      ////console.log("srlStatus..........", srlStatus);
       let backgroundColor = ""; // Define backgroundColor here
       switch (srlStatus) {
         case 0:
@@ -975,7 +849,6 @@ export default function ScheduleCreationForm(props) {
           backgroundColor = "lightcoral";
           break;
         case 3:
-          ////console.log("entering into case 3, light yellow");
           backgroundColor = "lightyellow";
           break;
         case 4:
@@ -1002,110 +875,12 @@ export default function ScheduleCreationForm(props) {
         default:
           backgroundColor = "";
       }
-      row.style.backgroundColor = backgroundColor; // Use backgroundColor here
-      ////console.log(
-      // `Row with srlStatus ${srlStatus} has background color: ${backgroundColor}`
-      // );
+      row.style.backgroundColor = backgroundColor;
     });
   };
 
-  // ////console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
-  // ////console.log("Ordr_Status", OrdrDetailsData[0]?.Order_Status);
-  // ////console.log("Order_Type", OrderData.Order_Type);
-
-  // let orderType = OrderData.Order_Type;
-
-  // const setOrderDetails = (setDetails) => {
-  //   ////console.log("setDetails", setDetails);
-  //   switch (setDetails) {
-  //     case "Created":
-  //       // Enable order details editing
-  //       // Assuming you have state variables to manage these conditions
-  //       setOrderDetailsEnabled(true);
-  //       setBulkChangeEnabled(true);
-  //       setAddSrlVisible(true);
-  //       // Set specific columns as readOnly
-  //       // You may need to manage column states in the component's state
-  //       setColumnsReadOnly({
-  //         Dwg: true,
-  //         Operation: false,
-  //         QtyOrdered: false,
-  //         JWCost: false,
-  //         MtrlCost: false,
-  //       });
-  //       break;
-  //     case "Processing":
-  //       // Disable bulk change and hide Add Srl
-  //       setBulkChangeEnabled(false);
-  //       setAddSrlVisible(false);
-  //       // Set columns readOnly based on orderType
-  //       // Assuming orderType is managed by state
-  //       switch (orderType) {
-  //         case "Complete":
-  //           // Set specific columns as readOnly
-  //           setColumnsReadOnly({
-  //             Dwg: true,
-  //             MtrlSource: true,
-  //             MtrlCode: true,
-  //             Operation: true,
-  //             QtyOrdered: true,
-  //             JWCost: true,
-  //             MtrlCost: true,
-  //             InspLevel: true,
-  //             PackingLevel: true,
-  //             Tolerance: true,
-  //           });
-  //           break;
-  //         case "Scheduled":
-  //           // Set specific columns as readOnly
-  //           setColumnsReadOnly({
-  //             Dwg: true,
-  //             MtrlSource: true,
-  //             MtrlCode: true,
-  //             Operation: true,
-  //             QtyOrdered: false,
-  //             JWCost: true,
-  //             MtrlCost: true,
-  //             InspLevel: true,
-  //             PackingLevel: true,
-  //             Tolerance: true,
-  //           });
-  //           break;
-  //         case "Open":
-  //           // Set specific columns as readOnly
-  //           setColumnsReadOnly({
-  //             QtyOrdered: false,
-  //             JWCost: false,
-  //             MtrlCost: false,
-  //           });
-  //           break;
-  //         default:
-  //           break;
-  //       }
-  //       break;
-  //     case "Nochange":
-  //       // Disable bulk change, hide Add Srl, set all columns as readOnly
-  //       setBulkChangeVisible(false);
-  //       setAddSrlVisible(false);
-  //       setColumnsReadOnly({
-  //         Dwg: true,
-  //         MtrlSource: true,
-  //         MtrlCode: true,
-  //         Operation: true,
-  //         QtyOrdered: false,
-  //         JWCost: true,
-  //         MtrlCost: true,
-  //         InspLevel: true,
-  //         PackingLevel: true,
-  //         Tolerance: true,
-  //       });
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
-
   // Assuming you have state variables and setters for the conditions below
+  const [messagee, setMessagee] = useState("");
   const [orderDetailsEnabled, setOrderDetailsEnabled] = useState(false);
   const [bulkChangeEnabled, setBulkChangeEnabled] = useState(false);
   const [addSrlVisible, setAddSrlVisible] = useState(false);
@@ -1117,7 +892,6 @@ export default function ScheduleCreationForm(props) {
     JWCost: false,
     MtrlCost: false,
   });
-  // ////console.log("selectedItems", selectedItems[0]?.Mtrl_Code);
   useEffect(() => {
     fetchData();
     setIntSchStatus(calculateMinSrlStatus());
@@ -1145,23 +919,23 @@ export default function ScheduleCreationForm(props) {
   const closeRegisterOrder = () => {
     setRegisterOrder(false);
   };
+
   // message for Register Button
-  console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
-  // console.log("props.OrderData?.Order_Status", orderType);
   let message = "";
-  switch (props.OrderData?.Order_Status) {
-    case "complete":
+  switch (OrderData?.Order_Type) {
+    case "Completed":
       message =
         "No changes for Quantity, PartName or Rate will be permitted once you register. Proceed?";
+
       break;
-    case "scheduled":
+    case "Scheduled":
       message =
         "You can change only Quantity once you Register a Scheduled Order, Continue?";
+
       break;
-    case "open":
+    case "Open":
       message =
         "You can add new serials, change Quantity and rates once you Register an Open Order, Continue?";
-      break;
   }
   // Register Button
   const handleRegisterBtn = () => {
@@ -1183,21 +957,18 @@ export default function ScheduleCreationForm(props) {
   // Row selection in orderDetails tab
   const selectItem = (OrdrDetailsItem) => {
     const isSelected = selectedItems.includes(OrdrDetailsItem);
-    // callback function to log the updated state after the update
     setSelectedItems((prevSelectedItems) => {
       const updatedSelectedItems = isSelected
         ? prevSelectedItems.filter((item) => item !== OrdrDetailsItem)
         : [...prevSelectedItems, OrdrDetailsItem];
-      console.log("Selected Order details Rows:", updatedSelectedItems);
       const selectedOrderSrl = updatedSelectedItems.map(
         (item) => item.Order_Srl
       );
 
-      console.log("selectedOrderSrl", selectedOrderSrl);
       setSelectedSrl(selectedOrderSrl);
       const lastSelectedRow =
         updatedSelectedItems[updatedSelectedItems.length - 1];
-      ////console.log("Last Selected Row:", lastSelectedRow);
+      console.log("lastselected row", lastSelectedRow);
       setLastSlctedRow(lastSelectedRow);
       setordrDetailsChange((prevState) => ({
         ...prevState,
@@ -1210,6 +981,7 @@ export default function ScheduleCreationForm(props) {
         Operation: lastSelectedRow?.Operation || "",
         InspLvl: lastSelectedRow?.InspLevel || "",
         PkngLvl: lastSelectedRow?.PackingLevel || "",
+        strmtrlcode: lastSelectedRow?.Mtrl_Code || "",
       }));
 
       return updatedSelectedItems;
@@ -1229,66 +1001,48 @@ export default function ScheduleCreationForm(props) {
 
       for (let i = 0; i < OrdrDetailsData.length; i++) {
         const element = OrdrDetailsData[i];
-
         if (selectedItems.includes(element)) {
-          // the element is selected, needs to be removed
         } else {
-          // not selected, needs to be added to the newArray
           newArray.push(element);
         }
       }
-      // Update the selected rows with the newArray
       setSelectedItems(newArray);
     }
   };
-  // let insertnewsrldata = () => {
-  //   ////////console.log("entering into insertnewsrldata");
-  //   postRequest(
-  //     endpoints.InsertNewSrlData,
-  //     { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
-  //     (InsertedNewSrlData) => {
-  //       ////////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
-  //     }
-  //   );
-  // };
-
-  // useEffect(()=>{
-  //   setorderNo(props.OrersData[0].Order_No);
-  // },[props.OrersData]);
-
-  // ////console.log("location.state is",location.state);
-
-  // NOT USED
-  let insertnewsrldata = () => {
-    postRequest(
-      endpoints.InsertNewSrlData,
-      { custcode: OrderCustData.Cust_Code, OrderNo: orderNo },
-      (InsertedNewSrlData) => {
-        // //////console.log(" InsertedNewSrlDataRes", InsertedNewSrlData);
-      }
-    );
-  };
-
 
   //Sales Job Work
   const [scheduleType, setScheduleType] = useState("Job Work");
   const [scheduleOption, setScheduleOption] = useState("Full Order");
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    setFilteredData(OrdrDetailsData);
+  }, [OrdrDetailsData]);
 
   const handleScheduleTypeChange = (event) => {
     const { value } = event.target;
     setScheduleType(value);
-    //  console.log("Schedule Type:", value);
-    // if (OrderData) {
-    //   fetchScheduleList(value);
-    // }
+
+    if (value === "Job Work") {
+      const JWData = OrdrDetailsData.filter(
+        (item) => item.Mtrl_Source.toLowerCase() === "customer"
+      );
+      setFilteredData(JWData);
+    } else if (value === "Sales") {
+      const SalesData = OrdrDetailsData.filter(
+        (item) => item.Mtrl_Source.toLowerCase() === "magod"
+      );
+
+      setFilteredData(SalesData);
+    } else {
+      setFilteredData(OrdrDetailsData);
+    }
   };
 
-  
   // Handle change for schedule option radio buttons
   const handleScheduleOptionChange = (event) => {
     const { value } = event.target;
     setScheduleOption(value);
-    //  console.log("Schedule Option:", value);
     if (value === "Partial Order") {
       toast.warning("Only Selected Serials will be included in the Schedule", {
         position: toast.POSITION.TOP_CENTER,
@@ -1300,29 +1054,9 @@ export default function ScheduleCreationForm(props) {
     }
   };
 
-
-
   return (
     <>
       <div>
-        {/* <div>
-          <div className="row mb-3">
-            <label>feild1</label>
-            <input
-              name="feild1"
-              value={newSerial.quantity}
-              onChange={handleChange}
-            />
-          </div>
-          <div className="row mb-3">
-            <label>feild2</label>
-            <input
-              name="feild2"
-              value={imprtDwgObj.quantity}
-              onChange={handleChange}
-            />
-          </div>
-        </div> */}
         <FormHeader
           OrderData={OrderData}
           OrderCustData={OrderCustData}
@@ -1374,6 +1108,7 @@ export default function ScheduleCreationForm(props) {
                 OrdrDetailsData={OrdrDetailsData}
                 setOrdrDetailsData={setOrdrDetailsData}
                 selectedItems={selectedItems}
+                setSelectedItems={setSelectedItems}
                 selectItem={selectItem}
                 LastSlctedRow={LastSlctedRow}
                 setLastSlctedRow={setLastSlctedRow}
@@ -1405,7 +1140,8 @@ export default function ScheduleCreationForm(props) {
                 updateOrderStatus={updateOrderStatus}
                 getStatusText={getStatusText}
                 scheduleType={scheduleType}
-              scheduleOption={scheduleOption}
+                scheduleOption={scheduleOption}
+                filteredData={filteredData}
               />
             </Tab>
             <Tab eventKey="scheduleList" title="Schedule List">
@@ -1449,8 +1185,6 @@ export default function ScheduleCreationForm(props) {
           firstbutton={handleRegisterBtn}
           secondbutton={closeRegisterOrder}
           title="magod_Order"
-          // message="You can add New Serials, Change Quantity and Rates once you register an Open Order. Continue ?"
-          // message="No Change for Quantity, PackingLevels and Rates once you register. Proceed ?"
           message={message}
           firstbuttontext="Yes"
           secondbuttontext="No"

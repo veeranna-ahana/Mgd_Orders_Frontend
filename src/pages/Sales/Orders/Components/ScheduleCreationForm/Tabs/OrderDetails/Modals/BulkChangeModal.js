@@ -62,6 +62,7 @@ function BulkChangeModal(props) {
     //---new -----
     blkChange,
     handleChange,
+    handleInputChange,
   } = props;
 
   const [isChecked, setChecked] = useState(false);
@@ -136,11 +137,15 @@ function BulkChangeModal(props) {
                       {mtrldata.length > 0 || mtrldata != null ? (
                         <Typeahead
                           className="ip-select mt-2"
+                          id="ip-select mt-22"
                           labelKey="Mtrl_Code"
                           name="blkCngMaterial"
                           onChange={handleMtrlCodeTypeaheadChange}
                           // onChange={handleChange}
-                          selected={selectedItems}
+                          onInputChange={handleInputChange}
+                          // selected={selectedItems}
+                          selected={LastSlctedRow ? [LastSlctedRow] : []}
+                          // selected={selectedItems}
                           options={mtrldata}
                           placeholder="Choose a Material..."
                           required

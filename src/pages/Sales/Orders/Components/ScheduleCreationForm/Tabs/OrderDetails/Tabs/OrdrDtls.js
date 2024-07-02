@@ -3,6 +3,8 @@ import { Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import AddNewSrlModal from "../Modals/AddNewSrlModal";
 import { Typeahead } from "react-bootstrap-typeahead";
+import { Login } from "@mui/icons-material";
+import { Last } from "react-bootstrap/esm/PageItem";
 
 function OrdrDtls(props) {
   const {
@@ -61,12 +63,36 @@ function OrdrDtls(props) {
     setordrDetailsChange,
     handleChange,
     isLoading,
+    handleInputChange,
+    handleMtrlCodeTypeaheadChangeeee,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
     selectedItems[0]?.Mtrl_Code || ""
   );
 
+  // console.log("selectepartID...", selectedPartId.length);
+  console.log("selectedItems...", selectedItems);
+  console.log("mtrldata...", mtrldata);
+  // const handleInputChange = (input) => {
+  //   setLastSlctedRow({ Mtrl_Code: input });
+  // };
+  // const handleInputChange = (input) => {
+  //   setLastSlctedRow((prevSelectedItem) => ({
+  //     ...prevSelectedItem,
+  //     Mtrl_Code: input,
+  //   }));
+  // };
+  console.log("lastslctedrowmtrlcode", LastSlctedRow?.Mtrl_Code);
+  // if (selectedPartId.length === 0) {
+  //   // console.log("nulll...");
+  // } else {
+  //   // console.log("value", selectedPartId);
+  // }
+
+  // selectedPartId.length > 0
+  //   ? console.log(selectedPartId.length)
+  //   : console.log("null");
   // console.log("OrdrDetailsData...", OrdrDetailsData);
   // console.log("selectedItems...", selectedItems[i].QtyScheduled);
 
@@ -101,6 +127,7 @@ function OrdrDtls(props) {
     setQuantity(event.target.value);
     // Your other logic if needed
   };
+
   // console.log("setQuantity", quantity);
   return (
     <div>
@@ -144,6 +171,8 @@ function OrdrDtls(props) {
         setNewSerial={setNewSerial}
         handleChange={handleChange}
         isLoading={isLoading}
+        handleInputChange={handleInputChange}
+        handleMtrlCodeTypeaheadChangeeee={handleMtrlCodeTypeaheadChangeeee}
       />
 
       <div className="d-flex form-bg">
@@ -187,11 +216,12 @@ function OrdrDtls(props) {
                 {mtrldata.length > 0 || mtrldata != null ? (
                   <Typeahead
                     className="ip-select in-field"
-                    id="basic-example"
-                    // name="odrDtlMaterial"
+                    id="basic-exampleunique"
                     labelKey="Mtrl_Code"
                     onChange={handleMtrlCodeTypeaheadChange}
-                    selected={selectedItems}
+                    onInputChange={handleInputChange}
+                    // selected={selectedItems}
+                    selected={LastSlctedRow ? [LastSlctedRow] : []}
                     options={mtrldata}
                     // onChange={(selected) =>
                     //   changeMtrl("mtrlCode", selected[0]?.Mtrl_Code)
@@ -561,8 +591,8 @@ function OrdrDtls(props) {
                 style={{ marginTop: "13px" }}
                 type="checkbox"
                 className="checkBoxStyle ms-2"
-                checked={HasBOM === 1}
-                onChange={(e) => setHasBOM(e.target.checked ? 1 : 0)}
+                checked={LastSlctedRow?.HasBOM === 1 || HasBOM}
+                // onChange={(e) => setHasBOM(e.target.checked ? 1 : 0)}
               />
             </div>
           </div>
@@ -642,6 +672,12 @@ function OrdrDtls(props) {
                     className="in-field"
                     type="text"
                     value={BomArry[0]?.JobWorkCost}
+                    // value={BomArry.length > 0 ? BomArry[0].JobWorkCost :null}
+                    // value={
+                    //   selectedPartId.length === 0
+                    //     ? 0.0
+                    //     : BomArry[0]?.JobWorkCost
+                    // }
                   />
                 </div>
                 <div className="d-flex field-gap">
@@ -737,86 +773,40 @@ function OrdrDtls(props) {
                 )}
               </div>
               <div className="col-md-6">
-                {mtrldata.length > 0 || mtrldata != null ? (
-                  <Typeahead
-                    className="ip-select input-fields mt-2"
-                    id="basic-example"
-                    labelKey="Mtrl_Code"
-                    onChange={handleMtrlCodeTypeaheadChange}
-                    // selected={Material}
-                    options={mtrldata}
-                    placeholder="Choose a Material..."
-                    required
-                    disabled={BomData.length === 0}
-                  ></Typeahead>
-                ) : (
-                  ""
-                )}
+                <input
+                  className="in-field mt-1"
+                  type="text"
+                  // value={BomArry[0]?.Material}
+                  value={
+                    selectedPartId.length === 0 ? "" : BomArry[0]?.Material
+                  }
+                  disabled={BomData.length === 0}
+                />
               </div>
             </div>
             <div className="row mt-1 mb-2">
               <div className="col-md-5 d-flex" style={{ gap: "10px" }}>
                 <label className="form-label">Operation</label>
-                {/* {procdata.length > 0 ? ( */}
-                <select
-                  className="ip-select in-field mt-1"
-                  id="strprocess"
-                  onChange={selectProc}
-                  disabled={BomData.length === 0}
-                >
-                  <option value="" disabled selected>
-                    ** Select **
-                  </option>
-                  {procdata.map((proc) => {
-                    // Check if "Service" column has non-zero values
-                    if (props.OrderData?.Type === "Service") {
-                      if (proc["Service"] !== 0) {
-                        return (
-                          <option
-                            key={proc["ProcessDescription"]}
-                            value={proc["ProcessDescription"]}
-                          >
-                            {proc["ProcessDescription"]}
-                          </option>
-                        );
-                      }
-                    } else if (props.OrderData?.Type === "Fabrication") {
-                      if (proc["MultiOperation"] !== 0) {
-                        return (
-                          <option
-                            key={proc["ProcessDescription"]}
-                            value={proc["ProcessDescription"]}
-                          >
-                            {proc["ProcessDescription"]}
-                          </option>
-                        );
-                      }
-                    } else {
-                      if (proc["Profile"] !== 0) {
-                        return (
-                          <option
-                            key={proc["ProcessDescription"]}
-                            value={proc["ProcessDescription"]}
-                          >
-                            {proc["ProcessDescription"]}
-                          </option>
-                        );
-                      }
-                    }
 
-                    return null; // Exclude options with zero values in "Service" column
-                  })}
-                </select>
-                {/* ) : (
-                      ""
-                    )} */}
+                <input
+                  className="in-field mt-1"
+                  type="text"
+                  // value={BomArry[0]?.Operation}
+                  value={
+                    selectedPartId.length === 0 ? "" : BomArry[0]?.Operation
+                  }
+                  disabled={BomData.length === 0}
+                />
               </div>
               <div className="col-md-4 d-flex" style={{ gap: "10px" }}>
                 <label className="form-label label-space">J W Cost</label>
                 <input
                   className="in-field mt-1"
                   type="text"
-                  value={BomArry[0]?.JobWorkCost}
+                  // value={BomArry[0]?.JobWorkCost}
+                  value={
+                    selectedPartId.length === 0 ? 0.0 : BomArry[0]?.JobWorkCost
+                  }
                   disabled={BomData.length === 0}
                 />
               </div>
@@ -825,7 +815,10 @@ function OrdrDtls(props) {
                 <input
                   className="in-field mt-1"
                   type="text"
-                  value={BomArry[0]?.MtrlCost}
+                  // value={BomArry[0]?.MtrlCost}
+                  value={
+                    selectedPartId.length === 0 ? 0.0 : BomArry[0]?.MtrlCost
+                  }
                   disabled={BomData.length === 0}
                 />
               </div>
