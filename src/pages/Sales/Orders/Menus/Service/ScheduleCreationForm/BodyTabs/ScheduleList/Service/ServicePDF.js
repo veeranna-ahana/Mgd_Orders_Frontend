@@ -12,7 +12,7 @@ import { borderRight, padding, style, textAlign } from "@mui/system";
 import { Table } from "react-bootstrap";
 import { postRequest } from "../../../../../../../../api/apiinstance";
 import { endpoints } from "../../../../../../../../api/constants";
-// import magodlogo from "../Logo/MagodLogo.png";
+import magodlogo from "../../../../../../../../../../src/ML-LOGO.png";
 
 const styles = StyleSheet.create({
   page: {
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
     width: "20%",
   },
   logo: {
-    width: "70px",
-    height: "70px",
+    width: "50px",
+    height: "50px",
   },
   logostyle: {
     marginTop: "15px",
@@ -604,7 +604,6 @@ const styles = StyleSheet.create({
 });
 
 const ServicePDF = ({ formdata }) => {
-  console.log("formdata is", formdata);
   const [Tabledata, setTabledata] = useState([]);
   const [index, setIndex] = useState(0);
 
@@ -612,6 +611,7 @@ const ServicePDF = ({ formdata }) => {
   const totalPages = Math.ceil(Tabledata.length / recordsPerPage);
 
   const firstItemData = Tabledata[0];
+
 
   //date format
   const formatDate = (dateString) => {
@@ -655,9 +655,9 @@ const ServicePDF = ({ formdata }) => {
           style={[styles.page, pageIndex === 0 ? styles.firstPage : null]}
           orientation="landscape"
         >
-          <View style={styles.codestyle}>
+          {/* <View style={styles.codestyle}>
             <Text style={styles.code}>F 32 Rev 3</Text>
-          </View>
+          </View> */}
 
           <View style={styles.tableContainer}>
             {Tabledata.map((item, index) => (
@@ -667,7 +667,7 @@ const ServicePDF = ({ formdata }) => {
                     <View style={styles.column}>
                       <View style={styles.row}>
                         <View style={styles.logostyle}>
-                          {/* <Image src={magodlogo} style={styles.logo} /> */}
+                          <Image src={magodlogo} style={styles.logo} />
                         </View>
                       </View>
                     </View>
@@ -831,7 +831,7 @@ const ServicePDF = ({ formdata }) => {
                       <View style={styles.column}>
                         <View style={styles.targetdateview}>
                           <Text style={styles.datawithoutbline}>
-                            Schedule NO: {item.ScheduleNo}
+                            Schedule NO: {item.otherdetails[0].OrderScheduleNo}
                           </Text>
                         </View>
                         {/* <View style={styles.targerdatedata}>
@@ -879,7 +879,7 @@ const ServicePDF = ({ formdata }) => {
                           {
                             fontSize: "12px",
                             paddingBottom: "5px",
-                            width: "300px",
+                            width: "500px",
                           },
                         ]}
                       >

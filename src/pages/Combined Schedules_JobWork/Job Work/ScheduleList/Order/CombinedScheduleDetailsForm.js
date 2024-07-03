@@ -220,8 +220,13 @@ function CombinedScheduleDetailsForm() {
 
   //Distribute Parts
   const distributeParts = () => {
-    postRequest(endpoints.distributeParts, { selectedRow }, (response) => {
-      console.log(response.data);
+    postRequest(endpoints.distributeParts, { scheduleListDetailsData }, (response) => {
+      console.log("response is",response);
+      if(response.success==='Parts Distributed'){
+        toast.success(response.success, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }
     });
   };
 
@@ -241,10 +246,10 @@ function CombinedScheduleDetailsForm() {
 
   //
   const [displayDate, setDisplayDate] = useState(
-    formatDeliveryDate2(selectedRow.Delivery_Date)
+    formatDeliveryDate2(selectedRow?.Delivery_Date)
   );
   const [selectedSalesContact, setSelectedSalesContact] = useState(
-    selectedRow.Dealing_Engineer
+    selectedRow?.Dealing_Engineer
   );
   const handleDateChange = (e) => {
     // Update the displayDate whenever the user selects a date
@@ -252,9 +257,16 @@ function CombinedScheduleDetailsForm() {
   };
 
   const [instruction, setInstruction] = useState("");
+  useEffect(() => {
+    if (selectedRow?.Special_Instructions) {
+      setInstruction(selectedRow.Special_Instructions);
+    }
+  }, [selectedRow]);
+
   const onChangeInstruction = (e) => {
     setInstruction(e.target.value);
   };
+;
 
   const formatDeliveryDate3 = (dateString) => {
     // Convert the input string to a JavaScript Date object
@@ -286,7 +298,6 @@ function CombinedScheduleDetailsForm() {
     });
   };
 
-  console.log(selectedRow);
 
   return (
     <div>
@@ -378,7 +389,7 @@ function CombinedScheduleDetailsForm() {
               className="in-field"
               type="text"
               onChange={onChangeInstruction}
-              value={selectedRow?.Special_Instructions}
+              value={instruction}
             />
           </div>
           <div className="d-flex field-gap col-md-4  mb-2 col-sm-12">

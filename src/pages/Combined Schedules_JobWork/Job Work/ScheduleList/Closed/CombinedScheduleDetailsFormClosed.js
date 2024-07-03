@@ -215,8 +215,11 @@ export default function CombinedScheduleDetailsFormClosed() {
   //Distribute Parts
   const distributeParts = () => {
     postRequest(endpoints.distributeParts, { selectedRow }, (response) => {
-      console.log(response);
-    });
+      if(response.success==='Parts Distributed'){
+        toast.success(response.success, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      }    });
   };
 
   ///

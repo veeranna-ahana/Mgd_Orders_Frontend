@@ -1086,6 +1086,7 @@ export default function ScheduleCreationForm(props) {
               scheduleOption={scheduleOption}
               handleScheduleTypeChange={handleScheduleTypeChange}
               handleScheduleOptionChange={handleScheduleOptionChange}
+              OrdrDetailsData={OrdrDetailsData}
             />
           </Tab>
           <Tab eventKey="findoldpart" title="Find Old Part">
