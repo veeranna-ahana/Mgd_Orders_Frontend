@@ -9,7 +9,7 @@ import { ToastContainer, toast } from "react-toastify";
 export default function ProductionScheduleCreation({
   OrderData,
   selectedItems,
-  setScheduleListData,handleScheduleOptionChange,handleScheduleTypeChange,scheduleOption,scheduleType
+  setScheduleListData,handleScheduleOptionChange,handleScheduleTypeChange,scheduleOption,scheduleType,OrdrDetailsData
 }) {
   //  console.log("OrderData",OrderData);
 
@@ -45,6 +45,8 @@ export default function ProductionScheduleCreation({
     });
   };
 
+  console.log("OrdrDetailsData is",OrdrDetailsData);
+
   //Onclick Create Schedule
   const createSchedule = () => {
     if (selectedItems.length === 0 && scheduleOption === "Partial Order") {
@@ -52,37 +54,65 @@ export default function ProductionScheduleCreation({
         position: toast.POSITION.TOP_CENTER,
       });
     } else {
-      // Filter selectedItems based on scheduleType
-      console.log(selectedItems);
       let filteredItems;
-      if (scheduleType === "Job Work") {
-        filteredItems = selectedItems.filter(
-          (item) => item.Mtrl_Source === "Customer"
-        );
-      } else if (scheduleType === "Sales") {
-        filteredItems = selectedItems.filter(
-          (item) => item.Mtrl_Source === "Magod"
-        );
-      }
-      console.log("filtered item", filteredItems);
 
+      console.log("scheduleOption is",scheduleOption,"scheduleType is",scheduleType);
+  
+      if (scheduleType === "Job Work") {
+        if (scheduleOption === "Full Order") {
+          filteredItems = OrdrDetailsData.filter(
+            (item) => item.Mtrl_Source === "Customer"
+          );
+        } else if (scheduleOption === "Partial Order") {
+          filteredItems = selectedItems.filter(
+            (item) => item.Mtrl_Source === "Customer"
+          );
+        }
+      } else if (scheduleType === "Sales") {
+        if (scheduleOption === "Full Order") {
+          filteredItems = OrdrDetailsData.filter(
+            (item) => item.Mtrl_Source === "Magod"
+          );
+        } else if (scheduleOption === "Partial Order") {
+          filteredItems = selectedItems.filter(
+            (item) => item.Mtrl_Source === "Magod"
+          );
+        }
+      }
+
+      console.log("filteredItems is",filteredItems);
+      
+  
       // Check if filteredItems is empty
-      if (filteredItems.length === 0) {
+      if (!filteredItems || filteredItems.length === 0) {
         toast.warning("No items to schedule", {
           position: toast.POSITION.TOP_CENTER,
         });
         return; // Exit the function without making the API request
       }
+  
+      // Filter items where Qty_Ordered is not less than or equal to QtyScheduled
+      const filteredItems2 = filteredItems.filter(
+        (item) => item.Qty_Ordered > item.QtyScheduled
+      );
+  
+      // Check if filteredItems2 is empty
+      if (filteredItems2.length === 0) {
+        toast.warning("No items to schedule", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        return; // Exit the function without making the API request
+      }
+  
       postRequest(
         endpoints.CreateProductionSchedule,
         {
           OrderData,
           scheduleType: scheduleType,
-          selectedItems: filteredItems,
+          selectedItems: filteredItems2,
           scheduleOption: scheduleOption,
         },
         (response) => {
-          // console.log("response is",response);
           if (response.message === "Draft Schedule Created") {
             toast.success(response.message, {
               position: toast.POSITION.TOP_CENTER,
@@ -91,6 +121,7 @@ export default function ProductionScheduleCreation({
               endpoints.getScheduleListData,
               { Order_No: OrderData.Order_No },
               (response) => {
+                console.log("response");
                 setScheduleListData(response);
               }
             );
@@ -103,6 +134,9 @@ export default function ProductionScheduleCreation({
       );
     }
   };
+  
+  
+  
 
   //Onclick of ShortClose
   const [openShortClose, setOpenShortClose] = useState(false);

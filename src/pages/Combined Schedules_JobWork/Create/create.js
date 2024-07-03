@@ -74,7 +74,6 @@ export default function Create({ type }) {
   const selectCust = async (event) => {
     // Update custCode using the setCustCode function from useState
     setCustCode(event[0]?.Cust_Code);
-    console.log(event[0]?.Cust_name);
     setCustName(event[0]?.Cust_name)
     postRequest(endpoints.rightTabledata, {
       custCode: event[0]?.Cust_Code},(response) => {
