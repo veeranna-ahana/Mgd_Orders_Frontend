@@ -236,7 +236,7 @@ function ServiceOpenSchedule() {
   const onClickShortClose = () => {
     postRequest(
       endpoints.onClickShortClose,
-      { scheduleDetailsRow },
+      { newState },
       (response) => {
         // console.log("response is",response);
         if (response.message === "Success") {
@@ -318,7 +318,7 @@ function ServiceOpenSchedule() {
       postRequest(
         endpoints.releaseSuspended,
         {
-          formdata,
+          newState,
         },
         (response) => {
           toast.success("Success", {
@@ -337,7 +337,7 @@ function ServiceOpenSchedule() {
         }
       );
     } else {
-      postRequest(endpoints.onClickSuspend, { formdata }, (response) => {
+      postRequest(endpoints.onClickSuspend, { newState }, (response) => {
         if (
           response.message ===
           "Clear Order Suspension of the order before trying to clear it for schedule"
@@ -369,7 +369,7 @@ function ServiceOpenSchedule() {
 
   //Onclick of Cancel
   const onClickCancel = () => {
-    postRequest(endpoints.onClickCancel, { scheduleDetailsRow }, (response) => {
+    postRequest(endpoints.onClickCancel, { newState }, (response) => {
       // console.log("response cancel is",response.message)
       if (response.message === "Cannot Cancel Schedules Once Programmed") {
         toast.error("Cannot Cancel Schedules Once Programmed", {
@@ -473,13 +473,11 @@ function ServiceOpenSchedule() {
   const navigate = useNavigate();
   const onClickNCProgram = () => {
     if(Object.keys(rowselectTaskMaterial).length===1){
-      console.log("condition1 1")
       toast.error("Please Select a Task", {
         position: toast.POSITION.TOP_CENTER,
       }); 
        }
     else{
-      console.log("condition 2",rowselectTaskMaterial)
       postRequest(
         endpoints.onClickNCProgram,
         { rowselectTaskMaterial },
@@ -499,15 +497,15 @@ function ServiceOpenSchedule() {
   };
 
   //onClick Tasked
-  const onClickTasked = () => {
-    //  console.log(scheduleDetailsRow);
-    postRequest(endpoints.onClickTask, { scheduleDetailsRow }, (response) => {
-      // console.log("response of Scheduled is",response);
-      toast.success(response.message, {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    });
-  };
+  // const onClickTasked = () => {
+  //   //  console.log(scheduleDetailsRow);
+  //   postRequest(endpoints.onClickTask, { scheduleDetailsRow }, (response) => {
+  //     // console.log("response of Scheduled is",response);
+  //     toast.success(response.message, {
+  //       position: toast.POSITION.TOP_CENTER,
+  //     });
+  //   });
+  // };
 
   //onClicked Performance
   const [Performancedata, setPerformancedata] = useState([]);
@@ -627,6 +625,8 @@ function ServiceOpenSchedule() {
 
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];
+
+  console.log("formdata[0]?.Schedule_Status is",formdata[0]?.Schedule_Status);
 
   return (
     <div>
