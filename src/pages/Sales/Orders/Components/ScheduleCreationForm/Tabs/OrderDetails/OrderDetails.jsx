@@ -833,7 +833,7 @@ export default function OrderDetails(props) {
         toast.error("JWRate should be greater than 0");
         return;
       }
-      if (materialRate === 0 || isNaN(materialRate)) {
+      if (isNaN(materialRate)) {
         setisLoading(false);
         toast.error("MaterialRate should be greater than 0");
         return;

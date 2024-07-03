@@ -72,8 +72,9 @@ function OrdrDtls(props) {
   );
 
   // console.log("selectepartID...", selectedPartId.length);
-  console.log("selectedItems...", selectedItems);
-  console.log("mtrldata...", mtrldata);
+  // console.log("selectedItems...", selectedItems);
+  // console.log("mtrldata...", mtrldata);
+  console.log("LastSlctedRow...", LastSlctedRow?.Mtrl_Source);
   // const handleInputChange = (input) => {
   //   setLastSlctedRow({ Mtrl_Code: input });
   // };
@@ -424,7 +425,8 @@ function OrdrDtls(props) {
                   required
                   disabled={
                     props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    props.OrderData?.Order_Type === "Scheduled" ||
+                    LastSlctedRow?.Mtrl_Source === "Customer"
                   }
                 />
 
@@ -606,7 +608,7 @@ function OrdrDtls(props) {
           <div className="form-bg mb-3">
             <div className="row mb-2">
               <div className="col-md-4">
-                <label className="form-label">Load Drawing</label>
+                <label className="form-label">BOM Material Availability</label>
               </div>
               <div className="col-md-4">
                 <button
@@ -731,7 +733,7 @@ function OrdrDtls(props) {
           <div className="form-bg mb-3">
             <div className="row">
               <div className="col-md-8">
-                <label className="form-label">Load Drawing</label>
+                <label className="form-label">BOM Material Availability</label>
               </div>
               <div className="col-md-4">
                 <button

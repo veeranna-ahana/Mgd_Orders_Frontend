@@ -122,7 +122,7 @@ a {
   height: 10vh;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 2px 5px 5px -2px #111;
+  box-shadow: 2px 5px 5px -2px #111 !important;
 }
 
 .content {
