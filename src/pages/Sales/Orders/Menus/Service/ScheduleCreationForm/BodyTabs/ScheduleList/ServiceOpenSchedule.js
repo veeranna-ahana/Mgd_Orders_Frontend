@@ -7,7 +7,7 @@ import { endpoints } from "../../../../../../../api/constants";
 import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create, Today } from "@mui/icons-material";
-import ServiceModal from "./Service/ServiceModal";
+import ServiceModal from "./Service PDF/ServiceModal";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
@@ -626,7 +626,6 @@ function ServiceOpenSchedule() {
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];
 
-  console.log("formdata[0]?.Schedule_Status is",formdata[0]?.Schedule_Status);
 
   return (
     <div>
