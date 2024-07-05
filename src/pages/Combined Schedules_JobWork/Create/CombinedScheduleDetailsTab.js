@@ -16,7 +16,6 @@ export default function CombinedScheduleDetailsTab({
     try {
       // Extract parts of the date string
       const [dayPart, monthPart, yearPart] = dateString.split("/");
-      if (!dayPart || !monthPart || !yearPart) throw new Error("Invalid date format");
   
       const [day] = dayPart.split("T"); // Extract day before "T"
       const year = yearPart.match(/\d{4}/)?.[0]; // Extract year

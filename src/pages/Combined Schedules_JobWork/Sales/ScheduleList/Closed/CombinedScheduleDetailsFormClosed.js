@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
+import PrintModal from "../../../PrintPDF/PrintModal";
 
 export default function CombinedScheduleDetailsFormClosed() {
   const location = useLocation();
@@ -253,6 +254,13 @@ export default function CombinedScheduleDetailsFormClosed() {
     });
   };
 
+  
+  //Print button
+  const[serviceOpen,setServiceOpen]=useState(false);
+  const PrintPdf = () => {
+    setServiceOpen(true);
+  };
+
   return (
     <div>
       <h4 className="title">Combined Schedule Details Form</h4>
@@ -388,7 +396,7 @@ export default function CombinedScheduleDetailsFormClosed() {
         <button className="button-style" style={{ width: "150px" }}>
           Copy Drawings
         </button>
-        <button className="button-style" style={{ width: "60px" }}>
+        <button className="button-style" style={{ width: "60px" }} onClick={PrintPdf}>
           Print
         </button>
         {/* <button className="button-style" style={{ width: "170px" }}>
@@ -705,6 +713,11 @@ export default function CombinedScheduleDetailsFormClosed() {
           </div>
         </Tab>
       </Tabs>
+      <PrintModal
+      serviceOpen={serviceOpen}
+      setServiceOpen={setServiceOpen}
+      selectedRow={selectedRow}
+      />
     </div>
   );
 }

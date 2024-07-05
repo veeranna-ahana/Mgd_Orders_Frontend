@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { endpoints } from "../../../../api/constants";
+import PrintModal from "../../../PrintPDF/PrintModal";
 
 function CombinedScheduleDetailsForm() {
   const location = useLocation();
@@ -175,17 +176,24 @@ function CombinedScheduleDetailsForm() {
   const updateToOriganSchedule = () => {
     postRequest(endpoints.updateToOriganalSchedule, {
       selectedRow,
-    });
-    toast.success(
-      "Sucessfully Updated",
-      {
-        position: toast.POSITION.TOP_CENTER,
-      },
-      (response) => {
-        // console.log(response.data);
-      }
-    );
+    },(response) => {
+      toast.success(
+        "Sucessfully Updated",
+        {
+          position: toast.POSITION.TOP_CENTER,
+        },
+      );
+    }
+  )
   };
+
+  //Print button
+  const[serviceOpen,setServiceOpen]=useState(false);
+  const PrintPdf = () => {
+    setServiceOpen(true);
+  };
+
+
 
   //rowselect for dwg name table
   const [DwgSelect, setDwgSelect] = useState({});
@@ -435,8 +443,8 @@ function CombinedScheduleDetailsForm() {
           <button className="button-style" onClick={updateToOriganSchedule}>
             Update To Original Schedule
           </button>
-          <button className="button-style">Short Close</button>
-          <button className="button-style">Cancel</button>
+          {/* <button className="button-style">Short Close</button>
+          <button className="button-style">Cancel</button> */}
 
           <button className="button-style" onClick={handleButtonClick}>
             Open Folder
@@ -448,7 +456,7 @@ function CombinedScheduleDetailsForm() {
             onChange={handleFileChange}
           />
           <button className="button-style">Copy Drawings</button>
-          <button className="button-style">Print</button>
+          <button className="button-style" onClick={PrintPdf}>Print</button>
           {/* <button className="button-style">NC Programming</button> */}
         </div>
       </div>
@@ -749,6 +757,11 @@ function CombinedScheduleDetailsForm() {
           </div>
         </Tab>
       </Tabs>
+      <PrintModal
+      serviceOpen={serviceOpen}
+      setServiceOpen={setServiceOpen}
+      selectedRow={selectedRow}
+      />
     </div>
   );
 }
