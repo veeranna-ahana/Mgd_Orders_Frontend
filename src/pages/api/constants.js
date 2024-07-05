@@ -391,6 +391,8 @@ export const endpoints = {
   OriginalTable: `${API}/scheduleListCombined/OriginalTable1`,
   OriginalTable2: `${API}/scheduleListCombined/OriginalTable2`,
   updateToOriganalSchedule: `${API}/scheduleListCombined/updateToOriganalSchedule`,
+  PrintSchedulePDF: `${API}/scheduleListCombined/PrintPdf`,
+  getCustNamePDF: `${API}/scheduleListCombined/getCustomerNamePDF`,
   updateTask: `${API}/scheduleListCombined/updateTask`,
   distributeParts: `${API}/scheduleListCombined/distributeParts`,
   save: `${API}/scheduleListCombined/save`,
