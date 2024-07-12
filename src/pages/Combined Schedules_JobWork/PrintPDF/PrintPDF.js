@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
   page: {
     fontSize: 11,
     flexDirection: "column",
+    marginTop: 30, // Adjust top margin for the whole page
+    marginBottom: 50, // Adjust bottom margin for the whole page
+    paddingBottom: 50, // Ensure there is enough space at the bottom
   },
   tableContainer: {
     flexDirection: "row",

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { endpoints } from "../../../../api/constants";
@@ -290,6 +290,12 @@ export default function CombinedScheduleDetailsFormClosed() {
       setServiceOpen(true);
     };
 
+    const navigate = useNavigate();
+    const closeButton=()=>{
+      navigate("/Orders/JobWork/ScheduleList/Closed", {
+      });
+    }
+
   return (
     <div>
       <h4 className="title">Combined Schedule Details Form</h4>
@@ -440,6 +446,7 @@ export default function CombinedScheduleDetailsFormClosed() {
 
           <button className="button-style">Copy Drawings</button>
           <button className="button-style" onClick={PrintPdf}>Print</button>
+          <button className="button-style" onClick={closeButton}>close</button>
           {/* <button className="button-style">NC Programming</button> */}
         </div>
       </div>

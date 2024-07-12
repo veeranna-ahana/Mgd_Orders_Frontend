@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
@@ -259,6 +259,15 @@ function CombinedScheduleDetailsForm() {
   const PrintPdf = () => {
     setServiceOpen(true);
   };
+
+  
+  //close button
+  const navigate = useNavigate();
+  const closeButton=()=>{
+    console.log("close in sales")
+    // navigate("/Orders/Sales/ScheduleList/Order/OpenDetailForm", {
+    // });
+  }
   
   return (
     <div>
@@ -398,6 +407,7 @@ function CombinedScheduleDetailsForm() {
         <button className="button-style" style={{ width: "60px" }} onClick={PrintPdf}>
           Print
         </button>
+        <button className="button-style" onClick={closeButton}>close</button>
       </div>
 
       <Tabs className=" tab_font mt-4">
