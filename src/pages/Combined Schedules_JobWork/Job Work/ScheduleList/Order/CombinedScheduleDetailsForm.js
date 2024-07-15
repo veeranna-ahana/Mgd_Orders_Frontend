@@ -1,16 +1,20 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
+import { useLocation,useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { endpoints } from "../../../../api/constants";
 import PrintModal from "../../../PrintPDF/PrintModal";
 
+
 function CombinedScheduleDetailsForm() {
   const location = useLocation();
   const { selectedRow } = location?.state || {};
+
+  const[colordisable,setColorDisable]=useState(false);
+
 
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
@@ -36,28 +40,31 @@ function CombinedScheduleDetailsForm() {
     );
   };
 
+
   const getBackgroundColor = (item) => {
-    if (item.QtyScheduled === 0) {
-      return "red";
-    } else if (item.QtyScheduled === item.QtyScheduled) {
-      return "green";
-    } else if (item.QtyScheduled === item.QtyCleared) {
-      return "yellow";
-    } else if (item.QtyCleared > 0) {
-      return "lightgreen";
-    } else if (item.QtyScheduled === item.QtyProduced) {
-      return "lightyellow";
-    } else if (
-      item.QtyProduced > 0 &&
-      item.QtyScheduled === item.QtyProgrammed
-    ) {
-      return "lightpink";
-    } else if (item.QtyScheduled === item.QtyProgrammed) {
-      return "lightcoral";
-    } else if (item.QtyProgrammed > 0) {
-      return "coral";
-    } else {
-      return ""; // Default background color if none of the conditions match
+    if(!colordisable){
+      if (item.QtyScheduled === 0) {
+        return "red";
+      } else if (item.QtyScheduled === item.QtyScheduled) {
+        return "green";
+      } else if (item.QtyScheduled === item.QtyCleared) {
+        return "yellow";
+      } else if (item.QtyCleared > 0) {
+        return "lightgreen";
+      } else if (item.QtyScheduled === item.QtyProduced) {
+        return "lightyellow";
+      } else if (
+        item.QtyProduced > 0 &&
+        item.QtyScheduled === item.QtyProgrammed
+      ) {
+        return "lightpink";
+      } else if (item.QtyScheduled === item.QtyProgrammed) {
+        return "lightcoral";
+      } else if (item.QtyProgrammed > 0) {
+        return "coral";
+      } else {
+        return ""; // Default background color if none of the conditions match
+      }
     }
   };
 
@@ -174,14 +181,26 @@ function CombinedScheduleDetailsForm() {
 
   //Update To Original Schedule
   const updateToOriganSchedule = () => {
+    setColorDisable(true);
     postRequest(endpoints.updateToOriganalSchedule, {
       selectedRow,
     },(response) => {
+      
       toast.success(
         "Sucessfully Updated",
         {
           position: toast.POSITION.TOP_CENTER,
         },
+      );
+      postRequest(
+        endpoints.getSchedudleDetails,
+        {
+          selectedRow,
+        },
+        (response) => {
+          // console.log(response);
+          setScheduleListDetailsData(response);
+        }
       );
     }
   )
@@ -229,7 +248,6 @@ function CombinedScheduleDetailsForm() {
   //Distribute Parts
   const distributeParts = () => {
     postRequest(endpoints.distributeParts, { scheduleListDetailsData }, (response) => {
-      console.log("response is",response);
       if(response.success==='Parts Distributed'){
         toast.success(response.success, {
           position: toast.POSITION.TOP_CENTER,
@@ -305,6 +323,14 @@ function CombinedScheduleDetailsForm() {
       });
     });
   };
+  
+
+  //close button
+  const navigate = useNavigate();
+  const closeButton=()=>{
+    navigate("/Orders/JobWork/ScheduleList/Order", {
+    });
+  }
 
 
   return (
@@ -457,6 +483,7 @@ function CombinedScheduleDetailsForm() {
           />
           <button className="button-style">Copy Drawings</button>
           <button className="button-style" onClick={PrintPdf}>Print</button>
+          <button className="button-style" onClick={closeButton}>close</button>
           {/* <button className="button-style">NC Programming</button> */}
         </div>
       </div>
