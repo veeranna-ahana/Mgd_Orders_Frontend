@@ -140,44 +140,56 @@ export default function PrepareScheduleTab({
   const [combinedScheduleNo, setCombinedScheduleNo] = useState("");
   const [disablebutton, setDisableButton] = useState(false);
   const onClickCreateSchedule = () => {
-    console.log("type is",type);
+    console.log("type is", type);
     if (rowselectleft.length <= 1) {
       validationModal();
     } else {
       if (type === "JobWork") {
-        postRequest(endpoints.CreateSchedule, {
-          rowselectleft,
-          custCode: custCode,
-          selectedSalesContact: selectedSalesContact,
-          Date: storedDate,
-          ScheduleDate: ScheduleDate,
-        },(response) => {
-          setDisableButton(true);
-          setCombinedScheduleNo(response.combinedScheduleNos[0]);
-          openCombineScheduleModal();
-        });
+        postRequest(
+          endpoints.CreateSchedule,
+          {
+            rowselectleft,
+            custCode: custCode,
+            selectedSalesContact: selectedSalesContact,
+            Date: storedDate,
+            ScheduleDate: ScheduleDate,
+          },
+          (response) => {
+            setDisableButton(true);
+            setCombinedScheduleNo(response?.combinedScheduleNos[0]);
+            openCombineScheduleModal();
+          }
+        );
       } else {
-        postRequest(endpoints.CreateScheduleforSales, {
-          rowselectleft,
-          custCode: custCode,
-          selectedSalesContact: selectedSalesContact,
-          Date: storedDate,
-          ScheduleDate: ScheduleDate,
-        },(response) => {
-          setDisableButton(true);
-          setCombinedScheduleNo(response.combinedScheduleNos[0]);
-          openCombineScheduleModal();
-        });
+        postRequest(
+          endpoints.CreateScheduleforSales,
+          {
+            rowselectleft,
+            custCode: custCode,
+            selectedSalesContact: selectedSalesContact,
+            Date: storedDate,
+            ScheduleDate: ScheduleDate,
+          },
+          (response) => {
+            setDisableButton(true);
+            setCombinedScheduleNo(response.combinedScheduleNos[0]);
+            openCombineScheduleModal();
+          }
+        );
       }
     }
   };
 
   const getAlldataAfterCombineSchedule = () => {
-    postRequest(endpoints.afterCombinedSchedule, {
-      combinedScheduleNo,
-    },(response) => {
-      setBeforeCombine(response);
-    });
+    postRequest(
+      endpoints.afterCombinedSchedule,
+      {
+        combinedScheduleNo,
+      },
+      (response) => {
+        setBeforeCombine(response);
+      }
+    );
   };
 
   useEffect(() => {
