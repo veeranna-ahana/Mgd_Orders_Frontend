@@ -229,7 +229,7 @@ export default function PrepareScheduleTab({
             <Table
               striped
               className="table-data border"
-              style={{ border: "1px", height: "200px" }}
+              // style={{ border: "1px", height: "200px" }}
             >
               <thead className="tableHeaderBGColor table-space">
                 <tr>
@@ -280,7 +280,6 @@ export default function PrepareScheduleTab({
             <Table
               striped
               className="table-data border"
-              style={{ height: "200px" }}
             >
               <thead className="tableHeaderBGColor">
                 <tr>
