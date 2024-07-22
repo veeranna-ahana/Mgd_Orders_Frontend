@@ -169,7 +169,9 @@ export default function CombinedScheduleDetailsFormClosed() {
   }, []);
 
   //Update To Original Schedule
+  const [openFolder, setOpenFolder] = useState(false);
   const updateToOriganSchedule = () => {
+    setOpenFolder(true);
     postRequest(endpoints.updateToOriganalSchedule, {
       selectedRow,
     });
@@ -295,6 +297,47 @@ export default function CombinedScheduleDetailsFormClosed() {
       navigate("/Orders/JobWork/ScheduleList/Closed", {
       });
     }
+
+    const [openfileModal, setOpenFileModal] = useState(false);
+
+  const [files, setFiles] = useState([]);
+
+  const onClickOpenFolder = () => {
+    if (openFolder) {
+      // Prepare data to send in the POST request
+      const requestData = {
+        OrderNo: selectedRow?.Order_No,
+      };
+      // Send POST request to fetch files from the server
+      postRequest(endpoints.openFolder, { requestData }, (response) => {
+        setFiles(response.data);
+        setOpenFileModal(true);
+      });
+    } else {
+      fileInputRef.current.click();
+    }
+  };
+
+
+  const onClickCopyDwg = () => {
+    // Prepare data to send in the POST request
+    const requestData = {
+      selectedRow,
+      orinalScheudledata,
+    };
+    // Send POST request to fetch files from the server
+    // axios.post('http://172.16.20.61:6002/scheduleListCombined/copyDwg',requestData)
+    //   .then(response => {
+    //     console.log("reponse message",response);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error fetching files:', error);
+    //   });
+
+    postRequest(endpoints.CopyDwg, { requestData }, (response) => {
+      console.log("response is", response);
+    });
+  };
 
   return (
     <div>
@@ -434,17 +477,19 @@ export default function CombinedScheduleDetailsFormClosed() {
           {/* <button className="button-style">Short Close</button>
           <button className="button-style">Cancel</button> */}
 
-          <button className="button-style" onClick={handleButtonClick}>
-            Open Folder
-          </button>
-          <input
+<button className="button-style" onClick={onClickOpenFolder}>
+        Open Folder
+      </button>
+     { !openFolder ?  <input
             type="file"
             ref={fileInputRef}
             style={{ display: "none" }}
             onChange={handleFileChange}
-          />
+          /> : null}
 
-          <button className="button-style">Copy Drawings</button>
+     
+     
+          <button className="button-style" onClick={onClickCopyDwg}>Copy Drawings</button>
           <button className="button-style" onClick={PrintPdf}>Print</button>
           <button className="button-style" onClick={closeButton}>close</button>
           {/* <button className="button-style">NC Programming</button> */}

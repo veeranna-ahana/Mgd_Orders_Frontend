@@ -401,5 +401,6 @@ export const endpoints = {
   scheduleListDetails: `${API}/scheduleListCombined/scheduleListDetails`,
   ScheduleListClosed: `${API}/scheduleListCombined/ScheduleListClosed`,
   ScheduleListClosedSales: `${API}/scheduleListCombined/ScheduleListClosedSales`,
-
+  openFolder:`${API}/scheduleListCombined/files`,
+  CopyDwg:`${API}/scheduleListCombined/copyDwg`
 };
