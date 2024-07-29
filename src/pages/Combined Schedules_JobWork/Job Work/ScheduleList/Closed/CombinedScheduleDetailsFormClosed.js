@@ -297,48 +297,37 @@ export default function CombinedScheduleDetailsFormClosed() {
       navigate("/Orders/JobWork/ScheduleList/Closed", {
       });
     }
-
     const [openfileModal, setOpenFileModal] = useState(false);
 
-  const [files, setFiles] = useState([]);
-
-  const onClickOpenFolder = () => {
-    if (openFolder) {
+    const [files, setFiles] = useState([]);
+  
+    const onClickOpenFolder = () => {
+      if (openFolder) {
+        // Prepare data to send in the POST request
+        const requestData = {
+          OrderNo: selectedRow?.Order_No,
+        };
+        // Send POST request to fetch files from the server
+        postRequest(endpoints.openFolder, { requestData }, (response) => {
+          setFiles(response);
+          setOpenFileModal(true);
+        });
+      } else {
+        fileInputRef.current.click();
+      }
+    };
+  
+  
+    const onClickCopyDwg = () => {
       // Prepare data to send in the POST request
       const requestData = {
-        OrderNo: selectedRow?.Order_No,
+        selectedRow,
+        orinalScheudledata,
       };
-      // Send POST request to fetch files from the server
-      postRequest(endpoints.openFolder, { requestData }, (response) => {
-        setFiles(response.data);
-        setOpenFileModal(true);
+      postRequest(endpoints.CopyDwg, { requestData }, (response) => {
       });
-    } else {
-      fileInputRef.current.click();
-    }
-  };
-
-
-  const onClickCopyDwg = () => {
-    // Prepare data to send in the POST request
-    const requestData = {
-      selectedRow,
-      orinalScheudledata,
     };
-    // Send POST request to fetch files from the server
-    // axios.post('http://172.16.20.61:6002/scheduleListCombined/copyDwg',requestData)
-    //   .then(response => {
-    //     console.log("reponse message",response);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching files:', error);
-    //   });
-
-    postRequest(endpoints.CopyDwg, { requestData }, (response) => {
-      console.log("response is", response);
-    });
-  };
-
+  
   return (
     <div>
       <h4 className="title">Combined Schedule Details Form</h4>
