@@ -11,12 +11,13 @@ import ServiceModal from "./Service PDF/ServiceModal";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
-  const DwgNameList = location?.state || []; // Get DwgNameList from location state
+  const DwgNameList = location?.state?.DwgNameList || []; // Get DwgNameList from location state
+  const Type =location.state.Type; //get types
   // const Type=location?.location || '';
 
   // console.log("Type is",Type);
 
-  //  console.log("DwgNameList is", DwgNameList[0]);
+   console.log("Type is", Type);
 
   // Standardize the case of the property name
   const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
@@ -197,7 +198,7 @@ function ServiceOpenSchedule() {
     }
   }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
 
-  // console.log("rowselectTaskMaterial",rowselectTaskMaterial);
+
 
   //Onclick of Table
   const onClickofScheduleDtails = (item, index) => {
@@ -833,11 +834,20 @@ function ServiceOpenSchedule() {
           </button>
 
           <Link
-            to={"/Orders/Service/ScheduleCreationForm"}
-            state={formdata[0]?.Order_No}
-          >
-            <button className="button-style">Close</button>
-          </Link>
+  to={
+    Type === "Service"
+      ? "/Orders/Service/ScheduleCreationForm"
+      : Type === "Profile"
+      ? "/Orders/Profile/ScheduleCreationForm"
+      : Type === "Fabrication"
+      ? "/Orders/Fabrication/ScheduleCreationForm"
+      : null
+  }
+  state={formdata[0]?.Order_No}
+>
+  <button className="button-style">Close</button>
+</Link>
+
         </div>
       </div>
 

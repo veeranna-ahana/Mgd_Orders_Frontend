@@ -10,11 +10,11 @@ export default function FolderFilesModal({ openfileModal, setOpenFileModal, file
         </Modal.Header>
         <Modal.Body>
   <div>
-    {files.length === 0 ? (
+    {files?.length === 0 ? (
       <p>No DWGs to show</p>
     ) : (
       <ol>
-        {files.map((file, index) => (
+        {files?.map((file, index) => (
           <li key={index}>
             <a href={file.url} target="_blank" rel="noopener noreferrer">
               {file.name}

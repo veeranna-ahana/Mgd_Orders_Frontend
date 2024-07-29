@@ -127,7 +127,7 @@ export default function ScheduleList({
                   ? `/Orders/Fabrication/FabricationOpenSchedule`
                   : null
               }
-              state={DwgNameList}
+              state={{ DwgNameList, Type: OrderData?.Type }} // Corrected here
             >
               <button
                 className="button-style"
@@ -136,6 +136,7 @@ export default function ScheduleList({
                 Open Schedule
               </button>
             </Link>
+
             {Object.keys(DwgNameList).length === 0 && (
               <style>
                 {`

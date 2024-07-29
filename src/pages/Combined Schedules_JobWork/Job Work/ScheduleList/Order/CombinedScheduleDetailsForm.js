@@ -270,7 +270,7 @@ function CombinedScheduleDetailsForm() {
       };
       // Send POST request to fetch files from the server
       postRequest(endpoints.openFolder, { requestData }, (response) => {
-        setFiles(response.data);
+        setFiles(response);
         setOpenFileModal(true);
       });
     } else {
@@ -291,17 +291,7 @@ function CombinedScheduleDetailsForm() {
       selectedRow,
       orinalScheudledata,
     };
-    // Send POST request to fetch files from the server
-    // axios.post('http://172.16.20.61:6002/scheduleListCombined/copyDwg',requestData)
-    //   .then(response => {
-    //     console.log("reponse message",response);
-    //   })
-    //   .catch(error => {
-    //     console.error('Error fetching files:', error);
-    //   });
-
     postRequest(endpoints.CopyDwg, { requestData }, (response) => {
-      console.log("response is", response);
     });
   };
 
