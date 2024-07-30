@@ -5,7 +5,7 @@ import Modal from 'react-bootstrap/Modal';
 import { PDFDownloadLink, Page, Text, View, Document, StyleSheet, PDFViewer } from '@react-pdf/renderer';
 import ServicePDF from './ServicePDF';
 
- export default function ServiceModal({setServiceOpen, serviceOpen,setOpenPrintModal,formdata}) {
+ export default function ServiceModal({setServiceOpen, serviceOpen,setOpenPrintModal,formdata,Type}) {
    // console.log("in Print Modal",selectedWeek)
 
   const [fullscreen, setFullscreen] = useState(true);
@@ -15,7 +15,7 @@ import ServicePDF from './ServicePDF';
     <div>
       <Modal show={serviceOpen} fullscreen={fullscreen} onHide={() => setServiceOpen(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Service</Modal.Title>
+          <Modal.Title>{Type}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
 

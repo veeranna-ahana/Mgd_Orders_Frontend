@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import {
   Page,
@@ -623,6 +623,8 @@ const ServicePDF = ({ formdata }) => {
     return `${year}-${month}-${day}`;
   };
 
+
+
   useEffect(() => {
     postRequest(
       endpoints.pdfdata,
@@ -645,6 +647,7 @@ const ServicePDF = ({ formdata }) => {
       }
     );
   }, [formdata]);
+
   
   return (
     <Document>
@@ -975,11 +978,11 @@ const ServicePDF = ({ formdata }) => {
                     </View>
 
                     <View style={styles.Produceddata}>
-                      <Text style={styles.tabletext}>{detail.QtyProduced}</Text>
+                      <Text style={styles.tabletext}></Text>
                     </View>
 
                     <View style={styles.Delivereddata}>
-                      <Text style={styles.tabletext}>{detail.QtyDelivered}</Text>
+                      <Text style={styles.tabletext}></Text>
                     </View>
 
                     <View style={styles.scheduleNotabledata}>

@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create, Today } from "@mui/icons-material";
 import ServiceModal from "./Service PDF/ServiceModal";
+import { type } from "@testing-library/user-event/dist/type";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
@@ -17,7 +18,6 @@ function ServiceOpenSchedule() {
 
   // console.log("Type is",Type);
 
-   console.log("Type is", Type);
 
   // Standardize the case of the property name
   const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
@@ -125,7 +125,6 @@ function ServiceOpenSchedule() {
 
   useEffect(() => {
     if (DwgNameList.length === 0) return; // Ensure DwgNameList is not empty
-
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
@@ -294,7 +293,6 @@ function ServiceOpenSchedule() {
 
   //Onclick save Button
   const onClickSave = () => {
-    console.log("changedEngineer is", changedEngineer);
     postRequest(
       endpoints.onClickSave,
       {
@@ -305,10 +303,19 @@ function ServiceOpenSchedule() {
         changedEngineer: changedEngineer,
       },
       (response) => {
-        console.log("response is", response);
         toast.success("Saved", {
           position: toast.POSITION.TOP_CENTER,
         });
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        );
       }
     );
   };
@@ -631,7 +638,7 @@ function ServiceOpenSchedule() {
   return (
     <div>
       <h4 className="title">Order Schedule Details</h4>
-      <label className="form-label ms-2">Service</label>
+      <label className="form-label ms-2">{Type}</label>
 
       <div className="row">
         <div
@@ -1507,6 +1514,7 @@ function ServiceOpenSchedule() {
         serviceOpen={serviceOpen}
         setServiceOpen={setServiceOpen}
         formdata={formdata}
+        Type={Type}
       />
     </div>
   );
