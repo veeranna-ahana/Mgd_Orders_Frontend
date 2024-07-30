@@ -13,7 +13,7 @@ import { type } from "@testing-library/user-event/dist/type";
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state?.DwgNameList || []; // Get DwgNameList from location state
-  const Type =location.state.Type; //get types
+  const Type =location?.state?.Type || []; //get types
   // const Type=location?.location || '';
 
   // console.log("Type is",Type);
@@ -495,7 +495,7 @@ function ServiceOpenSchedule() {
             { NCprogramForm: rowselectTaskMaterial },
             (responsedata) => {
               navigate("/Orders/Service/NCProgram", {
-                state: { response: response, responsedata: responsedata },
+                state: { response: response, responsedata: responsedata,Type:Type},
               });
             }
           );

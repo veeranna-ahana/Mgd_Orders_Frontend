@@ -10,6 +10,8 @@ function ServiceNCProgram() {
   const location = useLocation(); // Access location object using useLocation hook
   const response = location?.state.response || [];
   const MachineList = location?.state.responsedata || [];
+  const Type =location?.state?.Type || []; //get types
+
 
 
   const [NCprogramForm, setNCProgramForm] = useState([]);
@@ -69,7 +71,6 @@ function ServiceNCProgram() {
 
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
-    console.log("selectedMachine is",selectedMachine)
     if (!selectedMachine) {
       toast.error("Please Select Machine", {
         position: toast.POSITION.TOP_CENTER,
