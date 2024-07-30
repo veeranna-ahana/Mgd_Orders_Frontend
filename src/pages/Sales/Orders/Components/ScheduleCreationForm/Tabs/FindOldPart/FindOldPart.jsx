@@ -69,6 +69,8 @@ export default function FindOldPart(props) {
                 <th>Operation</th>
                 <th>Source</th>
                 <th>Order No</th>
+                <th>Unit Price</th>
+                <th>Material Price</th>
               </tr>
             </thead>
 
@@ -91,6 +93,8 @@ export default function FindOldPart(props) {
                       <td>{findOldpartItem.Operation}</td>
                       <td>{findOldpartItem.Mtrl_Source}</td>
                       <td>{findOldpartItem.Order_No}</td>
+                      <td>{findOldpartItem.UnitPrice}</td>
+                      <td>{findOldpartItem.MtrlCost}</td>
                     </tr>
                   );
                 })

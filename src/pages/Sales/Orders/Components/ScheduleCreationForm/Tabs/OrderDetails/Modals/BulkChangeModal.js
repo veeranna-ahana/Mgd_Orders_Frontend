@@ -450,7 +450,10 @@ function BulkChangeModal(props) {
                         value={blkChange.materialRate}
                         onChange={handleChange}
                         required
-                        disabled={!blkCngCheckBox[7]}
+                        disabled={
+                          !blkCngCheckBox[7] ||
+                          LastSlctedRow?.Mtrl_Source === "Customer"
+                        }
                       />
                     </div>
                     <div

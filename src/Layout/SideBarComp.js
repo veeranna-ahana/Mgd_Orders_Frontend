@@ -197,7 +197,6 @@ const SidebarComp = () => {
       lazerUser.data.access
     );
     // console.log(filterSidebar);
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
     setAccessSideBarData(filterSidebar);
     // setAccessSideBarData(quotationSidebar)
   }, []);
