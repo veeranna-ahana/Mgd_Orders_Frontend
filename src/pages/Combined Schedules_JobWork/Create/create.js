@@ -74,7 +74,7 @@ export default function Create({ type }) {
   const selectCust = async (event) => {
     // Update custCode using the setCustCode function from useState
     setCustCode(event[0]?.Cust_Code);
-    setCustName(event[0]?.Cust_name)
+    setCustName(event[0]?.Cust_name);
     postRequest(endpoints.rightTabledata, {
       custCode: event[0]?.Cust_Code},(response) => {
       for (let i = 0; i < response.length; i++) {
@@ -119,7 +119,6 @@ export default function Create({ type }) {
   const onclickofLeftShiftButton = () => {
     setBeforeCombine(selectedRows);
     setRowSelectLeft(selectedRows);
-    // setSelectAllChecked1(true);
   };
 
   //rowselect left table
@@ -157,38 +156,42 @@ export default function Create({ type }) {
     }
   }, [oderSchedule]);
 
+
   return (
     <div>
       <h4 className="title">Combined Schedule Creator</h4>
 
       <div className="row">
         <div className="col-md-4">
-          <div className="d-flex field-gap">
-            <label className="form-label label-space">
-              Customer Name{" "}
-              <span
-                style={{
-                  color: "#f20707",
-                  fontWeight: "bold",
-                }}
-              >
-                *
-              </span>
-            </label>
+          {type === 'JobWork' ?
+           <div className="d-flex field-gap">
+           <label className="form-label label-space">
+             Customer Name{" "}
+             <span
+               style={{
+                 color: "#f20707",
+                 fontWeight: "bold",
+               }}
+             >
+               *
+             </span>
+           </label>
 
-            {1 > 0 ? (
-              <Typeahead
-                className="ip-select mt-1"
-                id="basic-example"
-                options={custdata}
-                placeholder="Select Customer"
-                onChange={(label, event) => selectCust(label)}
-              />
-            ) : (
-              ""
-            )}
-          </div>
-
+           {1 > 0 ? (
+             <Typeahead
+               className="ip-select mt-1"
+               id="basic-example"
+               options={custdata}
+               placeholder="Select Customer"
+               onChange={(label, event) => selectCust(label)}
+             />
+           ) : (
+             ""
+           )}
+         </div>
+         :
+          null
+        }
           <label className="form-label">
             Selected Schedules{" "}
           </label>
@@ -245,6 +248,7 @@ export default function Create({ type }) {
             selectedSalesContact={selectedSalesContact}
             storedDate={storedDate}
             type={type}
+            setOrderSchedule={setOrderSchedule}
           />
         </Tab>
         <Tab

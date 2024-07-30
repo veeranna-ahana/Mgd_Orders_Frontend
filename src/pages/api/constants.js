@@ -382,7 +382,10 @@ export const endpoints = {
   allcustomerdata: `${API}/CombinedScheduleCreate/allcustomersData`,
   rightTabledata: `${API}/CombinedScheduleCreate/getRightTableData`,
   prepareSchedule: `${API}/CombinedScheduleCreate/prepareSchedule`,
+  prepareScheduleSales: `${API}/CombinedScheduleCreate/prepareScheduleSales`,
   CreateSchedule: `${API}/CombinedScheduleCreate/createSchedule`,
+  getSalesCustomerdata: `${API}/CombinedScheduleCreate/getSalesCustomerData`,
+  getDeatiledSalesData: `${API}/CombinedScheduleCreate/getSalesDetailData`,
   CreateScheduleforSales: `${API}/CombinedScheduleCreate/createScheduleforSales`,
   afterCombinedSchedule: `${API}/CombinedScheduleCreate/afterCombineSchedule`,
   getSchedudleDetails: `${API}/scheduleListCombined/scheduleListDetails`,
@@ -401,5 +404,6 @@ export const endpoints = {
   scheduleListDetails: `${API}/scheduleListCombined/scheduleListDetails`,
   ScheduleListClosed: `${API}/scheduleListCombined/ScheduleListClosed`,
   ScheduleListClosedSales: `${API}/scheduleListCombined/ScheduleListClosedSales`,
-
+  openFolder:`${API}/scheduleListCombined/files`,
+  CopyDwg:`${API}/scheduleListCombined/copyDwg`
 };

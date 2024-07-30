@@ -1,20 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import { endpoints } from "../../../../api/constants";
 import PrintModal from "../../../PrintPDF/PrintModal";
-
+import FolderFilesModal from "../../../FolderFilesModal";
 
 function CombinedScheduleDetailsForm() {
   const location = useLocation();
   const { selectedRow } = location?.state || {};
 
-  const[colordisable,setColorDisable]=useState(false);
-
+  const [colordisable, setColorDisable] = useState(false);
 
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
@@ -40,9 +39,8 @@ function CombinedScheduleDetailsForm() {
     );
   };
 
-
   const getBackgroundColor = (item) => {
-    if(!colordisable){
+    if (!colordisable) {
       if (item.QtyScheduled === 0) {
         return "red";
       } else if (item.QtyScheduled === item.QtyScheduled) {
@@ -180,39 +178,38 @@ function CombinedScheduleDetailsForm() {
   }, []);
 
   //Update To Original Schedule
+  const [openFolder, setOpenFolder] = useState(false);
   const updateToOriganSchedule = () => {
+    setOpenFolder(true);
     setColorDisable(true);
-    postRequest(endpoints.updateToOriganalSchedule, {
-      selectedRow,
-    },(response) => {
-      
-      toast.success(
-        "Sucessfully Updated",
-        {
+    postRequest(
+      endpoints.updateToOriganalSchedule,
+      {
+        selectedRow,
+      },
+      (response) => {
+        toast.success("Sucessfully Updated", {
           position: toast.POSITION.TOP_CENTER,
-        },
-      );
-      postRequest(
-        endpoints.getSchedudleDetails,
-        {
-          selectedRow,
-        },
-        (response) => {
-          // console.log(response);
-          setScheduleListDetailsData(response);
-        }
-      );
-    }
-  )
+        });
+        postRequest(
+          endpoints.getSchedudleDetails,
+          {
+            selectedRow,
+          },
+          (response) => {
+            // console.log(response);
+            setScheduleListDetailsData(response);
+          }
+        );
+      }
+    );
   };
 
   //Print button
-  const[serviceOpen,setServiceOpen]=useState(false);
+  const [serviceOpen, setServiceOpen] = useState(false);
   const PrintPdf = () => {
     setServiceOpen(true);
   };
-
-
 
   //rowselect for dwg name table
   const [DwgSelect, setDwgSelect] = useState({});
@@ -247,20 +244,38 @@ function CombinedScheduleDetailsForm() {
 
   //Distribute Parts
   const distributeParts = () => {
-    postRequest(endpoints.distributeParts, { scheduleListDetailsData }, (response) => {
-      if(response.success==='Parts Distributed'){
-        toast.success(response.success, {
-          position: toast.POSITION.TOP_CENTER,
-        });
+    postRequest(
+      endpoints.distributeParts,
+      { scheduleListDetailsData },
+      (response) => {
+        if (response.success === "Parts Distributed") {
+          toast.success(response.success, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       }
-    });
+    );
   };
 
   ///
-  const handleButtonClick = () => {
-    // alert('Please navigate to the desired folder before selecting a file.');
-    // Trigger click event on the hidden file input
-    fileInputRef.current.click();
+  const [openfileModal, setOpenFileModal] = useState(false);
+
+  const [files, setFiles] = useState([]);
+
+  const onClickOpenFolder = () => {
+    if (openFolder) {
+      // Prepare data to send in the POST request
+      const requestData = {
+        OrderNo: selectedRow?.Order_No,
+      };
+      // Send POST request to fetch files from the server
+      postRequest(endpoints.openFolder, { requestData }, (response) => {
+        setFiles(response);
+        setOpenFileModal(true);
+      });
+    } else {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileChange = (event) => {
@@ -269,6 +284,16 @@ function CombinedScheduleDetailsForm() {
   };
 
   const fileInputRef = React.createRef();
+
+  const onClickCopyDwg = () => {
+    // Prepare data to send in the POST request
+    const requestData = {
+      selectedRow,
+      orinalScheudledata,
+    };
+    postRequest(endpoints.CopyDwg, { requestData }, (response) => {
+    });
+  };
 
   //
   const [displayDate, setDisplayDate] = useState(
@@ -292,8 +317,6 @@ function CombinedScheduleDetailsForm() {
   const onChangeInstruction = (e) => {
     setInstruction(e.target.value);
   };
-;
-
   const formatDeliveryDate3 = (dateString) => {
     // Convert the input string to a JavaScript Date object
     const dateObject = new Date(dateString);
@@ -323,15 +346,12 @@ function CombinedScheduleDetailsForm() {
       });
     });
   };
-  
 
   //close button
   const navigate = useNavigate();
-  const closeButton=()=>{
-    navigate("/Orders/JobWork/ScheduleList/Order", {
-    });
-  }
-
+  const closeButton = () => {
+    navigate("/Orders/JobWork/ScheduleList/Order", {});
+  };
 
   return (
     <div>
@@ -472,18 +492,27 @@ function CombinedScheduleDetailsForm() {
           {/* <button className="button-style">Short Close</button>
           <button className="button-style">Cancel</button> */}
 
-          <button className="button-style" onClick={handleButtonClick}>
+          <button className="button-style" onClick={onClickOpenFolder}>
             Open Folder
           </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
-          <button className="button-style">Copy Drawings</button>
-          <button className="button-style" onClick={PrintPdf}>Print</button>
-          <button className="button-style" onClick={closeButton}>close</button>
+          {!openFolder ? (
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          ) : null}
+
+          <button className="button-style" onClick={onClickCopyDwg}>
+            Copy Drawings
+          </button>
+          <button className="button-style" onClick={PrintPdf}>
+            Print
+          </button>
+          <button className="button-style" onClick={closeButton}>
+            close
+          </button>
           {/* <button className="button-style">NC Programming</button> */}
         </div>
       </div>
@@ -785,9 +814,14 @@ function CombinedScheduleDetailsForm() {
         </Tab>
       </Tabs>
       <PrintModal
-      serviceOpen={serviceOpen}
-      setServiceOpen={setServiceOpen}
-      selectedRow={selectedRow}
+        serviceOpen={serviceOpen}
+        setServiceOpen={setServiceOpen}
+        selectedRow={selectedRow}
+      />
+      <FolderFilesModal
+        openfileModal={openfileModal}
+        setOpenFileModal={setOpenFileModal}
+        files={files}
       />
     </div>
   );
