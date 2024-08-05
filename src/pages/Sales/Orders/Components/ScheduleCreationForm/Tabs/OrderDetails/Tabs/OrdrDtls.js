@@ -65,12 +65,14 @@ function OrdrDtls(props) {
     isLoading,
     handleInputChange,
     handleMtrlCodeTypeaheadChangeeee,
+    magodCode,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
     selectedItems[0]?.Mtrl_Code || ""
   );
 
+  console.log("options...", options);
   // console.log("selectepartID...", selectedPartId.length);
   // console.log("selectedItems...", selectedItems);
   // console.log("mtrldata...", mtrldata);
