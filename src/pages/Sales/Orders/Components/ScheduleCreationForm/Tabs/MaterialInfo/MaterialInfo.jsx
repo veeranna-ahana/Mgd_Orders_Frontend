@@ -28,11 +28,8 @@ export default function MaterialInfo(props) {
       endpoints.LoadArrival,
       { custcode: OrderData?.Cust_Code },
       (LoadArrivalData) => {
-        // //console.log(
-        //   "LoadArrivalData......",
-        //   LoadArrivalData.materialReceiptRegister
-        // );
-        setLoadArrival1(LoadArrivalData.materialReceiptRegister);
+        console.log("LoadArrivalData......", LoadArrivalData);
+        setLoadArrival1(LoadArrivalData);
       }
     );
   };
@@ -53,7 +50,7 @@ export default function MaterialInfo(props) {
   const [selectedRow, setSelectedRow] = useState(null);
   const handleRowClick = (index) => {
     const clickedRow = LoadArrival1[index];
-    //console.log("clickedRow", clickedRow);
+    console.log("clickedRow", clickedRow.RVID);
     // If the clicked row is already selected, deselect it; otherwise, select the new row
     setSelectedRow(selectedRow === clickedRow ? null : clickedRow);
 
@@ -61,12 +58,13 @@ export default function MaterialInfo(props) {
       endpoints.LoadArrival2,
       { custcode: OrderData?.Cust_Code, RVID: clickedRow.RVID },
       (LoadArrivalData2) => {
-        //console.log(
-        //   "LoadArrivalData......",
-        //   LoadArrivalData2.mtrlReceiptDetails
-        // );
+        console.log(
+          "LoadArrivalData2......",
+          LoadArrivalData2.mtrlReceiptDetails
+        );
 
-        setLoadArrival2(LoadArrivalData2.mtrlReceiptDetails);
+        setLoadArrival2(LoadArrivalData2);
+        // setLoadArrival2(LoadArrivalData2.mtrlReceiptDetails);
       }
     );
   };
@@ -96,6 +94,9 @@ export default function MaterialInfo(props) {
   };
 
   //console.log(checkboxValue);
+  // console.log("1", StockPosition);
+  console.log("LoadArrival1", LoadArrival1);
+  console.log("LoadArrival2", LoadArrival2);
 
   return (
     <>

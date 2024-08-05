@@ -5,7 +5,21 @@ export default function OrderInfo(props) {
   //console.log("propssss", props.OrderData);
   ////console.log("props.OrderData?.salesContact", props.OrderData?.SalesContact);
   ////console.log("props.OrderData?.Order_Status", props.OrderData?.Order_Status);
+  const [dealingEngineer, setDealingEngineer] = useState(
+    props.OrderData?.Dealing_Engineer || ""
+  );
 
+  const [deliveryDate, setDeliveryDate] = useState(
+    props.OrderData?.Delivery_Date || ""
+  );
+
+  // Function to handle the input change
+  const handleInputChange = (e) => {
+    setDealingEngineer(e.target.value);
+  };
+  const handleDateChange = (e) => {
+    setDeliveryDate(e.target.value);
+  };
   const orderDateISOString = props.OrderData?.Delivery_Date;
   const orderDate = new Date(orderDateISOString);
 
@@ -41,6 +55,7 @@ export default function OrderInfo(props) {
               type="text"
               className="in-field"
               id="deliveryDate"
+              // onChange={handleDateChange}
               value={formattedDate}
             />
           </div>
@@ -150,6 +165,7 @@ export default function OrderInfo(props) {
             <input
               className="in-field"
               type="text"
+              // onChange={handleInputChange}
               value={props.OrderData?.Dealing_Engineer}
             />
           </div>
