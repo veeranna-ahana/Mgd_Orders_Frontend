@@ -60,6 +60,7 @@ export default function OrderDetails(props) {
     filteredData,
   } = props;
 
+  console.log("BomData", BomData);
   //console.log("schType", scheduleType);
   //console.log("scheduleOption", scheduleOption);
   // //console.log("type", OrderData.Order_Type);
@@ -760,28 +761,67 @@ export default function OrderDetails(props) {
   // PartId DROPDOWN
   const [selectedPartId, setSelectedPartId] = useState([]);
   const [BomArry, setBomArry] = useState([]);
+  const [magodCode, setMagodCode] = useState();
+  // const handleSelectChange = (selected) => {
+  //   const arr = BomData.filter(
+  //     (obj) => obj.AssyCust_PartId === selected[0]?.label
+  //   );
+  //   //console.log("arr....", arr);
+  //   setBomArry(arr);
+  //   setSelectedPartId(selected);
+  //   // Check if the selected part ID is in AssyCust_PartId
+  //   const hasBOM = BomData.some(
+  //     (obj) => obj.AssyCust_PartId === selected[0]?.label
+  //   )
+  //     ? 1
+  //     : 0;
+  //   setHasBOM(hasBOM);
 
+  //   // Log the result based on hasBOM value
+  //   if (hasBOM === 1) {
+  //     //console.log("It's an assembly");
+  //   } else {
+  //     //console.log("It's a part");
+  //   }
+  // };
+  //NEW CODE
   const handleSelectChange = (selected) => {
-    const arr = BomData.filter(
-      (obj) => obj.AssyCust_PartId === selected[0]?.label
-    );
-    //console.log("arr....", arr);
+    // Find the selected part ID from BomData
+    const selectedPartId = selected[0]?.label;
+    const magodCodee = selected[0]?.magodCode;
+    console.log("magodCodee", magodCodee);
+    setMagodCode(selected[0]?.magodCode);
+    // Filter the BomData to get the array of objects matching the selected part ID
+    const arr = BomData.filter((obj) => obj.AssyCust_PartId === selectedPartId);
+
+    // Update the state with the filtered array
     setBomArry(arr);
     setSelectedPartId(selected);
+
     // Check if the selected part ID is in AssyCust_PartId
-    const hasBOM = BomData.some(
-      (obj) => obj.AssyCust_PartId === selected[0]?.label
-    )
+    const hasBOM = BomData.some((obj) => obj.AssyCust_PartId === selectedPartId)
       ? 1
       : 0;
     setHasBOM(hasBOM);
 
     // Log the result based on hasBOM value
     if (hasBOM === 1) {
-      //console.log("It's an assembly");
+      // It's an assembly
+      console.log("It's an assembly");
     } else {
-      //console.log("It's a part");
+      // It's a part
+      console.log("It's a part");
     }
+
+    // Get the MagodCode for the selected part ID
+    const selectedMagodCode = BomData.find(
+      (obj) => obj.AssyCust_PartId === selectedPartId
+    )?.Magod;
+
+    // Update the state or log the MagodCode
+    console.log("magodCode", magodCode);
+    // You can set the MagodCode in a state if needed
+    // setSelectedMagodCode(selectedMagodCode);
   };
 
   //console.log("HasBOM......", HasBOM);
@@ -790,11 +830,20 @@ export default function OrderDetails(props) {
   //   label: item.AssyCust_PartId || "",
   //   // label: item.UniqueColumn,
   // }));
-  const options = BomData?.map((item) => ({
-    label: item.AssyCust_PartId || "", // Use AssyCust_PartId as label, with fallback to empty string
-  })).filter((option) => option.label !== "");
-
-  //console.log("options", options);
+  // console.log("BomData", BomData[2]?.MagodCode);
+  // const options = BomData?.map((item) => ({
+  //   // console.log("itemMagodCode",item.Magod)
+  //   label: item.AssyCust_PartId || "", // Use AssyCust_PartId as label, with fallback to empty string
+  // })).filter((option) => option.label !== "");
+  // Map BomData to options with labels
+  const options = BomData?.map((item) => {
+    console.log("itemMagodCode", item.MagodCode);
+    return {
+      label: item.AssyCust_PartId || "", // Use AssyCust_PartId as label, with fallback to empty string
+      magodCode: item.MagodCode || "", // Capture MagodCode for later use
+    };
+  }).filter((option) => option.label !== "");
+  console.log("options", options);
 
   // INSERT ORDER DETAILS FALG 1,2,3
   const PostOrderDetails = (flag) => {
@@ -904,7 +953,7 @@ export default function OrderDetails(props) {
         newOrderSrl: newOrderSrl,
         custcode: Cust_Code,
         DwgName: selectedPartId[0].label,
-        Dwg_Code: "",
+        Dwg_Code: magodCode,
         dwg: Dwg,
         tolerance: "Standard(+/-0.1mm)- 100 Microns",
         HasBOM: HasBOM,
@@ -1330,6 +1379,7 @@ export default function OrderDetails(props) {
                   handleMtrlCodeTypeaheadChangeeee={
                     handleMtrlCodeTypeaheadChangeeee
                   }
+                  magodCode={magodCode}
                 />
               </Tab>
             </Tabs>
