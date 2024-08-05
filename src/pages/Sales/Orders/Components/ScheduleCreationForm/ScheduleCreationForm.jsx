@@ -726,6 +726,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetBomData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (bomdata) => {
+            console.log("bomdata", bomdata);
             setBomData(bomdata);
           }
         );
@@ -778,6 +779,8 @@ export default function ScheduleCreationForm(props) {
 
     setSelectedItems([]);
   };
+
+  console.log("setBomData", BomData);
   const calculateMinSrlStatus = () => {
     if (OrdrDetailsData.length === 0) return 0;
 
