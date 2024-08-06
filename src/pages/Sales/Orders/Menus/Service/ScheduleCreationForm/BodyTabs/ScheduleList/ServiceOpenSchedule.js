@@ -8,16 +8,15 @@ import { ToastContainer, toast } from "react-toastify";
 import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create, Today } from "@mui/icons-material";
 import ServiceModal from "./Service PDF/ServiceModal";
+import { type } from "@testing-library/user-event/dist/type";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state?.DwgNameList || []; // Get DwgNameList from location state
-  const Type =location.state.Type; //get types
+  const Type = location?.state?.Type || []; //get types
   // const Type=location?.location || '';
 
-  // console.log("Type is",Type);
-
-   console.log("Type is", Type);
+  console.log("DwgNameList", DwgNameList);
 
   // Standardize the case of the property name
   const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
@@ -125,7 +124,6 @@ function ServiceOpenSchedule() {
 
   useEffect(() => {
     if (DwgNameList.length === 0) return; // Ensure DwgNameList is not empty
-
     postRequest(
       endpoints.getScheduleListgetFormDetails,
       {
@@ -198,8 +196,6 @@ function ServiceOpenSchedule() {
     }
   }, [TaskMaterialData, rowselectTaskMaterial, onRowSelectTaskMaterialTable]);
 
-
-
   //Onclick of Table
   const onClickofScheduleDtails = (item, index) => {
     let list = { ...item, index: index };
@@ -235,31 +231,27 @@ function ServiceOpenSchedule() {
 
   //Onclick of ShortClose
   const onClickShortClose = () => {
-    postRequest(
-      endpoints.onClickShortClose,
-      { newState },
-      (response) => {
-        // console.log("response is",response);
-        if (response.message === "Success") {
-          toast.success(response.message, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        } else
-          toast.warning(response.message, {
-            position: toast.POSITION.TOP_CENTER,
-          });
-        postRequest(
-          endpoints.getScheduleListgetFormDetails,
-          {
-            Cust_Code: DwgNameList[0]?.Cust_Code,
-            ScheduleId: DwgNameList[0]?.ScheduleId,
-          },
-          (response) => {
-            setFormdata(response);
-          }
-        );
-      }
-    );
+    postRequest(endpoints.onClickShortClose, { newState }, (response) => {
+      // console.log("response is",response);
+      if (response.message === "Success") {
+        toast.success(response.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      } else
+        toast.warning(response.message, {
+          position: toast.POSITION.TOP_CENTER,
+        });
+      postRequest(
+        endpoints.getScheduleListgetFormDetails,
+        {
+          Cust_Code: DwgNameList[0]?.Cust_Code,
+          ScheduleId: DwgNameList[0]?.ScheduleId,
+        },
+        (response) => {
+          setFormdata(response);
+        }
+      );
+    });
   };
 
   //Hanlechange
@@ -294,7 +286,6 @@ function ServiceOpenSchedule() {
 
   //Onclick save Button
   const onClickSave = () => {
-    console.log("changedEngineer is", changedEngineer);
     postRequest(
       endpoints.onClickSave,
       {
@@ -305,10 +296,19 @@ function ServiceOpenSchedule() {
         changedEngineer: changedEngineer,
       },
       (response) => {
-        console.log("response is", response);
         toast.success("Saved", {
           position: toast.POSITION.TOP_CENTER,
         });
+        postRequest(
+          endpoints.getScheduleListgetFormDetails,
+          {
+            Cust_Code: DwgNameList[0]?.Cust_Code,
+            ScheduleId: DwgNameList[0]?.ScheduleId,
+          },
+          (response) => {
+            setFormdata(response);
+          }
+        );
       }
     );
   };
@@ -473,12 +473,11 @@ function ServiceOpenSchedule() {
   //OnClick NCProgram
   const navigate = useNavigate();
   const onClickNCProgram = () => {
-    if(Object.keys(rowselectTaskMaterial).length===1){
+    if (Object.keys(rowselectTaskMaterial).length === 1) {
       toast.error("Please Select a Task", {
         position: toast.POSITION.TOP_CENTER,
-      }); 
-       }
-    else{
+      });
+    } else {
       postRequest(
         endpoints.onClickNCProgram,
         { rowselectTaskMaterial },
@@ -488,7 +487,12 @@ function ServiceOpenSchedule() {
             { NCprogramForm: rowselectTaskMaterial },
             (responsedata) => {
               navigate("/Orders/Service/NCProgram", {
-                state: { response: response, responsedata: responsedata },
+                state: {
+                  response: response,
+                  responsedata: responsedata,
+                  Type: Type,
+                  DwgNameList:DwgNameList
+                },
               });
             }
           );
@@ -627,11 +631,10 @@ function ServiceOpenSchedule() {
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];
 
-
   return (
     <div>
       <h4 className="title">Order Schedule Details</h4>
-      <label className="form-label ms-2">Service</label>
+      <label className="form-label ms-2">{Type}</label>
 
       <div className="row">
         <div
@@ -834,20 +837,19 @@ function ServiceOpenSchedule() {
           </button>
 
           <Link
-  to={
-    Type === "Service"
-      ? "/Orders/Service/ScheduleCreationForm"
-      : Type === "Profile"
-      ? "/Orders/Profile/ScheduleCreationForm"
-      : Type === "Fabrication"
-      ? "/Orders/Fabrication/ScheduleCreationForm"
-      : null
-  }
-  state={formdata[0]?.Order_No}
->
-  <button className="button-style">Close</button>
-</Link>
-
+            to={
+              Type === "Service"
+                ? "/Orders/Service/ScheduleCreationForm"
+                : Type === "Profile"
+                ? "/Orders/Profile/ScheduleCreationForm"
+                : Type === "Fabrication"
+                ? "/Orders/Fabrication/ScheduleCreationForm"
+                : null
+            }
+            state={formdata[0]?.Order_No}
+          >
+            <button className="button-style">Close</button>
+          </Link>
         </div>
       </div>
 
@@ -1507,6 +1509,7 @@ function ServiceOpenSchedule() {
         serviceOpen={serviceOpen}
         setServiceOpen={setServiceOpen}
         formdata={formdata}
+        Type={Type}
       />
     </div>
   );
