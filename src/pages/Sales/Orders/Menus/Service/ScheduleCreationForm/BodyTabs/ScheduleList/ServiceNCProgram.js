@@ -10,8 +10,10 @@ function ServiceNCProgram() {
   const location = useLocation(); // Access location object using useLocation hook
   const response = location?.state.response || [];
   const MachineList = location?.state.responsedata || [];
-  const Type =location?.state?.Type || []; //get types
+  const Type = location?.state?.Type || []; //get types
+  const DwgNameList = location?.state?.DwgNameList || [];
 
+  console.log("DwgNameList is",DwgNameList);
 
   const [NCprogramForm, setNCProgramForm] = useState([]);
   const [machineList, setMachineList] = useState([]);
@@ -38,8 +40,7 @@ function ServiceNCProgram() {
   //get PartsData
   const [partsData, setPartsData] = useState([]);
   const getPartsData = () => {
-    if(NCprogramForm){
-      console.log("api func for parts called");
+    if (NCprogramForm) {
       postRequest(endpoints.getPartsData, { NCprogramForm }, (response) => {
         console.log("NCProgramList is", response);
         setPartsData(response);
@@ -51,8 +52,6 @@ function ServiceNCProgram() {
     getNCProgramData();
     getPartsData();
   }, [NCprogramForm]);
-
-  // console.log("partsData is", partsData);
 
   //row select
   const [selectedNCprogram, setSelectedNCProgram] = useState({});
@@ -182,6 +181,8 @@ function ServiceNCProgram() {
       state: { selectedNcid, response: response, responsedata: MachineList },
     });
   };
+
+  console.log("NCprogramForm is", NCprogramForm);
 
   return (
     <div>
@@ -314,7 +315,18 @@ function ServiceNCProgram() {
           <button className="button-style" onClick={onClickCo2State}>
             Co2 Form
           </button>
-          <Link to={"/Orders/Service/OrderSchedule"} state={NCprogramForm}>
+          <Link
+              to={
+              Type === "Profile"
+                  ? `/Orders/Profile/ProfileOpenSchedule`
+                  : Type === "Service"
+                  ? `/Orders/Service/ServiceOpenSchedule`
+                  : Type === "Fabrication"
+                  ? `/Orders/Fabrication/FabricationOpenSchedule`
+                  : null
+              }
+              state={{ DwgNameList, Type: Type }} // Corrected here
+            >
             <button className="button-style">Close</button>
           </Link>
         </div>
@@ -492,18 +504,19 @@ function ServiceNCProgram() {
                 </tr>
               </thead>
               <tbody className="tablebody">
-                {partsData.length > 0 ? (
-                  partsData.map((item, key) => (
+                {partsData?.partsData?.length > 0 ? (
+                  partsData.partsData.map((item, key) => (
                     <tr key={key}>
-                      <td>{item.PartID}</td>
-                      <td>{item.QtyPerAssy}</td>
-                      <td>{item.QtyRequired}</td>
-                      <td>{item.QtyAvialable}</td>
+                      <td>{item?.PartId}</td>
+                      <td>{item?.QtyPerAssy}</td>
+                      <td>{item?.QtyRequired}</td>
+                      <td>{partsData?.availableQty}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={2}>No data to show</td>
+                    <td colSpan={4}>No data to show</td>{" "}
+                    {/* Ensure colSpan matches the number of columns */}
                   </tr>
                 )}
               </tbody>
