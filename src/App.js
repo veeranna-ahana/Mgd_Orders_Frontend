@@ -115,6 +115,8 @@ import SolidStateLaserTable from "./pages/Sales/Orders/Menus/Service/ScheduleCre
 import CoTable from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/CoTable"
 import Solidstatelaser from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/JobParameters/SolidStateLaser/Solidstatelaser";
 import Co2Form from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/JobParameters/Co2Form/Co2Form";
+import CombinedScheduleDetailsFormSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Order/CombinedScheduleDetailsFormSales";
+import CombinedScheduleDetailsFormClosedSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Closed/CombinedScheduleDetailsFormClosedSales";
 
 function App() {
   return (
@@ -174,7 +176,7 @@ function App() {
                   />
                   <Route
                     path="/Orders/Sales/ScheduleList/Order/OpenDetailForm"
-                    element={<CombinedScheduleDetailsForm />}
+                    element={<CombinedScheduleDetailsFormSales />}
                   />
                   <Route
                     path="/Orders/Sales/ScheduleList/Closed"
@@ -182,7 +184,7 @@ function App() {
                   />
                   <Route
                     path="/Orders/Sales/ScheduleList/Closed/OpenDetailForm"
-                    element={<CombinedScheduleDetailsFormClosed />}
+                    element={<CombinedScheduleDetailsFormClosedSales />}
                   />
                   {/* Prakruthis */}
 

@@ -23,6 +23,7 @@ export default function Create({ type }) {
   const [displayDate, setDisplayDate] = useState(getTodayDateString());
   const [storedDate, setStoredDate] = useState(getTodayDateTimeString());
 
+
   function getTodayDateString() {
     const today = new Date();
     const year = today.getFullYear();
@@ -142,7 +143,7 @@ export default function Create({ type }) {
   const [preapreScheduleData, setPrepareScheduleData] = useState([]);
   const onclickpreapreScheduleButton = () => {
     postRequest(endpoints.prepareSchedule, {
-      scheduleid: rowselectleft[0].ScheduleId,
+      ScheduleId: rowselectleft[0].ScheduleId,
     },(response) => {
       setPrepareScheduleData(response);
     });
@@ -155,6 +156,10 @@ export default function Create({ type }) {
       setSelectedSalesContact(oderSchedule[0]?.SalesContact || "");
     }
   }, [oderSchedule]);
+
+  //sales
+  const [beforecombineSales, setBeforeCombineSales] = useState([]);
+
 
 
   return (
@@ -249,6 +254,8 @@ export default function Create({ type }) {
             storedDate={storedDate}
             type={type}
             setOrderSchedule={setOrderSchedule}
+            beforecombineSales={beforecombineSales}
+            setBeforeCombineSales={setBeforeCombineSales}
           />
         </Tab>
         <Tab
@@ -260,7 +267,9 @@ export default function Create({ type }) {
             preapreScheduleData={preapreScheduleData}
             salesContactList={salesContactList}
             custName={custName}
+            type={type}
           />
+          
         </Tab>
       </Tabs>
     </div>

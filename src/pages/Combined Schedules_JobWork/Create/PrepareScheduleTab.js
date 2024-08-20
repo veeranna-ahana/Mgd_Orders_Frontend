@@ -23,6 +23,8 @@ export default function PrepareScheduleTab({
   storedDate,
   type,
   setOrderSchedule,
+  beforecombineSales,
+  setBeforeCombineSales,
 }) {
   const [openCombinedSchedule, setOpenCombinedSchedule] = useState(false);
   const [openTasked, setOpenTasked] = useState(false);
@@ -82,6 +84,12 @@ export default function PrepareScheduleTab({
     setSelectedRows(updatedSelectedRows);
   };
 
+  const onClickSelectAllRightSales = () => {
+    const updatedSelectedRows =
+      selectedRowsSales.length === 0 ? [...oderSchedule] : [...oderSchedule];
+    setSelectedRowsSales(updatedSelectedRows);
+  };
+
   const onClickReverse1 = () => {
     // Create a reversed array of selected rows
     const reversedSelection1 = oderSchedule
@@ -94,6 +102,20 @@ export default function PrepareScheduleTab({
       .filter((value) => value !== undefined);
     // Update the rowselectleft state with the reversed selection
     setSelectedRows(reversedSelection1);
+  };
+
+  const onClickReverse1Sales = () => {
+    // Create a reversed array of selected rows
+    const reversedSelection1 = oderSchedule
+      .map((value) => {
+        const isSelected = selectedRowsSales.some(
+          (selectedItem) => selectedItem.TaskNo === value.TaskNo
+        );
+        return isSelected ? undefined : value;
+      })
+      .filter((value) => value !== undefined);
+    // Update the rowselectleft state with the reversed selection
+    setSelectedRowsSales(reversedSelection1);
   };
 
   ///////////////////////////////////////////
@@ -114,7 +136,6 @@ export default function PrepareScheduleTab({
   };
 
   //select ALL FOR LEFT TABLE
-  // const [selectAllChecked1, setSelectAllChecked1] = useState(false);
   const onClickSelectAllLeft = () => {
     // If no rows are selected, select all rows; otherwise, do nothing
     const updatedSelectedRows1 =
@@ -122,12 +143,21 @@ export default function PrepareScheduleTab({
     setRowSelectLeft(updatedSelectedRows1);
   };
 
+  const onClickSelectAllLeftSales = () => {
+    // If no rows are selected, select all rows; otherwise, do nothing
+    const updatedSelectedRows1 =
+      rowselectleftSales.length === 0
+        ? [...beforecombineSales]
+        : [...beforecombineSales];
+    setRowSelectLeftSales(updatedSelectedRows1);
+  };
+
   const onClickReverse = () => {
     // Create a reversed array of selected rows
     const reversedSelection = beforecombine
       .map((value) => {
         const isSelected = rowselectleft.some(
-          (selectedItem) => selectedItem.ScheduleId === value.ScheduleId
+          (selectedItem) => selectedItem.TaskNo === value.TaskNo
         );
         return isSelected ? undefined : value;
       })
@@ -136,14 +166,30 @@ export default function PrepareScheduleTab({
     setRowSelectLeft(reversedSelection);
   };
 
+  const onClickReverseSales = () => {
+    // Create a reversed array of selected rows
+    const reversedSelection = beforecombine
+      .map((value) => {
+        const isSelected = rowselectleftSales.some(
+          (selectedItem) => selectedItem.TaskNo === value.TaskNo
+        );
+        return isSelected ? undefined : value;
+      })
+      .filter((value) => value !== undefined);
+    // Update the rowselectleft state with the reversed selection
+    setRowSelectLeftSales(reversedSelection);
+  };
+
   const getAlldataAfterCombineSchedule = () => {
     postRequest(
       endpoints.afterCombinedSchedule,
       {
         combinedScheduleNo,
+        type,
       },
       (response) => {
         setBeforeCombine(response);
+        console.log("data after combined", response);
       }
     );
   };
@@ -152,46 +198,50 @@ export default function PrepareScheduleTab({
   const [combinedScheduleNo, setCombinedScheduleNo] = useState("");
   const [disablebutton, setDisableButton] = useState(false);
   const onClickCreateSchedule = () => {
-    if (type === "JobWork") {
-      if (rowselectleft.length <= 1) {
-        validationModal();
-      } else {
-        postRequest(
-          endpoints.CreateSchedule,
-          {
-            rowselectleft,
-            custCode: custCode,
-            selectedSalesContact: selectedSalesContact,
-            Date: storedDate,
-            ScheduleDate: ScheduleDate,
-          },
-          (response) => {
-            setDisableButton(true);
-            setCombinedScheduleNo(response.combinedScheduleNos[0]);
-            openCombineScheduleModal();
-            getAlldataAfterCombineSchedule();
-          }
-        );
-      }
+    if (selectedSalesContact === "" || null) {
+      alert("Please Select Sales Contact");
     } else {
-      if (rowselectleftSales <= 1) {
-        validationModal();
+      if (type === "JobWork") {
+        if (rowselectleft.length <= 1) {
+          validationModal();
+        } else {
+          postRequest(
+            endpoints.CreateSchedule,
+            {
+              rowselectleft,
+              custCode: custCode,
+              selectedSalesContact: selectedSalesContact,
+              Date: storedDate,
+              ScheduleDate: ScheduleDate,
+            },
+            (response) => {
+              setDisableButton(true);
+              setCombinedScheduleNo(response.combinedScheduleNos[0]);
+              openCombineScheduleModal();
+              getAlldataAfterCombineSchedule();
+            }
+          );
+        }
       } else {
-        postRequest(
-          endpoints.CreateScheduleforSales,
-          {
-            rowselectleftSales,
-            custCode: custCode,
-            selectedSalesContact: selectedSalesContact,
-            Date: storedDate,
-            ScheduleDate: ScheduleDate,
-          },
-          (response) => {
-            setDisableButton(true);
-            setCombinedScheduleNo(response.combinedScheduleNos[0]);
-            openCombineScheduleModal();
-          }
-        );
+        if (rowselectleftSales <= 1) {
+          validationModal();
+        } else {
+          postRequest(
+            endpoints.CreateScheduleforSales,
+            {
+              rowselectleftSales,
+              custCode: custCode,
+              selectedSalesContact: selectedSalesContact,
+              Date: storedDate,
+              ScheduleDate: ScheduleDate,
+            },
+            (response) => {
+              setDisableButton(true);
+              setCombinedScheduleNo(response.combinedScheduleNos[0]);
+              openCombineScheduleModal();
+            }
+          );
+        }
       }
     }
   };
@@ -248,7 +298,6 @@ export default function PrepareScheduleTab({
     setSelectedRowsSales(updatedSelectionSales);
   };
 
-  const [beforecombineSales, setBeforeCombineSales] = useState([]);
   const onclickofLeftShiftButtonSales = () => {
     setBeforeCombineSales(selectedRowsSales);
     setRowSelectLeftSales(selectedRowsSales);
@@ -274,7 +323,7 @@ export default function PrepareScheduleTab({
     postRequest(
       endpoints.prepareScheduleSales,
       {
-        NcTaskId: rowselectleftSales[0].NcTaskId,
+        ScheduleId: rowselectleftSales[0].ScheduleId,
       },
       (response) => {
         setPrepareScheduleData(response);
@@ -296,6 +345,51 @@ export default function PrepareScheduleTab({
     // setSelectedRowsSales([]);
   };
 
+  //JobWork Row select
+  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const handleRowClick = (item, index) => {
+    let list = { ...item, index: index };
+
+    if (Object.keys(list).length !== 0) {
+      // Check if list is not empty
+      setSelectedRowIndex(list);
+
+      postRequest(
+        endpoints.prepareSchedule,
+        {
+          ScheduleId: list?.ScheduleId, // Assuming ScheduleId is a property of list
+        },
+        (response) => {
+          setPrepareScheduleData(response);
+        }
+      );
+    }
+  };
+
+  //Sales Row Select
+  const [selectedRowIndexSales, setSelectedRowIndexSales] = useState(null);
+  const handleRowClickSales = (item, index) => {
+    let list = { ...item, index: index };
+
+    if (Object.keys(list).length !== 0) {
+      // Check if list is not empty
+      setSelectedRowIndex(list);
+
+      postRequest(
+        endpoints.prepareScheduleSales,
+        {
+          ScheduleId: list?.ScheduleId, // Assuming ScheduleId is a property of list
+        },
+        (response) => {
+          console.log("response of row select", response);
+          setSelectedRowIndexSales(response);
+        }
+      );
+    }
+  };
+
+  console.log("selectedRowIndex is", selectedRowIndexSales);
+
   return (
     <>
       {type === "Sales" ? (
@@ -304,13 +398,13 @@ export default function PrepareScheduleTab({
             <div className="col-md-6">
               <button
                 className="button-style group-button"
-                onClick={onClickSelectAllLeft}
+                onClick={onClickSelectAllLeftSales}
               >
                 Select All
               </button>
               <button
                 className="button-style group-button"
-                onClick={onClickReverse}
+                onClick={onClickReverseSales}
               >
                 Reverse
               </button>
@@ -426,7 +520,15 @@ export default function PrepareScheduleTab({
                   </thead>
                   <tbody className="tablebody table-space">
                     {preapreScheduleData?.map((data, key) => (
-                      <tr key={key}>
+                      <tr
+                        onClick={() => handleRowClickSales(data, key)}
+                        className={
+                          key === selectedRowIndexSales?.index
+                            ? "selcted-row-clr"
+                            : ""
+                        }
+                      >
+                        {" "}
                         <td>{data.DwgName}</td>
                         <td>{data.QtyToNest}</td>
                         {/* <td>{data.DwgName}</td> */}
@@ -479,13 +581,13 @@ export default function PrepareScheduleTab({
               </button>
               <button
                 className="button-style group-button"
-                onClick={onClickSelectAllRight}
+                onClick={onClickSelectAllRightSales}
               >
                 Select All
               </button>
               <button
                 className="button-style group-button"
-                onClick={onClickReverse1}
+                onClick={onClickReverse1Sales}
               >
                 Reverse
               </button>
@@ -671,11 +773,7 @@ export default function PrepareScheduleTab({
                 className="mt-1"
                 style={{ overflowY: "scroll", height: "180px" }}
               >
-                <Table
-                  striped
-                  className="table-data border"
-                  // style={{ border: "1px", height: "200px" }}
-                >
+                <Table striped className="table-data border">
                   <thead className="tableHeaderBGColor table-space">
                     <tr>
                       <th>Select</th>
@@ -693,9 +791,11 @@ export default function PrepareScheduleTab({
 
                       return (
                         <tr
-                          key={key}
+                          onClick={() => handleRowClick(value, key)}
                           className={
-                            key === selectedRows?.index ? "selcted-row-clr" : ""
+                            key === selectedRowIndex?.index
+                              ? "selcted-row-clr"
+                              : ""
                           }
                         >
                           <td>
