@@ -101,7 +101,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   codestyle: {
-    marginLeft: "15px",
+    marginLeft: "35px",
+    marginTop: "15px",
   },
   MagodTitle: {
     width: "70%",
@@ -172,19 +173,19 @@ const styles = StyleSheet.create({
   },
   scheduleViewSection: {
     marginLeft: "30px",
-    width: "25%",
+    width: "34%",
     borderBottom: 1,
     borderTop: 1,
     borderLeft: 1,
   },
   scheduleViewSection1: {
-    width: "25%",
+    width: "33%",
     borderBottom: 1,
     borderTop: 1,
     borderLeft: 1,
   },
   scheduleViewSection2: {
-    width: "45%",
+    width: "33%",
     border: 1,
   },
 
@@ -192,8 +193,8 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   Schedule: {
-    width: "50%",
-    marginLeft: 15,
+    width: "30%",
+    marginLeft: 10,
     paddingBottom: "3px",
   },
   Scheduledata: {
@@ -201,8 +202,8 @@ const styles = StyleSheet.create({
     paddingBottom: "3px",
   },
   delivarydate: {
-    width: "50%",
-    marginLeft: 15,
+    width: "30%",
+    marginLeft: 10,
     paddingBottom: "3px",
   },
   delivarydatedata: {
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
   },
 
   Schedule1: {
-    width: "25%",
+    width: "30%",
     marginLeft: 15,
     paddingBottom: "3px",
   },
@@ -374,7 +375,7 @@ const styles = StyleSheet.create({
   tableDisplay: {
     width: "100%",
     marginTop: "10px",
-    // borderBottom:1,
+    borderBottom: 1,
   },
   srl: {
     width: "10%",
@@ -464,7 +465,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   sheetDetails: {
-    width: "50%",
+    width: "30%",
     paddingBottom: "3px",
     paddingTop: "3px",
     textAlign: "center",
@@ -612,7 +613,6 @@ const ServicePDF = ({ formdata }) => {
 
   const firstItemData = Tabledata[0];
 
-
   //date format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -623,32 +623,21 @@ const ServicePDF = ({ formdata }) => {
     return `${year}-${month}-${day}`;
   };
 
-
-
   useEffect(() => {
-    postRequest(
-      endpoints.pdfdata,
-      { formdata },
-      (response) => {
-        // console.log("response is",response);
-        setTabledata(response);
-      }
-    );
+    postRequest(endpoints.pdfdata, { formdata }, (response) => {
+      // console.log("response is",response);
+      setTabledata(response);
+    });
   }, []);
 
   //get customer Name
-  const[custname,setCustname]=useState('')
+  const [custname, setCustname] = useState("");
   useEffect(() => {
-    postRequest(
-      endpoints.getCustName,
-      { formdata },
-      (response) => {
-          setCustname(response[0].Cust_name);
-      }
-    );
+    postRequest(endpoints.getCustName, { formdata }, (response) => {
+      setCustname(response[0].Cust_name);
+    });
   }, [formdata]);
 
-  
   return (
     <Document>
       {Array.from({ length: totalPages }, (_, pageIndex) => (
@@ -658,9 +647,9 @@ const ServicePDF = ({ formdata }) => {
           style={[styles.page, pageIndex === 0 ? styles.firstPage : null]}
           orientation="landscape"
         >
-          {/* <View style={styles.codestyle}>
+          <View style={styles.codestyle}>
             <Text style={styles.code}>F 32 Rev 3</Text>
-          </View> */}
+          </View>
 
           <View style={styles.tableContainer}>
             {Tabledata.map((item, index) => (
@@ -773,7 +762,8 @@ const ServicePDF = ({ formdata }) => {
                           </View>
                           <View style={styles.Scheduledata}>
                             <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp;{formatDate(formdata[0].ScheduleDate)}
+                              :&nbsp;&nbsp;
+                              {formatDate(formdata[0].ScheduleDate)}
                             </Text>
                           </View>
                         </View>
@@ -795,7 +785,8 @@ const ServicePDF = ({ formdata }) => {
                           </View>
                           <View style={styles.targerdatedata}>
                             <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp; {formatDate(formdata[0].Delivery_Date)}
+                              :&nbsp;&nbsp;{" "}
+                              {formatDate(formdata[0].Delivery_Date)}
                             </Text>
                           </View>
                         </View>
@@ -832,8 +823,13 @@ const ServicePDF = ({ formdata }) => {
 
                     <View style={styles.instruction}>
                       <View style={styles.column}>
-                        <View style={styles.targetdateview}>
-                          <Text style={styles.datawithoutbline}>
+                        <View style={[styles.targetdateview]}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { fontSize: "12px" },
+                            ]}
+                          >
                             Schedule NO: {item.otherdetails[0].OrderScheduleNo}
                           </Text>
                         </View>
@@ -843,7 +839,12 @@ const ServicePDF = ({ formdata }) => {
       </View> */}
 
                         <View style={styles.targetdateview}>
-                          <Text style={styles.datawithoutbline}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { fontSize: "12px" },
+                            ]}
+                          >
                             Customer Name : {custname}
                           </Text>
                         </View>
@@ -857,7 +858,46 @@ const ServicePDF = ({ formdata }) => {
               </View>
             ))}
             <View style={styles.maintableview}>
+              <View
+                style={[
+                  styles.tableDisplay,
+                  { marginTop: "10px", marginBottom: "10px" },
+                ]}
+              >
+                <View style={styles.column}>
+                  <View style={styles.srl}>
+                    <Text style={styles.datawithoutbline}>Srl</Text>
+                  </View>
 
+                  <View style={styles.drawingname}>
+                    <Text style={styles.datawithoutbline}>Drawing name</Text>
+                  </View>
+
+                  <View style={styles.Inspection}>
+                    <Text style={styles.datawithoutbline}>Inspection</Text>
+                  </View>
+
+                  <View style={styles.Packing}>
+                    <Text style={styles.datawithoutbline}>Packing</Text>
+                  </View>
+
+                  <View style={styles.Scheduled}>
+                    <Text style={styles.datawithoutbline}>Scheduled</Text>
+                  </View>
+
+                  <View style={styles.Produced}>
+                    <Text style={styles.datawithoutbline}>Produced</Text>
+                  </View>
+                  <View style={styles.Delivered}>
+                    <Text style={styles.datawithoutbline}>Delivered</Text>
+                  </View>
+                  <View style={styles.scheduleNotable}>
+                    <Text style={styles.datawithoutbline}>
+                      {/* {item.taskno} */}
+                    </Text>
+                  </View>
+                </View>
+              </View>
               {Tabledata.slice(
                 pageIndex * recordsPerPage,
                 (pageIndex + 1) * recordsPerPage
@@ -874,7 +914,7 @@ const ServicePDF = ({ formdata }) => {
                         Task No : {item.taskNo}
                       </Text>
                     </View>
-                  
+
                     <View style={styles.sheetDetails}>
                       <Text
                         style={[
@@ -882,11 +922,12 @@ const ServicePDF = ({ formdata }) => {
                           {
                             fontSize: "12px",
                             paddingBottom: "5px",
-                            width: "500px",
+                            width: "300px",
                           },
                         ]}
                       >
-                        Material:{item.Mtrl_Code}/{item.Mtrl_Source}/{item.Operation}
+                        Material:{item.Mtrl_Code}/{item.Mtrl_Source}/
+                        {item.Operation}
                       </Text>
                     </View>
 
@@ -917,84 +958,48 @@ const ServicePDF = ({ formdata }) => {
                     </View>
                   </View>
 
-                  <View style={[styles.tableDisplay, { marginTop: "10px" }]}>
-                    <View style={styles.column}>
-                      <View style={styles.srl}>
-                        <Text style={styles.datawithoutbline}>Srl</Text>
+                  {item.otherdetails.map((detail, subIndex) => (
+                    <View style={styles.row}>
+                      <View style={styles.srldata}>
+                        <Text style={styles.tabletext}>{index + 1}</Text>
                       </View>
 
-                      <View style={styles.drawingname}>
-                        <Text style={styles.datawithoutbline}>
-                          Drawing name
+                      <View style={styles.drawingnamedata}>
+                        <Text style={styles.tabletext}>{detail.DwgName}</Text>
+                      </View>
+
+                      <View style={styles.Inspectiondata}>
+                        <Text style={styles.tabletext}>{detail.InspLevel}</Text>
+                      </View>
+
+                      <View style={styles.Packingdata}>
+                        <Text style={styles.tabletext}>
+                          {detail.PackingLevel}
                         </Text>
                       </View>
 
-                      <View style={styles.Inspection}>
-                        <Text style={styles.datawithoutbline}>Inspection</Text>
-                      </View>
-
-                      <View style={styles.Packing}>
-                        <Text style={styles.datawithoutbline}>Packing</Text>
-                      </View>
-
-                      <View style={styles.Scheduled}>
-                        <Text style={styles.datawithoutbline}>Scheduled</Text>
-                      </View>
-
-                      <View style={styles.Produced}>
-                        <Text style={styles.datawithoutbline}>Produced</Text>
-                      </View>
-                      <View style={styles.Delivered}>
-                        <Text style={styles.datawithoutbline}>Delivered</Text>
-                      </View>
-                      <View style={styles.scheduleNotable}>
-                        <Text style={styles.datawithoutbline}>
-                          {item.taskno}
+                      <View style={styles.Scheduleddata}>
+                        <Text style={styles.tabletext}>
+                          {detail.QtyScheduled}
                         </Text>
                       </View>
-                    </View>
-                  </View>
 
-            {item.otherdetails.map((detail, subIndex) => (
-                  <View style={styles.row}>
-                    <View style={styles.srldata}>
-                      <Text style={styles.tabletext}>{subIndex + 1}</Text>
-                    </View>
+                      <View style={styles.Produceddata}>
+                        <Text style={styles.tabletext}></Text>
+                      </View>
 
-                    <View style={styles.drawingnamedata}>
-                      <Text style={styles.tabletext}>{detail.DwgName}</Text>
-                    </View>
+                      <View style={styles.Delivereddata}>
+                        <Text style={styles.tabletext}></Text>
+                      </View>
 
-                    <View style={styles.Inspectiondata}>
-                      <Text style={styles.tabletext}>{detail.InspLevel}</Text>
+                      <View style={styles.scheduleNotabledata}>
+                        <Text style={styles.tabletext}></Text>
+                      </View>
                     </View>
-
-                    <View style={styles.Packingdata}>
-                      <Text style={styles.tabletext}>{detail.PackingLevel}</Text>
-                    </View>
-
-                    <View style={styles.Scheduleddata}>
-                      <Text style={styles.tabletext}>{detail.QtyScheduled}</Text>
-                    </View>
-
-                    <View style={styles.Produceddata}>
-                      <Text style={styles.tabletext}></Text>
-                    </View>
-
-                    <View style={styles.Delivereddata}>
-                      <Text style={styles.tabletext}></Text>
-                    </View>
-
-                    <View style={styles.scheduleNotabledata}>
-                      <Text style={styles.tabletext}></Text>
-                    </View>
-                  </View>
-                   ))}
+                  ))}
                 </View>
               ))}
 
-
-            
               <View style={styles.mainsidetableview}>
                 <View style={styles.column}>
                   <View>
@@ -1261,7 +1266,9 @@ const ServicePDF = ({ formdata }) => {
 
               <View style={styles.footer}>
                 <View style={{ marginLeft: "40px", marginTop: "10px" }}>
-                  <Text style={styles.globalfontwithbold}>{formdata[0].SalesContact}</Text>
+                  <Text style={styles.globalfontwithbold}>
+                    {formdata[0].SalesContact}
+                  </Text>
                 </View>
               </View>
             </View>

@@ -38,17 +38,21 @@ export default function CombinedScheduleListClosed({ type }) {
 
   // console.log(selectedRow);
 
+  const handleClick = () => {
+    const path = type === "JobWork" 
+      ? "/Orders/JobWork/ScheduleList/Closed/OpenDetailForm" 
+      : "/Orders/Sales/ScheduleList/Closed/OpenDetailForm";
+    
+    navigate(path, { state: { selectedRow: selectedRow } });
+  };
+
   return (
     <div>
       <h4 className="title">Combined Schedule List</h4>
       <div className="">
         <button
           className="button-style"
-          onClick={() =>
-            navigate("/Orders/JobWork/ScheduleList/Closed/OpenDetailForm", {
-              state: { selectedRow: selectedRow },
-            })
-          }
+          onClick={handleClick}
         >
           Open
         </button>

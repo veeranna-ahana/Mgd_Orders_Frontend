@@ -16,7 +16,7 @@ function ServiceOpenSchedule() {
   const Type = location?.state?.Type || []; //get types
   // const Type=location?.location || '';
 
-  console.log("DwgNameList", DwgNameList);
+  // console.log("location?.state is",location?.state);
 
   // Standardize the case of the property name
   const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
@@ -165,17 +165,18 @@ function ServiceOpenSchedule() {
   //get Task and Material Tab Data
   const [TaskMaterialData, setTaskMaterialData] = useState([]);
   useEffect(() => {
-    if (scheduleDetailsRow) {
+    if (DwgNameList && Object.keys(DwgNameList).length > 0) {
       postRequest(
         endpoints.getScheduleListTaskandMaterial,
-        { scheduleDetailsRow },
+        { ScheduleId: DwgNameList[0]?.ScheduleId },
         (response) => {
           setTaskMaterialData(response);
-          setRowSelectTaskMaterial({ ...response[0], index: 0 });
+          if (response && response.length > 0) {
+          }
         }
       );
     }
-  }, [scheduleDetailsRow]); // Watch for changes in scheduleDetailsRow
+  }, []); // Watch for changes in scheduleDetailsRow
 
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
@@ -184,7 +185,7 @@ function ServiceOpenSchedule() {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
     postRequest(endpoints.getDwgListData, { list }, (response) => {
-      // console.log("response is", response);
+      console.log("dwg data response is", response);
       setTmDwgList(response);
     });
   };
@@ -200,22 +201,16 @@ function ServiceOpenSchedule() {
   const onClickofScheduleDtails = (item, index) => {
     let list = { ...item, index: index };
     setScheduleDetailsRow(list);
-    postRequest(
-      endpoints.getScheduleListTaskandMaterial,
-      { scheduleDetailsRow: list },
-      (response) => {
-        setTaskMaterialData(response);
-        setRowSelectTaskMaterial({ ...response[0], index: 0 });
-      }
-    );
   };
 
   useEffect(() => {
+    console.log("rowselectTaskMaterial is", rowselectTaskMaterial);
     if (rowselectTaskMaterial.length === undefined && TaskMaterialData[0]) {
       postRequest(
         endpoints.getDwgListData,
-        { list: TaskMaterialData[0] },
+        { list: rowselectTaskMaterial },
         (response) => {
+          console.log("response is", response);
           setTmDwgList(response);
         }
       );
@@ -408,7 +403,6 @@ function ServiceOpenSchedule() {
           toast.success(response.message, {
             position: toast.POSITION.TOP_CENTER,
           });
-
           // Introducing a delay of 1000 milliseconds (1 second)
           setTimeout(() => {
             postRequest(
@@ -419,6 +413,14 @@ function ServiceOpenSchedule() {
               }
             );
           }, 3000);
+          postRequest(
+            endpoints.getScheduleListTaskandMaterial,
+            { ScheduleId: formdata[0]?.ScheduleId },
+            (response) => {
+              console.log("response is", response);
+              setTaskMaterialData(response);
+            }
+          );
         } else if (
           response.message.startsWith("Cannot Schedule Zero Quantity For")
         ) {
@@ -491,7 +493,7 @@ function ServiceOpenSchedule() {
                   response: response,
                   responsedata: responsedata,
                   Type: Type,
-                  DwgNameList:DwgNameList
+                  DwgNameList: DwgNameList,
                 },
               });
             }
@@ -1154,52 +1156,58 @@ function ServiceOpenSchedule() {
                         const performanceRow = Performancedata.find(
                           (item) => item.NcTaskId === value.NcTaskId
                         );
+
+                        // Define the default values
+                        let machineTime = "Not Processed";
+                        let hourRate = "Not Invoiced";
+                        let targetHourRate = "Not Invoiced";
+
+                        // If performanceRow exists, override the default values
+                        if (performanceRow) {
+                          machineTime =
+                            typeof performanceRow.MachineTime === "number"
+                              ? Number(performanceRow.MachineTime).toFixed(1)
+                              : performanceRow.MachineTime;
+
+                          hourRate =
+                            typeof performanceRow.HourRate === "number"
+                              ? performanceRow.HourRate.toFixed(2)
+                              : performanceRow.HourRate;
+
+                          targetHourRate =
+                            typeof performanceRow.TargetHourRate === "number"
+                              ? performanceRow.TargetHourRate.toFixed(2)
+                              : performanceRow.TargetHourRate;
+                        }
+
                         return (
-                          <>
-                            <tr
-                              onClick={() =>
-                                onRowSelectTaskMaterialTable(value, key)
-                              }
-                              className={
-                                key === rowselectTaskMaterial?.index
-                                  ? "selcted-row-clr"
-                                  : ""
-                              }
-                            >
-                              <td>{value.TaskNo}</td>
-                              <td>{value.Mtrl_Code}</td>
-                              <td>{value.CustMtrl}</td>
-                              <td>{value.Operation}</td>
-                              <td>{value.NoOfDwgs}</td>
-                              <td>{value.TotalParts}</td>
-                              <td>{value.Priority}</td>
-                              <td>{value.TStatus}</td>
-                              <td>{value.Machine}</td>
-                              {showPerformancedata && performanceRow && (
-                                <>
-                                  <td>
-                                    {typeof performanceRow.MachineTime ===
-                                    "number"
-                                      ? Number(
-                                          performanceRow.MachineTime
-                                        ).toFixed(1)
-                                      : performanceRow.MachineTime}
-                                  </td>
-                                  <td>
-                                    {typeof performanceRow.HourRate === "number"
-                                      ? performanceRow.HourRate.toFixed(2)
-                                      : performanceRow.HourRate}
-                                  </td>
-                                  <td>
-                                    {typeof performanceRow.TargetHourRate ===
-                                    "number"
-                                      ? performanceRow.TargetHourRate.toFixed(2)
-                                      : performanceRow.TargetHourRate}
-                                  </td>
-                                </>
-                              )}
-                            </tr>
-                          </>
+                          <tr
+                            onClick={() =>
+                              onRowSelectTaskMaterialTable(value, key)
+                            }
+                            className={
+                              key === rowselectTaskMaterial?.index
+                                ? "selcted-row-clr"
+                                : ""
+                            }
+                          >
+                            <td>{value.TaskNo}</td>
+                            <td>{value.Mtrl_Code}</td>
+                            <td>{value.CustMtrl}</td>
+                            <td>{value.Operation}</td>
+                            <td>{value.NoOfDwgs}</td>
+                            <td>{value.TotalParts}</td>
+                            <td>{value.Priority}</td>
+                            <td>{value.TStatus}</td>
+                            <td>{value.Machine}</td>
+                            {showPerformancedata && (
+                              <>
+                                <td>{machineTime}</td>
+                                <td>{hourRate}</td>
+                                <td>{targetHourRate}</td>
+                              </>
+                            )}
+                          </tr>
                         );
                       })}
                     </tbody>
@@ -1228,17 +1236,23 @@ function ServiceOpenSchedule() {
                       </tr>
                     </thead>
                     <tbody className="tablebody">
-                      {tmDwgList.map((item, key) => {
-                        return (
-                          <tr>
+                      {tmDwgList && tmDwgList.length > 0 ? (
+                        tmDwgList.map((item, key) => (
+                          <tr key={key}>
                             <td>{item.DwgName}</td>
                             <td>{item.QtyScheduled}</td>
                             <td>{item.QtyPacked}</td>
                             <td>{item.QtyProduced}</td>
                             <td>{item.QtyCleared}</td>
                           </tr>
-                        );
-                      })}
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan="5" style={{ textAlign: "center" }}>
+                            No data to show
+                          </td>
+                        </tr>
+                      )}
                     </tbody>
                   </Table>
                 </div>

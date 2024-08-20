@@ -13,7 +13,6 @@ function ServiceNCProgram() {
   const Type = location?.state?.Type || []; //get types
   const DwgNameList = location?.state?.DwgNameList || [];
 
-  console.log("DwgNameList is",DwgNameList);
 
   const [NCprogramForm, setNCProgramForm] = useState([]);
   const [machineList, setMachineList] = useState([]);
