@@ -109,10 +109,10 @@ function CombinedScheduleDetailsForm() {
     postRequest(
       endpoints.CombinedTasksTaskTable,
       {
-        ScheduleId: selectedRow?.ScheduleId,
+        ScheduleId: selectedRow?.ScheduleId
+        ,
       },
       (response) => {
-        // console.log(response.data);
         setTaskNoTableData(response);
       }
     );

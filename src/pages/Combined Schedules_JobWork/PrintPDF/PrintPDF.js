@@ -631,7 +631,7 @@ const PrintPDF = ({ formdata }) => {
       endpoints.PrintSchedulePDF,
       { formdata },
       (response) => {
-        console.log("response is",response);
+        // console.log("response is",response);
         setTabledata(response);
       }
     );

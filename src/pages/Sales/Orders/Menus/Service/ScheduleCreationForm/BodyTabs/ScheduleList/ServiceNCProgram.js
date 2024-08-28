@@ -8,8 +8,12 @@ import { ToastContainer, toast } from "react-toastify";
 
 function ServiceNCProgram() {
   const location = useLocation(); // Access location object using useLocation hook
-  const response = location?.state?.response || [];
-  const MachineList = location?.state?.responsedata || [];
+  const response = location?.state.response || [];
+  const MachineList = location?.state.responsedata || [];
+  const Type = location?.state?.Type || []; //get types
+  const DwgNameList = location?.state?.DwgNameList || [];
+
+
 
   const [NCprogramForm, setNCProgramForm] = useState([]);
   const [machineList, setMachineList] = useState([]);
@@ -36,18 +40,17 @@ function ServiceNCProgram() {
   //get PartsData
   const [partsData, setPartsData] = useState([]);
   const getPartsData = () => {
-    postRequest(endpoints.getPartsData, { NCprogramForm }, (response) => {
-      // console.log("NCProgramList is", response);
-      setPartsData(response);
-    });
+    if (NCprogramForm) {
+      postRequest(endpoints.getPartsData, { NCprogramForm }, (response) => {
+        setPartsData(response);
+      });
+    }
   };
 
   useEffect(() => {
     getNCProgramData();
     getPartsData();
   }, [NCprogramForm]);
-
-  // console.log("partsData is", partsData);
 
   //row select
   const [selectedNCprogram, setSelectedNCProgram] = useState({});
@@ -67,7 +70,6 @@ function ServiceNCProgram() {
 
   //ADD NCPROGRAM
   const OnclickAddNCProgram = () => {
-    console.log("selectedMachine is", selectedMachine);
     if (!selectedMachine) {
       toast.error("Please Select Machine", {
         position: toast.POSITION.TOP_CENTER,
@@ -178,6 +180,7 @@ function ServiceNCProgram() {
       state: { selectedNcid, response: response, responsedata: MachineList },
     });
   };
+
 
   return (
     <div>
@@ -310,7 +313,18 @@ function ServiceNCProgram() {
           <button className="button-style" onClick={onClickCo2State}>
             Co2 Form
           </button>
-          <Link to={"/Orders/Service/OrderSchedule"} state={NCprogramForm}>
+          <Link
+              to={
+              Type === "Profile"
+                  ? `/Orders/Profile/ProfileOpenSchedule`
+                  : Type === "Service"
+                  ? `/Orders/Service/ServiceOpenSchedule`
+                  : Type === "Fabrication"
+                  ? `/Orders/Fabrication/FabricationOpenSchedule`
+                  : null
+              }
+              state={{ DwgNameList, Type: Type }} 
+            >
             <button className="button-style">Close</button>
           </Link>
         </div>
@@ -488,18 +502,19 @@ function ServiceNCProgram() {
                 </tr>
               </thead>
               <tbody className="tablebody">
-                {partsData.length > 0 ? (
-                  partsData.map((item, key) => (
+                {partsData?.partsData?.length > 0 ? (
+                  partsData.partsData.map((item, key) => (
                     <tr key={key}>
-                      <td>{item.PartID}</td>
-                      <td>{item.QtyPerAssy}</td>
-                      <td>{item.QtyRequired}</td>
-                      <td>{item.QtyAvialable}</td>
+                      <td>{item?.PartId}</td>
+                      <td>{item?.QtyPerAssy}</td>
+                      <td>{item?.QtyRequired}</td>
+                      <td>{partsData?.availableQty}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan={2}>No data to show</td>
+                    <td colSpan={4}>No data to show</td>{" "}
+                    {/* Ensure colSpan matches the number of columns */}
                   </tr>
                 )}
               </tbody>

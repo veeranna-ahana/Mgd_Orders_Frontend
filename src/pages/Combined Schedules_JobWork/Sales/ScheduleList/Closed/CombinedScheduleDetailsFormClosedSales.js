@@ -1,22 +1,27 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Table, Tab, Tabs } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
 import { endpoints } from "../../../../api/constants";
 import { getRequest, postRequest } from "../../../../api/apiinstance";
 import PrintModal from "../../../PrintPDF/PrintModal";
+import { useLocation, useNavigate } from "react-router-dom";
+import FolderFilesModal from "../../../FolderFilesModal";
 
-export default function CombinedScheduleDetailsFormClosed() {
+
+
+export default function CombinedScheduleDetailsFormClosedSales() {
   const location = useLocation();
   const { selectedRow } = location?.state || {};
-  console.log("selectedRow", selectedRow);
+
+  const [colordisable, setColorDisable] = useState(false);
 
   //get sales contact list
   const [salesContactList, setSalesContactList] = useState([]);
   const getSalesContactList = () => {
-    getRequest(endpoints.getSalesContact,(response) => {
+    getRequest(endpoints.getSalesContact, (response) => {
+      //  console.log(response.data);
       setSalesContactList(response);
     });
   };
@@ -24,36 +29,42 @@ export default function CombinedScheduleDetailsFormClosed() {
   //SchedueleList Details
   const [scheduleListDetailsData, setScheduleListDetailsData] = useState([]);
   const getScheduleListDetails = () => {
-    // console.log(selectedRow.ScheduleId);
-    postRequest(endpoints.getSchedudleDetails, {
-      selectedRow,
-    },(response) => {
-      setScheduleListDetailsData(response);
-    });
+    postRequest(
+      endpoints.getSchedudleDetails,
+      {
+        selectedRow,
+      },
+      (response) => {
+        // console.log(response);
+        setScheduleListDetailsData(response);
+      }
+    );
   };
 
   const getBackgroundColor = (item) => {
-    if (item.QtyScheduled === 0) {
-      return "red";
-    } else if (item.QtyScheduled === item.QtyScheduled) {
-      return "green";
-    } else if (item.QtyScheduled === item.QtyCleared) {
-      return "yellow";
-    } else if (item.QtyCleared > 0) {
-      return "lightgreen";
-    } else if (item.QtyScheduled === item.QtyProduced) {
-      return "lightyellow";
-    } else if (
-      item.QtyProduced > 0 &&
-      item.QtyScheduled === item.QtyProgrammed
-    ) {
-      return "lightpink";
-    } else if (item.QtyScheduled === item.QtyProgrammed) {
-      return "lightcoral";
-    } else if (item.QtyProgrammed > 0) {
-      return "coral";
-    } else {
-      return ""; // Default background color if none of the conditions match
+    if (!colordisable) {
+      if (item.QtyScheduled === 0) {
+        return "red";
+      } else if (item.QtyScheduled === item.QtyScheduled) {
+        return "green";
+      } else if (item.QtyScheduled === item.QtyCleared) {
+        return "yellow";
+      } else if (item.QtyCleared > 0) {
+        return "lightgreen";
+      } else if (item.QtyScheduled === item.QtyProduced) {
+        return "lightyellow";
+      } else if (
+        item.QtyProduced > 0 &&
+        item.QtyScheduled === item.QtyProgrammed
+      ) {
+        return "lightpink";
+      } else if (item.QtyScheduled === item.QtyProgrammed) {
+        return "lightcoral";
+      } else if (item.QtyProgrammed > 0) {
+        return "coral";
+      } else {
+        return ""; // Default background color if none of the conditions match
+      }
     }
   };
 
@@ -89,7 +100,7 @@ export default function CombinedScheduleDetailsFormClosed() {
 
   //Default first row select for First Table Schedule Details
   useEffect(() => {
-    if (scheduleListDetailsData.length > 0 && !selected.DwgName) {
+    if (scheduleListDetailsData?.length > 0 && !selected?.DwgName) {
       rowSelectFunc1(scheduleListDetailsData[0], 0); // Select the first row
     }
   }, [scheduleListDetailsData, selected, rowSelectFunc1]);
@@ -97,11 +108,16 @@ export default function CombinedScheduleDetailsFormClosed() {
   //Combined Tasks Table 1
   const [TaskNoTableData, setTaskNoTableData] = useState([]);
   const getTaskNoTabledata = () => {
-    postRequest(endpoints.CombinedTasksTaskTable, {
-      ScheduleId: selectedRow?.ScheduleId,
-    },(response) => {
-      setTaskNoTableData(response);
-    });
+    postRequest(
+      endpoints.CombinedTasksTaskTable,
+      {
+        ScheduleId: selectedRow?.ScheduleId
+      },
+      (response) => {
+        // console.log(response.data);
+        setTaskNoTableData(response);
+      }
+    );
   };
 
   //const row select TaskNo Table
@@ -110,21 +126,31 @@ export default function CombinedScheduleDetailsFormClosed() {
   const rowSelectFuncTaskNo = (item, index) => {
     let list = { ...item, index: index };
     setSelectedTaskNo(list);
-    postRequest(endpoints.CombinedTasksShowDwg, {
-      TaskNo: list?.TaskNo,
-    },(response) => {
-      setDwgNameTableData(response);
-    });
+    postRequest(
+      endpoints.CombinedTasksShowDwg,
+      {
+        TaskNo: list?.TaskNo,
+      },
+      (response) => {
+        // console.log(response.data);
+        setDwgNameTableData(response);
+      }
+    );
   };
 
   ///Original Schedules Table 1
   const [orinalScheudledata, setOrinalScheduledata] = useState([]);
   const getOriginalTable1 = () => {
-    postRequest(endpoints.OriginalTable, {
-      selectedRow,
-    },(response) => {
-      setOrinalScheduledata(response);
-    });
+    postRequest(
+      endpoints.OriginalTable,
+      {
+        selectedRow,
+      },
+      (response) => {
+        // console.log(response.data);
+        setOrinalScheduledata(response);
+      }
+    );
   };
 
   //table row select
@@ -134,11 +160,16 @@ export default function CombinedScheduleDetailsFormClosed() {
     let list = { ...item, index: index };
     // console.log(list);
     setSelectedOrignalSchedule(list);
-    postRequest(endpoints.OriginalTable2, {
-      list,
-    },(response) => {
-      setOrinalScheduleTable2(response);
-    });
+    postRequest(
+      endpoints.OriginalTable2,
+      {
+        list,
+      },
+      (response) => {
+        // console.log(response.data);
+        setOrinalScheduleTable2(response);
+      }
+    );
   };
 
   useEffect(() => {
@@ -149,15 +180,37 @@ export default function CombinedScheduleDetailsFormClosed() {
   }, []);
 
   //Update To Original Schedule
+  const [openFolder, setOpenFolder] = useState(false);
   const updateToOriganSchedule = () => {
-    postRequest(endpoints.updateToOriganalSchedule, {
-      selectedRow,
-    });
-    toast
-      .success("Sucessfully Updated", {
-        position: toast.POSITION.TOP_CENTER,
-      },(response) => {
-      });
+    setOpenFolder(true);
+    setColorDisable(true);
+    postRequest(
+      endpoints.updateToOriganalSchedule,
+      {
+        selectedRow,
+      },
+      (response) => {
+        toast.success("Sucessfully Updated", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        postRequest(
+          endpoints.getSchedudleDetails,
+          {
+            selectedRow,
+          },
+          (response) => {
+            // console.log(response);
+            setScheduleListDetailsData(response);
+          }
+        );
+      }
+    );
+  };
+
+  //Print button
+  const [serviceOpen, setServiceOpen] = useState(false);
+  const PrintPdf = () => {
+    setServiceOpen(true);
   };
 
   //rowselect for dwg name table
@@ -171,33 +224,60 @@ export default function CombinedScheduleDetailsFormClosed() {
   // console.log(selectedTaskNo);
 
   const updateTask = () => {
-    postRequest(endpoints.updateTask, {
-      DwgSelect,
-    },(response) => {
-      if (response === "Success") {
-        toast.success(response, {
-          position: toast.POSITION.TOP_CENTER,
-        });
-      } else {
-        toast.error(response, {
-          position: toast.POSITION.TOP_CENTER,
-        });
+    postRequest(
+      endpoints.updateTask,
+      {
+        DwgSelect,
+      },
+      (response) => {
+        // console.log(response.data);
+        if (response.data === "Success") {
+          toast.success(response.data, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          toast.error(response.data, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
       }
-    });
+    );
   };
 
   //Distribute Parts
   const distributeParts = () => {
-    postRequest(endpoints.distributeParts, { selectedRow },(response) => {
-      console.log(response);
-    });
+    postRequest(
+      endpoints.distributeParts,
+      { scheduleListDetailsData },
+      (response) => {
+        if (response.success === "Parts Distributed") {
+          toast.success(response.success, {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      }
+    );
   };
 
   ///
-  const handleButtonClick = () => {
-    // alert('Please navigate to the desired folder before selecting a file.');
-    // Trigger click event on the hidden file input
-    fileInputRef.current.click();
+  const [openfileModal, setOpenFileModal] = useState(false);
+
+  const [files, setFiles] = useState([]);
+
+  const onClickOpenFolder = () => {
+    if (openFolder) {
+      // Prepare data to send in the POST request
+      const requestData = {
+        OrderNo: selectedRow?.Order_No,
+      };
+      // Send POST request to fetch files from the server
+      postRequest(endpoints.openFolder, { requestData }, (response) => {
+        setFiles(response);
+        setOpenFileModal(true);
+      });
+    } else {
+      fileInputRef.current.click();
+    }
   };
 
   const handleFileChange = (event) => {
@@ -207,12 +287,22 @@ export default function CombinedScheduleDetailsFormClosed() {
 
   const fileInputRef = React.createRef();
 
+  const onClickCopyDwg = () => {
+    // Prepare data to send in the POST request
+    const requestData = {
+      selectedRow,
+      orinalScheudledata,
+    };
+    postRequest(endpoints.CopyDwg, { requestData }, (response) => {
+    });
+  };
+
   //
   const [displayDate, setDisplayDate] = useState(
-    formatDeliveryDate2(selectedRow.Delivery_Date)
+    formatDeliveryDate2(selectedRow?.Delivery_Date)
   );
   const [selectedSalesContact, setSelectedSalesContact] = useState(
-    selectedRow.Dealing_Engineer
+    selectedRow?.Dealing_Engineer
   );
   const handleDateChange = (e) => {
     // Update the displayDate whenever the user selects a date
@@ -220,10 +310,15 @@ export default function CombinedScheduleDetailsFormClosed() {
   };
 
   const [instruction, setInstruction] = useState("");
+  useEffect(() => {
+    if (selectedRow?.Special_Instructions) {
+      setInstruction(selectedRow.Special_Instructions);
+    }
+  }, [selectedRow]);
+
   const onChangeInstruction = (e) => {
     setInstruction(e.target.value);
   };
-
   const formatDeliveryDate3 = (dateString) => {
     // Convert the input string to a JavaScript Date object
     const dateObject = new Date(dateString);
@@ -247,18 +342,17 @@ export default function CombinedScheduleDetailsFormClosed() {
       Dealing_Engineer: selectedSalesContact, // Set Dealing_Engineer to selectedSalesContact
     };
 
-    postRequest(endpoints.save, { updatedSelectedRow },(response) => {
+    postRequest(endpoints.save, { updatedSelectedRow }, (response) => {
       toast.success("Saved", {
         position: toast.POSITION.TOP_CENTER,
       });
     });
   };
 
-  
-  //Print button
-  const[serviceOpen,setServiceOpen]=useState(false);
-  const PrintPdf = () => {
-    setServiceOpen(true);
+  //close button
+  const navigate = useNavigate();
+  const closeButton = () => {
+    navigate("/Orders/JobWork/ScheduleList/Order", {});
   };
 
   return (
@@ -266,60 +360,98 @@ export default function CombinedScheduleDetailsFormClosed() {
       <h4 className="title">Combined Schedule Details Form</h4>
       <div className="ip-box">
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
+          <div
+            className="field-gap d-flex col-md-4 mb-2 col-sm-12"
+            style={{ gap: "92px" }}
+          >
             <label className="form-label">No</label>
-            <input class="" type="text" value={selectedRow.OrdSchNo} />
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow?.OrdSchNo}
+            />
           </div>
 
-          <div className="col-md-4  mb-2 col-sm-12">
+          <div
+            className="d-flex field-gap col-md-4  mb-2 col-sm-12"
+            style={{ gap: "17px" }}
+          >
             <label className="form-label">Customer</label>
-            <input class="" type="text" value={selectedRow.Cust_name} />
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow?.Cust_name}
+            />
           </div>
 
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label"> Sales Contact</label>
-            <input class="" type="text" value={selectedRow.SalesContact} />
+          <div className="field-gap d-flex col-md-4  mb-2 col-sm-12">
+            <label className="form-label label-space"> Sales Contact</label>
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow?.SalesContact}
+            />
           </div>
         </div>
 
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
+          <div
+            className="field-gap d-flex col-md-4 mb-2 col-sm-12"
+            style={{ gap: "82px" }}
+          >
             <label className="form-label">Type</label>
-            <input class="" type="text" value={selectedRow.ScheduleType} />
-          </div>
-
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label">PO No</label>
-            <input class="" type="text" value={selectedRow.PO} />
-          </div>
-
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label"> Target Date</label>
             <input
-              class=""
+              className="in-field"
               type="text"
-              value={formatDeliveryDate(selectedRow.schTgtDate)}
+              value={selectedRow?.ScheduleType}
+            />
+          </div>
+
+          <div
+            className="d-flex field-gap col-md-4 mb-2 col-sm-12"
+            style={{ gap: "34px" }}
+          >
+            <label className="form-label label-space">PO No</label>
+            <input className="in-field" type="text" value={selectedRow?.PO} />
+          </div>
+
+          <div
+            className="d-flex field-gap col-md-4  mb-2 col-sm-12"
+            style={{ gap: "20px" }}
+          >
+            <label className="form-label label-space"> Target Date</label>
+            <input
+              className="in-field"
+              type="text"
+              value={formatDeliveryDate(selectedRow?.schTgtDate)}
             />
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
+          <div
+            className="d-flex field-gap col-md-4 mb-2 col-sm-12"
+            style={{ gap: "73px" }}
+          >
             <label className="form-label">Status</label>
-            <input class="" type="text" value={selectedRow.Schedule_Status} />
+            <input
+              className="in-field"
+              type="text"
+              value={selectedRow?.Schedule_Status}
+            />
           </div>
-          <div className="col-md-4  mb-2 col-sm-12">
+          <div className="d-flex field-gap col-md-4  mb-2 col-sm-12">
             <label className="form-label">Instruction</label>
             <input
-              class=""
+              className="in-field"
               type="text"
               onChange={onChangeInstruction}
-              value={selectedRow.Special_Instructions}
+              value={instruction}
             />
           </div>
-          <div className="col-md-4  mb-2 col-sm-12">
-            <label className="form-label"> Delivery Date</label>
+          <div className="d-flex field-gap col-md-4  mb-2 col-sm-12">
+            <label className="form-label label-space"> Delivery Date</label>
             <input
-              className="mt-1"
+              className="in-field"
               type="date"
               onChange={(e) => handleDateChange(e)}
               value={displayDate}
@@ -327,8 +459,8 @@ export default function CombinedScheduleDetailsFormClosed() {
           </div>
         </div>
         <div className="row">
-          <div className="col-md-4 mb-2 col-sm-12">
-            <label className="form-label"> Dealing Engineer</label>
+          <div className="d-flex field-gap col-md-4 mb-2 col-sm-12">
+            <label className="form-label label-space"> Dealing Engineer</label>
             <select
               id="gstpan"
               className="ip-select mt-1"
@@ -338,7 +470,7 @@ export default function CombinedScheduleDetailsFormClosed() {
               <option value="" disabled>
                 Select Sales Contact
               </option>
-              {salesContactList.map((item, key) => (
+              {salesContactList?.map((item, key) => (
                 <option key={key} value={item.Name}>
                   {item.Name}
                 </option>
@@ -347,76 +479,57 @@ export default function CombinedScheduleDetailsFormClosed() {
           </div>
         </div>
       </div>
-      <div
-        className="row justify-content-center mt-5"
-        style={{ display: "flex" }}
-      >
-        <button
-          className="button-style"
-          style={{ width: "60px" }}
-          onClick={onClickSave}
-        >
-          Save
-        </button>
-        <button
-          className="button-style"
-          style={{ width: "150px" }}
-          onClick={distributeParts}
-        >
-          Distribute Parts
-        </button>
-        <button
-          className="button-style"
-          style={{ width: "270px" }}
-          onClick={updateToOriganSchedule}
-        >
-          Update To Original Schedule
-        </button>
-        <button className="button-style" style={{ width: "120px" }}>
-          Short Close
-        </button>
-        <button className="button-style" style={{ width: "80px" }}>
-          Cancel
-        </button>
-        <div>
-          <button
-            className="button-style"
-            style={{ width: "130px" }}
-            onClick={handleButtonClick}
-          >
+
+      <div className="row">
+        <div className="col-md-12">
+          <button className="button-style" onClick={onClickSave}>
+            Save
+          </button>
+          <button className="button-style" onClick={distributeParts}>
+            Distribute Parts
+          </button>
+          <button className="button-style" onClick={updateToOriganSchedule}>
+            Update To Original Schedule
+          </button>
+          {/* <button className="button-style">Short Close</button>
+          <button className="button-style">Cancel</button> */}
+
+          <button className="button-style" onClick={onClickOpenFolder}>
             Open Folder
           </button>
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: "none" }}
-            onChange={handleFileChange}
-          />
+          {!openFolder ? (
+            <input
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          ) : null}
+
+          <button className="button-style" onClick={onClickCopyDwg}>
+            Copy Drawings
+          </button>
+          <button className="button-style" onClick={PrintPdf}>
+            Print
+          </button>
+          <button className="button-style" onClick={closeButton}>
+            close
+          </button>
+          {/* <button className="button-style">NC Programming</button> */}
         </div>
-        <button className="button-style" style={{ width: "150px" }}>
-          Copy Drawings
-        </button>
-        <button className="button-style" style={{ width: "60px" }} onClick={PrintPdf}>
-          Print
-        </button>
-        {/* <button className="button-style" style={{ width: "170px" }}>
-          NC Programming
-        </button> */}
       </div>
 
-      <Tabs className=" tab_font mt-4">
+      <Tabs className="tab_font mt-1">
         <Tab eventKey="" title="Schedule Details">
           <div className="row">
             <div className="col-md-8">
               <div>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
-                    height: "200px",
                     overflowY: "scroll",
                     overflowX: "scroll",
-                    width: "200px",
                   }}
                 >
                   <thead className="tableHeaderBGColor ">
@@ -433,7 +546,7 @@ export default function CombinedScheduleDetailsFormClosed() {
                   </thead>
 
                   <tbody className="tablebody">
-                    {scheduleListDetailsData.map((item, key) => {
+                    {scheduleListDetailsData?.map((item, key) => {
                       const backgroundColor = getBackgroundColor(item);
                       return (
                         <>
@@ -464,10 +577,9 @@ export default function CombinedScheduleDetailsFormClosed() {
               <div style={{ overflowY: "scroll" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
@@ -497,17 +609,15 @@ export default function CombinedScheduleDetailsFormClosed() {
         <Tab eventKey="combinedScheduleDetails" title="Combined Tasks">
           <div className="row">
             <div className="col-md-8">
-              <button className="button-style" onClick={updateTask}>
+              <button className="button-style mb-1" onClick={updateTask}>
                 Update Task
               </button>
               <div style={{ height: "300px", overflowY: "scroll" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
                   }}
                 >
                   <thead className="tableHeaderBGColor">
@@ -523,7 +633,7 @@ export default function CombinedScheduleDetailsFormClosed() {
                     </tr>
                   </thead>
                   <tbody className="tablebody">
-                    {TaskNoTableData.map((item, key) => {
+                    {TaskNoTableData?.map((item, key) => {
                       return (
                         <>
                           <tr
@@ -550,16 +660,12 @@ export default function CombinedScheduleDetailsFormClosed() {
                   </tbody>
                 </Table>
               </div>
-              <div
-                style={{ height: "190px", width: "400px", overflowY: "scroll" }}
-              >
+              <div style={{ height: "190px", overflowY: "scroll" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
                   }}
                 >
                   <thead className="tableHeaderBGColor">
@@ -574,17 +680,22 @@ export default function CombinedScheduleDetailsFormClosed() {
               </div>
             </div>
             <div className="col-md-4">
-              <div style={{ height: "350px", overflowY: "scroll" }}>
+              <div
+                style={{
+                  height: "300px",
+                  overflowY: "scroll",
+                  marginTop: "37px",
+                }}
+              >
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
                     overflowY: "scroll",
                   }}
                 >
-                  <thead className="tableHeaderBGColor table-space">
+                  <thead className="tableHeaderBGColor table-space label-space">
                     <tr>
                       <th>Dwg Name</th>
                       <th>Qty To Nest</th>
@@ -594,7 +705,7 @@ export default function CombinedScheduleDetailsFormClosed() {
                     </tr>
                   </thead>
                   <tbody className="tablebody table-space">
-                    {DwgNameTableData.map((item, key) => {
+                    {DwgNameTableData?.map((item, key) => {
                       return (
                         <>
                           <tr
@@ -621,15 +732,8 @@ export default function CombinedScheduleDetailsFormClosed() {
         <Tab eventKey="prepareSchedule" title="Original Schedules">
           <div className="row">
             <div className="col-md-5">
-              <div style={{ overflowY: "scroll" }}>
-                <Table
-                  striped
-                  className="table-data border mt-2"
-                  style={{
-                    height: "400px",
-                    overflowY: "scroll",
-                  }}
-                >
+              <div style={{ overflowY: "scroll", height: "400px" }}>
+                <Table striped className="table-data border">
                   <thead className="tableHeaderBGColor table-space ">
                     <tr>
                       <th>OrderSrcNo</th>
@@ -639,7 +743,7 @@ export default function CombinedScheduleDetailsFormClosed() {
                     </tr>
                   </thead>
                   <tbody className="tablebody table-space">
-                    {orinalScheudledata.map((item, key) => {
+                    {orinalScheudledata?.map((item, key) => {
                       return (
                         <>
                           <tr
@@ -667,14 +771,12 @@ export default function CombinedScheduleDetailsFormClosed() {
             </div>
             <div className="col-md-7">
               {" "}
-              <div style={{ overflow: "scroll" }}>
+              <div style={{ overflow: "scroll", height: "400px" }}>
                 <Table
                   striped
-                  className="table-data border mt-2"
+                  className="table-data border"
                   style={{
                     border: "1px",
-                    height: "400px",
-                    overflowY: "scroll",
                   }}
                 >
                   <thead className="tableHeaderBGColor table-space">
@@ -690,7 +792,7 @@ export default function CombinedScheduleDetailsFormClosed() {
                     </tr>
                   </thead>
                   <tbody className="tablebody table-space">
-                    {orinalScheudleTable2.map((item, map) => {
+                    {orinalScheudleTable2?.map((item, map) => {
                       return (
                         <>
                           <tr>
@@ -714,9 +816,14 @@ export default function CombinedScheduleDetailsFormClosed() {
         </Tab>
       </Tabs>
       <PrintModal
-      serviceOpen={serviceOpen}
-      setServiceOpen={setServiceOpen}
-      selectedRow={selectedRow}
+        serviceOpen={serviceOpen}
+        setServiceOpen={setServiceOpen}
+        selectedRow={selectedRow}
+      />
+      <FolderFilesModal
+        openfileModal={openfileModal}
+        setOpenFileModal={setOpenFileModal}
+        files={files}
       />
     </div>
   );

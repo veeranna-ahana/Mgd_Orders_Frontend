@@ -72,7 +72,6 @@ export default function PrepareScheduleTab({
     console.log("Today's Date:", ScheduleDate);
   }, [ScheduleDate]);
 
-  console.log(ScheduleDate);
 
   //select ALL for Right Table
   // const [selectAllChecked, setSelectAllChecked] = useState(false);
