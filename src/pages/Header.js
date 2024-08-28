@@ -20,7 +20,8 @@ function Header({ user }) {
 
   let logout = () => {
     localStorage.removeItem("LazerUser");
-    window.location.replace("/");
+    // window.location.replace("/");
+    window.location.replace("http://172.16.20.61:3000/");
   };
   const [anchorEl, setAnchorEl] = useState(null);
 

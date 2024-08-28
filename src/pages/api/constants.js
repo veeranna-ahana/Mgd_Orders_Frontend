@@ -39,7 +39,7 @@ export const endpoints = {
   bulkChangeUpdate: `${API}/OrderDetails/bulkChangeUpdate`,
   singleChangeUpdate: `${API}/OrderDetails/singleChangeUpdate`,
   postDeleteDetailsBySrl: `${API}/OrderDetails/postDeleteDetailsBySrl`,
-
+  MenuUrlsAPI: `${API}/user/fetchMenuUrls`,
   // profarma inv list...............
   getProfarmaMain: `${API}/profarmaInvList/getProfarmaMain`,
   getProfarmaDetails: `${API}/profarmaInvList/getProfarmaDetails`,
@@ -304,9 +304,8 @@ export const endpoints = {
   deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
   pdfdata: `${API}/ScheduleList/PrintPdf`,
   getCustName: `${API}/ScheduleList/getCustomerName`,
-  getFixtureStatus:`${API}/ScheduleList/checkFixtureOrder`,
-  getProfileOrderStatus:`${API}/ScheduleList/checkProfileOrder`,
-
+  getFixtureStatus: `${API}/ScheduleList/checkFixtureOrder`,
+  getProfileOrderStatus: `${API}/ScheduleList/checkProfileOrder`,
 
   //NCProgram Button
   onClickNCProgram: `${API}/NCProgram/getFormData`,
@@ -404,6 +403,6 @@ export const endpoints = {
   scheduleListDetails: `${API}/scheduleListCombined/scheduleListDetails`,
   ScheduleListClosed: `${API}/scheduleListCombined/ScheduleListClosed`,
   ScheduleListClosedSales: `${API}/scheduleListCombined/ScheduleListClosedSales`,
-  openFolder:`${API}/scheduleListCombined/files`,
-  CopyDwg:`${API}/scheduleListCombined/copyDwg`
+  openFolder: `${API}/scheduleListCombined/files`,
+  CopyDwg: `${API}/scheduleListCombined/copyDwg`,
 };
