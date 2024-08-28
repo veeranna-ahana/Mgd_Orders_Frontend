@@ -9,6 +9,7 @@ import PackingNoteAndInvoice from "./Tabs/PackingNoteAndInvoice";
 import { Create, Today } from "@mui/icons-material";
 import ServiceModal from "./Service PDF/ServiceModal";
 import { type } from "@testing-library/user-event/dist/type";
+import ScheduleLogin from "./ScheduleLogin";
 
 function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
@@ -185,7 +186,6 @@ function ServiceOpenSchedule() {
     let list = { ...item, index: index };
     setRowSelectTaskMaterial(list);
     postRequest(endpoints.getDwgListData, { list }, (response) => {
-      console.log("dwg data response is", response);
       setTmDwgList(response);
     });
   };
@@ -204,13 +204,11 @@ function ServiceOpenSchedule() {
   };
 
   useEffect(() => {
-    console.log("rowselectTaskMaterial is", rowselectTaskMaterial);
     if (rowselectTaskMaterial.length === undefined && TaskMaterialData[0]) {
       postRequest(
         endpoints.getDwgListData,
         { list: rowselectTaskMaterial },
         (response) => {
-          console.log("response is", response);
           setTmDwgList(response);
         }
       );
@@ -412,15 +410,14 @@ function ServiceOpenSchedule() {
                 setNewState(response);
               }
             );
+            postRequest(
+              endpoints.getScheduleListTaskandMaterial,
+              { ScheduleId: formdata[0]?.ScheduleId },
+              (response) => {
+                setTaskMaterialData(response);
+              }
+            );
           }, 3000);
-          postRequest(
-            endpoints.getScheduleListTaskandMaterial,
-            { ScheduleId: formdata[0]?.ScheduleId },
-            (response) => {
-              console.log("response is", response);
-              setTaskMaterialData(response);
-            }
-          );
         } else if (
           response.message.startsWith("Cannot Schedule Zero Quantity For")
         ) {
@@ -445,22 +442,18 @@ function ServiceOpenSchedule() {
     );
   };
 
+  const [scheduleLogin, setScheduleLogin] = useState(false);
   //onClick of yes Payment ALert Modal
   const onClickScheduleYes = () => {
     setOpenScheduleModal(false);
-    toast.warning("Caution Customer for Payment ", {
-      position: toast.POSITION.TOP_CENTER,
-    });
-    toast.warning("Not Scheduled", {
-      position: toast.POSITION.TOP_CENTER,
-    });
+    setScheduleLogin(true);
   };
 
   //onClick No For Payment ALert Modal
   const onClickScheduleNo = () => {
     setOpenScheduleModal(false);
-    toast.warning("Unit Head needs to approve this personally", {
-      position: toast.POSITION.TOP_CENTER,
+    navigate("/Orders/Service/customerSummary", {
+      state: { formdata: formdata, Type: Type, DwgNameList: DwgNameList },
     });
   };
 
@@ -598,7 +591,6 @@ function ServiceOpenSchedule() {
     setServiceOpen(true);
   };
 
-  // console.log("formdata is",formdata);
 
   //
   const handleSchedulelist = (index, field, value) => {
@@ -1524,6 +1516,19 @@ function ServiceOpenSchedule() {
         setServiceOpen={setServiceOpen}
         formdata={formdata}
         Type={Type}
+      />
+
+      <ScheduleLogin
+        scheduleLogin={scheduleLogin}
+        setScheduleLogin={setScheduleLogin}
+        onClickScheduled={onClickScheduled}
+        newState={newState}
+        scheduleDetailsRow={scheduleDetailsRow}
+        formdata={formdata}
+        setFormdata={setFormdata}
+        DwgNameList={DwgNameList}
+        setTaskMaterialData={setTaskMaterialData}
+        setNewState={setNewState}
       />
     </div>
   );
