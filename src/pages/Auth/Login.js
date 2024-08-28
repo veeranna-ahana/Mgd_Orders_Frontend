@@ -27,7 +27,6 @@ function Login() {
   };
 
   function submitLogin() {
-    console.log("func called");
     postRequest(
       // "http://localhost:5001/user/login",
       `${apiKey}/user/login`,

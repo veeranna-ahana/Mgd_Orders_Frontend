@@ -14,6 +14,7 @@ function ServiceNCProgram() {
   const DwgNameList = location?.state?.DwgNameList || [];
 
 
+
   const [NCprogramForm, setNCProgramForm] = useState([]);
   const [machineList, setMachineList] = useState([]);
 
@@ -41,7 +42,6 @@ function ServiceNCProgram() {
   const getPartsData = () => {
     if (NCprogramForm) {
       postRequest(endpoints.getPartsData, { NCprogramForm }, (response) => {
-        console.log("NCProgramList is", response);
         setPartsData(response);
       });
     }
@@ -181,7 +181,6 @@ function ServiceNCProgram() {
     });
   };
 
-  console.log("NCprogramForm is", NCprogramForm);
 
   return (
     <div>
@@ -324,7 +323,7 @@ function ServiceNCProgram() {
                   ? `/Orders/Fabrication/FabricationOpenSchedule`
                   : null
               }
-              state={{ DwgNameList, Type: Type }} // Corrected here
+              state={{ DwgNameList, Type: Type }} 
             >
             <button className="button-style">Close</button>
           </Link>

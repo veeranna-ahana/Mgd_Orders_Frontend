@@ -54,7 +54,6 @@ import CombinedScheduleList from "./pages/Combined Schedules_JobWork/Job Work/Sc
 import CombinedScheduleDetailsForm from "./pages/Combined Schedules_JobWork/Job Work/ScheduleList/Order/CombinedScheduleDetailsForm";
 import Open from "./pages/Combined Schedules_JobWork/Job Work/Open/Open";
 
-
 // Service
 import ServiceNewOrder from "./pages/Sales/Orders/Menus/Service/NewOrder/ServiceNewOrder";
 import ServiceFindOrder from "./pages/Sales/Orders/Menus/Service/FindOrder/ServiceFindOrder";
@@ -112,11 +111,13 @@ import CombinedScheduleListClosedJW from "./pages/Combined Schedules_JobWork/Job
 import CombinedScheduleListClosedSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Closed/CombinedScheduleListClosedSales";
 import TaskSheet from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/TaskSheet";
 import SolidStateLaserTable from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/SolidStateLaserTable";
-import CoTable from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/CoTable"
+import CoTable from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/CoTable";
 import Solidstatelaser from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/JobParameters/SolidStateLaser/Solidstatelaser";
 import Co2Form from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/JobParameters/Co2Form/Co2Form";
 import CombinedScheduleDetailsFormSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Order/CombinedScheduleDetailsFormSales";
 import CombinedScheduleDetailsFormClosedSales from "./pages/Combined Schedules_JobWork/Sales/ScheduleList/Closed/CombinedScheduleDetailsFormClosedSales";
+import Commercial from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/CustomerSummary";
+import ScheduleLogin from "./pages/Sales/Orders/Menus/Service/ScheduleCreationForm/BodyTabs/ScheduleList/ScheduleLogin";
 
 function App() {
   return (
@@ -162,7 +163,10 @@ function App() {
 
                   {/* SALES */}
                   <Route path="/Orders/Sales" element={<SalesCreate />} />
-                  <Route path="/Orders/Sales/Create" element={<SalesCreate/>} />
+                  <Route
+                    path="/Orders/Sales/Create"
+                    element={<SalesCreate />}
+                  />
                   <Route path="/Orders/Sales/Open" element={<Open />} />
 
                   <Route
@@ -188,7 +192,6 @@ function App() {
                   />
                   {/* Prakruthis */}
 
-                  
                   <Route index={true} />
 
                   <Route path="Profile">
@@ -323,11 +326,16 @@ function App() {
                       element={<ServiceNewOrderSerial />}
                     />
 
-                    <Route path="NCProgram" element={<ServiceNCProgram />}/>
+                    <Route path="NCProgram" element={<ServiceNCProgram />} />
                     <Route path="TaskSheet" element={<TaskSheet />} />
-                    <Route path="Solidstatelaser" element={<Solidstatelaser />} />
-                    <Route path="Co2Form" element={<Co2Form/>} />
+                    <Route
+                      path="Solidstatelaser"
+                      element={<Solidstatelaser />}
+                    />
+                    <Route path="Co2Form" element={<Co2Form />} />
 
+                    {/* Customer summary screen */}
+                    <Route path="customerSummary" element={<Commercial/>} />
 
                     <Route
                       path="OrderSchedule"

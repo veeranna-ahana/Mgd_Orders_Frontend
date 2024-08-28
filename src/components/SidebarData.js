@@ -260,14 +260,14 @@ export const ordersSidebar = [
             path: "/Orders/JobWork/CREATE",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
-          {
-            title: "Open",
-            path: "/Orders/JobWork/OPEN",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
+          // {
+          //   title: "Open",
+          //   path: "/Orders/JobWork/OPEN",
+          //   icon: <AiIcons.AiOutlineArrowRight />,
+          // },
           {
             title: "ScheduleList",
-            path: "/Orders/JobWork/ScheduleList",
+            // path: "/Orders/JobWork/ScheduleList",
             icon: <AiIcons.AiOutlineArrowRight />,
             subNav: [
               {
@@ -294,14 +294,14 @@ export const ordersSidebar = [
             path: "/Orders/Sales/Create",
             icon: <AiIcons.AiOutlineArrowRight />,
           },
-          {
-            title: "Open",
-            path: "/Orders/Sales/Open",
-            icon: <AiIcons.AiOutlineArrowRight />,
-          },
+          // {
+          //   title: "Open",
+          //   path: "/Orders/Sales/Open",
+          //   icon: <AiIcons.AiOutlineArrowRight />,
+          // },
           {
             title: "ScheduleList",
-            path: "/Orders/Sales/ScheduleList",
+            // path: "/Orders/Sales/ScheduleList",
             icon: <AiIcons.AiOutlineArrowRight />,
             subNav: [
               {

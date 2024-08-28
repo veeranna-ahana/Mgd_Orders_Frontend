@@ -259,7 +259,6 @@ function CombinedScheduleDetailsForm() {
       });
   };
 
-  console.log(selectedRow);
 
   return (
     <div>

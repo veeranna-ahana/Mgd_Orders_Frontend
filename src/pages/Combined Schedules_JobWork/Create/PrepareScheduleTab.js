@@ -25,6 +25,10 @@ export default function PrepareScheduleTab({
   setOrderSchedule,
   beforecombineSales,
   setBeforeCombineSales,
+  setSelectedRowIndex,
+  selectedRowIndex,
+  setRowSelectEnable,
+  rowSelectEnable,disablebutton, setDisableButton
 }) {
   const [openCombinedSchedule, setOpenCombinedSchedule] = useState(false);
   const [openTasked, setOpenTasked] = useState(false);
@@ -73,7 +77,6 @@ export default function PrepareScheduleTab({
   const [ScheduleDate, setScheduleDate] = useState(getTodayDate());
   useEffect(() => {
     // You can use todayDate in any way you need
-    console.log("Today's Date:", ScheduleDate);
   }, [ScheduleDate]);
 
   //select ALL for Right Table
@@ -133,6 +136,7 @@ export default function PrepareScheduleTab({
     setBeforeCombine(updatedBeforeCombine);
     // Clear the rowselectleft array
     setRowSelectLeft([]);
+    setPrepareScheduleData([]);
   };
 
   //select ALL FOR LEFT TABLE
@@ -189,14 +193,12 @@ export default function PrepareScheduleTab({
       },
       (response) => {
         setBeforeCombine(response);
-        console.log("data after combined", response);
       }
     );
   };
 
   //Create Schedule
   const [combinedScheduleNo, setCombinedScheduleNo] = useState("");
-  const [disablebutton, setDisableButton] = useState(false);
   const onClickCreateSchedule = () => {
     if (selectedSalesContact === "" || null) {
       alert("Please Select Sales Contact");
@@ -216,6 +218,12 @@ export default function PrepareScheduleTab({
             },
             (response) => {
               setDisableButton(true);
+              console.log(
+                "response after create is",
+                response.combinedScheduleNos[0],
+                "another is",
+                response.combinedScheduleNos
+              );
               setCombinedScheduleNo(response.combinedScheduleNos[0]);
               openCombineScheduleModal();
               getAlldataAfterCombineSchedule();
@@ -275,6 +283,9 @@ export default function PrepareScheduleTab({
     );
   };
 
+
+
+
   useEffect(() => {
     getAlldataAfterCombineSchedule();
   }, [combinedScheduleNo]);
@@ -320,13 +331,15 @@ export default function PrepareScheduleTab({
 
   //Prepare Schedule for sales
   const onclickpreapreScheduleButtonSales = () => {
+    setRowSelectEnable(true);
     postRequest(
       endpoints.prepareScheduleSales,
       {
-        ScheduleId: rowselectleftSales[0].ScheduleId,
+        ScheduleId: selectedRowIndexSales?.ScheduleID,
       },
       (response) => {
         setPrepareScheduleData(response);
+        setDisableButton(false);
       }
     );
   };
@@ -343,52 +356,72 @@ export default function PrepareScheduleTab({
     setBeforeCombineSales(updatedBeforeCombineSales);
     // Clear the rowselectleft array
     // setSelectedRowsSales([]);
+    setPrepareScheduleData([]);
   };
 
+
   //JobWork Row select
-  const [selectedRowIndex, setSelectedRowIndex] = useState(null);
   const handleRowClick = (item, index) => {
     let list = { ...item, index: index };
-
     if (Object.keys(list).length !== 0) {
       // Check if list is not empty
       setSelectedRowIndex(list);
-
-      postRequest(
-        endpoints.prepareSchedule,
-        {
-          ScheduleId: list?.ScheduleId, // Assuming ScheduleId is a property of list
-        },
-        (response) => {
-          setPrepareScheduleData(response);
-        }
-      );
+      if (rowSelectEnable) {
+        postRequest(
+          endpoints.prepareSchedule,
+          {
+            ScheduleId: list?.ScheduleId,
+          },
+          (response) => {
+            // console.log("response is",response);
+            setPrepareScheduleData(response);
+          }
+        );
+      }
     }
   };
+
+  useEffect(() => {
+    if (beforecombine.length > 0 && !selectedRowIndex.OrdSchNo) {
+      handleRowClick(beforecombine[0], 0); // Select the first row
+    }
+  }, [beforecombine, handleRowClick]);
 
   //Sales Row Select
   const [selectedRowIndexSales, setSelectedRowIndexSales] = useState(null);
   const handleRowClickSales = (item, index) => {
     let list = { ...item, index: index };
-
     if (Object.keys(list).length !== 0) {
       // Check if list is not empty
-      setSelectedRowIndex(list);
+      setSelectedRowIndexSales(list);
 
-      postRequest(
-        endpoints.prepareScheduleSales,
-        {
-          ScheduleId: list?.ScheduleId, // Assuming ScheduleId is a property of list
-        },
-        (response) => {
-          console.log("response of row select", response);
-          setSelectedRowIndexSales(response);
-        }
-      );
+      if (rowSelectEnable) {
+        postRequest(
+          endpoints.prepareScheduleSales,
+          {
+            ScheduleId: list?.ScheduleID,
+          },
+          (response) => {
+            // console.log("response of row select", response);
+            setPrepareScheduleData(response);
+          }
+        );
+      }
     }
   };
 
-  console.log("selectedRowIndex is", selectedRowIndexSales);
+  useEffect(() => {
+    if (beforecombineSales.length > 0 && !selectedRowIndexSales?.TaskNo) {
+      handleRowClickSales(beforecombineSales[0], 0); // Select the first row
+    }
+  }, [beforecombineSales, handleRowClickSales]);
+
+
+  
+  useEffect(()=>{
+    setBeforeCombineSales([]);
+    setPrepareScheduleData([]);
+  },[selectedCustomerSales])
 
   return (
     <>
@@ -455,8 +488,11 @@ export default function PrepareScheduleTab({
                       return (
                         <tr
                           key={key}
+                          onClick={() => handleRowClickSales(value, key)}
                           className={
-                            key === selectedRows?.index ? "selcted-row-clr" : ""
+                            key === selectedRowIndexSales?.index
+                              ? "selcted-row-clr"
+                              : ""
                           }
                         >
                           <td>
@@ -520,14 +556,7 @@ export default function PrepareScheduleTab({
                   </thead>
                   <tbody className="tablebody table-space">
                     {preapreScheduleData?.map((data, key) => (
-                      <tr
-                        onClick={() => handleRowClickSales(data, key)}
-                        className={
-                          key === selectedRowIndexSales?.index
-                            ? "selcted-row-clr"
-                            : ""
-                        }
-                      >
+                      <tr>
                         {" "}
                         <td>{data.DwgName}</td>
                         <td>{data.QtyToNest}</td>
