@@ -591,7 +591,6 @@ function ServiceOpenSchedule() {
     setServiceOpen(true);
   };
 
-
   //
   const handleSchedulelist = (index, field, value) => {
     if (value > scheduleDetailsRow?.QtyToSchedule) {
@@ -869,18 +868,7 @@ function ServiceOpenSchedule() {
           >
             Schedule
           </button>
-          {(formdata[0]?.Schedule_Status === "Tasked" ||
-            formdata[0]?.Schedule_Status === "Dispatched") && (
-            <style>
-              {`
-            .button-style[disabled] {
-                background-color: grey;
-            }
-            `}
-            </style>
-          )}
 
-          {/* <Link to={"/Orders/Service/NCProgram"}   state={scheduleDetailsRow}> */}
           <button
             className="button-style "
             onClick={onClickNCProgram}
@@ -896,34 +884,6 @@ function ServiceOpenSchedule() {
             NC Program
           </button>
           {/* </Link> */}
-
-          {/* <button
-            className="button-style"
-            onClick={onClickTasked}
-            disabled={
-              formdata[0]?.Schedule_Status === "Dispatched" ||
-              formdata[0]?.Schedule_Status === "Cancelled" ||
-              formdata[0]?.Schedule_Status === "Closed" ||
-              formdata[0]?.Schedule_Status === "ShortClosed" ||
-              formdata[0]?.Schedule_Status === "Suspended" ||
-              formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Tasked" ||
-              formdata[0]?.Schedule_Status === "Ready" ||
-              formdata[0]?.Schedule_Status === "Programmed" ||
-              formdata[0]?.Schedule_Status === "Production" ||
-              formdata[0]?.Schedule_Status === "Completed" ||
-              formdata[0]?.Schedule_Status === "Inspected"
-            }
-          >
-            Task
-          </button>
-          <style>
-            {`
-            .button-style[disabled] {
-                background-color: grey;
-            }
-            `}
-          </style> */}
 
           <button
             className="button-style"
@@ -1012,12 +972,6 @@ function ServiceOpenSchedule() {
           >
             Fixture Order
           </button>
-
-          {/* <button className="button-style" onClick={profileOrderOpen1}>
-            Profile Order
-          </button>
-
-          <button className="button-style ">Show DXF</button> */}
         </div>
       </div>
 
