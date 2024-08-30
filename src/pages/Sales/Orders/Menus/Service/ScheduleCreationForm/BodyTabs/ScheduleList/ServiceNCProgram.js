@@ -8,12 +8,10 @@ import { ToastContainer, toast } from "react-toastify";
 
 function ServiceNCProgram() {
   const location = useLocation(); // Access location object using useLocation hook
-  const response = location?.state.response || [];
-  const MachineList = location?.state.responsedata || [];
+  const response = location?.state?.response || [];
+  const MachineList = location?.state?.responsedata || [];
   const Type = location?.state?.Type || []; //get types
   const DwgNameList = location?.state?.DwgNameList || [];
-
-
 
   const [NCprogramForm, setNCProgramForm] = useState([]);
   const [machineList, setMachineList] = useState([]);
@@ -36,6 +34,8 @@ function ServiceNCProgram() {
       setNCProgramData(response);
     });
   };
+
+ 
 
   //get PartsData
   const [partsData, setPartsData] = useState([]);
@@ -62,13 +62,14 @@ function ServiceNCProgram() {
   };
 
   //Default first row select
-  useEffect(() => {
-    if (NCProramData.length > 0 && !selectedNCprogram.NCProgramNo) {
-      onClickSelectedNCprogram(NCProramData[0], 0); // Select the first row
-    }
-  }, [NCProramData, selectedNCprogram, onClickSelectedNCprogram]);
+  // useEffect(() => {
+  //   if (NCProramData.length > 0 && !selectedNCprogram.NCProgramNo) {
+  //     onClickSelectedNCprogram(NCProramData[0], 0); // Select the first row
+  //   }
+  // }, [NCProramData, selectedNCprogram, onClickSelectedNCprogram]);
 
-  //ADD NCPROGRAM
+
+  //ADD NCPROGRAM                 
   const OnclickAddNCProgram = () => {
     if (!selectedMachine) {
       toast.error("Please Select Machine", {
@@ -107,8 +108,12 @@ function ServiceNCProgram() {
       toast.success(response.message, {
         position: toast.POSITION.TOP_CENTER,
       });
-      getNCProgramData();
-    });
+      postRequest(endpoints.getNCPrograms, { NCprogramForm }, (response) => {
+        setNCProgramData(response);
+        // setSelectedNCProgram({ ...NCProramData[0], index: 0 });
+        setSelectedNCProgram({});
+      }); 
+      });
   };
 
   //Delete Modal
@@ -181,6 +186,7 @@ function ServiceNCProgram() {
     });
   };
 
+  console.log("selectedNCprogram is",selectedNCprogram);
 
   return (
     <div>
@@ -268,23 +274,16 @@ function ServiceNCProgram() {
           <button
             className="button-style"
             onClick={openDeleteModal}
-            disabled={selectedNCprogram.PStatus !== "Created"}
+            disabled={selectedNCprogram?.PStatus !== "Created"}
           >
             Delete Program
           </button>
-          {selectedNCprogram.PStatus !== "Created" && (
-            <style>
-              {`
-            .button-style[disabled] {
-                background-color: grey;
-                cursor: not-allowed;
-            }
-            `}
-            </style>
-          )}
+          
+
           <button className="button-style" onClick={OnclickButtonSave}>
             Save
           </button>
+
           <button
             className="button-style"
             // style={{ width: "250px" }}
@@ -293,38 +292,31 @@ function ServiceNCProgram() {
           >
             Send to Material Issue
           </button>
-          {selectedNCprogram.PStatus !== "Created" && (
-            <style>
-              {`
-            .button-style[disabled] {
-                background-color: grey;
-                cursor: not-allowed;
-            }
-            `}
-            </style>
-          )}
+         
 
           <button className="button-style" onClick={onClickTaskSheet}>
             TaskSheet
           </button>
+
           <button className="button-style" onClick={onClickSolidState}>
             Solid State
           </button>
+
           <button className="button-style" onClick={onClickCo2State}>
             Co2 Form
           </button>
           <Link
-              to={
+            to={
               Type === "Profile"
-                  ? `/Orders/Profile/ProfileOpenSchedule`
-                  : Type === "Service"
-                  ? `/Orders/Service/ServiceOpenSchedule`
-                  : Type === "Fabrication"
-                  ? `/Orders/Fabrication/FabricationOpenSchedule`
-                  : null
-              }
-              state={{ DwgNameList, Type: Type }} 
-            >
+                ? `/Orders/Profile/ProfileOpenSchedule`
+                : Type === "Service"
+                ? `/Orders/Service/ServiceOpenSchedule`
+                : Type === "Fabrication"
+                ? `/Orders/Fabrication/FabricationOpenSchedule`
+                : null
+            }
+            state={{ DwgNameList, Type: Type }}
+          >
             <button className="button-style">Close</button>
           </Link>
         </div>

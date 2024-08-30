@@ -26,7 +26,7 @@ function Commercial() {
   let navigate = useNavigate();
   const location = useLocation(); // Access location object using useLocation hook
 
-  const formdata = location?.state.formdata || [];
+  const formdata = location?.state?.formdata || [];
   const Type = location?.state?.Type || [];
   const DwgNameList = location?.state?.DwgNameList || [];
 

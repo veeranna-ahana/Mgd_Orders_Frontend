@@ -574,6 +574,13 @@ input::-webkit-inner-spin-button {
   font-size: 12px;
 }
 
+.button-style:disabled {
+  background-color: grey;    /* Grey background for disabled button */
+  color: #ffffff;
+  cursor: not-allowed;       /* Not-allowed cursor for disabled state */
+  opacity: 0.6;              /* Reduced opacity to indicate disabled state */
+}
+
 th {
   font-size: 12px !important;
   padding: 3px !important;
