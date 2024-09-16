@@ -683,7 +683,7 @@ function ServiceOpenSchedule() {
           <input
             className="in-field"
             type="text"
-            value={formdata[0]?.ScheduleType}
+            value={Type}
             disabled
           />
         </div>

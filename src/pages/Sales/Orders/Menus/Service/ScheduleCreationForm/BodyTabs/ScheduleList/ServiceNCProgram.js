@@ -472,6 +472,8 @@ function ServiceNCProgram() {
         {/* <div className="row "> */}
         <div className="col-md-5 col-sm-12">
           <br></br>
+          <h9>BOM Material Availablity :</h9>
+
           <div
             className=""
             style={{
@@ -557,7 +559,7 @@ function ServiceNCProgram() {
           >
             <Table
               striped
-              className="table-data border"
+              className="table-data border mt-4"  
               style={{ border: "1px" }}
             >
               <thead className="tableHeaderBGColor">
