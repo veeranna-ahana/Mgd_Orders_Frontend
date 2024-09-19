@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import {
   Page,
@@ -18,9 +18,9 @@ const styles = StyleSheet.create({
   page: {
     fontSize: 11,
     flexDirection: "column",
-    marginTop: 30, // Adjust top margin for the whole page
-    marginBottom: 50, // Adjust bottom margin for the whole page
-    paddingBottom: 50, // Ensure there is enough space at the bottom
+    marginTop: 30,
+    marginBottom: 50,
+    paddingBottom: 50,
   },
   tableContainer: {
     flexDirection: "row",
@@ -104,7 +104,8 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   codestyle: {
-    marginLeft: "15px",
+    marginLeft: "35px",
+    marginTop: "15px",
   },
   MagodTitle: {
     width: "70%",
@@ -175,71 +176,86 @@ const styles = StyleSheet.create({
   },
   scheduleViewSection: {
     marginLeft: "30px",
-    width: "25%",
+    width: "38%",
     borderBottom: 1,
     borderTop: 1,
     borderLeft: 1,
   },
   scheduleViewSection1: {
-    width: "25%",
+    width: "31%",
     borderBottom: 1,
     borderTop: 1,
     borderLeft: 1,
   },
   scheduleViewSection2: {
-    width: "45%",
+    width: "25%",
     border: 1,
+    borderRight: 1,
   },
 
   cornertableWidth: {
     width: "25%",
   },
-  Schedule: {
-    width: "50%",
-    marginLeft: 15,
+  POno: {
+    width: "40%",
+    marginLeft: 10,
     paddingBottom: "3px",
   },
-  Scheduledata: {
-    width: "50%",
-    paddingBottom: "3px",
-  },
-  delivarydate: {
-    width: "50%",
-    marginLeft: 15,
-    paddingBottom: "3px",
-  },
-  delivarydatedata: {
+  POnodata: {
     width: "50%",
     paddingBottom: "3px",
   },
 
-  Schedule1: {
-    width: "25%",
+  SalesContact: {
+    width: "30%",
+    marginLeft: 10,
+    paddingBottom: "3px",
+  },
+  SalesContactData: {
+    width: "30%",
+    marginLeft: 10,
+    paddingBottom: "3px",
+  },
+
+  ScheduleDate: {
+    width: "40%",
+    marginLeft: 10,
+    paddingBottom: "8px",
+  },
+  ScheduleDatedata: {
+    width: "30%",
+    paddingBottom: "8px",
+  },
+  DeliverDate: {
+    width: "35%",
+    marginLeft: 15,
+    paddingBottom: "8px",
+  },
+  DeliverDatedata: {
+    width: "35%",
+    paddingBottom: "8px",
+  },
+
+  TargetDate: {
+    width: "37%",
+    marginLeft: 15,
+  },
+  TargetDatedata: {
+    width: "32%",
+  },
+
+  Instruction: {
+    width: "33%",
     marginLeft: 15,
     paddingBottom: "3px",
   },
-  Scheduledata1: {
-    width: "75%",
-    paddingBottom: "3px",
-  },
-  delivarydate1: {
-    width: "25%",
-    marginLeft: 15,
-    paddingBottom: "3px",
-  },
-  delivarydatedata1: {
-    width: "75%",
+  InstructionData: {
+    width: "33%",
     paddingBottom: "3px",
   },
 
   targetdateview: {
-    width: "50%",
-    marginLeft: 15,
-    paddingBottom: "3px",
-  },
-  targerdatedata: {
-    width: "50%",
-    paddingBottom: "3px",
+    width: "40%",
   },
   contactsection: {
     width: "25%",
@@ -377,7 +393,7 @@ const styles = StyleSheet.create({
   tableDisplay: {
     width: "100%",
     marginTop: "10px",
-    // borderBottom:1,
+    borderBottom: 1,
   },
   srl: {
     width: "10%",
@@ -467,7 +483,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   sheetDetails: {
-    width: "50%",
+    width: "30%",
     paddingBottom: "3px",
     paddingTop: "3px",
     textAlign: "center",
@@ -532,7 +548,7 @@ const styles = StyleSheet.create({
   titlePlace: {
     marginLeft: "50%",
   },
-  instruction: {
+  ScheduleNO: {
     marginTop: "5px",
     width: "95%",
     marginLeft: "30px",
@@ -649,626 +665,628 @@ const PrintPDF = ({ formdata }) => {
     );
   }, [formdata]);
   
+
+
   return (
     <Document>
-      {Array.from({ length: totalPages }, (_, pageIndex) => (
-        <Page
-          key={pageIndex}
-          size="A4"
-          style={[styles.page, pageIndex === 0 ? styles.firstPage : null]}
-          orientation="landscape"
-        >
-          {/* <View style={styles.codestyle}>
-            <Text style={styles.code}>F 32 Rev 3</Text>
-          </View> */}
+    {Array.from({ length: totalPages }, (_, pageIndex) => (
+      <Page
+        key={pageIndex}
+        size="A4"
+        style={[styles.page, pageIndex === 0 ? styles.firstPage : null]}
+        orientation="landscape"
+      >
+        {/* <View style={styles.codestyle}>
+          <Text style={styles.code}>F 32 Rev 3</Text>
+        </View> */}
 
-          <View style={styles.tableContainer}>
-            {Tabledata.map((item, index) => (
-              <View key={index}>
-                {index === 0 && (
-                  <View style={styles.row}>
-                    <View style={styles.column}>
-                      <View style={styles.row}>
-                        <View style={styles.logostyle}>
-                          <Image src={magodlogo} style={styles.logo} />
-                        </View>
+        <View style={styles.tableContainer}>
+          {Tabledata.map((item, index) => (
+            <View key={index}>
+              {index === 0 && (
+                <View style={styles.row}>
+                  <View style={styles.column}>
+                    <View style={styles.row}>
+                      <View style={styles.logostyle}>
+                        <Image src={magodlogo} style={styles.logo} />
                       </View>
                     </View>
+                  </View>
 
-                    <View style={styles.MagodTitle}>
-                      <View>
+                  <View style={styles.MagodTitle}>
+                    <View>
+                      <Text
+                        style={[styles.titleBold, { marginLeft: "20px" }]}
+                      >
+                        Magod Laser Machining Pvt Ltd
+                      </Text>
+                      <View style={styles.titlePlace}>
                         <Text
-                          style={[styles.titleBold, { marginLeft: "20px" }]}
-                        >
-                          Magod Laser Machining Pvt Ltd
-                        </Text>
-                        <View style={styles.titlePlace}>
-                          <Text
-                            style={[
-                              styles.globalfontwithoutbold,
-                              { fontSize: "15px" },
-                            ]}
-                          >
-                            {item.location}
-                          </Text>
-                        </View>
-
-                        <Text
-                          style={[styles.typeofform, { marginLeft: "20px" }]}
-                        >
-                          {item.typeofform}
-                        </Text>
-                      </View>
-                    </View>
-
-                    <View style={styles.tableContainer2}>
-                      <View>
-                        <View
                           style={[
-                            styles.pageNumberContainer,
-                            { textAlign: "right" },
+                            styles.globalfontwithoutbold,
+                            { fontSize: "15px" },
                           ]}
                         >
-                          <Text
-                            style={styles.pageNumberText}
-                            render={({ pageNumber }) => `${pageNumber}`}
-                            fixed
-                          />
-                        </View>
+                          {item.location}
+                        </Text>
+                      </View>
+
+                      <Text
+                        style={[styles.typeofform, { marginLeft: "20px" }]}
+                      >
+                        {item.typeofform}
+                      </Text>
+                    </View>
+                  </View>
+
+                  <View style={styles.tableContainer2}>
+                    <View>
+                      <View
+                        style={[
+                          styles.pageNumberContainer,
+                          { textAlign: "right" },
+                        ]}
+                      >
+                        <Text
+                          style={styles.pageNumberText}
+                          render={({ pageNumber }) => `${pageNumber}`}
+                          fixed
+                        />
                       </View>
                     </View>
                   </View>
-                )}
-              </View>
-            ))}
+                </View>
+              )}
+            </View>
+          ))}
 
-            {Tabledata.map((item, index) => (
-              <View key={index}>
-                {pageIndex === 0 && index === 0 && (
-                  <View>
-                    <View style={styles.row}>
-                      <View style={styles.scheduleViewSection}>
-                        <View style={styles.column}>
-                          <View style={styles.Schedule}>
-                            <Text style={styles.globalfontwithbold}>
-                              PO No{" "}
-                            </Text>
-                          </View>
-                          <View style={styles.Scheduledata}>
-                            <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp;{formdata.PO}
-                            </Text>
-                          </View>
+          {Tabledata.map((item, index) => (
+            <View key={index}>
+              {pageIndex === 0 && index === 0 && (
+                <View>
+                  <View style={styles.row}>
+                    <View style={styles.scheduleViewSection}>
+                      <View style={styles.column}>
+                        <View style={styles.Schedule}>
+                          <Text style={styles.globalfontwithbold}>
+                            PO No{" "}
+                          </Text>
                         </View>
-                        <View style={styles.column}>
-                          <View style={styles.delivarydate}>
-                            <Text style={styles.globalfontwithoutbold}> </Text>
-                          </View>
-                          <View style={styles.delivarydatedata}>
-                            <Text style={styles.globalfontwithbold}> </Text>
-                          </View>
+                        <View style={styles.Scheduledata}>
+                          <Text style={styles.globalfontwithbold}>
+                            :&nbsp;&nbsp;{formdata.PO}
+                          </Text>
                         </View>
-
-                        <View style={styles.column}>
-                          <View style={styles.delivarydate}>
-                            <Text style={styles.globalfontwithoutbold}>
-                              Sales Contact
-                            </Text>
-                          </View>
-                          <View style={styles.delivarydatedata}>
-                            <Text style={styles.globalfontwithbold}>
-                              {" "}
-                              : {formdata.SalesContact}
-                            </Text>
-                          </View>
+                      </View>
+                      <View style={styles.column}>
+                        <View style={styles.delivarydate}>
+                          <Text style={styles.globalfontwithoutbold}> </Text>
+                        </View>
+                        <View style={styles.delivarydatedata}>
+                          <Text style={styles.globalfontwithbold}> </Text>
                         </View>
                       </View>
 
-                      <View style={styles.scheduleViewSection1}>
-                        <View style={styles.column}>
-                          <View style={styles.Schedule}>
-                            <Text style={styles.globalfontwithoutbold}>
-                              Schedule Date{" "}
-                            </Text>
-                          </View>
-                          <View style={styles.Scheduledata}>
-                            <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp;{formatDate(formdata.ScheduleDate)}
-                            </Text>
-                          </View>
+                      <View style={styles.column}>
+                        <View style={styles.delivarydate}>
+                          <Text style={styles.globalfontwithoutbold}>
+                            Sales Contact
+                          </Text>
                         </View>
-
-                        <View style={styles.column}>
-                          <View style={styles.delivarydate}>
-                            <Text style={styles.globalfontwithoutbold}></Text>
-                          </View>
-                          <View style={styles.delivarydatedata}>
-                            <Text style={styles.globalfontwithbold}></Text>
-                          </View>
-                        </View>
-
-                        <View style={styles.column}>
-                          <View style={styles.targetdateview}>
-                            <Text style={styles.globalfontwithoutbold}>
-                              Delivery Date
-                            </Text>
-                          </View>
-                          <View style={styles.targerdatedata}>
-                            <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp; {formatDate(formdata.Delivery_Date)}
-                            </Text>
-                          </View>
-                        </View>
-
-                        <View style={styles.column}>
-                          <View style={styles.targetdateview}>
-                            <Text style={styles.globalfontwithoutbold}>
-                              Target Date
-                            </Text>
-                          </View>
-                          <View style={styles.targerdatedata}>
-                            <Text style={styles.globalfontwithbold}>
-                              :&nbsp;&nbsp;{formatDate(formdata.schTgtDate)}
-                            </Text>
-                          </View>
-                        </View>
-                      </View>
-
-                      <View style={styles.scheduleViewSection2}>
-                        <View style={styles.column}>
-                          <View style={styles.Schedule1}>
-                            <Text style={styles.globalfontwithbold}>
-                              Instruction :
-                            </Text>
-                          </View>
-                          <View style={styles.Scheduledata1}>
-                            <Text style={styles.globalfontwithbold}>
-                              {formdata.Special_Instructions}
-                            </Text>
-                          </View>
+                        <View style={styles.delivarydatedata}>
+                          <Text style={styles.globalfontwithbold}>
+                            {" "}
+                            : {formdata.SalesContact}
+                          </Text>
                         </View>
                       </View>
                     </View>
 
-                    <View style={styles.instruction}>
+                    <View style={styles.scheduleViewSection1}>
+                      <View style={styles.column}>
+                        <View style={styles.Schedule}>
+                          <Text style={styles.globalfontwithoutbold}>
+                            Schedule Date{" "}
+                          </Text>
+                        </View>
+                        <View style={styles.Scheduledata}>
+                          <Text style={styles.globalfontwithbold}>
+                            :&nbsp;&nbsp;{formatDate(formdata.ScheduleDate)}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={styles.column}>
+                        <View style={styles.delivarydate}>
+                          <Text style={styles.globalfontwithoutbold}></Text>
+                        </View>
+                        <View style={styles.delivarydatedata}>
+                          <Text style={styles.globalfontwithbold}></Text>
+                        </View>
+                      </View>
+
                       <View style={styles.column}>
                         <View style={styles.targetdateview}>
-                          <Text style={styles.datawithoutbline}>
-                            Schedule NO: {formdata.OrdSchNo}
+                          <Text style={styles.globalfontwithoutbold}>
+                            Delivery Date
                           </Text>
                         </View>
-                        {/* <View style={styles.targerdatedata}>
-        <Text style={styles.datawithoutbline}>234105 01
-</Text>
-      </View> */}
+                        <View style={styles.targerdatedata}>
+                          <Text style={styles.globalfontwithbold}>
+                            :&nbsp;&nbsp; {formatDate(formdata.Delivery_Date)}
+                          </Text>
+                        </View>
+                      </View>
 
+                      <View style={styles.column}>
                         <View style={styles.targetdateview}>
-                          <Text style={styles.datawithoutbline}>
-                            Customer Name : {custname}
+                          <Text style={styles.globalfontwithoutbold}>
+                            Target Date
                           </Text>
                         </View>
-                        {/* <View style={styles.targerdatedata}>
-        <Text style={styles.datawithoutbline}>SEALTITE DICHTUNGS PVT, LTD.</Text>
-      </View> */}
+                        <View style={styles.targerdatedata}>
+                          <Text style={styles.globalfontwithbold}>
+                            :&nbsp;&nbsp;{formatDate(formdata.schTgtDate)}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+
+                    <View style={styles.scheduleViewSection2}>
+                      <View style={styles.column}>
+                        <View style={styles.Schedule1}>
+                          <Text style={styles.globalfontwithbold}>
+                            Instruction :
+                          </Text>
+                        </View>
+                        <View style={styles.Scheduledata1}>
+                          <Text style={styles.globalfontwithbold}>
+                            {formdata.Special_Instructions}
+                          </Text>
+                        </View>
                       </View>
                     </View>
                   </View>
-                )}
+
+                  <View style={styles.instruction}>
+                    <View style={styles.column}>
+                      <View style={styles.targetdateview}>
+                        <Text style={styles.datawithoutbline}>
+                          Schedule NO: {formdata.OrdSchNo}
+                        </Text>
+                      </View>
+                      {/* <View style={styles.targerdatedata}>
+      <Text style={styles.datawithoutbline}>234105 01
+</Text>
+    </View> */}
+
+                      <View style={styles.targetdateview}>
+                        <Text style={styles.datawithoutbline}>
+                          Customer Name : {custname}
+                        </Text>
+                      </View>
+                      {/* <View style={styles.targerdatedata}>
+      <Text style={styles.datawithoutbline}>SEALTITE DICHTUNGS PVT, LTD.</Text>
+    </View> */}
+                    </View>
+                  </View>
+                </View>
+              )}
+            </View>
+          ))}
+          <View style={styles.maintableview}>
+
+            {Tabledata.slice(
+              pageIndex * recordsPerPage,
+              (pageIndex + 1) * recordsPerPage
+            ).map((item, index) => (
+              <View key={index} style={styles.tableDataView}>
+                <View style={[styles.row, { borderBottom: 1 }]}>
+                  <View style={styles.sheetDetails}>
+                    <Text
+                      style={[
+                        styles.tabletext,
+                        { fontSize: "12px", paddingBottom: "5px" },
+                      ]}
+                    >
+                      Task No : {item.taskNo}
+                    </Text>
+                  </View>
+                
+                  <View style={styles.sheetDetails}>
+                    <Text
+                      style={[
+                        styles.tabletext,
+                        {
+                          fontSize: "12px",
+                          paddingBottom: "5px",
+                          width: "500px",
+                        },
+                      ]}
+                    >
+                      Material:{item.Mtrl_Code}/{item.Mtrl_Source}/{item.Operation}
+                    </Text>
+                  </View>
+
+                  <View style={styles.sheetDetails}>
+                    <Text
+                      style={[
+                        styles.tabletext,
+                        {
+                          fontSize: "12px",
+                          paddingBottom: "5px",
+                          fontFamily: "Helvetica-Bold",
+                        },
+                      ]}
+                    ></Text>
+                  </View>
+
+                  <View style={styles.sheetDetails}>
+                    <Text
+                      style={[
+                        styles.tabletext,
+                        {
+                          fontSize: "12px",
+                          paddingBottom: "5px",
+                          fontFamily: "Helvetica-Bold",
+                        },
+                      ]}
+                    ></Text>
+                  </View>
+                </View>
+
+                <View style={[styles.tableDisplay, { marginTop: "10px" }]}>
+                  <View style={styles.column}>
+                    <View style={styles.srl}>
+                      <Text style={styles.datawithoutbline}>Srl</Text>
+                    </View>
+
+                    <View style={styles.drawingname}>
+                      <Text style={styles.datawithoutbline}>
+                        Drawing name
+                      </Text>
+                    </View>
+
+                    <View style={styles.Inspection}>
+                      <Text style={styles.datawithoutbline}>Inspection</Text>
+                    </View>
+
+                    <View style={styles.Packing}>
+                      <Text style={styles.datawithoutbline}>Packing</Text>
+                    </View>
+
+                    <View style={styles.Scheduled}>
+                      <Text style={styles.datawithoutbline}>Scheduled</Text>
+                    </View>
+
+                    <View style={styles.Produced}>
+                      <Text style={styles.datawithoutbline}>Produced</Text>
+                    </View>
+                    <View style={styles.Delivered}>
+                      <Text style={styles.datawithoutbline}>Delivered</Text>
+                    </View>
+                    <View style={styles.scheduleNotable}>
+                      <Text style={styles.datawithoutbline}>
+                        {item.taskno}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+
+          {item.otherdetails.map((detail, subIndex) => (
+                <View style={styles.row}>
+                  <View style={styles.srldata}>
+                    <Text style={styles.tabletext}>{subIndex + 1}</Text>
+                  </View>
+
+                  <View style={styles.drawingnamedata}>
+                    <Text style={styles.tabletext}>{detail.DwgName}</Text>
+                  </View>
+
+                  <View style={styles.Inspectiondata}>
+                    <Text style={styles.tabletext}>{detail.InspLevel}</Text>
+                  </View>
+
+                  <View style={styles.Packingdata}>
+                    <Text style={styles.tabletext}>{detail.PackingLevel}</Text>
+                  </View>
+
+                  <View style={styles.Scheduleddata}>
+                    <Text style={styles.tabletext}>{detail.QtyScheduled}</Text>
+                  </View>
+
+                  <View style={styles.Produceddata}>
+                    <Text style={styles.tabletext}>{detail.QtyProduced}</Text>
+                  </View>
+
+                  <View style={styles.Delivereddata}>
+                    <Text style={styles.tabletext}>{detail.QtyDelivered}</Text>
+                  </View>
+
+                  <View style={styles.scheduleNotabledata}>
+                    <Text style={styles.tabletext}></Text>
+                  </View>
+                </View>
+                 ))}
               </View>
             ))}
-            <View style={styles.maintableview}>
 
-              {Tabledata.slice(
-                pageIndex * recordsPerPage,
-                (pageIndex + 1) * recordsPerPage
-              ).map((item, index) => (
-                <View key={index} style={styles.tableDataView}>
-                  <View style={[styles.row, { borderBottom: 1 }]}>
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          { fontSize: "12px", paddingBottom: "5px" },
-                        ]}
+
+          
+            <View style={styles.mainsidetableview}>
+              <View style={styles.column}>
+                <View>
+                  <View style={[styles.row]}>
+                    <View>
+                      <View
+                        style={{
+                          fontFamily: "Helvetica-Bold",
+                          fontSize: "12px",
+                          width: "230px",
+                        }}
                       >
-                        Task No : {item.taskNo}
-                      </Text>
-                    </View>
-                  
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          {
-                            fontSize: "12px",
-                            paddingBottom: "5px",
-                            width: "500px",
-                          },
-                        ]}
-                      >
-                        Material:{item.Mtrl_Code}/{item.Mtrl_Source}/{item.Operation}
-                      </Text>
-                    </View>
-
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          {
-                            fontSize: "12px",
-                            paddingBottom: "5px",
-                            fontFamily: "Helvetica-Bold",
-                          },
-                        ]}
-                      ></Text>
-                    </View>
-
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          {
-                            fontSize: "12px",
-                            paddingBottom: "5px",
-                            fontFamily: "Helvetica-Bold",
-                          },
-                        ]}
-                      ></Text>
-                    </View>
-                  </View>
-
-                  <View style={[styles.tableDisplay, { marginTop: "10px" }]}>
-                    <View style={styles.column}>
-                      <View style={styles.srl}>
-                        <Text style={styles.datawithoutbline}>Srl</Text>
-                      </View>
-
-                      <View style={styles.drawingname}>
-                        <Text style={styles.datawithoutbline}>
-                          Drawing name
-                        </Text>
-                      </View>
-
-                      <View style={styles.Inspection}>
-                        <Text style={styles.datawithoutbline}>Inspection</Text>
-                      </View>
-
-                      <View style={styles.Packing}>
-                        <Text style={styles.datawithoutbline}>Packing</Text>
-                      </View>
-
-                      <View style={styles.Scheduled}>
-                        <Text style={styles.datawithoutbline}>Scheduled</Text>
-                      </View>
-
-                      <View style={styles.Produced}>
-                        <Text style={styles.datawithoutbline}>Produced</Text>
-                      </View>
-                      <View style={styles.Delivered}>
-                        <Text style={styles.datawithoutbline}>Delivered</Text>
-                      </View>
-                      <View style={styles.scheduleNotable}>
-                        <Text style={styles.datawithoutbline}>
-                          {item.taskno}
-                        </Text>
+                        <Text>Production Approved and Scheduled By</Text>
                       </View>
                     </View>
-                  </View>
 
-            {item.otherdetails.map((detail, subIndex) => (
-                  <View style={styles.row}>
-                    <View style={styles.srldata}>
-                      <Text style={styles.tabletext}>{subIndex + 1}</Text>
-                    </View>
-
-                    <View style={styles.drawingnamedata}>
-                      <Text style={styles.tabletext}>{detail.DwgName}</Text>
-                    </View>
-
-                    <View style={styles.Inspectiondata}>
-                      <Text style={styles.tabletext}>{detail.InspLevel}</Text>
-                    </View>
-
-                    <View style={styles.Packingdata}>
-                      <Text style={styles.tabletext}>{detail.PackingLevel}</Text>
-                    </View>
-
-                    <View style={styles.Scheduleddata}>
-                      <Text style={styles.tabletext}>{detail.QtyScheduled}</Text>
-                    </View>
-
-                    <View style={styles.Produceddata}>
-                      <Text style={styles.tabletext}>{detail.QtyProduced}</Text>
-                    </View>
-
-                    <View style={styles.Delivereddata}>
-                      <Text style={styles.tabletext}>{detail.QtyDelivered}</Text>
-                    </View>
-
-                    <View style={styles.scheduleNotabledata}>
-                      <Text style={styles.tabletext}></Text>
-                    </View>
-                  </View>
-                   ))}
-                </View>
-              ))}
-
-
-            
-              <View style={styles.mainsidetableview}>
-                <View style={styles.column}>
-                  <View>
-                    <View style={[styles.row]}>
-                      <View>
-                        <View
-                          style={{
-                            fontFamily: "Helvetica-Bold",
-                            fontSize: "12px",
-                            width: "230px",
-                          }}
-                        >
-                          <Text>Production Approved and Scheduled By</Text>
+                    <View style={{ width: "220px", marginLeft: "30px" }}>
+                      <View style={[styles.column]}>
+                        <View style={styles.scheduletime}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "40px" },
+                            ]}
+                          >
+                            Schedule Time Estmates
+                          </Text>
                         </View>
                       </View>
 
-                      <View style={{ width: "220px", marginLeft: "30px" }}>
-                        <View style={[styles.column]}>
-                          <View style={styles.scheduletime}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "40px" },
-                              ]}
-                            >
-                              Schedule Time Estmates
-                            </Text>
-                          </View>
+                      <View style={[styles.column]}>
+                        <View style={styles.sales}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "20px" },
+                            ]}
+                          >
+                            Sales
+                          </Text>
                         </View>
 
-                        <View style={[styles.column]}>
-                          <View style={styles.sales}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "20px" },
-                              ]}
-                            >
-                              Sales
-                            </Text>
-                          </View>
-
-                          <View style={styles.ncpgm}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "17px" },
-                              ]}
-                            >
-                              NC Pgm
-                            </Text>
-                          </View>
-
-                          <View style={styles.prod}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "20px" },
-                              ]}
-                            >
-                              Prod
-                            </Text>
-                          </View>
+                        <View style={styles.ncpgm}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "17px" },
+                            ]}
+                          >
+                            NC Pgm
+                          </Text>
                         </View>
 
-                        <View style={[styles.column]}>
-                          <View style={styles.salesdata}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "30px" },
-                              ]}
-                            >
-                              {" "}
-                              :{" "}
-                            </Text>
-                          </View>
-
-                          <View style={styles.ncpgmdata}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "30px" },
-                              ]}
-                            >
-                              {" "}
-                              :{" "}
-                            </Text>
-                          </View>
-
-                          <View style={styles.proddata}>
-                            <Text
-                              style={[
-                                styles.datawithoutbline,
-                                { paddingLeft: "30px" },
-                              ]}
-                            >
-                              {" "}
-                              :{" "}
-                            </Text>
-                          </View>
+                        <View style={styles.prod}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "20px" },
+                            ]}
+                          >
+                            Prod
+                          </Text>
                         </View>
                       </View>
 
-                      <View style={styles.row}>
-                        <View style={[styles.sidebox]}>
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                {
-                                  marginBottom: "5px",
-                                  borderBottom: 1,
-                                  textAlign: "center",
-                                },
-                              ]}
-                            >
-                              Invoice No :{" "}
-                            </Text>
-                          </View>
-
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                {
-                                  marginBottom: "5px",
-                                  borderBottom: 1,
-                                  textAlign: "center",
-                                },
-                              ]}
-                            >
-                              Invoice Date :{" "}
-                            </Text>
-                          </View>
-
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                {
-                                  marginBottom: "5px",
-                                  borderBottom: 1,
-                                  textAlign: "center",
-                                },
-                              ]}
-                            >
-                              Quantity :{" "}
-                            </Text>
-                          </View>
-
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                {
-                                  marginBottom: "5px",
-                                  borderBottom: 1,
-                                  textAlign: "center",
-                                },
-                              ]}
-                            >
-                              Invoice Value :{" "}
-                            </Text>
-                          </View>
-
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                {
-                                  marginBottom: "5px",
-                                  borderBottom: 1,
-                                  textAlign: "center",
-                                },
-                              ]}
-                            >
-                              Production Time:{" "}
-                            </Text>
-                          </View>
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px", textAlign: "center" },
-                              ]}
-                            >
-                              MPHR :{" "}
-                            </Text>
-                          </View>
+                      <View style={[styles.column]}>
+                        <View style={styles.salesdata}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "30px" },
+                            ]}
+                          >
+                            {" "}
+                            :{" "}
+                          </Text>
                         </View>
 
-                        <View style={[styles.sideboxdata]}>
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px", borderBottom: 1 },
-                              ]}
-                            >
-                              {" "}
-                            </Text>
-                          </View>
+                        <View style={styles.ncpgmdata}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "30px" },
+                            ]}
+                          >
+                            {" "}
+                            :{" "}
+                          </Text>
+                        </View>
 
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px", borderBottom: 1 },
-                              ]}
-                            >
-                              {" "}
-                            </Text>
-                          </View>
+                        <View style={styles.proddata}>
+                          <Text
+                            style={[
+                              styles.datawithoutbline,
+                              { paddingLeft: "30px" },
+                            ]}
+                          >
+                            {" "}
+                            :{" "}
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
 
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px", borderBottom: 1 },
-                              ]}
-                            >
-                              {" "}
-                            </Text>
-                          </View>
+                    <View style={styles.row}>
+                      <View style={[styles.sidebox]}>
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              {
+                                marginBottom: "5px",
+                                borderBottom: 1,
+                                textAlign: "center",
+                              },
+                            ]}
+                          >
+                            Invoice No :{" "}
+                          </Text>
+                        </View>
 
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px", borderBottom: 1 },
-                              ]}
-                            >
-                              {" "}
-                            </Text>
-                          </View>
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              {
+                                marginBottom: "5px",
+                                borderBottom: 1,
+                                textAlign: "center",
+                              },
+                            ]}
+                          >
+                            Invoice Date :{" "}
+                          </Text>
+                        </View>
 
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px", borderBottom: 1 },
-                              ]}
-                            >
-                              {" "}
-                            </Text>
-                          </View>
-                          <View>
-                            <Text
-                              style={[
-                                styles.globalfontwithbold,
-                                { marginBottom: "5px" },
-                              ]}
-                            >
-                              {" "}
-                            </Text>
-                          </View>
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              {
+                                marginBottom: "5px",
+                                borderBottom: 1,
+                                textAlign: "center",
+                              },
+                            ]}
+                          >
+                            Quantity :{" "}
+                          </Text>
+                        </View>
+
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              {
+                                marginBottom: "5px",
+                                borderBottom: 1,
+                                textAlign: "center",
+                              },
+                            ]}
+                          >
+                            Invoice Value :{" "}
+                          </Text>
+                        </View>
+
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              {
+                                marginBottom: "5px",
+                                borderBottom: 1,
+                                textAlign: "center",
+                              },
+                            ]}
+                          >
+                            Production Time:{" "}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px", textAlign: "center" },
+                            ]}
+                          >
+                            MPHR :{" "}
+                          </Text>
+                        </View>
+                      </View>
+
+                      <View style={[styles.sideboxdata]}>
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px", borderBottom: 1 },
+                            ]}
+                          >
+                            {" "}
+                          </Text>
+                        </View>
+
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px", borderBottom: 1 },
+                            ]}
+                          >
+                            {" "}
+                          </Text>
+                        </View>
+
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px", borderBottom: 1 },
+                            ]}
+                          >
+                            {" "}
+                          </Text>
+                        </View>
+
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px", borderBottom: 1 },
+                            ]}
+                          >
+                            {" "}
+                          </Text>
+                        </View>
+
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px", borderBottom: 1 },
+                            ]}
+                          >
+                            {" "}
+                          </Text>
+                        </View>
+                        <View>
+                          <Text
+                            style={[
+                              styles.globalfontwithbold,
+                              { marginBottom: "5px" },
+                            ]}
+                          >
+                            {" "}
+                          </Text>
                         </View>
                       </View>
                     </View>
                   </View>
-                </View>
-              </View>
-
-              <View style={styles.footer}>
-                <View style={{ marginLeft: "40px", marginTop: "10px" }}>
-                  <Text style={styles.globalfontwithbold}>{formdata.SalesContact}</Text>
                 </View>
               </View>
             </View>
+
+            <View style={styles.footer}>
+              <View style={{ marginLeft: "40px", marginTop: "10px" }}>
+                <Text style={styles.globalfontwithbold}>{formdata.SalesContact}</Text>
+              </View>
+            </View>
           </View>
-        </Page>
-      ))}
-    </Document>
+        </View>
+      </Page>
+    ))}
+  </Document>
   );
 };
 
