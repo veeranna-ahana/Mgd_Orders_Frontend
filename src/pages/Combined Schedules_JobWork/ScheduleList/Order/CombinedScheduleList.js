@@ -36,6 +36,15 @@ export default function CombinedScheduleList({ type }) {
 
   // console.log(selectedRow);
 
+
+  const handleClick = () => {
+    const path = type === "JobWork" 
+      ? "/Orders/JobWork/ScheduleList/Order/OpenDetailForm" 
+      : "/Orders/Sales/ScheduleList/Order/OpenDetailForm";
+    
+    navigate(path, { state: { selectedRow: selectedRow } });
+  };
+
   return (
     <div>
       <h4 className="title">Combined Schedule List</h4>{" "}
@@ -43,11 +52,7 @@ export default function CombinedScheduleList({ type }) {
         <div className="col-md-12">
           <button
             className="button-style"
-            onClick={() =>
-              navigate("/Orders/JobWork/ScheduleList/Order/OpenDetailForm", {
-                state: { selectedRow: selectedRow },
-              })
-            }
+            onClick={handleClick}
           >
             Open
           </button>

@@ -726,6 +726,7 @@ export default function ScheduleCreationForm(props) {
           endpoints.GetBomData,
           { custcode: orderData?.custData[0]?.Cust_Code },
           (bomdata) => {
+            console.log("bomdata", bomdata);
             setBomData(bomdata);
           }
         );
@@ -778,6 +779,8 @@ export default function ScheduleCreationForm(props) {
 
     setSelectedItems([]);
   };
+
+  console.log("setBomData", BomData);
   const calculateMinSrlStatus = () => {
     if (OrdrDetailsData.length === 0) return 0;
 
@@ -920,6 +923,8 @@ export default function ScheduleCreationForm(props) {
     setRegisterOrder(false);
   };
 
+  console.log("Type", OrderData?.Order_Type);
+  console.log("Status", OrderData?.Order_Status);
   // message for Register Button
   let message = "";
   switch (OrderData?.Order_Type) {
@@ -1151,6 +1156,7 @@ export default function ScheduleCreationForm(props) {
                 OrderCustData={OrderCustData}
                 scheduleListData={scheduleListData}
                 setScheduleListData={setScheduleListData}
+                type={props.Type}
               />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">

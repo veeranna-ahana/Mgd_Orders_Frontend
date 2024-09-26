@@ -65,15 +65,18 @@ function OrdrDtls(props) {
     isLoading,
     handleInputChange,
     handleMtrlCodeTypeaheadChangeeee,
+    magodCode,
   } = props;
 
   const [materialCode, setMaterialCode] = useState(
     selectedItems[0]?.Mtrl_Code || ""
   );
 
+  console.log("options...", options);
   // console.log("selectepartID...", selectedPartId.length);
-  console.log("selectedItems...", selectedItems);
-  console.log("mtrldata...", mtrldata);
+  // console.log("selectedItems...", selectedItems);
+  // console.log("mtrldata...", mtrldata);
+  console.log("LastSlctedRow...", LastSlctedRow?.Mtrl_Source);
   // const handleInputChange = (input) => {
   //   setLastSlctedRow({ Mtrl_Code: input });
   // };
@@ -200,9 +203,13 @@ function OrdrDtls(props) {
                   value={ordrDetailsChange.DwgName}
                   onChange={handleChange}
                   disabled={
-                    props.OrderData?.Order_Status === "Created" ||
-                    props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    // props.OrderData?.Order_Status === "Created" ||
+                    // props.OrderData?.Order_Type === "Complete" ||
+                    // props.OrderData?.Order_Type === "Scheduled"
+                    (props.OrderData?.Order_Type === "Scheduled" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Complete" &&
+                      OrderData?.Order_Status === "Recorded")
                   }
                 />
               </div>
@@ -229,8 +236,12 @@ function OrdrDtls(props) {
                     placeholder="Choose a Material..."
                     required
                     disabled={
-                      props.OrderData?.Order_Type === "Complete" ||
-                      props.OrderData?.Order_Type === "Scheduled"
+                      (props.OrderData?.Order_Type === "Scheduled" &&
+                        OrderData?.Order_Status === "Recorded") ||
+                      (props.OrderData?.Order_Type === "Complete" &&
+                        OrderData?.Order_Status === "Recorded") ||
+                      (props.OrderData?.Order_Type === "Open" &&
+                        OrderData?.Order_Status === "Recorded")
                     }
                   ></Typeahead>
                 ) : (
@@ -264,8 +275,12 @@ function OrdrDtls(props) {
                   value={ordrDetailsChange.MtrlSrc}
                   onChange={handleChange}
                   disabled={
-                    props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    (props.OrderData?.Order_Type === "Scheduled" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Complete" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Open" &&
+                      OrderData?.Order_Status === "Recorded")
                   }
                 >
                   <option value="" selected>
@@ -349,7 +364,10 @@ function OrdrDtls(props) {
                   onChange={handleChange}
                   value={ordrDetailsChange.quantity}
                   required
-                  disabled={props.OrderData?.Order_Type === "Complete"}
+                  disabled={
+                    props.OrderData?.Order_Type === "Complete" &&
+                    OrderData?.Order_Status === "Recorded"
+                  }
                 />
                 {/* <InputField
                       className="ip-select in-fields"
@@ -388,8 +406,13 @@ function OrdrDtls(props) {
                   onChange={handleChange}
                   value={ordrDetailsChange.jwRate}
                   disabled={
-                    props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    // props.OrderData?.Order_Type === "Complete" ||
+                    // props.OrderData?.Order_Type === "Scheduled" ||
+                    // OrderData?.Order_Status === "Recorded"
+                    (props.OrderData?.Order_Type === "Scheduled" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Complete" &&
+                      OrderData?.Order_Status === "Recorded")
                   }
                   // value={LastSlctedRow?.JWCost || " "}
                 />
@@ -423,8 +446,14 @@ function OrdrDtls(props) {
                   value={ordrDetailsChange.materialRate}
                   required
                   disabled={
-                    props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    // props.OrderData?.Order_Type === "Complete" ||
+                    // props.OrderData?.Order_Type === "Scheduled" ||
+                    // LastSlctedRow?.Mtrl_Source === "Customer" ||
+                    // OrderData?.Order_Status === "Recorded"
+                    (props.OrderData?.Order_Type === "Scheduled" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Complete" &&
+                      OrderData?.Order_Status === "Recorded")
                   }
                 />
 
@@ -481,8 +510,12 @@ function OrdrDtls(props) {
                   value={ordrDetailsChange.InspLvl}
                   onChange={handleChange}
                   disabled={
-                    props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    (props.OrderData?.Order_Type === "Scheduled" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Complete" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Open" &&
+                      OrderData?.Order_Status === "Recorded")
                   }
                 >
                   <option value="" disabled selected>
@@ -516,8 +549,12 @@ function OrdrDtls(props) {
                   value={ordrDetailsChange.PkngLvl}
                   onChange={handleChange}
                   disabled={
-                    props.OrderData?.Order_Type === "Complete" ||
-                    props.OrderData?.Order_Type === "Scheduled"
+                    (props.OrderData?.Order_Type === "Scheduled" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Complete" &&
+                      OrderData?.Order_Status === "Recorded") ||
+                    (props.OrderData?.Order_Type === "Open" &&
+                      OrderData?.Order_Status === "Recorded")
                   }
                 >
                   <option value="" disabled selected>
@@ -606,7 +643,7 @@ function OrdrDtls(props) {
           <div className="form-bg mb-3">
             <div className="row mb-2">
               <div className="col-md-4">
-                <label className="form-label">Load Drawing</label>
+                <label className="form-label">BOM Material Availability</label>
               </div>
               <div className="col-md-4">
                 <button
@@ -731,7 +768,7 @@ function OrdrDtls(props) {
           <div className="form-bg mb-3">
             <div className="row">
               <div className="col-md-8">
-                <label className="form-label">Load Drawing</label>
+                <label className="form-label">BOM Material Availability</label>
               </div>
               <div className="col-md-4">
                 <button
