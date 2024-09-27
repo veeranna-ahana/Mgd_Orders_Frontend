@@ -127,7 +127,7 @@ export default function ScheduleList({
                   ? `/Orders/Fabrication/FabricationOpenSchedule`
                   : null
               }
-              state={{ DwgNameList, Type: OrderData?.Type }} // Corrected here
+              state={{ DwgNameList, Type: OrderData?.Type }} 
             >
               <button
                 className="button-style"

@@ -2,6 +2,7 @@ import React from "react";
 import { Table } from "react-bootstrap";
 
 export default function FirstTable(props) {
+  
   return (
     <>
       <div>
@@ -26,7 +27,11 @@ export default function FirstTable(props) {
                         : ""
                     }
                   >
-                    <td>{item.Type}</td>
+                    {item.ScheduleType === "Customer" || "JobWork" ? (
+                      <td>Job Work</td>
+                    ) : (
+                      <td>Sales</td>
+                    )}
                     <td>{item.ScheduleNo}</td>
                     <td>{item.Schedule_Status}</td>
                     <td>{props.formatDate(item.Delivery_Date)}</td>

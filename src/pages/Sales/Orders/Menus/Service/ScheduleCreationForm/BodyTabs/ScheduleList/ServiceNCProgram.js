@@ -271,14 +271,14 @@ function ServiceNCProgram() {
           <button className="button-style" onClick={OnclickAddNCProgram}>
             Add Program
           </button>
-          <button
+          {/* <button
             className="button-style"
             onClick={openDeleteModal}
             disabled={selectedNCprogram?.PStatus !== "Created"}
           >
             Delete Program
           </button>
-          
+           */}
 
           <button className="button-style" onClick={OnclickButtonSave}>
             Save

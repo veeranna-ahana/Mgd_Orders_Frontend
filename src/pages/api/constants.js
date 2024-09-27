@@ -306,6 +306,7 @@ export const endpoints = {
   getCustName: `${API}/ScheduleList/getCustomerName`,
   getFixtureStatus:`${API}/ScheduleList/checkFixtureOrder`,
   getProfileOrderStatus:`${API}/ScheduleList/checkProfileOrder`,
+  onClickLoginSchedule: `${API}/ScheduleList/scheduleAfterLogin`,
 
 
   //NCProgram Button
@@ -353,7 +354,6 @@ export const endpoints = {
   onClickSuspend: `${API}/ScheduleList/suspendButton`,
   onClickCancel: `${API}/ScheduleList/onClickCancel`,
   onClickScheduled: `${API}/ScheduleList/ScheduleButton`,
-  onClickLoginSchedule: `${API}/ScheduleList/scheduleAfterLogin`,
   outStandingCustomers: `${API}/ScheduleList/getCustomerSummary`,
   getSalesContact: `${API}/ScheduleList/getSalesContact`,
   onClickTask: `${API}/ScheduleList/taskOnclick`,
