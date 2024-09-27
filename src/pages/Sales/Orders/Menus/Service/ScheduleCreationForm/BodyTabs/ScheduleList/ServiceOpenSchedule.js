@@ -15,9 +15,6 @@ function ServiceOpenSchedule() {
   const location = useLocation(); // Access location object using useLocation hook
   const DwgNameList = location?.state?.DwgNameList || []; // Get DwgNameList from location state
   const Type = location?.state?.Type || []; //get types
-  // const Type=location?.location || '';
-
-  // console.log("location?.state is",location?.state);
 
   // Standardize the case of the property name
   const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
@@ -177,7 +174,7 @@ function ServiceOpenSchedule() {
         }
       );
     }
-  }, []); // Watch for changes in scheduleDetailsRow
+  }, []);
 
   //row onClick of Task Material First Table
   const [rowselectTaskMaterial, setRowSelectTaskMaterial] = useState({});
@@ -270,6 +267,7 @@ function ServiceOpenSchedule() {
   const handleChangeSpecialInstruction = (e) => {
     setSpecialInstruction(e.target.value);
   };
+  
 
   useEffect(() => {
     setChangedEngineer(formdata[0]?.Dealing_Engineer);
@@ -279,31 +277,39 @@ function ServiceOpenSchedule() {
 
   //Onclick save Button
   const onClickSave = () => {
-    postRequest(
-      endpoints.onClickSave,
-      {
-        scheduleDetailsRow,
-        formdata,
-        SpclInstruction: SpclInstruction,
-        deliveryDate: deliveryDate,
-        changedEngineer: changedEngineer,
-      },
-      (response) => {
-        toast.success("Saved", {
-          position: toast.POSITION.TOP_CENTER,
-        });
-        postRequest(
-          endpoints.getScheduleListgetFormDetails,
-          {
-            Cust_Code: DwgNameList[0]?.Cust_Code,
-            ScheduleId: DwgNameList[0]?.ScheduleId,
-          },
-          (response) => {
-            setFormdata(response);
-          }
-        );
-      }
-    );
+    if(SpclInstruction.length >= 50){
+      toast.error('Special instructions must be 50 characters or less', {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    }
+    else{
+      postRequest(
+        endpoints.onClickSave,
+        {
+          scheduleDetailsRow,
+          newState,
+          formdata,
+          SpclInstruction: SpclInstruction,
+          deliveryDate: deliveryDate,
+          changedEngineer: changedEngineer,
+        },
+        (response) => {
+          toast.success("Saved", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          postRequest(
+            endpoints.getScheduleListgetFormDetails,
+            {
+              Cust_Code: DwgNameList[0]?.Cust_Code,
+              ScheduleId: DwgNameList[0]?.ScheduleId,
+            },
+            (response) => {
+              setFormdata(response);
+            }
+          );
+        }
+      );
+    }
   };
 
   //Onclick Suspend
@@ -591,18 +597,40 @@ function ServiceOpenSchedule() {
     setServiceOpen(true);
   };
 
-  //
+  //handle change of table To schedule inputfield
   const handleSchedulelist = (index, field, value) => {
-    if (value > scheduleDetailsRow?.QtyToSchedule) {
-      toast.error("Scheduled cannot be greater than ToSchedule", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } else if (value < 0) {
+    console.log("value is",value);
+    if(value < 0) {
       toast.error("Please Enter a Positive Number", {
         position: toast.POSITION.TOP_CENTER,
       });
+
+    } else if 
+    (value > scheduleDetailsRow?.QtyToSchedule) {
+      toast.error("Scheduled cannot be greater than ToSchedule", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } else {
-      const updatedDwgdata = [...newState]; // Create a copy of the array
+      const updatedDwgdata = [...newState]; 
+      // Update the specific item's field with the new value
+      updatedDwgdata[index] = {
+        ...updatedDwgdata[index],
+        [field]: value,
+      };
+      setNewState(updatedDwgdata);
+    }
+  };
+
+  //onchange JW and Material Rate inputfield
+  const handleJWMR = (index, field, value) => {
+    console.log("value is",value);
+    if(value < 0) {
+      toast.error("Please Enter a Positive Number", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+
+    } else {
+      const updatedDwgdata = [...newState]; 
       // Update the specific item's field with the new value
       updatedDwgdata[index] = {
         ...updatedDwgdata[index],
@@ -623,6 +651,8 @@ function ServiceOpenSchedule() {
 
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];
+
+  console.log("newState is",newState);
 
   return (
     <div>
@@ -680,12 +710,7 @@ function ServiceOpenSchedule() {
           style={{ gap: "35px" }}
         >
           <label className="form-label label-space">Schedule Type</label>
-          <input
-            className="in-field"
-            type="text"
-            value={Type}
-            disabled
-          />
+          <input className="in-field" type="text" value={Type} disabled />
         </div>
 
         <div className="d-flex field-gap col-md-4 sm-12">
@@ -769,7 +794,7 @@ function ServiceOpenSchedule() {
             id="exampleFormControlTextarea1"
             rows="3"
             style={{ width: "360px", height: "50px" }}
-            value={formdata[0]?.Special_Instructions}
+            defaultValue={formdata[0]?.Special_Instructions ==='null' ?' ' : formdata[0]?.Special_Instructions}
           ></textarea>
         </div>
 
@@ -869,21 +894,23 @@ function ServiceOpenSchedule() {
             Schedule
           </button>
 
-          <button
-            className="button-style "
-            onClick={onClickNCProgram}
-            disabled={
-              formdata[0]?.Schedule_Status === "Dispatched" ||
-              formdata[0]?.Schedule_Status === "Cancelled" ||
-              formdata[0]?.Schedule_Status === "Closed" ||
-              formdata[0]?.Schedule_Status === "ShortClosed" ||
-              formdata[0]?.Schedule_Status === "Suspended" ||
-              formdata[0]?.Schedule_Status === "Created"
-            }
-          >
-            NC Program
-          </button>
-          {/* </Link> */}
+          {Type === "Fabrication" ||
+            (Type === "Service" && (
+              <button
+                className="button-style "
+                onClick={onClickNCProgram}
+                disabled={
+                  formdata[0]?.Schedule_Status === "Dispatched" ||
+                  formdata[0]?.Schedule_Status === "Cancelled" ||
+                  formdata[0]?.Schedule_Status === "Closed" ||
+                  formdata[0]?.Schedule_Status === "ShortClosed" ||
+                  formdata[0]?.Schedule_Status === "Suspended" ||
+                  formdata[0]?.Schedule_Status === "Created"
+                }
+              >
+                NC Program
+              </button>
+            ))}
 
           <button
             className="button-style"
@@ -943,7 +970,7 @@ function ServiceOpenSchedule() {
             Print Schedule
           </button>
 
-          {formdata.Type === "Profile" && (
+          {Type === "Fabrication" && (
             <button
               className="button-style"
               onClick={profileOrderOpen1}
@@ -956,22 +983,25 @@ function ServiceOpenSchedule() {
             </button>
           )}
 
-          <button
-            className="button-style"
-            onClick={fixtureOrderOpen1}
-            disabled={
-              formdata[0]?.Schedule_Status === "Dispatched" ||
-              formdata[0]?.Schedule_Status === "Cancelled" ||
-              formdata[0]?.Schedule_Status === "Closed" ||
-              formdata[0]?.Schedule_Status === "ShortClosed" ||
-              formdata[0]?.Schedule_Status === "Suspended" ||
-              formdata[0]?.Schedule_Status === "Created" ||
-              formdata[0]?.Schedule_Status === "Completed" ||
-              formdata[0]?.Schedule_Status === "Ready"
-            }
-          >
-            Fixture Order
-          </button>
+          {Type === "Fabrication" ||
+            (Type === "Service" && (
+              <button
+                className="button-style"
+                onClick={fixtureOrderOpen1}
+                disabled={
+                  formdata[0]?.Schedule_Status === "Dispatched" ||
+                  formdata[0]?.Schedule_Status === "Cancelled" ||
+                  formdata[0]?.Schedule_Status === "Closed" ||
+                  formdata[0]?.Schedule_Status === "ShortClosed" ||
+                  formdata[0]?.Schedule_Status === "Suspended" ||
+                  formdata[0]?.Schedule_Status === "Created" ||
+                  formdata[0]?.Schedule_Status === "Completed" ||
+                  formdata[0]?.Schedule_Status === "Ready"
+                }
+              >
+                Fixture Order
+              </button>
+            ))}
         </div>
       </div>
 
@@ -1046,8 +1076,38 @@ function ServiceOpenSchedule() {
                         <td>{item.QtyCleared}</td>
                         <td>{item.QtyPacked}</td>
                         <td>{item.QtyDelivered}</td>
-                        <td>{item.JWCost}</td>
-                        <td>{item.MtrlCost}</td>
+                        <td>
+                          {" "}
+                          <input
+                            className="table-cell-editor"
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            value={item.JWCost}
+                            onChange={(e) =>
+                              handleJWMR(key, "JWCost", e.target.value)
+                            }
+                          />
+                        </td>
+                        <td>
+                          {" "}
+                          <input
+                            className="table-cell-editor"
+                            style={{
+                              backgroundColor: "transparent",
+                              border: "none",
+                            }}
+                            value={item.MtrlCost}
+                            onChange={(e) =>
+                              handleJWMR(
+                                key,
+                                "MtrlCost",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </td>
                       </tr>
                     );
                   })}

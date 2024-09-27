@@ -11,12 +11,8 @@ export default function ProductionScheduleCreation({
   selectedItems,
   setScheduleListData,handleScheduleOptionChange,handleScheduleTypeChange,scheduleOption,scheduleType,OrdrDetailsData
 }) {
-  //  console.log("OrderData",OrderData);
-
-  //  console.log("selectedItems",selectedItems);
 
 
-  // Handle change for schedule type radio buttons
  
   // API call to fetch schedule list
   const fetchScheduleList = (type) => {
@@ -36,7 +32,6 @@ export default function ProductionScheduleCreation({
     }
   }, [OrderData, scheduleType]);
 
-  //  console.log("selected Schedule type is ",scheduleType,"selected schedule option is",scheduleOption);
 
   //onclick Refresh Status
   const onClickRefreshStatus = () => {
@@ -45,7 +40,6 @@ export default function ProductionScheduleCreation({
     });
   };
 
-  console.log("OrdrDetailsData is",OrdrDetailsData);
 
   //Onclick Create Schedule
   const createSchedule = () => {
@@ -137,7 +131,6 @@ export default function ProductionScheduleCreation({
   
   
   
-
   //Onclick of ShortClose
   const [openShortClose, setOpenShortClose] = useState(false);
   const onClickShortClose = () => {

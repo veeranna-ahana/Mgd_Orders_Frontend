@@ -1226,7 +1226,7 @@ const ServicePDF = ({ formdata }) => {
                           </View>
                         </View>
 
-                        <View style={[styles.sideboxdata]}>
+                        {/* <View style={[styles.sideboxdata]}>
                           <View>
                             <Text
                               style={[
@@ -1283,6 +1283,66 @@ const ServicePDF = ({ formdata }) => {
                                 { marginBottom: "5px" },
                               ]}
                             >
+                            </Text>
+                          </View>
+                        </View> */}
+                        <View style={[styles.sideboxdata]}>
+                          <View>
+                            <Text
+                              style={[
+                                styles.globalfontwithbold,
+                                { marginBottom: "5px", borderBottom: 1 },
+                              ]}>
+                              {" "}
+                            </Text>
+                          </View>
+ 
+                          <View>
+                            <Text
+                              style={[
+                                styles.globalfontwithbold,
+                                { marginBottom: "5px", borderBottom: 1 },
+                              ]}>
+                              {" "}
+                            </Text>
+                          </View>
+ 
+                          <View>
+                            <Text
+                              style={[
+                                styles.globalfontwithbold,
+                                { marginBottom: "5px", borderBottom: 1 },
+                              ]}>
+                              {" "}
+                            </Text>
+                          </View>
+ 
+                          <View>
+                            <Text
+                              style={[
+                                styles.globalfontwithbold,
+                                { marginBottom: "5px", borderBottom: 1 },
+                              ]}>
+                              {" "}
+                            </Text>
+                          </View>
+ 
+                          <View>
+                            <Text
+                              style={[
+                                styles.globalfontwithbold,
+                                { marginBottom: "5px", borderBottom: 1 },
+                              ]}>
+                              {" "}
+                            </Text>
+                          </View>
+                          <View>
+                            <Text
+                              style={[
+                                styles.globalfontwithbold,
+                                { marginBottom: "5px" },
+                              ]}>
+                              {" "}
                             </Text>
                           </View>
                         </View>
