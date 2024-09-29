@@ -652,7 +652,6 @@ function ServiceOpenSchedule() {
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];
 
-  console.log("newState is",newState);
 
   return (
     <div>
@@ -975,8 +974,14 @@ function ServiceOpenSchedule() {
               className="button-style"
               onClick={profileOrderOpen1}
               disabled={
-                formdata[0]?.Schedule_Status !== "Scheduled" ||
-                formdata[0]?.Schedule_Status !== "Tasked"
+                formdata[0]?.Schedule_Status === "Dispatched" ||
+                formdata[0]?.Schedule_Status === "Cancelled" ||
+                formdata[0]?.Schedule_Status === "Closed" ||
+                formdata[0]?.Schedule_Status === "ShortClosed" ||
+                formdata[0]?.Schedule_Status === "Suspended" ||
+                formdata[0]?.Schedule_Status === "Created" ||
+                formdata[0]?.Schedule_Status === "Completed" ||
+                formdata[0]?.Schedule_Status === "Ready"
               }
             >
               Profile Order
