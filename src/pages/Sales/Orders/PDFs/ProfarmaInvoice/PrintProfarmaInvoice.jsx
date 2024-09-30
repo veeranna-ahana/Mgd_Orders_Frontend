@@ -142,7 +142,7 @@ export default function PrintProfarmaInvoice(props) {
     } else res = "";
     return res;
   };
-  console.log("props in proforma...", props);
+  // console.log("props in proforma...", props);
 
   const copiesNames = [
     { copyName: "Original for Recipient" },
