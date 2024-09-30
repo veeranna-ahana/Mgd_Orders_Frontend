@@ -36,7 +36,7 @@ function NewOrder(props) {
   let [formSpecialInstructions, setFormSpecialInstructions] = useState("");
   let [formBillingState, setFormBillingState] = useState("");
   let [formMagodDelivery, setFormMagodDelivery] = useState(false);
-  let [formShippingAddress, setFormShippingAddress] = useState("");
+  let [formShippingAddress, setFormShippingAddress] = useState("Ex Factory");
   let [formGSTTaxState, setFormGSTTaxState] = useState("");
   let [formTransportCharges, setFormTransportCharges] = useState("");
   let [formquotationNo, setFormQuotationNo] = useState("");
@@ -329,7 +329,7 @@ function NewOrder(props) {
     if (newCheckedValue === true) {
       setFormShippingAddress(formBillingAddress);
     } else {
-      setFormShippingAddress("");
+      setFormShippingAddress("Ex Factory");
     }
   };
   // const TransportChargesInpChnage = (e) => {
@@ -902,7 +902,7 @@ function NewOrder(props) {
                     id="formShippingAddress"
                     className="input-field"
                     type="text"
-                    placeholder="EX Factory"
+                    // placeholder="EX Factory"
                     onChange={(e) => setFormShippingAddress(e.target.value)}
                     value={formShippingAddress}
                     style={{
