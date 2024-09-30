@@ -101,7 +101,9 @@ export default function ImportExcelModal(props) {
         fullscreen
       >
         <Modal.Header closeButton>
-          <Modal.Title>Import from Excel</Modal.Title>
+          <Modal.Title style={{ fontSize: "14px" }}>
+            Import from Excel
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <IEFormHeader

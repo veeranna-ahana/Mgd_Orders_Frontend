@@ -69,25 +69,43 @@ export default function ImportOldOrderModal(props) {
               </tr>
             </thead>
             <tbody className="tablebody">
-              {props.oldOrderListData?.map((val, key) => (
-                <>
-                  <tr
-                    key={key}
-                    onClick={(e) => {
-                      setSelectedOldOrder(val);
-                    }}
-                    className={
-                      selectedOldOrder.Order_No === val.Order_No
-                        ? "rowSelectedClass"
-                        : ""
-                    }
-                  >
-                    <td>{key + 1}</td>
-                    <td>{val.Order_No}</td>
-                    <td>{val.Purchase_Order}</td>
-                  </tr>
-                </>
-              ))}
+              {props.oldOrderListData?.length > 0 ? (
+                props.oldOrderListData?.map((val, key) => (
+                  <>
+                    <tr
+                      key={key}
+                      onClick={(e) => {
+                        setSelectedOldOrder(val);
+                      }}
+                      className={
+                        selectedOldOrder.Order_No === val.Order_No
+                          ? "rowSelectedClass"
+                          : ""
+                      }
+                    >
+                      <td>{key + 1}</td>
+                      <td>{val.Order_No}</td>
+                      <td>{val.Purchase_Order}</td>
+                    </tr>
+                  </>
+                ))
+              ) : (
+                <tr
+                // key={key}
+                // onClick={(e) => {
+                //   setSelectedOldOrder(val);
+                // }}
+                // className={
+                //   selectedOldOrder.Order_No === val.Order_No
+                //     ? "rowSelectedClass"
+                //     : ""
+                // }
+                >
+                  <td></td>
+                  <td>No old order found</td>
+                  <td></td>
+                </tr>
+              )}
             </tbody>
           </Table>
         </Modal.Body>
