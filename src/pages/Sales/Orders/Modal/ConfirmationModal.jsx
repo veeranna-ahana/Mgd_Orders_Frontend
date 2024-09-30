@@ -6,10 +6,10 @@ export default function ConfirmationModal(props) {
     props.setConfirmModalOpen(false);
   };
 
-  const yesClicked = () => {
+  function yesClicked() {
     props.yesClickedFunc();
     closeModal();
-  };
+  }
 
   return (
     <>

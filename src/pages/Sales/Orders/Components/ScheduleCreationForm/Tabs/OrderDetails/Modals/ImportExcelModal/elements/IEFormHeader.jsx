@@ -200,20 +200,27 @@ export default function IEFormHeader(props) {
     <>
       <div className="row d-flex justify-content-between">
         <div className="col-md-3">
-          <b>Load Excel</b>
+          <label className="form-label label-space">Load Excel</label>
+
+          {/* <b>Load Excel</b> */}
           <input
             type="file"
             name=""
             id=""
             accept=".xlsx, .xls"
             onChange={handleChange}
+            className="in-field"
+
             // onFocus={handleOnFocus}
             // className="button-style m-1"
           />
         </div>
         <div className="col-md-3">
-          <b>Order Total</b>
-          <input disabled value={props.orderTotal} />
+          {/* <b>Order Total</b> */}
+
+          <label className="form-label label-space">Order Total</label>
+
+          <input disabled value={props.orderTotal} className="in-field" />
         </div>
       </div>
       {/* <div className="row">
@@ -237,6 +244,7 @@ export default function IEFormHeader(props) {
         <button
           className="button-style m-1"
           disabled={
+            props.importedExcelData.length === 0 ||
             props.importedExcelData.filter(
               (obj) =>
                 obj.materialError || obj.sourceError || obj.operationError

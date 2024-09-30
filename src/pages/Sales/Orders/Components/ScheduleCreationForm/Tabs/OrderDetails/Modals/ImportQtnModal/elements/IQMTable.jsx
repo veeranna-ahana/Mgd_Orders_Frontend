@@ -21,32 +21,49 @@ export default function IQMTable(props) {
           </tr>
         </thead>
         <tbody className="tablebody">
-          {props.filteredQtnListData?.map((val, key) => (
-            <>
-              <tr>
-                <td>{key + 1}</td>
-                <td>{val.ID}</td>
-                <td>{val.QtnId}</td>
-                <td>{val.Name}</td>
-                <td>{val.Material}</td>
-                <td>{val.Operation}</td>
-                <td>{val.Quantity}</td>
-                <td>{parseFloat(val.BasePrice).toFixed(2)}</td>
-                <td>{parseFloat(val.DiscountAmount).toFixed(2)}</td>
-                <td>
-                  {(
-                    parseFloat(val.BasePrice) - parseFloat(val.DiscountAmount)
-                  ).toFixed(2)}
-                </td>
-                <td>
-                  {(
-                    parseFloat(val.Quantity) *
-                    (parseFloat(val.BasePrice) - parseFloat(val.DiscountAmount))
-                  ).toFixed(2)}
-                </td>
-              </tr>
-            </>
-          ))}
+          {props.filteredQtnListData?.length > 0 ? (
+            props.filteredQtnListData?.map((val, key) => (
+              <>
+                <tr>
+                  <td>{key + 1}</td>
+                  <td>{val.ID}</td>
+                  <td>{val.QtnId}</td>
+                  <td>{val.Name}</td>
+                  <td>{val.Material}</td>
+                  <td>{val.Operation}</td>
+                  <td>{val.Quantity}</td>
+                  <td>{parseFloat(val.BasePrice).toFixed(2)}</td>
+                  <td>{parseFloat(val.DiscountAmount).toFixed(2)}</td>
+                  <td>
+                    {(
+                      parseFloat(val.BasePrice) - parseFloat(val.DiscountAmount)
+                    ).toFixed(2)}
+                  </td>
+                  <td>
+                    {(
+                      parseFloat(val.Quantity) *
+                      (parseFloat(val.BasePrice) -
+                        parseFloat(val.DiscountAmount))
+                    ).toFixed(2)}
+                  </td>
+                </tr>
+              </>
+            ))
+          ) : (
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td>Select Quotation No</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          )}
         </tbody>
       </Table>
     </>

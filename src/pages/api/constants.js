@@ -52,6 +52,7 @@ export const endpoints = {
   getProfarmaFormTaxes: `${API}/profarmaInvForm/getProfarmaFormTaxes`,
   postSaveInvoice: `${API}/profarmaInvForm/postSaveInvoice`,
   postInvFormCreateInvoice: `${API}/profarmaInvForm/postInvFormCreateInvoice`,
+  getPDFData: `${API}/pdf/getPDFData`,
 
   getCustomers: `${API}/customers/allcustomers`,
   getCustCodeName: `${API}/customers/allcustcodename`,
@@ -304,10 +305,9 @@ export const endpoints = {
   deleteScheduleList: `${API}/ScheduleList/deleteScheduleList`,
   pdfdata: `${API}/ScheduleList/PrintPdf`,
   getCustName: `${API}/ScheduleList/getCustomerName`,
-  getFixtureStatus:`${API}/ScheduleList/checkFixtureOrder`,
-  getProfileOrderStatus:`${API}/ScheduleList/checkProfileOrder`,
+  getFixtureStatus: `${API}/ScheduleList/checkFixtureOrder`,
+  getProfileOrderStatus: `${API}/ScheduleList/checkProfileOrder`,
   onClickLoginSchedule: `${API}/ScheduleList/scheduleAfterLogin`,
-
 
   //NCProgram Button
   onClickNCProgram: `${API}/NCProgram/getFormData`,
@@ -406,6 +406,6 @@ export const endpoints = {
   scheduleListDetails: `${API}/scheduleListCombined/scheduleListDetails`,
   ScheduleListClosed: `${API}/scheduleListCombined/ScheduleListClosed`,
   ScheduleListClosedSales: `${API}/scheduleListCombined/ScheduleListClosedSales`,
-  openFolder:`${API}/scheduleListCombined/files`,
-  CopyDwg:`${API}/scheduleListCombined/copyDwg`
+  openFolder: `${API}/scheduleListCombined/files`,
+  CopyDwg: `${API}/scheduleListCombined/copyDwg`,
 };
