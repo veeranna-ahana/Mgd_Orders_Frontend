@@ -22,6 +22,7 @@ export default function PrintProfarmaInvoice(props) {
     },
     globalPadding: { padding: "0.6%" },
     footerRowPadding: { padding: "3%" },
+    footerTaxRowPadding: { padding: "1.1%" },
     rowPadding: { padding: "0.6%" },
     fontBold: {
       //   fontWeight: "bold",
@@ -141,7 +142,7 @@ export default function PrintProfarmaInvoice(props) {
     } else res = "";
     return res;
   };
-  // console.log("props in invoice and annexure...", props);
+  console.log("props in proforma...", props);
 
   const copiesNames = [
     { copyName: "Original for Recipient" },
@@ -257,24 +258,24 @@ export default function PrintProfarmaInvoice(props) {
                           fontSize: "11px",
                         }}
                       >
-                        TAX INVOICE
+                        PROFORMA INVOICE
                       </Text>
                     </View>
                     <Text style={{ ...style.fontBold, fontSize: "11px" }}>
-                      Magod Laser Machining Private Limited
+                      {props.PDFData.RegisteredName}
                     </Text>
                     <Text
                       style={{ ...style.fontBold, fontSize: headerFontSize }}
                     >
-                      GST: 29AABCM1970H1ZE CIN: U28900KA1995PTC018437
+                      GST: {props.PDFData.GST_No} CIN: {props.PDFData.CIN_No}
                     </Text>
                     <Text style={{ fontSize: headerFontSize }}>
-                      Plot No 72, 2nd Phase, KIADB Indl Area Jigani, Anekal
-                      Taluk Bengaluru - 560105
+                      {props.PDFData.RegistredOfficeAddress}
                     </Text>
                     <Text style={{ fontSize: headerFontSize }}>
-                      Ph : 08110 414313, 9513393352, sales@magodlaser.in,
-                      www.magodlaser.in
+                      {props.PDFData.PhonePrimary},{" "}
+                      {props.PDFData.PhoneSecondary}, {props.PDFData.Email},{" "}
+                      {props.PDFData.URL}
                     </Text>
                   </View>
                   {/* <View> */}
@@ -452,10 +453,7 @@ export default function PrintProfarmaInvoice(props) {
                             ...style.globalPadding,
                           }}
                         >
-                          <Text>
-                            Whether the Tax is payable on Reverse Charge Basis:
-                            No
-                          </Text>
+                          <Text>{props.PDFData.ReverseChargeNote}</Text>
                         </View>
                       </View>
                     </View>
@@ -677,522 +675,531 @@ export default function PrintProfarmaInvoice(props) {
 
                   {/* footer starts */}
                   <View style={{ borderTop: "1px" }}>
-                    {/* remarks and net total */}
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Remarks</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "61%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>
-                          No need
-                          {/* {props.profarmaMainData.Remarks === "" ||
-                          props.profarmaMainData.Remarks === null ||
-                          props.profarmaMainData.Remarks === undefined
-                            ? ""
-                            : props.profarmaMainData.Remarks} */}
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Net Total</Text>
-                      </View>
-                      <View style={{ width: "15%", ...style.globalPadding }}>
-                        <Text>{props.profarmaMainData.Net_Total}</Text>
-                      </View>
-                    </View>
-
-                    {/* tax details heading and delivery charges... */}
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Tax Name</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Taxable</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Tax %</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Tax Amount</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "25%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>
-                          Goods Under HSN Class
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Del. Charge</Text>
-                      </View>
-                      <View style={{ width: "15%", ...style.globalPadding }}>
-                        <Text>{props.profarmaMainData.Del_Chg}</Text>
-                      </View>
-                    </View>
-
-                    {/* tax detatils 1 and discount */}
                     <View
                       style={{
                         display: "flex",
                         flexDirection: "row",
                       }}
                     >
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                          borderBottom: "1px",
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[0]?.Tax_Name}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                          borderBottom: "1px",
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[0]?.TaxableAmount}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                          borderBottom: "1px",
-                        }}
-                      >
-                        <Text>
-                          {props.profarmaTaxData[0]?.TaxPercent
-                            ? parseFloat(
-                                props.profarmaTaxData[0]?.TaxPercent
-                              ).toFixed(2)
-                            : ""}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                          borderBottom: "1px",
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[0]?.TaxAmt}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "25%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text></Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                          borderBottom: "1px",
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Discount</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "15%",
-                          ...style.globalPadding,
-
-                          borderBottom: "1px",
-                        }}
-                      >
-                        <Text>{props.profarmaMainData?.Discount}</Text>
-                      </View>
-                    </View>
-
-                    {/* tax detatils 2 and Total Taxes */}
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[1]?.Tax_Name}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[1]?.TaxableAmount}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>
-                          {props.profarmaTaxData[1]?.TaxPercent
-                            ? parseFloat(
-                                props.profarmaTaxData[1]?.TaxPercent
-                              ).toFixed(2)
-                            : ""}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[1]?.TaxAmt}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "25%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text></Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Total Taxes</Text>
-                      </View>
-                      <View style={{ width: "15%", ...style.globalPadding }}>
-                        <Text>{props.profarmaMainData.TaxAmount}</Text>
-                      </View>
-                    </View>
-
-                    {/*  Invoice total */}
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[2]?.Tax_Name}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[2]?.TaxableAmount}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>
-                          {props.profarmaTaxData[2]?.TaxPercent
-                            ? parseFloat(
-                                props.profarmaTaxData[2]?.TaxPercent
-                              ).toFixed(2)
-                            : ""}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>{props.profarmaTaxData[2]?.TaxAmt}</Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "25%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text></Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Invoice Total</Text>
-                      </View>
-                      <View style={{ width: "15%", ...style.globalPadding }}>
-                        <Text>{props.profarmaMainData.InvTotal}</Text>
-                      </View>
-                    </View>
-
-                    {/* rpund off */}
-
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "24%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>
-                          Goods Removed on
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "49%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>
-                          no need
-                          {/* {props.profarmaMainData.Printable_DespatchDate}{" "}
-                          {props.profarmaMainData.TptMode}{" "}
-                          {props.profarmaMainData.VehNo} */}
-                        </Text>
-                      </View>
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Round Off</Text>
-                      </View>
-                      <View style={{ width: "15%", ...style.globalPadding }}>
-                        <Text>{props.profarmaMainData.Round_Off}</Text>
-                      </View>
-                    </View>
-
-                    {/* empty space and grand total */}
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
+                      {/* left */}
                       <View
                         style={{
                           width: "73%",
                           borderRight: "1px",
-                          ...style.globalPadding,
                         }}
                       >
-                        <Text></Text>
+                        <View
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          {/* remarks */}
+                          {/* <View style={{ borderBottom: "1px" }}>
+                            <View
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <View
+                                style={{
+                                  width: "15%",
+                                  ...style.fontBold,
+                                  ...style.footerRowPadding,
+                                  borderRight: "1px",
+                                }}
+                              >
+                                <Text>Remarks</Text>
+                              </View>
+                              <View
+                                style={{
+                                  width: "85%",
+                                  ...style.footerRowPadding,
+                                }}
+                              >
+                                <Text>remakrs</Text>
+                              </View>
+                            </View>
+                          </View> */}
+                          {/* tax and hsn heading */}
+                          <View
+                          // style={{ borderBottom: "1px" }}
+                          >
+                            <View
+                              style={{ display: "flex", flexDirection: "row" }}
+                            >
+                              <View
+                                style={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  // borderRight: "1px",
+                                  // width: "60.5%",
+                                  borderBottom: "1px",
+                                  // height: "10px",
+                                }}
+                              >
+                                <View
+                                  style={{
+                                    width: "25%",
+                                    ...style.fontBold,
+                                    ...style.footerTaxRowPadding,
+                                    borderRight: "1px",
+                                  }}
+                                >
+                                  <Text>Tax Name</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    width: "25%",
+                                    ...style.fontBold,
+                                    ...style.footerTaxRowPadding,
+                                    borderRight: "1px",
+                                  }}
+                                >
+                                  <Text>Taxable</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    width: "25%",
+                                    ...style.fontBold,
+                                    ...style.footerTaxRowPadding,
+                                    borderRight: "1px",
+                                  }}
+                                >
+                                  <Text>Tax %</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    width: "25%",
+                                    ...style.fontBold,
+                                    ...style.footerTaxRowPadding,
+                                    // borderRight: "1px",
+                                  }}
+                                >
+                                  <Text>Tax Amt</Text>
+                                </View>
+                              </View>
+                              {/* <View
+                                style={{
+                                  width: "39%",
+                                  ...style.fontBold,
+                                  ...style.footerRowPadding,
+                                  // borderRight: "1px",
+                                }}
+                              >
+                                <Text>Goods Under HSN Class</Text>
+                              </View> */}
+                            </View>
+                          </View>
+                          {/* tax and hsn data */}
+                          <View
+                          //  style={{ borderBottom: "1px" }}
+                          >
+                            <View
+                              style={{
+                                display: "flex",
+                                flexDirection: "row",
+                              }}
+                            >
+                              <View
+                                style={{
+                                  // width: "60.5%",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  borderBottom: "1px",
+                                }}
+                              >
+                                {props.profarmaTaxData?.map((taxVal, key) => (
+                                  <View
+                                    style={
+                                      key + 1 != props.profarmaTaxData.length
+                                        ? {
+                                            borderBottom: "1px",
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            // borderRight: "1px",
+                                          }
+                                        : {
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            // borderRight: "1px",
+                                          }
+                                    }
+                                  >
+                                    <View
+                                      style={{
+                                        width: "25%",
+                                        // ...style.fontBold,
+                                        ...style.footerTaxRowPadding,
+                                        borderRight: "1px",
+                                      }}
+                                    >
+                                      <Text>{taxVal.Tax_Name}</Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        width: "25%",
+                                        // ...style.fontBold,
+                                        ...style.footerTaxRowPadding,
+                                        borderRight: "1px",
+                                      }}
+                                    >
+                                      <Text>{taxVal.TaxableAmount}</Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        width: "25%",
+                                        // ...style.fontBold,
+                                        ...style.footerTaxRowPadding,
+                                        borderRight: "1px",
+                                      }}
+                                    >
+                                      <Text>
+                                        {parseFloat(taxVal.TaxPercent).toFixed(
+                                          2
+                                        )}{" "}
+                                        %
+                                      </Text>
+                                    </View>
+                                    <View
+                                      style={{
+                                        width: "25%",
+                                        // ...style.fontBold,
+                                        ...style.footerTaxRowPadding,
+                                        // borderRight: "1px",
+                                      }}
+                                    >
+                                      <Text>
+                                        {parseFloat(taxVal.TaxAmt).toFixed(2)}
+                                      </Text>
+                                    </View>
+                                  </View>
+                                ))}
+                              </View>
+                            </View>
+                          </View>
+
+                          <View
+                            style={
+                              props.profarmaTaxData?.length < 3
+                                ? { borderBottom: "1px" }
+                                : ""
+                            }
+                          >
+                            <View
+                              style={{
+                                ...style.footerTaxRowPadding,
+                              }}
+                            >
+                              <Text>{props.PDFData.ServiceTariffInfo}</Text>
+                            </View>
+                          </View>
+                        </View>
                       </View>
 
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Grand Total</Text>
-                      </View>
-                      <View style={{ width: "15%", ...style.globalPadding }}>
-                        <Text>{props.profarmaMainData.GrandTotal}</Text>
-                      </View>
-                    </View>
-
-                    {/* amount in words */}
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                        justifyContent: "flex-end",
-                        ...style.globalPadding,
-                      }}
-                    >
-                      <Text>
-                        {"Total Value in words Rupees" +
-                          (parseInt(props.profarmaMainData?.GrandTotal) === 0
-                            ? " Zero "
-                            : wordify(
-                                parseInt(props.profarmaMainData?.GrandTotal)
-                              )) +
-                          "Only."}
-                      </Text>
-                    </View>
-
-                    {/* bank details */}
-
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "12%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text style={{ ...style.fontBold }}>Bank Details</Text>
-                      </View>
-                      <View style={{ ...style.globalPadding }}>
-                        <Text>
-                          State Bank of India Current Account A/C No :
-                          33664104046 IFSC : SBIN0011355 Branch : Jigani
-                        </Text>
-                      </View>
-                    </View>
-
-                    {/* disclaimer and signatory */}
-
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        // borderBottom: "1px",
-                      }}
-                    >
-                      <View
-                        style={{
-                          width: "60%",
-                          borderRight: "1px",
-                          ...style.globalPadding,
-                        }}
-                      >
-                        <Text>
-                          Certified that the particulars given above are true &
-                          correct and the amount indicated represents the price
-                          actually charged and that there is no flow of
-                          additional consideration directly or indirectly from
-                          the buyer.
-                        </Text>
-                        <Text>SUBJECT TO BANGALORE JURISDICTION.</Text>
-                      </View>
-                      <View
-                        style={{
-                          ...style.globalPadding,
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "flex-end",
-                          justifyContent: "space-between",
-                          width: "40%",
-                        }}
-                      >
-                        <Text>For, Magod Laser Machining Private Limited</Text>
-                        <Text style={{ ...style.fontBold }}>
-                          Authorised Signatory
-                        </Text>
+                      {/* right */}
+                      <View style={{ width: "27%" }}>
+                        <View
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          {/* net total */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Net Total</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.Net_Total
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* del charge */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Del. Charge</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.Del_Chg
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* discount */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Discount</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.Discount
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* total taxes */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Total Taxes</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.TaxAmount
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* invoice total */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Invoice Total</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.InvTotal
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* round off */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Round Off</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.Round_Off
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                          {/* grand total */}
+                          <View
+                            style={{
+                              display: "flex",
+                              flexDirection: "row",
+                              // borderBottom: "1px",
+                            }}
+                          >
+                            <View
+                              style={{
+                                width: "42%",
+                                ...style.fontBold,
+                                ...style.footerRowPadding,
+                                borderRight: "1px",
+                              }}
+                            >
+                              <Text>Grand Total</Text>
+                            </View>
+                            <View
+                              style={{
+                                width: "58%",
+                                ...style.footerRowPadding,
+                              }}
+                            >
+                              <Text>
+                                {parseFloat(
+                                  props.profarmaMainData.GrandTotal
+                                ).toFixed(2)}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   </View>
+                  {/* rupees */}
+                  <View
+                    style={{
+                      borderTop: "1px",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      ...style.footerTaxRowPadding,
+                    }}
+                  >
+                    <Text>
+                      {"Rupees" +
+                        (parseInt(props.profarmaMainData?.GrandTotal) === 0
+                          ? " Zero "
+                          : wordify(
+                              parseInt(props.profarmaMainData?.GrandTotal)
+                            )) +
+                        "Only."}
+                    </Text>
+                  </View>
+                  {/* bank detials */}
+                  <View
+                    style={{
+                      borderTop: "1px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: "12%",
+                        borderRight: "1px",
+                        ...style.fontBold,
+                        ...style.footerTaxRowPadding,
+                      }}
+                    >
+                      <Text>Bank Details</Text>
+                    </View>
+                    <View
+                      style={{
+                        width: "88%",
+                        // ...style.fontBold,
+                        ...style.footerTaxRowPadding,
+                      }}
+                    >
+                      <Text>{props.PDFData.BankDetails}</Text>
+                    </View>
+                  </View>
+                  {/* signature line... */}
+                  <View
+                    style={{
+                      borderTop: "1px",
+                      display: "flex",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <View
+                      style={{
+                        width: "60%",
+                        borderRight: "1px",
+                        // ...style.fontBold,
+                        ...style.footerTaxRowPadding,
+                      }}
+                    >
+                      <Text>{props.PDFData.InvoiceTerms}</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "flex-end",
+                        justifyContent: "space-between",
+                        width: "40%",
+                        ...style.fontBold,
+                        ...style.footerTaxRowPadding,
+                      }}
+                    >
+                      <Text>For, {props.PDFData.RegisteredName}</Text>
+                      <Text>Authorised Signatory</Text>
+                    </View>
+                  </View>
+
                   {/* footer ends */}
                 </View>
                 {/* main content ends */}
@@ -1208,10 +1215,7 @@ export default function PrintProfarmaInvoice(props) {
                   }}
                 >
                   <Text style={{ ...style.fontBold }}>Registered office :</Text>
-                  <Text>
-                    #72, Phase II, KIADB Indl Area Jigani, Anekal Taluk
-                    Bengaluru - 560105
-                  </Text>
+                  <Text>{props.PDFData.RegistredOfficeAddress}</Text>
                 </View>
               </View>
             </Page>
@@ -1222,37 +1226,250 @@ export default function PrintProfarmaInvoice(props) {
   );
 }
 
-// {/* packingnote num and packing date */}
+// <View style={{ borderTop: "1px" }}>
+// {/* remarks and net total */}
 // <View
 //   style={{
+//     display: "flex",
+//     flexDirection: "row",
 //     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Remarks</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "61%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>No need</Text>
+//   </View>
+
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Net Total</Text>
+//   </View>
+//   <View style={{ width: "15%", ...style.globalPadding }}>
+//     <Text>{props.profarmaMainData.Net_Total}</Text>
+//   </View>
+// </View>
+
+// {/* tax details heading and delivery charges... */}
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Tax Name</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Taxable</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Tax %</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Tax Amount</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "25%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>
+//       Goods Under HSN Class
+//     </Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Del. Charge</Text>
+//   </View>
+//   <View style={{ width: "15%", ...style.globalPadding }}>
+//     <Text>{props.profarmaMainData.Del_Chg}</Text>
+//   </View>
+// </View>
+
+// {/* tax detatils 1 and discount */}
+// <View
+//   style={{
 //     display: "flex",
 //     flexDirection: "row",
 //   }}
 // >
 //   <View
 //     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//       borderBottom: "1px",
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[0]?.Tax_Name}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//       borderBottom: "1px",
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[0]?.TaxableAmount}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//       borderBottom: "1px",
+//     }}
+//   >
+//     <Text>
+//       {props.profarmaTaxData[0]?.TaxPercent
+//         ? parseFloat(
+//             props.profarmaTaxData[0]?.TaxPercent
+//           ).toFixed(2)
+//         : ""}
+//     </Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//       borderBottom: "1px",
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[0]?.TaxAmt}</Text>
+//   </View>
+//   <View
+//     style={{
 //       width: "25%",
 //       borderRight: "1px",
 //       ...style.globalPadding,
 //     }}
 //   >
-//     <Text style={{ ...style.fontBold }}>
-//       Packing Note No
-//     </Text>
+//     <Text></Text>
 //   </View>
 //   <View
 //     style={{
-//       width: "25%",
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//       borderBottom: "1px",
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Discount</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "15%",
+//       ...style.globalPadding,
+
+//       borderBottom: "1px",
+//     }}
+//   >
+//     <Text>{props.profarmaMainData?.Discount}</Text>
+//   </View>
+// </View>
+
+// {/* tax detatils 2 and Total Taxes */}
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[1]?.Tax_Name}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[1]?.TaxableAmount}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
 //       borderRight: "1px",
 //       ...style.globalPadding,
 //     }}
 //   >
 //     <Text>
-//       {props.profarmaMainData?.DC_No
-//         ? `${PNFinYear}/${props.profarmaMainData?.DC_No}`
-//         : props.profarmaMainData?.DCStatus}
+//       {props.profarmaTaxData[1]?.TaxPercent
+//         ? parseFloat(
+//             props.profarmaTaxData[1]?.TaxPercent
+//           ).toFixed(2)
+//         : ""}
 //     </Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[1]?.TaxAmt}</Text>
 //   </View>
 //   <View
 //     style={{
@@ -1261,129 +1478,261 @@ export default function PrintProfarmaInvoice(props) {
 //       ...style.globalPadding,
 //     }}
 //   >
-//     <Text style={{ ...style.fontBold }}>
-//       Packing Date
-//     </Text>
+//     <Text></Text>
 //   </View>
-//   <View style={{ width: "25%", ...style.globalPadding }}>
-//     <Text>{props.profarmaMainData.Printable_DC_Date}</Text>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Total Taxes</Text>
+//   </View>
+//   <View style={{ width: "15%", ...style.globalPadding }}>
+//     <Text>{props.profarmaMainData.TaxAmount}</Text>
 //   </View>
 // </View>
 
-//    {/* eway bill No and pay on before */}
-//    <View
-//    style={{
-//      borderBottom: "1px",
-//      display: "flex",
-//      flexDirection: "row",
-//    }}
-//  >
-//    <View
-//      style={{
-//        width: "25%",
-//        borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text style={{ ...style.fontBold }}>
-//        EWay Bill No
-//      </Text>
-//    </View>
-//    <View
-//      style={{
-//        width: "75%",
-//        // borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text>
-//        {props.profarmaMainData.EWayBillRef === "" ||
-//        props.profarmaMainData.EWayBillRef === undefined ||
-//        props.profarmaMainData.EWayBillRef === null
-//          ? ""
-//          : props.profarmaMainData.EWayBillRef}
-//      </Text>
-//    </View>
-//    {/* <View
-//      style={{
-//        width: "25%",
-//        borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text style={{ ...style.fontBold }}>
-//        Pay on Before
-//      </Text>
-//    </View>
-//    <View style={{ width: "25%", ...style.globalPadding }}>
-//      <Text>{payOnBefore}</Text>
-//    </View> */}
-//  </View>
+// {/*  Invoice total */}
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[2]?.Tax_Name}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[2]?.TaxableAmount}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>
+//       {props.profarmaTaxData[2]?.TaxPercent
+//         ? parseFloat(
+//             props.profarmaTaxData[2]?.TaxPercent
+//           ).toFixed(2)
+//         : ""}
+//     </Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>{props.profarmaTaxData[2]?.TaxAmt}</Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "25%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text></Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Invoice Total</Text>
+//   </View>
+//   <View style={{ width: "15%", ...style.globalPadding }}>
+//     <Text>{props.profarmaMainData.InvTotal}</Text>
+//   </View>
+// </View>
 
-//  {/* irn No */}
-//  <View
-//    style={{
-//      borderBottom: "1px",
-//      display: "flex",
-//      flexDirection: "row",
-//    }}
-//  >
-//    <View
-//      style={{
-//        width: "25%",
-//        borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text style={{ ...style.fontBold }}>IRN No</Text>
-//    </View>
-//    <View style={{ width: "75%", ...style.globalPadding }}>
-//      <Text></Text>
-//    </View>
-//  </View>
+// {/* rpund off */}
 
-//  {/* pan and msme No */}
-//  <View
-//    style={{
-//      borderBottom: "1px",
-//      display: "flex",
-//      flexDirection: "row",
-//    }}
-//  >
-//    <View
-//      style={{
-//        width: "25%",
-//        borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text style={{ ...style.fontBold }}>PAN No</Text>
-//    </View>
-//    <View
-//      style={{
-//        width: "20%",
-//        borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text>
-//        {props.profarmaMainData.PAN_No === "" ||
-//        props.profarmaMainData.PAN_No === undefined ||
-//        props.profarmaMainData.PAN_No === null
-//          ? ""
-//          : props.profarmaMainData.PAN_No}
-//      </Text>
-//    </View>
-//    <View
-//      style={{
-//        width: "15%",
-//        borderRight: "1px",
-//        ...style.globalPadding,
-//      }}
-//    >
-//      <Text style={{ ...style.fontBold }}>MSME No</Text>
-//    </View>
-//    <View style={{ width: "40%", ...style.globalPadding }}>
-//      <Text></Text>
-//    </View>
-//  </View>
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "24%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>
+//       Goods Removed on
+//     </Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "49%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>
+//       no need
+//       {/* {props.profarmaMainData.Printable_DespatchDate}{" "}
+//       {props.profarmaMainData.TptMode}{" "}
+//       {props.profarmaMainData.VehNo} */}
+//     </Text>
+//   </View>
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Round Off</Text>
+//   </View>
+//   <View style={{ width: "15%", ...style.globalPadding }}>
+//     <Text>{props.profarmaMainData.Round_Off}</Text>
+//   </View>
+// </View>
+
+// {/* empty space and grand total */}
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "73%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text></Text>
+//   </View>
+
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Grand Total</Text>
+//   </View>
+//   <View style={{ width: "15%", ...style.globalPadding }}>
+//     <Text>{props.profarmaMainData.GrandTotal}</Text>
+//   </View>
+// </View>
+
+// {/* amount in words */}
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//     justifyContent: "flex-end",
+//     ...style.globalPadding,
+//   }}
+// >
+// <Text>
+//   {"Total Value in words Rupees" +
+//     (parseInt(props.profarmaMainData?.GrandTotal) === 0
+//       ? " Zero "
+//       : wordify(
+//           parseInt(props.profarmaMainData?.GrandTotal)
+//         )) +
+//     "Only."}
+// </Text>
+// </View>
+
+// {/* bank details */}
+
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "12%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text style={{ ...style.fontBold }}>Bank Details</Text>
+//   </View>
+//   <View style={{ ...style.globalPadding }}>
+//     <Text>
+// State Bank of India Current Account A/C No :
+// 33664104046 IFSC : SBIN0011355 Branch : Jigani
+//     </Text>
+//   </View>
+// </View>
+
+// {/* disclaimer and signatory */}
+
+// <View
+//   style={{
+//     display: "flex",
+//     flexDirection: "row",
+//     // borderBottom: "1px",
+//   }}
+// >
+//   <View
+//     style={{
+//       width: "60%",
+//       borderRight: "1px",
+//       ...style.globalPadding,
+//     }}
+//   >
+//     <Text>
+//       Certified that the particulars given above are true &
+//       correct and the amount indicated represents the price
+//       actually charged and that there is no flow of
+//       additional consideration directly or indirectly from
+//       the buyer.
+//     </Text>
+//     <Text>SUBJECT TO BANGALORE JURISDICTION.</Text>
+//   </View>
+//   <View
+//     style={{
+//       ...style.globalPadding,
+//       display: "flex",
+//       flexDirection: "column",
+//       alignItems: "flex-end",
+//       justifyContent: "space-between",
+//       width: "40%",
+//     }}
+//   >
+//     <Text>For, Magod Laser Machining Private Limited</Text>
+//     <Text style={{ ...style.fontBold }}>
+//       Authorised Signatory
+//     </Text>
+//   </View>
+// </View>
+// </View>
