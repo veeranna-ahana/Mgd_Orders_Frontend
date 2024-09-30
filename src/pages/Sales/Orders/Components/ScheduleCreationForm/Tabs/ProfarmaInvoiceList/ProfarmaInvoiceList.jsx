@@ -136,7 +136,7 @@ export default function ProfarmaInvoiceList(props) {
 
   function openInvoice() {
     if (selectedProfarmaMainRow.ProfarmaID) {
-      nav(`/Orders/${props.OrderData.Type}/ProfarmaInvoiceForm`, {
+      nav(`/Orders/${props.OrderData.Type}/ProformaInvoiceForm`, {
         state: selectedProfarmaMainRow.ProfarmaID,
       });
     } else {
