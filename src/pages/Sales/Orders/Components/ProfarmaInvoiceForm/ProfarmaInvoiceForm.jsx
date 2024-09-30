@@ -13,6 +13,7 @@ import ModalProfarmaInvoice from "../../PDFs/ProfarmaInvoice/ModalProfarmaInvoic
 
 export default function ProfarmaInvoiceForm(props) {
   const location = useLocation();
+  const navigate = useNavigate();
   const todayDate = new Date();
 
   // console.log("location", location);
@@ -523,7 +524,7 @@ export default function ProfarmaInvoiceForm(props) {
           <div className="p-1"></div>
         </div>
         <div className="row">
-          <div className="col-md-6 d-flex justify-content-between align-items-center">
+          <div className="col-md-6 d-flex justify-content-start align-items-center">
             <button
               disabled={profarmaMainData?.ProformaInvNo}
               className={
@@ -535,6 +536,7 @@ export default function ProfarmaInvoiceForm(props) {
             >
               Save Invoice
             </button>
+            <div className="p-1"></div>
             <button
               disabled={profarmaMainData?.ProformaInvNo}
               className={
@@ -546,6 +548,7 @@ export default function ProfarmaInvoiceForm(props) {
             >
               Create Invoice
             </button>
+            <div className="p-1"></div>
             <button
               disabled={!profarmaMainData?.ProformaInvNo}
               className={
@@ -559,8 +562,16 @@ export default function ProfarmaInvoiceForm(props) {
             >
               Print Copy
             </button>
+            <div className="p-1"></div>
+            <button
+              className="button-style m-0"
+              onClick={() => navigate(-1)}
+              // style={{ float: "right" }}
+            >
+              Close
+            </button>
           </div>
-          <div className="col-md-6 d-flex justify-content-between align-items-center">
+          <div className="col-md-6 d-flex justify-content-end align-items-center">
             <div>
               <label className="form-label m-0 label-space">
                 Assessable Value
@@ -572,6 +583,7 @@ export default function ProfarmaInvoiceForm(props) {
                 className="input-disabled in-field"
               />
             </div>
+            <div className="p-1"></div>
             <div>
               <label className="form-label m-0 label-space">Select Taxes</label>
               <select
@@ -919,19 +931,18 @@ export default function ProfarmaInvoiceForm(props) {
                 ))}
               </select>
             </div>
-            <div>
-              <button
-                disabled={profarmaMainData?.ProformaInvNo}
-                className={
-                  profarmaMainData?.ProformaInvNo
-                    ? "button-style m-0 button-disabled"
-                    : "button-style m-0"
-                }
-                onClick={deleteTaxes}
-              >
-                Delete Taxes
-              </button>
-            </div>
+            <div className="p-1"></div>
+            <button
+              disabled={profarmaMainData?.ProformaInvNo}
+              className={
+                profarmaMainData?.ProformaInvNo
+                  ? "button-style m-0 button-disabled"
+                  : "button-style m-0"
+              }
+              onClick={deleteTaxes}
+            >
+              Delete Taxes
+            </button>
           </div>
         </div>
         <div className="p-1"></div>
