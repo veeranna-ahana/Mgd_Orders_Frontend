@@ -351,104 +351,106 @@ export default function ProfarmaInvoiceForm(props) {
         <div className="p-1"></div>
         <div className="row border rounded">
           <div className="col-md-3">
-            <label className="form-label m-0">Invoice Type</label>
+            <label className="form-label m-0 label-space">Customer Name</label>
+            <input
+              value={profarmaMainData?.Cust_Name || ""}
+              disabled
+              className="input-disabled in-field"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0 label-space">
+              Invoice No & Date
+            </label>
+            <input
+              value={
+                profarmaMainData?.ProformaInvNo
+                  ? profarmaMainData?.ProformaInvNo +
+                    " Date: " +
+                    profarmaMainData?.Printable_ProformaDate
+                  : ""
+              }
+              disabled
+              className="input-disabled in-field"
+            />
+          </div>
+          <div className="col-md-3">
+            <label className="form-label m-0 label-space">Invoice Type</label>
             <input
               value={profarmaMainData?.InvType || ""}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Invoice No</label>
-            <input
-              value={profarmaMainData?.ProformaInvNo || ""}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label m-0">Invoice Date</label>
-            <input
-              value={profarmaMainData?.Printable_ProformaDate || ""}
-              disabled
-              className="input-disabled"
-            />
-          </div>
-          <div className="col-md-3">
-            <label className="form-label m-0">PO No</label>
+            <label className="form-label m-0 label-space">PO No</label>
             <input
               value={profarmaMainData?.PO_No || ""}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="col-md-6 row p-0">
-            <div className="col-md-12">
-              <label className="form-label m-0">Customer Name</label>
-              <input
-                value={profarmaMainData?.Cust_Name || ""}
-                disabled
-                className="input-disabled"
-              />
-            </div>
-
-            <div className="col-md-6">
-              <label className="form-label m-0">City</label>
-              <input
-                value={profarmaMainData?.Cust_Place || ""}
-                disabled
-                className="input-disabled"
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label m-0">State</label>
-              <input
-                value={profarmaMainData?.Cust_State || ""}
-                disabled
-                className="input-disabled"
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label m-0">PIN</label>
-              <input
-                value={profarmaMainData?.PIN_Code || ""}
-                disabled
-                className="input-disabled"
-              />
-            </div>
-            <div className="col-md-6">
-              <label className="form-label m-0">GST No</label>
-              <input
-                value={profarmaMainData?.GSTNo || "Unregistered"}
-                disabled
-                className="input-disabled"
-              />
+            <div className="col-md-12 row p-0">
+              <div className="col-md-6">
+                <label className="form-label m-0 label-space">City</label>
+                <input
+                  value={profarmaMainData?.Cust_Place || ""}
+                  disabled
+                  className="input-disabled in-field"
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label m-0 label-space">State</label>
+                <input
+                  value={profarmaMainData?.Cust_State || ""}
+                  disabled
+                  className="input-disabled in-field"
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label m-0 label-space">PIN</label>
+                <input
+                  value={profarmaMainData?.PIN_Code || ""}
+                  disabled
+                  className="input-disabled in-field"
+                />
+              </div>
+              <div className="col-md-6">
+                <label className="form-label m-0 label-space">GST No</label>
+                <input
+                  value={profarmaMainData?.GSTNo || "Unregistered"}
+                  disabled
+                  className="input-disabled in-field"
+                />
+              </div>
             </div>
           </div>
           <div className="col-md-6">
-            <label className="form-label m-0">Address</label>
+            <label className="form-label m-0 label-space">Address</label>
             <textarea
-              rows="6"
-              style={{ width: "100%" }}
+              rows="3"
+              style={{ width: "100%", height: "auto" }}
               value={profarmaMainData?.Cust_Address || ""}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             ></textarea>
           </div>
+          <div className="p-1"></div>
         </div>
         <div className="p-1"></div>
         <div className="row border rounded">
           <div className="col-md-3">
-            <label className="form-label m-0">Net Total</label>
+            <label className="form-label m-0 label-space">Net Total</label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.Net_Total).toFixed(2)}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Discount</label>
+            <label className="form-label m-0 label-space">Discount</label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.Discount)}
@@ -458,12 +460,16 @@ export default function ProfarmaInvoiceForm(props) {
               onChange={modifyInputs}
               disabled={profarmaMainData?.ProformaInvNo}
               className={
-                profarmaMainData?.ProformaInvNo ? "input-disabled" : ""
+                profarmaMainData?.ProformaInvNo
+                  ? "input-disabled in-field"
+                  : "in-field"
               }
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Delivery Charges</label>
+            <label className="form-label m-0 label-space">
+              Delivery Charges
+            </label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.Del_Chg)}
@@ -472,44 +478,46 @@ export default function ProfarmaInvoiceForm(props) {
               onChange={modifyInputs}
               disabled={profarmaMainData?.ProformaInvNo}
               className={
-                profarmaMainData?.ProformaInvNo ? "input-disabled" : ""
+                profarmaMainData?.ProformaInvNo
+                  ? "input-disabled in-field"
+                  : "in-field"
               }
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Tax Amount</label>
+            <label className="form-label m-0 label-space">Tax Amount</label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.TaxAmount).toFixed(2)}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Invoice Total</label>
+            <label className="form-label m-0 label-space">Invoice Total</label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.InvTotal).toFixed(2)}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Round Off</label>
+            <label className="form-label m-0 label-space">Round Off</label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.Round_Off).toFixed(2)}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="col-md-3">
-            <label className="form-label m-0">Grand Total</label>
+            <label className="form-label m-0 label-space">Grand Total</label>
             <input
               type="number"
               value={parseFloat(profarmaMainData?.GrandTotal).toFixed(2)}
               disabled
-              className="input-disabled"
+              className="input-disabled in-field"
             />
           </div>
           <div className="p-1"></div>
@@ -554,24 +562,26 @@ export default function ProfarmaInvoiceForm(props) {
           </div>
           <div className="col-md-6 d-flex justify-content-between align-items-center">
             <div>
-              <label className="form-label m-0">Assessable Value</label>
+              <label className="form-label m-0 label-space">
+                Assessable Value
+              </label>
               <input
                 type="number"
                 value={parseFloat(profarmaMainData?.AssessableValue).toFixed(2)}
                 disabled
-                className="input-disabled"
+                className="input-disabled in-field"
               />
             </div>
             <div>
-              <label className="form-label m-0">Select Taxes</label>
+              <label className="form-label m-0 label-space">Select Taxes</label>
               <select
                 id="taxDropdown"
-                style={{ fontSize: "inherit", width: "100%" }}
+                style={{ width: "100%" }}
                 disabled={profarmaMainData?.ProformaInvNo}
                 className={
                   profarmaMainData?.ProformaInvNo
-                    ? "input-disabled ip-select mt-1"
-                    : "ip-select mt-1"
+                    ? "input-disabled ip-select mt-1 in-field"
+                    : "ip-select mt-1 in-field"
                 }
                 onChange={(e) => {
                   const taxOn = taxDropdownData[e.target.value].TaxOn.replace(
