@@ -709,7 +709,7 @@ function ServiceOpenSchedule() {
           style={{ gap: "35px" }}
         >
           <label className="form-label label-space">Schedule Type</label>
-          <input className="in-field" type="text" value={Type} disabled />
+          <input className="in-field" type="text" value={formdata[0]?.ScheduleType} disabled />
         </div>
 
         <div className="d-flex field-gap col-md-4 sm-12">
