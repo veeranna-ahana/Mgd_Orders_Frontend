@@ -26,12 +26,8 @@ export default function FirstTable(props) {
                         ? "selcted-row-clr"
                         : ""
                     }
-                  >
-                    {item.ScheduleType === "Customer" || "JobWork" ? (
-                      <td>Job Work</td>
-                    ) : (
-                      <td>Sales</td>
-                    )}
+                  ><td>
+                    {item.ScheduleType}</td>
                     <td>{item.ScheduleNo}</td>
                     <td>{item.Schedule_Status}</td>
                     <td>{props.formatDate(item.Delivery_Date)}</td>
