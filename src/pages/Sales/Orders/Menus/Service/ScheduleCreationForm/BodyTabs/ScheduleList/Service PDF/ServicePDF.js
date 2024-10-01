@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
   logo: {
     width: "36px",
     height: "54px",
+    marginBottom: "10px",
   },
   logostyle: {
     marginTop: "15px",
@@ -109,6 +110,7 @@ const styles = StyleSheet.create({
   },
   MagodTitle: {
     width: "70%",
+    marginTop: "20Px",
   },
   titleBold: {
     fontFamily: "Helvetica-Bold",
@@ -182,13 +184,13 @@ const styles = StyleSheet.create({
     borderLeft: 1,
   },
   scheduleViewSection1: {
-    width: "31%",
+    width: "28%",
     borderBottom: 1,
     borderTop: 1,
     borderLeft: 1,
   },
   scheduleViewSection2: {
-    width: "25%",
+    width: "28%",
     border: 1,
     borderRight: 1,
   },
@@ -197,57 +199,75 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   POno: {
-    width: "40%",
-    marginLeft: 10,
+    width: "30%",
     paddingBottom: "3px",
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-between", // Space between elements
+    alignItems: "center", // Vertically align items in the center
   },
   POnodata: {
-    width: "50%",
+    width: "70%",
     paddingBottom: "3px",
   },
 
   SalesContact: {
     width: "30%",
-    marginLeft: 10,
     paddingBottom: "3px",
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-between", // Space between elements
+    alignItems: "center", // Vertically align items in the center
   },
   SalesContactData: {
-    width: "30%",
-    marginLeft: 10,
+    width: "70%",
     paddingBottom: "3px",
   },
 
   ScheduleDate: {
-    width: "40%",
-    marginLeft: 10,
-    paddingBottom: "8px",
+    width: "50%",
+    paddingBottom: "3px",
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-between", // Space between elements
+    alignItems: "center",
+    marginLeft: "2%",
   },
   ScheduleDatedata: {
-    width: "30%",
-    paddingBottom: "8px",
+    width: "70%",
+    paddingBottom: "3px",
+    marginLeft: "2%",
   },
   DeliverDate: {
-    width: "35%",
-    marginLeft: 15,
-    paddingBottom: "8px",
+    width: "49%",
+    paddingBottom: "3px",
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-between", // Space between elements
+    alignItems: "center",
+    marginLeft: "2%",
   },
   DeliverDatedata: {
-    width: "35%",
-    paddingBottom: "8px",
+    width: "70%",
   },
 
   TargetDate: {
-    width: "37%",
-    marginLeft: 15,
+    width: "50%",
+    paddingBottom: "3px",
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-between", // Space between elements
+    alignItems: "center",
+    marginLeft: "2%",
   },
   TargetDatedata: {
-    width: "32%",
+    width: "70%",
+    paddingBottom: "3px",
+    marginLeft: "2%",
   },
 
   Instruction: {
     width: "33%",
-    marginLeft: 15,
     paddingBottom: "3px",
+    flexDirection: "row", // Align items in a row
+    justifyContent: "space-between", // Space between elements
+    alignItems: "center", // Vertically align items in the center
+    marginLeft: "1%",
   },
   InstructionData: {
     width: "33%",
@@ -256,6 +276,18 @@ const styles = StyleSheet.create({
 
   targetdateview: {
     width: "40%",
+  },
+  custScheduleNo: {
+    width: "30%",
+  },
+  custName: {
+    width: "70%",
+  },
+  taskNoStyle: {
+    width: "30%",
+  },
+  custMaterialStyle: {
+    width: "70%",
   },
   contactsection: {
     width: "25%",
@@ -414,7 +446,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   sheetDetails: {
-    width: "50%",
+    width: "100%",
     paddingBottom: "3px",
     paddingTop: "3px",
     textAlign: "center",
@@ -483,10 +515,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   sheetDetails: {
-    width: "30%",
+    width: "90%",
     paddingBottom: "3px",
     paddingTop: "3px",
     textAlign: "center",
+    fontSize: "12px",
+    paddingBottom: "5px",
   },
   Inspectiondata: {
     width: "10%",
@@ -541,6 +575,7 @@ const styles = StyleSheet.create({
   globalfontwithbold: {
     fontSize: "12px",
     fontFamily: "Helvetica-Bold",
+    marginLeft: "1%",
   },
   globalfontwithoutbold: {
     fontSize: "12px",
@@ -620,6 +655,9 @@ const styles = StyleSheet.create({
     borderRight: 1,
     width: "130px",
   },
+  pospan: {
+    marginLeft: "3px",
+  },
 });
 
 const ServicePDF = ({ formdata }) => {
@@ -631,18 +669,17 @@ const ServicePDF = ({ formdata }) => {
 
   const firstItemData = Tabledata[0];
 
-
   //date format
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
     const day = date.getDate().toString().padStart(2, "0");
-  
+
     // Return date in dd-mm-yyyy format
     return `${day}-${month}-${year}`;
   };
-  
+
   useEffect(() => {
     postRequest(endpoints.pdfdata, { formdata }, (response) => {
       // console.log("response is",response);
@@ -658,8 +695,6 @@ const ServicePDF = ({ formdata }) => {
     });
   }, [formdata]);
 
-
-
   // //Location Details
   // const[location,setlocation]=useState([]);
   // useEffect(()=>{
@@ -669,8 +704,6 @@ const ServicePDF = ({ formdata }) => {
   //     setlocation(response.data);
   //   });
   // },[])
-
-
 
   return (
     <Document>
@@ -704,6 +737,22 @@ const ServicePDF = ({ formdata }) => {
                           style={[styles.titleBold, { marginLeft: "20px" }]}
                         >
                           Magod Laser Machining Pvt Ltd
+                        </Text>
+                        <Text
+                          style={[{ marginTop: "1%", textAlign: "center" }]}
+                        >
+                          Jigani
+                        </Text>
+                        <Text
+                          style={[
+                            {
+                              marginTop: "1%",
+                              textAlign: "center",
+                              fontFamily: "Helvetica-Bold",
+                            },
+                          ]}
+                        >
+                          Production Schedule Form
                         </Text>
                         <View style={styles.titlePlace}>
                           <Text
@@ -753,13 +802,12 @@ const ServicePDF = ({ formdata }) => {
                       <View style={styles.scheduleViewSection}>
                         <View style={styles.column}>
                           <View style={styles.POno}>
-                            <Text style={styles.globalfontwithbold}>
-                              PO No :
-                            </Text>
+                            <Text style={styles.globalfontwithbold}>PO No</Text>
+                            <Text>:</Text>
                           </View>
                           <View style={styles.POnodata}>
                             <Text style={styles.globalfontwithbold}>
-                              &nbsp;&nbsp;{formdata[0].PO}
+                              {formdata[0].PO}
                             </Text>
                           </View>
                         </View>
@@ -775,12 +823,12 @@ const ServicePDF = ({ formdata }) => {
                         <View style={styles.column}>
                           <View style={styles.SalesContact}>
                             <Text style={styles.globalfontwithoutbold}>
-                              Sales Contact :
+                              Sales Contact
                             </Text>
+                            <Text>:</Text>
                           </View>
                           <View style={styles.SalesContactData}>
                             <Text style={styles.globalfontwithbold}>
-                              {" "}
                               {formdata[0].SalesContact}
                             </Text>
                           </View>
@@ -791,8 +839,9 @@ const ServicePDF = ({ formdata }) => {
                         <View style={styles.column}>
                           <View style={styles.ScheduleDate}>
                             <Text style={styles.globalfontwithoutbold}>
-                              Schedule Date :
+                              Schedule Date
                             </Text>
+                            <Text>:</Text>
                           </View>
                           <View style={styles.ScheduleDatedata}>
                             <Text style={styles.globalfontwithbold}>
@@ -814,8 +863,9 @@ const ServicePDF = ({ formdata }) => {
                         <View style={styles.column}>
                           <View style={styles.DeliverDate}>
                             <Text style={styles.globalfontwithoutbold}>
-                              Delivery Date :
+                              Delivery Date
                             </Text>
+                            <Text>:</Text>
                           </View>
                           <View style={styles.DeliverDatedata}>
                             <Text style={styles.globalfontwithbold}>
@@ -828,8 +878,9 @@ const ServicePDF = ({ formdata }) => {
                         <View style={styles.column}>
                           <View style={styles.TargetDate}>
                             <Text style={styles.globalfontwithoutbold}>
-                              Target Date :
+                              Target Date
                             </Text>
+                            <Text>:</Text>
                           </View>
                           <View style={styles.TargetDatedata}>
                             <Text style={styles.globalfontwithbold}>
@@ -843,8 +894,9 @@ const ServicePDF = ({ formdata }) => {
                         <View style={styles.column}>
                           <View style={styles.Instruction}>
                             <Text style={styles.globalfontwithbold}>
-                              Instruction :
+                              Instruction
                             </Text>
+                            <Text>:</Text>
                           </View>
                           <View style={styles.InstructionData}>
                             <Text style={styles.globalfontwithbold}>
@@ -857,7 +909,7 @@ const ServicePDF = ({ formdata }) => {
 
                     <View style={styles.ScheduleNO}>
                       <View style={styles.column}>
-                        <View style={[styles.targetdateview]}>
+                        <View style={[styles.custScheduleNo]}>
                           <Text
                             style={[
                               styles.datawithoutbline,
@@ -872,11 +924,11 @@ const ServicePDF = ({ formdata }) => {
 </Text>
       </View> */}
 
-                        <View style={styles.targetdateview}>
+                        <View style={styles.custName}>
                           <Text
                             style={[
                               styles.datawithoutbline,
-                              { fontSize: "9px" },
+                              { fontSize: "12px" },
                             ]}
                           >
                             Customer Name : {custname}
@@ -936,49 +988,39 @@ const ServicePDF = ({ formdata }) => {
                 pageIndex * recordsPerPage,
                 (pageIndex + 1) * recordsPerPage
               ).map((item, index) => (
-                <View key={index} style={styles.tableDataView}>
-                  <View style={[styles.row, { borderBottom: 1 }]}>
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          { fontSize: "12px", paddingBottom: "5px" },
-                        ]}
-                      >
-                        Task No : {item.taskNo}
-                      </Text>
-                    </View>
+                <>
+                  <View>
+                    <View style={[styles.row, { borderBottom: 1 }]}>
+                      <View style={styles.taskNoStyle}>
+                        <Text
+                          style={[
+                            styles.tabletext,
+                            {
+                              fontSize: "12px",
+                              paddingBottom: "5px",
+                            },
+                          ]}
+                        >
+                          Task No : {item.taskNo}
+                        </Text>
+                      </View>
 
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          {
-                            fontSize: "12px",
-                            paddingBottom: "5px",
-                            width: "300px",
-                          },
-                        ]}
-                      >
-                        Material:{item.Mtrl_Code}/{item.Mtrl_Source}/
-                        {item.Operation}
-                      </Text>
-                    </View>
+                      <View style={styles.custMaterialStyle}>
+                        <Text
+                          style={[
+                            styles.tabletext,
+                            {
+                              fontSize: "12px",
+                              paddingBottom: "5px",
+                            },
+                          ]}
+                        >
+                          Material: {item.Mtrl_Code}/{item.Mtrl_Source}/
+                          {item.Operation}
+                        </Text>
+                      </View>
 
-                    <View style={styles.sheetDetails}>
-                      <Text
-                        style={[
-                          styles.tabletext,
-                          {
-                            fontSize: "12px",
-                            paddingBottom: "5px",
-                            fontFamily: "Helvetica-Bold",
-                          },
-                        ]}
-                      ></Text>
-                    </View>
-
-                    <View style={styles.sheetDetails}>
+                      {/* <View style={styles.sheetDetails}>
                       <Text
                         style={[
                           styles.tabletext,
@@ -989,49 +1031,66 @@ const ServicePDF = ({ formdata }) => {
                           },
                         ]}
                       ></Text>
+                    </View> */}
+
+                      {/* <View style={styles.sheetDetails}>
+                      <Text
+                        style={[
+                          styles.tabletext,
+                          {
+                            fontSize: "12px",
+                            paddingBottom: "5px",
+                            fontFamily: "Helvetica-Bold",
+                          },
+                        ]}
+                      ></Text>
+                    </View> */}
                     </View>
                   </View>
+                  <View key={index} style={styles.tableDataView}>
+                    {item.otherdetails.map((detail, subIndex) => (
+                      <View style={styles.row}>
+                        <View style={styles.srldata}>
+                          <Text style={styles.tabletext}>{subIndex + 1}</Text>
+                        </View>
 
-                  {item.otherdetails.map((detail, subIndex) => (
-                    <View style={styles.row}>
-                      <View style={styles.srldata}>
-                        <Text style={styles.tabletext}>{subIndex + 1}</Text>
-                      </View>
+                        <View style={styles.drawingnamedata}>
+                          <Text style={styles.tabletext}>{detail.DwgName}</Text>
+                        </View>
 
-                      <View style={styles.drawingnamedata}>
-                        <Text style={styles.tabletext}>{detail.DwgName}</Text>
-                      </View>
+                        <View style={styles.Inspectiondata}>
+                          <Text style={styles.tabletext}>
+                            {detail.InspLevel}
+                          </Text>
+                        </View>
 
-                      <View style={styles.Inspectiondata}>
-                        <Text style={styles.tabletext}>{detail.InspLevel}</Text>
-                      </View>
+                        <View style={styles.Packingdata}>
+                          <Text style={styles.tabletext}>
+                            {detail.PackingLevel}
+                          </Text>
+                        </View>
 
-                      <View style={styles.Packingdata}>
-                        <Text style={styles.tabletext}>
-                          {detail.PackingLevel}
-                        </Text>
-                      </View>
+                        <View style={styles.Scheduleddata}>
+                          <Text style={styles.tabletext}>
+                            {detail.QtyScheduled}
+                          </Text>
+                        </View>
 
-                      <View style={styles.Scheduleddata}>
-                        <Text style={styles.tabletext}>
-                          {detail.QtyScheduled}
-                        </Text>
-                      </View>
+                        <View style={styles.Produceddata}>
+                          <Text style={styles.tabletext}></Text>
+                        </View>
 
-                      <View style={styles.Produceddata}>
-                        <Text style={styles.tabletext}></Text>
-                      </View>
+                        <View style={styles.Delivereddata}>
+                          <Text style={styles.tabletext}></Text>
+                        </View>
 
-                      <View style={styles.Delivereddata}>
-                        <Text style={styles.tabletext}></Text>
+                        <View style={styles.scheduleNotabledata}>
+                          <Text style={styles.tabletext}></Text>
+                        </View>
                       </View>
-
-                      <View style={styles.scheduleNotabledata}>
-                        <Text style={styles.tabletext}></Text>
-                      </View>
-                    </View>
-                  ))}
-                </View>
+                    ))}
+                  </View>
+                </>
               ))}
 
               <View style={styles.mainsidetableview}>
@@ -1151,7 +1210,7 @@ const ServicePDF = ({ formdata }) => {
                                 },
                               ]}
                             >
-                              Invoice No :{" "}
+                              Invoice No
                             </Text>
                           </View>
 
@@ -1166,7 +1225,7 @@ const ServicePDF = ({ formdata }) => {
                                 },
                               ]}
                             >
-                              Invoice Date :{" "}
+                              Invoice Date
                             </Text>
                           </View>
 
@@ -1181,7 +1240,7 @@ const ServicePDF = ({ formdata }) => {
                                 },
                               ]}
                             >
-                              Quantity :{" "}
+                              Quantity
                             </Text>
                           </View>
 
@@ -1196,7 +1255,7 @@ const ServicePDF = ({ formdata }) => {
                                 },
                               ]}
                             >
-                              Invoice Value :{" "}
+                              Invoice Value
                             </Text>
                           </View>
 
@@ -1211,7 +1270,7 @@ const ServicePDF = ({ formdata }) => {
                                 },
                               ]}
                             >
-                              Production Time:{" "}
+                              Production Time
                             </Text>
                           </View>
                           <View>
@@ -1221,7 +1280,7 @@ const ServicePDF = ({ formdata }) => {
                                 { marginBottom: "5px", textAlign: "center" },
                               ]}
                             >
-                              MPHR :{" "}
+                              MPHR
                             </Text>
                           </View>
                         </View>
@@ -1292,47 +1351,52 @@ const ServicePDF = ({ formdata }) => {
                               style={[
                                 styles.globalfontwithbold,
                                 { marginBottom: "5px", borderBottom: 1 },
-                              ]}>
+                              ]}
+                            >
                               {" "}
                             </Text>
                           </View>
- 
+
                           <View>
                             <Text
                               style={[
                                 styles.globalfontwithbold,
                                 { marginBottom: "5px", borderBottom: 1 },
-                              ]}>
+                              ]}
+                            >
                               {" "}
                             </Text>
                           </View>
- 
+
                           <View>
                             <Text
                               style={[
                                 styles.globalfontwithbold,
                                 { marginBottom: "5px", borderBottom: 1 },
-                              ]}>
+                              ]}
+                            >
                               {" "}
                             </Text>
                           </View>
- 
+
                           <View>
                             <Text
                               style={[
                                 styles.globalfontwithbold,
                                 { marginBottom: "5px", borderBottom: 1 },
-                              ]}>
+                              ]}
+                            >
                               {" "}
                             </Text>
                           </View>
- 
+
                           <View>
                             <Text
                               style={[
                                 styles.globalfontwithbold,
                                 { marginBottom: "5px", borderBottom: 1 },
-                              ]}>
+                              ]}
+                            >
                               {" "}
                             </Text>
                           </View>
@@ -1341,7 +1405,8 @@ const ServicePDF = ({ formdata }) => {
                               style={[
                                 styles.globalfontwithbold,
                                 { marginBottom: "5px" },
-                              ]}>
+                              ]}
+                            >
                               {" "}
                             </Text>
                           </View>
