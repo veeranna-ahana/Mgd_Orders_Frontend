@@ -281,7 +281,7 @@ function App() {
                     </Route>
 
                     <Route
-                      path="ProfarmaInvoiceForm"
+                      path="ProformaInvoiceForm"
                       element={<ProfarmaInvoiceForm />}
                     />
                   </Route>
@@ -335,7 +335,7 @@ function App() {
                     <Route path="Co2Form" element={<Co2Form />} />
 
                     {/* Customer summary screen */}
-                    <Route path="customerSummary" element={<Commercial/>} />
+                    <Route path="customerSummary" element={<Commercial />} />
 
                     <Route
                       path="OrderSchedule"
@@ -344,7 +344,7 @@ function App() {
                     <Route path="ImportQtn" element={<ServiceImportQtn />} />
                     <Route path="EditDxf" element={<ServiceEditDxf />} />
                     <Route
-                      path="ProfarmaInvoiceForm"
+                      path="ProformaInvoiceForm"
                       element={<ProfarmaInvoiceForm />}
                     />
                   </Route>
@@ -399,7 +399,7 @@ function App() {
                     <Route path="EditDxf" element={<FabEditDxf />} />
 
                     <Route
-                      path="ProfarmaInvoiceForm"
+                      path="ProformaInvoiceForm"
                       element={<ProfarmaInvoiceForm />}
                     />
                   </Route>

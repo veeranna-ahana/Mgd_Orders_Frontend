@@ -241,9 +241,10 @@ export default function OrderInfo(props) {
               // value={props.OrderData?.Delivery}
               // value={props.OrderData?.Del_Place}
               value={
-                props.OrderData?.Delivery === 0
-                  ? "EX FACTORY"
-                  : props.OrderData?.Billing_Address
+                props.OrderData?.Del_Place
+                // props.OrderData?.Delivery === 0
+                //   ? "EX FACTORY"
+                //   : props.OrderData?.Billing_Address
               }
               readOnly
               style={{

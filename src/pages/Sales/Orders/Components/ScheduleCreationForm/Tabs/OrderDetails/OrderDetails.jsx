@@ -1235,21 +1235,27 @@ export default function OrderDetails(props) {
             </button>
             <button
               className="button-style"
-              onClick={handleImportQtnMdl}
               disabled={
                 props.OrderData?.Order_Status === "Processing" ||
                 props.OrderData?.Order_Status === "Recorded"
               }
+              onClick={(e) => {
+                setButtonClicked("Import Qtn");
+                handleImportQtnMdl();
+              }}
             >
               Import Qtn
             </button>
             <button
               className="button-style"
-              onClick={handleImportOldOrdrMdl}
               disabled={
                 props.OrderData?.Order_Status === "Processing" ||
                 props.OrderData?.Order_Status === "Recorded"
               }
+              onClick={(e) => {
+                setButtonClicked("Import Old Order");
+                handleImportOldOrdrMdl();
+              }}
             >
               Import Old Order
             </button>
