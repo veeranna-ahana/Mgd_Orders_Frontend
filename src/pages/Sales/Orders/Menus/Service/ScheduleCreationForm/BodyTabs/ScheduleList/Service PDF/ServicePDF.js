@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   titleBold: {
     fontFamily: "Helvetica-Bold",
     textAlign: "center",
-    fontSize: "15px",
+    fontSize: "13px",
     marginTop: "25px",
   },
   typeofform: {
@@ -573,12 +573,12 @@ const styles = StyleSheet.create({
     fontSize: "10px",
   },
   globalfontwithbold: {
-    fontSize: "12px",
+    fontSize: "11px",
     fontFamily: "Helvetica-Bold",
     marginLeft: "1%",
   },
   globalfontwithoutbold: {
-    fontSize: "12px",
+    fontSize: "11px",
   },
   titlePlace: {
     marginLeft: "50%",
@@ -758,7 +758,7 @@ const ServicePDF = ({ formdata }) => {
                           <Text
                             style={[
                               styles.globalfontwithoutbold,
-                              { fontSize: "15px" },
+                              { fontSize: "11px" },
                             ]}
                           >
                             {item.location}
@@ -913,7 +913,7 @@ const ServicePDF = ({ formdata }) => {
                           <Text
                             style={[
                               styles.datawithoutbline,
-                              { fontSize: "12px" },
+                              { fontSize: "11px" },
                             ]}
                           >
                             Schedule No: {item.otherdetails[0].ScheduleNo}
@@ -928,7 +928,7 @@ const ServicePDF = ({ formdata }) => {
                           <Text
                             style={[
                               styles.datawithoutbline,
-                              { fontSize: "12px" },
+                              { fontSize: "11px" },
                             ]}
                           >
                             Customer Name : {custname}
@@ -1101,7 +1101,7 @@ const ServicePDF = ({ formdata }) => {
                         <View
                           style={{
                             fontFamily: "Helvetica-Bold",
-                            fontSize: "12px",
+                            fontSize: "11px",
                             width: "230px",
                           }}
                         >
