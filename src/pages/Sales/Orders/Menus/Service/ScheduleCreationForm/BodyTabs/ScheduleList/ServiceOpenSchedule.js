@@ -401,7 +401,7 @@ function ServiceOpenSchedule() {
   const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
-      { scheduleDetailsRow, formdata, newState },
+      { scheduleDetailsRow, formdata, newState,Type },
       (response) => {
         if (response.message === "Scheduled") {
           toast.success(response.message, {
@@ -651,6 +651,8 @@ function ServiceOpenSchedule() {
 
   // Get today's date in the format YYYY-MM-DD
   const today = new Date().toISOString().split("T")[0];
+
+  console.log("TaskMaterialData is",TaskMaterialData);
 
 
   return (
