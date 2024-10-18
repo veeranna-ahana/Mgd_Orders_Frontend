@@ -77,17 +77,14 @@ export default function FormHeader(props) {
           </button>
           <button
             className="button-style"
-            // onClick={() => {
-            //   handleSaveBtn();
-            // }}
             onClick={openFolder}
           >
             Open folder
           </button>
-          <Link to={"/Orders/FindOrder"}>
+          <Link to={"/Orders"}>
             <button
               className="button-style "
-              onClick={() => navigate(-1)}
+              // onClick={() => navigate(-1)}
               style={{ float: "right" }}
             >
               Close

@@ -60,7 +60,6 @@ export default function OrderDetails(props) {
     filteredData,
   } = props;
 
-  console.log("BomData", BomData);
   //console.log("schType", scheduleType);
   //console.log("scheduleOption", scheduleOption);
   // //console.log("type", OrderData.Order_Type);

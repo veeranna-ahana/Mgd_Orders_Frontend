@@ -923,8 +923,7 @@ export default function ScheduleCreationForm(props) {
     setRegisterOrder(false);
   };
 
-  console.log("Type", OrderData?.Order_Type);
-  console.log("Status", OrderData?.Order_Status);
+
   // message for Register Button
   let message = "";
   switch (OrderData?.Order_Type) {
@@ -1157,6 +1156,7 @@ export default function ScheduleCreationForm(props) {
                 scheduleListData={scheduleListData}
                 setScheduleListData={setScheduleListData}
                 type={props.Type}
+                scheduleType={scheduleType}
               />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">

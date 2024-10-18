@@ -13,6 +13,8 @@ export default function ScheduleList({
   OrderCustData,
   setScheduleListData,
   scheduleListData,
+  scheduleType,
+  type
 }) {
   //date format
   const formatDate = (dateString) => {
@@ -29,7 +31,7 @@ export default function ScheduleList({
     if (OrderData && OrderData.Order_No) {
       postRequest(
         endpoints.getScheduleListData,
-        { Order_No: OrderData.Order_No },
+        { Order_No: OrderData.Order_No,scheduleType:scheduleType,type:type },
         (response) => {
           setScheduleListData(response);
         }
