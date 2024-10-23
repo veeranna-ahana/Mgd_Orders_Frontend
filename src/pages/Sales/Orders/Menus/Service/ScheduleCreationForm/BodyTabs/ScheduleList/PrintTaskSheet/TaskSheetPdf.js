@@ -738,6 +738,17 @@ export default function TaskSheetPdf({ formData = { formData } }) {
           </View>
         ))}
 
+        {
+          formData.partsTable?.map((item, index) => (
+            <View key={index} style={styles.row}>
+              {/* <Text style={styles.tableInput02}>{index + 1}</Text> */}
+              <Text style={styles.tableInput01}>{item.PartId}</Text>
+              <Text style={styles.tableInput03}>
+                {item.QtyPerAssy * formData.qty}
+              </Text>
+            </View>
+          ))}
+
         <View style={styles.tableContainer2}>
           <View style={styles.row}>
             <View style={styles.row}>
