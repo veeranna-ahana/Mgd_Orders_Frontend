@@ -744,7 +744,8 @@ export default function TaskSheetPdf({ formData = { formData } }) {
               {/* <Text style={styles.tableInput02}>{index + 1}</Text> */}
               <Text style={styles.tableInput01}>{item.PartId}</Text>
               <Text style={styles.tableInput03}>
-                {item.QtyPerAssy * formData.qty}
+                {/* {item.QtyPerAssy * formData.qty} */}
+                {item.QtyRequired}
               </Text>
             </View>
           ))}

@@ -1277,7 +1277,8 @@ export default function TaskSheet() {
                       <tr key={index}>
                         <td>{index + 1}</td>
                         <td>{item.PartId}</td>
-                        <td>{item.QtyPerAssy * formData.qty}</td>
+                    {/* <td>{item.QtyPerAssy * formData.qty}</td>  */}
+                     <td>{item.QtyRequired}</td>
                       </tr>
                     ))
                   : formData.subAssyTableData.map((item, index) => (
