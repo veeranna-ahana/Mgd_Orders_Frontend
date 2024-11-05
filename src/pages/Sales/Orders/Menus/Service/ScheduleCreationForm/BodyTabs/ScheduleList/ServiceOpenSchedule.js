@@ -12,9 +12,12 @@ import { type } from "@testing-library/user-event/dist/type";
 import ScheduleLogin from "./ScheduleLogin";
 
 function ServiceOpenSchedule() {
-  const location = useLocation(); // Access location object using useLocation hook
-  const DwgNameList = location?.state?.DwgNameList || []; // Get DwgNameList from location state
-  const Type = location?.state?.Type || []; //get types
+  const location = useLocation(); 
+  const DwgNameList = location?.state?.DwgNameList || []; 
+  const Type = location?.state?.Type || []; 
+  const OrdrDetailsData=location?.state.OrdrDetailsData || [];
+
+  console.log("OrderData is",OrdrDetailsData);
 
   // Standardize the case of the property name
   const scheduleId = DwgNameList[0]?.ScheduleId || DwgNameList[0]?.ScheduleID;
@@ -401,7 +404,7 @@ function ServiceOpenSchedule() {
   const onClickScheduled = () => {
     postRequest(
       endpoints.onClickScheduled,
-      { scheduleDetailsRow, formdata, newState,Type },
+      { scheduleDetailsRow, formdata, newState,Type,OrdrDetailsData},
       (response) => {
         if (response.message === "Scheduled") {
           toast.success(response.message, {
@@ -1550,6 +1553,7 @@ function ServiceOpenSchedule() {
         DwgNameList={DwgNameList}
         setTaskMaterialData={setTaskMaterialData}
         setNewState={setNewState}
+        OrdrDetailsData={OrdrDetailsData}
       />
     </div>
   );

@@ -14,7 +14,7 @@ export default function ScheduleList({
   setScheduleListData,
   scheduleListData,
   scheduleType,
-  type
+  type,OrdrDetailsData
 }) {
   //date format
   const formatDate = (dateString) => {
@@ -129,7 +129,7 @@ export default function ScheduleList({
                   ? `/Orders/Fabrication/FabricationOpenSchedule`
                   : null
               }
-              state={{ DwgNameList, Type: OrderData?.Type }} 
+              state={{ DwgNameList, Type: OrderData?.Type ,OrdrDetailsData:OrdrDetailsData}} 
             >
               <button
                 className="button-style"

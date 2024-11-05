@@ -7,7 +7,7 @@ import { endpoints } from "../../../../../../../api/constants";
 export default function ScheduleLogin({
   scheduleLogin,
   setScheduleLogin,
-  onClickScheduled,newState,scheduleDetailsRow,formdata,setFormdata,DwgNameList,setNewState,setTaskMaterialData
+  onClickScheduled,newState,scheduleDetailsRow,formdata,setFormdata,DwgNameList,setNewState,setTaskMaterialData,OrdrDetailsData
 }) {
   const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -39,7 +39,7 @@ export default function ScheduleLogin({
             postRequest(
               endpoints.onClickLoginSchedule,
               {
-                scheduleDetailsRow, formdata, newState 
+                scheduleDetailsRow, formdata, newState,OrdrDetailsData
               },
               (response) => {
                 setScheduleLogin(false);
