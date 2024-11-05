@@ -1157,6 +1157,7 @@ export default function ScheduleCreationForm(props) {
                 setScheduleListData={setScheduleListData}
                 type={props.Type}
                 scheduleType={scheduleType}
+                OrdrDetailsData={OrdrDetailsData}
               />
             </Tab>
             <Tab eventKey="profarmaInvoiceList" title="Proforma Invoice List">

@@ -49,8 +49,6 @@ export default function ProductionScheduleCreation({
       });
     } else {
       let filteredItems;
-
-      console.log("scheduleOption is",scheduleOption,"scheduleType is",scheduleType);
   
       if (scheduleType === "Job Work") {
         if (scheduleOption === "Full Order") {
