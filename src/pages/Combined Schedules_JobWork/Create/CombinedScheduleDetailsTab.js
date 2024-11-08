@@ -15,7 +15,7 @@ export default function CombinedScheduleDetailsTab({
     try {
       // Parse the date string
       const date = new Date(dateString);
-      if (isNaN(date)) throw new Error("Invalid Date");
+      if (isNaN(date)) throw new Error("");
   
       // Extract the day, month, and year
       const day = date.getUTCDate().toString().padStart(2, "0");
@@ -27,7 +27,7 @@ export default function CombinedScheduleDetailsTab({
       return formattedDate;
     } catch (error) {
       // console.error("Error formatting date:", error);
-      return "Invalid Date";
+      return " ";
     }
   };
 

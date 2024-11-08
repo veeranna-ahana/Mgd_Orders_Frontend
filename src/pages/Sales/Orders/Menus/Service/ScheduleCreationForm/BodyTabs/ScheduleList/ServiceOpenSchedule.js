@@ -798,6 +798,7 @@ function ServiceOpenSchedule() {
             id="exampleFormControlTextarea1"
             rows="3"
             style={{ width: "360px", height: "50px" }}
+            maxLength={50}
             defaultValue={formdata[0]?.Special_Instructions ==='null' ?' ' : formdata[0]?.Special_Instructions}
           ></textarea>
         </div>

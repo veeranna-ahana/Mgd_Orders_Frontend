@@ -277,7 +277,6 @@ export default function PrepareScheduleTab({
         list,
       },
       (response) => {
-        console.log("sales  is", response);
         setOrderSchedule(response);
       }
     );
@@ -419,7 +418,7 @@ export default function PrepareScheduleTab({
 
   
   useEffect(()=>{
-    setBeforeCombineSales([]);
+    // setBeforeCombineSales([]);
     setPrepareScheduleData([]);
   },[selectedCustomerSales])
 
@@ -838,7 +837,7 @@ export default function PrepareScheduleTab({
                           </td>
                           <td>{value.OrdSchNo}</td>
                           <td>{value.PO}</td>
-                          <td>{value.schTgtDate}</td>
+                          <td>{value.schTgtDateFormatted}</td>
                         </tr>
                       );
                     })}
@@ -942,7 +941,7 @@ export default function PrepareScheduleTab({
                             </td>
                             <td>{item.OrdSchNo}</td>
                             <td>{item.PO}</td>
-                            <td>{item.schTgtDate}</td>
+                            <td>{item.schTgtDateFormatted}</td>
                           </tr>
                         </>
                       );

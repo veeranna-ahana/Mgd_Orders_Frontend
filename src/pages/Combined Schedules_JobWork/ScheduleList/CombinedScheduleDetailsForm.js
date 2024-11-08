@@ -173,7 +173,7 @@ function CombinedScheduleDetailsForm() {
                   <thead className="tableHeaderBGColor tablebody">
                     <tr>
                       <th>Task No</th>
-                      <th>Matl_Code</th>
+                      <th>Mtlr_Code</th>
                       <th>No of Dwgs</th>
                       <th>DwgsNested</th>
                       <th>Total Parts</th>

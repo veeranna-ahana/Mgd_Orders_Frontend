@@ -113,7 +113,10 @@ export default function Create({ type }) {
     });
   };
 
-  useEffect(() => {}, [custCode]); // useEffect to log custCode when it changes
+  useEffect(() => {}, [custCode]); 
+
+
+
 
   //row Select for right table
   const [selectedRows, setSelectedRows] = useState([]);

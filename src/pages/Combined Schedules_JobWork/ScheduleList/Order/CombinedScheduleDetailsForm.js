@@ -99,7 +99,7 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.CombinedTasksTaskTable, {
         ScheduleId: selectedRow?.ScheduleId,
       },(response) => {
-        // console.log(response.data);
+        console.log(response);
         setTaskNoTableData(response);
       });
   };
@@ -113,7 +113,7 @@ function CombinedScheduleDetailsForm() {
     postRequest(endpoints.CombinedTasksShowDwg, {
         TaskNo: list?.TaskNo,
       },(response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setDwgNameTableData(response);
       });
   };
