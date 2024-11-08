@@ -372,7 +372,7 @@ export default function PrepareScheduleTab({
                         </td>
                         <td>{item.OrdSchNo}</td>
                         <td>{item.PO}</td>
-                        <td>{item.schTgtDate}</td>
+                        <td>{item.schTgtDateFormatted}</td>
                       </tr>
                     </>
                   );
